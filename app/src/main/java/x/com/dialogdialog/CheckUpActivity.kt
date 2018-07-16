@@ -30,6 +30,13 @@ class CheckUpActivity : AppCompatActivity() {
                 0,
                 "下载失败提示信息",
                 object : CheckDialogFragment.OnCheckcallback {
+                    override fun onInstallCancel() {
+                        Toast.makeText(this@CheckUpActivity, "345", Toast.LENGTH_SHORT).show()
+                    }
+
+                    override fun onDownloadFinish(apkFile: File) {
+                    }
+
                     override fun onCancel() {
                         Toast.makeText(this@CheckUpActivity, "345", Toast.LENGTH_SHORT).show()
                     }

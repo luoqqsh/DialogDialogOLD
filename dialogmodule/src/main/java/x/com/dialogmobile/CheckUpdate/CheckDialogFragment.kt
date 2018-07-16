@@ -29,10 +29,12 @@ class CheckDialogFragment(private val activity: AppCompatActivity, private val m
 
     interface OnCheckcallback {
         fun onCancel()
+        fun onInstallCancel()
+
+        fun onDownloadFinish(apkFile: File)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        Log.d("TAG", "onCreateDialog: " + this.toString())
         val dialog = NDialogBuilder(context!!, layoutStyle, 1.0f)
                 .setTouchOutSideCancelable(false)
                 .setMessage(msg, NDialogBuilder.MSG_LAYOUT_LEFT)
@@ -61,11 +63,11 @@ class CheckDialogFragment(private val activity: AppCompatActivity, private val m
 
                                                                 override fun installCancel() {
                                                                     //取消安装
-                                                                    Toast.makeText(activity, "取消安装了", Toast.LENGTH_SHORT).show()
+                                                                    callback.onInstallCancel()
                                                                 }
 
                                                                 override fun downloadSuccess(file: File) {
-
+                                                                    callback.onDownloadFinish(file)
                                                                 }
 
 
@@ -87,7 +89,7 @@ class CheckDialogFragment(private val activity: AppCompatActivity, private val m
                                                             })
                                                             .setCheckUp(true)
                                                             .setIsForce(isforce == 1)
-                                                            .setNotificationShow(true, "下载通知", R.mipmap.ic_launcher)
+                                                            .setNotificationShow(true, "正在下载...", R.mipmap.ic_launcher)
                                                             .setDialogShow(true, "下次再说", "立即安装")
                                                     downloadHelper!!.start()
                                                 }

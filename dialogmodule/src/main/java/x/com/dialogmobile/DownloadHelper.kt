@@ -64,7 +64,6 @@ constructor(private val mActivity: Activity, private val mDownloadUrl: String, p
             override fun handleMessage(msg: Message) {
                 when (msg.what) {
                     DOWNLOAD_ING -> {
-                        Log.d(TAG, "handleMessage: $mProgress")
                         if (mIsShowDialog && mProgress < 100) {
                             mPDialog2Builder!!.setProgress(mProgress)
                         }
@@ -73,7 +72,6 @@ constructor(private val mActivity: Activity, private val mDownloadUrl: String, p
                         }
                     }
                     DOWNLOAD_OVER -> {
-                        Log.d(TAG, "handleMessage: OVER")
                         //刷新进度
                         downloadSuccess()
                         //回调file
