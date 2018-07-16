@@ -1,15 +1,14 @@
 package x.com.dialogmobile.CheckUpdate
 
 import android.Manifest
+import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.KeyEvent
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import x.com.dialogmobile.DownloadHelper
 import x.com.dialogmobile.NDialogBuilder
@@ -17,7 +16,7 @@ import x.com.dialogmobile.PermissionHelper
 import x.com.dialogmobile.R
 import java.io.File
 
-class CheckDialogFragment(private val activity: AppCompatActivity, private val msg: String, private val layoutStyle: Int, private val downloadUrl: String,
+class CheckDialogFragment(private val activity: Activity, private val msg: String, private val layoutStyle: Int, private val downloadUrl: String,
                           private val isforce: Int, private val downloadFailMessgae: String,
                           private val callback: OnCheckcallback) : DialogFragment() {
     private var downloadHelper: DownloadHelper? = null
