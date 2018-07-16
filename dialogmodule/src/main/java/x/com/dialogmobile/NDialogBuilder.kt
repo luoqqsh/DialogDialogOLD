@@ -1,10 +1,12 @@
 package x.com.dialogmobile
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.util.DisplayMetrics
 import android.view.Gravity
+import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
 import android.widget.Button
@@ -27,6 +29,56 @@ private constructor(private val context: Context, layoutStyle: Int, isSystemAler
     private val dialog: Dialog
     private var dialogTitle: TextView? = null
     private var dialogMsg: TextView? = null
+    private var alpha: Float = 0.toFloat()//点击透明度
+
+    companion object {
+        /**
+         * 对话框处于屏幕顶部位置
+         */
+        val DIALOG_LOCATION_TOP = 12
+        /**
+         * 对话框处于屏幕中间位置
+         */
+        val DIALOG_LOCATION_CENTER = 10
+        /**
+         * 对话框处于屏幕底部位置
+         */
+        val DIALOG_LOCATION_BOTTOM = 11
+        /**
+         * 消息位于对话框的位置 居左
+         */
+        val MSG_LAYOUT_LEFT = 1
+        /**
+         * 消息位于对话框的位置 居中
+         */
+        val MSG_LAYOUT_CENTER = 0
+        /**
+         * 缩放动画
+         */
+        val DIALOG_ANIM_NORMAL = R.style.DialogAnimation
+        /**
+         * 从下往上滑动动画
+         */
+        val DIALOG_ANIM_SLID_BOTTOM = R.style.DialogAnimationSlidBottom
+        /**
+         * 从上往下滑动动画
+         */
+        val DIALOG_ANIM_SLID_TOP = R.style.DialogAnimationSlidTop
+        /**
+         * 从右往左滑动动画
+         */
+        val DIALOG_ANIM_SLID_RIGHT = R.style.DialogAnimationSlidRight
+        /**
+         * 对话框透明比例
+         */
+        val ALPHAFACTOR = 1.0f
+        // 弹出dialog时候是否要显示阴影
+        private val dimEnable = true
+        /**
+         * 对话框宽度所占屏幕宽度的比例
+         */
+        val WIDTHFACTOR = 0.75f
+    }
 
     /**
      * 构造器
@@ -47,7 +99,7 @@ private constructor(private val context: Context, layoutStyle: Int, isSystemAler
         }
         // 设置对话框风格
         if (layoutStyle == 0) {
-            layoutStyle = R.layout.mdialog_layout
+            layoutStyle = R.layout.ndialog_layout
         }
         dialog.setContentView(layoutStyle)
         val window = dialog.window
@@ -77,6 +129,7 @@ private constructor(private val context: Context, layoutStyle: Int, isSystemAler
         }
         window.attributes = lp
         this.dialog = dialog
+        this.alpha = 0.8f
     }
 
 
@@ -95,19 +148,18 @@ private constructor(private val context: Context, layoutStyle: Int, isSystemAler
      */
     fun setMessage(message: String?, layout: Int): NDialogBuilder {
         dialogMsg = dialog.findViewById(R.id.mdialog_message)
-        if (dialogMsg != null) {
-            if (message != null) {
-                dialogMsg!!.text = message
-                dialogMsg!!.visibility = View.VISIBLE
-                if (layout == MSG_LAYOUT_LEFT) {
-                    dialogMsg!!.gravity = Gravity.START
-                } else if (layout == MSG_LAYOUT_CENTER) {
-                    dialogMsg!!.gravity = Gravity.CENTER
-                }
-            } else {
-                dialogMsg!!.visibility = View.GONE
+        if (message != null) {
+            dialogMsg!!.text = message
+            dialogMsg!!.visibility = View.VISIBLE
+            if (layout == MSG_LAYOUT_LEFT) {
+                dialogMsg!!.gravity = Gravity.START
+            } else if (layout == MSG_LAYOUT_CENTER) {
+                dialogMsg!!.gravity = Gravity.CENTER
             }
+        } else {
+            dialogMsg!!.visibility = View.GONE
         }
+
         return this
     }
 
@@ -119,13 +171,11 @@ private constructor(private val context: Context, layoutStyle: Int, isSystemAler
      */
     fun setTitle(title: String?): NDialogBuilder {
         dialogTitle = dialog.findViewById(R.id.mdialog_title)
-        if (dialogTitle != null) {
-            if (title != null) {
-                dialogTitle!!.text = title
-                dialogTitle!!.visibility = View.VISIBLE
-            } else {
-                dialogTitle!!.visibility = View.GONE
-            }
+        if (title != null) {
+            dialogTitle!!.text = title
+            dialogTitle!!.visibility = View.VISIBLE
+        } else {
+            dialogTitle!!.visibility = View.GONE
         }
         return this
     }
@@ -153,6 +203,17 @@ private constructor(private val context: Context, layoutStyle: Int, isSystemAler
             DIALOG_LOCATION_BOTTOM -> window!!.setGravity(Gravity.BOTTOM)
             DIALOG_LOCATION_TOP -> window!!.setGravity(Gravity.TOP)
         }
+        return this
+    }
+
+    /**
+     * 设置点击时透明度，
+     *
+     * @param alpah 透明度
+     * @return this
+     */
+    fun setClickAlpah(alpah: Float): NDialogBuilder {
+        this.alpha = alpah
         return this
     }
 
@@ -210,6 +271,7 @@ private constructor(private val context: Context, layoutStyle: Int, isSystemAler
      * @param isDissmiss       点击按钮后是否取消对话框
      * @return
      */
+    @SuppressLint("ClickableViewAccessibility")
     private fun setClickListener(isDissmiss: Boolean, btn1: Int, btn1text: String, btn2: Int, btn2text: String, btnClickListener: onDialogbtnClickListener?): NDialogBuilder {
         if (btn1 != 0) {
             // 设置确认按钮
@@ -223,6 +285,13 @@ private constructor(private val context: Context, layoutStyle: Int, isSystemAler
                 }
                 btnClickListener?.onDialogbtnClick(context, dialog,
                         onDialogbtnClickListener.BUTTON_CONFIRM)
+            }
+            btnConfirm.setOnTouchListener { view, motionEvent ->
+                when (motionEvent.action) {
+                    MotionEvent.ACTION_DOWN -> btnConfirm.alpha = alpha
+                    MotionEvent.ACTION_UP -> btnConfirm.alpha = 1f
+                }
+                false
             }
             if (btn2 == 0) {
                 btnConfirm.setBackgroundResource(R.drawable.button_onclick)
@@ -240,6 +309,13 @@ private constructor(private val context: Context, layoutStyle: Int, isSystemAler
                 btnClickListener?.onDialogbtnClick(context, dialog,
                         onDialogbtnClickListener.BUTTON_CANCEL)
             }
+            btnCancel.setOnTouchListener { view, motionEvent ->
+                when (motionEvent.action) {
+                    MotionEvent.ACTION_DOWN -> btnCancel.alpha = alpha
+                    MotionEvent.ACTION_UP -> btnCancel.alpha = 1f
+                }
+                false
+            }
         }
         return this
     }
@@ -256,52 +332,5 @@ private constructor(private val context: Context, layoutStyle: Int, isSystemAler
         return dialog
     }
 
-    companion object {
-        /**
-         * 对话框处于屏幕顶部位置
-         */
-        val DIALOG_LOCATION_TOP = 12
-        /**
-         * 对话框处于屏幕中间位置
-         */
-        val DIALOG_LOCATION_CENTER = 10
-        /**
-         * 对话框处于屏幕底部位置
-         */
-        val DIALOG_LOCATION_BOTTOM = 11
-        /**
-         * 消息位于对话框的位置 居左
-         */
-        val MSG_LAYOUT_LEFT = 1
-        /**
-         * 消息位于对话框的位置 居中
-         */
-        val MSG_LAYOUT_CENTER = 0
-        /**
-         * 缩放动画
-         */
-        val DIALOG_ANIM_NORMAL = R.style.DialogAnimation
-        /**
-         * 从下往上滑动动画
-         */
-        val DIALOG_ANIM_SLID_BOTTOM = R.style.DialogAnimationSlidBottom
-        /**
-         * 从上往下滑动动画
-         */
-        val DIALOG_ANIM_SLID_TOP = R.style.DialogAnimationSlidTop
-        /**
-         * 从右往左滑动动画
-         */
-        val DIALOG_ANIM_SLID_RIGHT = R.style.DialogAnimationSlidRight
-        /**
-         * 对话框透明比例
-         */
-        val ALPHAFACTOR = 1.0f
-        // 弹出dialog时候是否要显示阴影
-        private val dimEnable = true
-        /**
-         * 对话框宽度所占屏幕宽度的比例
-         */
-        val WIDTHFACTOR = 0.75f
-    }
+
 }
