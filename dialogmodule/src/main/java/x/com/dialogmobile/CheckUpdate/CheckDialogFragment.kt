@@ -66,6 +66,7 @@ class CheckDialogFragment(private val activity: Activity, private val msg: Strin
                                                                 }
 
                                                                 override fun downloadSuccess(file: File) {
+                                                                    //下载完成，setCheckUp(true)时自动执行安装
                                                                     callback.onDownloadFinish(file)
                                                                 }
 

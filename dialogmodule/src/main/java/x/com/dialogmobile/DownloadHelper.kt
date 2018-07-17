@@ -3,6 +3,7 @@ package x.com.dialogmobile
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -13,6 +14,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.content.FileProvider
+import x.com.dialogmobile.NDialogBuilder.onDialogbtnClickListener.Companion.BUTTON_CONFIRM
 import x.com.dialogmobile.ProgressDialog.PDialog2Builder
 import java.io.File
 import java.io.FileOutputStream
@@ -49,7 +51,7 @@ constructor(private val mActivity: Activity, private val mDownloadUrl: String, p
 
         fun installCancel() //取消安装时回调
 
-        fun downloadSuccess(file: File) //下载成功
+        fun downloadSuccess(file: File) //下载成功时回调
 
         fun downloadFail() //下载失败时回调
     }
@@ -358,7 +360,15 @@ constructor(private val mActivity: Activity, private val mDownloadUrl: String, p
      * 开启下载
      */
     fun start() {
-        startDownload()
+        //判断文件是否存在
+        val file: File = File(mSavePath, mVersionName)
+        if (file.exists()) {
+            //已存在
+            showAlreadyExistsDialog(file)
+        } else {
+            //不存在，执行下载
+            startDownload()
+        }
     }
 
     /**
@@ -418,6 +428,30 @@ constructor(private val mActivity: Activity, private val mDownloadUrl: String, p
                 mDownloadManager.clear()
                 list.clear()
             }
+        }
+    }
+
+    fun showAlreadyExistsDialog(file: File) {
+        mActivity.runOnUiThread {
+            NDialogBuilder(mActivity, 0, 1.0f)
+                    .setTitle("文件已存在")
+                    .setTouchOutSideCancelable(false)
+                    .setMessage("文件已存在，是否继续？", NDialogBuilder.MSG_LAYOUT_LEFT)
+                    .setDialogAnimation(NDialogBuilder.DIALOG_ANIM_NORMAL)
+                    .setBtnClickListener(true, "重新下载", "继续", object : NDialogBuilder.onDialogbtnClickListener {
+                        override fun onDialogbtnClick(context: Context, dialog: Dialog, whichBtn: Int) {
+                            if (whichBtn == BUTTON_CONFIRM) {
+                                startDownload()
+                            } else {
+                                if (mIsCheckUp) {
+                                    //判断是否执行安装
+                                    installAPK()
+                                }
+                                mDownloadCallBack!!.downloadSuccess(file)
+                            }
+                        }
+                    })
+                    .create().show()
         }
     }
 }
