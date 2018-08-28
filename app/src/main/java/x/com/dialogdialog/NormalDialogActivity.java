@@ -4,14 +4,18 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import x.com.dialogmobile.CheckUpdate.EasyCheckDialogBuilder;
 import x.com.dialogmobile.NDialogBuilder;
+import x.com.dialogmobile.PhotoDialogBuilder;
 import x.com.dialogmobile.ProgressDialog.PDialog1Builder;
+import x.com.dialogmobile.SexDialogBuilder;
 import x.com.dialogmobile.ShareDialogBuilder;
 
 public class NormalDialogActivity extends AppCompatActivity {
@@ -25,6 +29,7 @@ public class NormalDialogActivity extends AppCompatActivity {
         ewfe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                EasyCheckDialogBuilder.setp(60);
             }
         });
 
@@ -67,9 +72,66 @@ public class NormalDialogActivity extends AppCompatActivity {
 //        a.show();
 //        PDialog1Builder.stop();
 
-        a = new ShareDialogBuilder(this, 0, 1.0f).setTouchOutSideCancelable(false)
-                .setDialoglocation(ShareDialogBuilder.DIALOG_LOCATION_BOTTOM)
-                .setBtnClickListener(true, new ShareDialogBuilder.onDialogbtnClickListener() {
+//        a = new ShareDialogBuilder(this, 0, 1.0f).setTouchOutSideCancelable(false)
+//                .setDialoglocation(ShareDialogBuilder.DIALOG_LOCATION_BOTTOM)
+//                .setBtnClickListener(true, new ShareDialogBuilder.onDialogbtnClickListener() {
+//                    @Override
+//                    public void onDialogbtnClick(Context context, Dialog dialog, int whichBtn) {
+//                        switch (whichBtn) {
+//                            case 1:
+//                                Log.d("ww", "1");
+//                                break;
+//                            case 2:
+//                                Log.d("ww", "2");
+//                                break;
+//                            case 3:
+//                                Log.d("ww", "3");
+//                                break;
+//
+//                            case 4:
+//                                Log.d("ww", "4");
+//                                break;
+//                            default:
+//                                Log.d("ww", "5");
+//                        }
+//                    }
+//                }).create();
+//        a.show();
+//        PDialog1Builder.stop();
+//        a = new SexDialogBuilder(this, 0, 1.0f).setTouchOutSideCancelable(false).setDialoglocation(SexDialogBuilder.DIALOG_LOCATION_BOTTOM)
+//                .setBtnClickListener(true, new SexDialogBuilder.onDialogbtnClickListener() {
+//                    @Override
+//                    public void onDialogbtnClick(Context context, Dialog dialog, int whichBtn) {
+//                        switch (whichBtn) {
+//                            case 1:
+//                                Log.d("ww", "1");
+//                                break;
+//                            case 2:
+//                                Log.d("ww", "2");
+//                                break;
+//                        }
+//                    }
+//                }).create();
+//        a.show();
+
+//        a = new PhotoDialogBuilder(this, 0, 1.0f).setTouchOutSideCancelable(false).setDialoglocation(SexDialogBuilder.DIALOG_LOCATION_BOTTOM)
+//                .setBtnClickListener(true, new PhotoDialogBuilder.onDialogbtnClickListener() {
+//                    @Override
+//                    public void onDialogbtnClick(Context context, Dialog dialog, int whichBtn) {
+//                        switch (whichBtn) {
+//                            case 1:
+//                                Log.d("ww", "1");
+//                                break;
+//                            case 2:
+//                                Log.d("ww", "2");
+//                                break;
+//                        }
+//                    }
+//                }).create();
+//        a.show();
+        a = new EasyCheckDialogBuilder(this, 0, 1.0f).setTouchOutSideCancelable(false)
+                .setMessage("wefwefwefwef", Gravity.LEFT).isForce(1)
+                .setBtnClickListener(true, new EasyCheckDialogBuilder.onDialogbtnClickListener() {
                     @Override
                     public void onDialogbtnClick(Context context, Dialog dialog, int whichBtn) {
                         switch (whichBtn) {
@@ -79,20 +141,11 @@ public class NormalDialogActivity extends AppCompatActivity {
                             case 2:
                                 Log.d("ww", "2");
                                 break;
-                            case 3:
-                                Log.d("ww", "3");
-                                break;
-
-                            case 4:
-                                Log.d("ww", "4");
-                                break;
-                            default:
-                                Log.d("ww", "5");
                         }
                     }
                 }).create();
         a.show();
-        PDialog1Builder.stop();
+//        EasyCheckDialogBuilder.setp(60);
     }
 
 }

@@ -10,7 +10,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.TextView;
 
 public class ShareDialogBuilder {
@@ -97,7 +96,7 @@ public class ShareDialogBuilder {
         }
         // 设置对话框风格
         if (layoutStyle == 0) {
-            layoutStyle = R.layout.sdialog_layout;
+            layoutStyle = R.layout.sharedialog_layout;
         }
         dialog.setContentView(layoutStyle);
         Window window = dialog.getWindow();

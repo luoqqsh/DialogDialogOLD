@@ -17,7 +17,7 @@
     <color name="commonbuttoncolor_down">#cc2f80db</color>
     <color name="commontextcolor">#20aee5</color>
     <color name="commonkuangcolor">#ffffffff</color>
-    <color name="faildgray">#dddddd</color>
+    <color name="faildgray">#ffdbdbdb</color>
     <color name="faildtextcolor">#333333</color>
     <color name="guangbiaocolor">#cc2f80db</color>
     <color name="cccc">#CCCCCC</color>
