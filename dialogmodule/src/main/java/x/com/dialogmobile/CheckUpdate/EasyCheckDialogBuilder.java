@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import x.com.dialogmobile.NDialogBuilder;
 import x.com.dialogmobile.R;
 
 public class EasyCheckDialogBuilder {
@@ -338,6 +337,8 @@ public class EasyCheckDialogBuilder {
                     btnClickListener.onDialogbtnClick(context, dialog,
                             onDialogbtnClickListener.BUTTON_CONFIRM);
                 }
+                progress.setVisibility(View.VISIBLE);
+                tv_progress.setText("正在下载。。。");
             }
         });
         btnCancel.setOnTouchListener(new View.OnTouchListener() {
