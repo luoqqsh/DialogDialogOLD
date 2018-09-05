@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import x.com.dialogmobile.NDialogBuilder;
 import x.com.dialogmobile.R;
 
 public class EasyCheckDialogBuilder {

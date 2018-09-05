@@ -10,7 +10,7 @@ import android.widget.RemoteViews;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import x.com.dialogmobile.NotificationHelper;
+import x.com.dialogmobile.MeTools.NotificationHelper;
 
 public class NotificationActivity extends AppCompatActivity{
 

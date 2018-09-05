@@ -1,4 +1,4 @@
-package x.com.dialogmobile;
+package x.com.dialogmobile.MeTools;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -11,9 +11,13 @@ import android.util.Log;
 import android.widget.RemoteViews;
 
 import androidx.core.app.NotificationCompat;
+import x.com.dialogmobile.R;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 
+/**
+ * 状态栏通知消息
+ */
 public class NotificationHelper {
     private static final int NOTIFICATION_REQUEST_CODE = 0x001;
     public static final int NOTIFICATION_TYPE_NORMAL = 0x0011;

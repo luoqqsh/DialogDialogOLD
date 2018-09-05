@@ -6,62 +6,46 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/tv_girl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:text="选择性别"
+        android:paddingTop="17dp"
+        android:paddingBottom="17dp"
+        android:text="女"
+        android:textColor="#ffff4c4c"
         android:textSize="18sp" />
 
-    <LinearLayout
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="13dp"
+        android:layout_marginRight="13dp"
+        android:background="#fff0f0f0" />
+
+    <TextView
+        android:id="@+id/tv_boy"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:gravity="center"
+        android:paddingTop="17dp"
+        android:paddingBottom="17dp"
+        android:text="男"
+        android:textColor="#ff1a1a1a"
+        android:textSize="18sp" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/font_color_1" />
-
-        <TextView
-            android:id="@+id/tv_boy"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:text="男"
-            android:textSize="18sp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/font_color_1" />
-
-        <TextView
-            android:id="@+id/tv_girl"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:text="女"
-            android:textSize="18sp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/font_color_1" />
-    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#fff0f0f0" />
 
     <TextView
         android:id="@+id/tv_cancel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:paddingTop="15dp"
-        android:paddingBottom="15dp"
+        android:paddingTop="17dp"
+        android:paddingBottom="17dp"
         android:text="取消"
         android:textColor="#ff1586dc"
         android:textSize="18sp" />

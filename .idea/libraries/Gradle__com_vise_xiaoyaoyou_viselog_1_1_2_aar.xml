@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: com.vise.xiaoyaoyou:viselog:1.1.2@aar">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/viselog-1.1.2.aar/b07c694a43144eba2320d77a6725eae3/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/viselog-1.1.2.aar/b07c694a43144eba2320d77a6725eae3/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.vise.xiaoyaoyou/viselog/1.1.2/6507d9a87796b81285688fa092c1f5c2727593ef/viselog-1.1.2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

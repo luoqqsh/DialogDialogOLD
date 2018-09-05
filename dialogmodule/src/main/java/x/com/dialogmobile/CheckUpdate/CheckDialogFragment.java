@@ -14,9 +14,9 @@ import java.io.File;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
-import x.com.dialogmobile.DownloadHelper;
+import x.com.dialogmobile.MeTools.DownloadHelper;
 import x.com.dialogmobile.NDialogBuilder;
-import x.com.dialogmobile.PermissionHelper;
+import x.com.dialogmobile.MeTools.PermissionHelper;
 import x.com.dialogmobile.R;
 
 public class CheckDialogFragment extends DialogFragment {
