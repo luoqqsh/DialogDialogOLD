@@ -1,4 +1,4 @@
-package x.com.dialogmobile;
+package x.com.dialogmobile.MeTools;
 
 import android.app.Activity;
 import android.os.Build;
@@ -8,6 +8,9 @@ import androidx.fragment.app.Fragment;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
+/**
+ * 权限申请
+ */
 public class PermissionHelper {
 
     public interface RequestPermissionCallBack {

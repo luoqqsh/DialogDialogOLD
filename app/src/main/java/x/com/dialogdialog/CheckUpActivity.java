@@ -11,9 +11,9 @@ import java.io.File;
 
 import androidx.appcompat.app.AppCompatActivity;
 import x.com.dialogmobile.CheckUpdate.CheckDialogFragment;
-import x.com.dialogmobile.DownloadHelper;
+import x.com.dialogmobile.MeTools.DownloadHelper;
 import x.com.dialogmobile.NDialogBuilder;
-import x.com.dialogmobile.PermissionHelper;
+import x.com.dialogmobile.MeTools.PermissionHelper;
 
 import static x.com.dialogmobile.NDialogBuilder.MSG_LAYOUT_LEFT;
 
@@ -132,7 +132,6 @@ public class CheckUpActivity extends AppCompatActivity {
                 new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
                         Manifest.permission.READ_EXTERNAL_STORAGE
                 }, new PermissionHelper.RequestPermissionCallBack() {
-
                     @Override
                     public void requestPermissionSuccess() {
                         //申请成功

@@ -13,7 +13,7 @@ import android.widget.TextView;
 import x.com.dialogmobile.R;
 
 /**
- * Created by xiaviv on 16/9/27.
+ * 验证码view
  */
 
 public class SecurityCodeView extends RelativeLayout {

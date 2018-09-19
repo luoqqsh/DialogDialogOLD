@@ -10,7 +10,6 @@
 
     <!-- 对话框创建时需要加载的样式 -->
     <style name="Dialog" parent="@android:style/Theme.Dialog">
-
         <!-- 去除标题 -->
         <item name="android:windowNoTitle">true</item>
         <!-- 去除背景 -->

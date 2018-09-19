@@ -8,6 +8,9 @@ import android.widget.Toast;
 import x.com.dialogmobile.EDialogBuilder;
 import x.com.dialogmobile.NDialogBuilder;
 
+/**
+ * 登录对话框
+ */
 public class LDialogBuilder {
     private Context context;
     private Dialog edialog1, edialog2;

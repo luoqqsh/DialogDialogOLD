@@ -1,4 +1,4 @@
-package x.com.dialogmobile;
+package x.com.dialogmobile.MeTools;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -25,9 +25,13 @@ import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
+import x.com.dialogmobile.BuildConfig;
+import x.com.dialogmobile.NDialogBuilder;
 import x.com.dialogmobile.ProgressDialog.PDialog2Builder;
 
-
+/**
+ * 下载简单封装
+ */
 public class DownloadHelper {
     private final String TAG = "download";
     private static final int DOWNLOAD_ING = 1;

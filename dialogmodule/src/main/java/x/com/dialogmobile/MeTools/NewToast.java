@@ -1,4 +1,4 @@
-package x.com.dialogmobile;
+package x.com.dialogmobile.MeTools;
 
 import android.content.Context;
 import android.view.Gravity;
@@ -8,8 +8,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import x.com.dialogmobile.R;
+
 /**
- * Created by gps-xing on 2016/11/1.
+ * Toast
  */
 
 public class NewToast extends Toast {

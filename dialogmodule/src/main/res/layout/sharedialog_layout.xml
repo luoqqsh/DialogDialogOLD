@@ -5,18 +5,11 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:text="分享到"
-        android:textSize="18sp" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
         android:orientation="horizontal">
 
         <TextView
@@ -68,15 +61,19 @@
             android:textSize="14sp" />
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#fff0f0f0" />
+
     <TextView
         android:id="@+id/tv_cancel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:gravity="center"
         android:paddingTop="15dp"
         android:paddingBottom="15dp"
-        android:text="取消分享"
+        android:text="取消"
         android:textColor="#ff1586dc"
         android:textSize="18sp" />
 </LinearLayout>

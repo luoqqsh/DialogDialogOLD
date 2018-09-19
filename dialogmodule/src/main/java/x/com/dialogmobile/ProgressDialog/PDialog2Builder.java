@@ -12,6 +12,9 @@ import android.widget.TextView;
 
 import x.com.dialogmobile.R;
 
+/**
+ * 下载进度框
+ */
 public class PDialog2Builder {
     private Dialog dialog;
     private Context context;
