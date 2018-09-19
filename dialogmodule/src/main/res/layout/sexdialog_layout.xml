@@ -13,7 +13,7 @@
         android:paddingTop="17dp"
         android:paddingBottom="17dp"
         android:text="女"
-        android:textColor="#ffff4c4c"
+        android:textColor="#ff1a1a1a"
         android:textSize="18sp" />
 
     <View
