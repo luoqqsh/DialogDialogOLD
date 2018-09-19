@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -73,6 +74,7 @@ public class EasyCheckDialogBuilder {
     private int isfource;
     private static ProgressBar progress;
     private static TextView tv_progress;
+    private static LinearLayout ll_progress;
 
     /**
      * 构造器
@@ -136,6 +138,7 @@ public class EasyCheckDialogBuilder {
         this.context = context;
         this.alpha = 0.8f;
         progress = dialog.findViewById(R.id.progress);
+        ll_progress = dialog.findViewById(R.id.ll_progress);
         tv_progress = dialog.findViewById(R.id.tv_progress);
     }
 
@@ -194,7 +197,7 @@ public class EasyCheckDialogBuilder {
      * @return this
      */
     public static void setp(int p) {
-        progress.setVisibility(View.VISIBLE);
+        ll_progress.setVisibility(View.VISIBLE);
         progress.setProgress(p);
         tv_progress.setText(String.valueOf(p) + "%");
     }
@@ -337,7 +340,7 @@ public class EasyCheckDialogBuilder {
                     btnClickListener.onDialogbtnClick(context, dialog,
                             onDialogbtnClickListener.BUTTON_CONFIRM);
                 }
-                progress.setVisibility(View.VISIBLE);
+                ll_progress.setVisibility(View.VISIBLE);
                 tv_progress.setText("正在下载。。。");
             }
         });
