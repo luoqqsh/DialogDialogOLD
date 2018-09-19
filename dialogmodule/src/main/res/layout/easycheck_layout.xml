@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/dialog_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -12,81 +12,95 @@
         android:id="@+id/warning_frame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@mipmap/banbensj"
         android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:paddingLeft="18dp"
-        android:paddingTop="18dp"
-        android:paddingRight="18dp">
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/mdialog_title"
-            android:layout_width="wrap_content"
+
+        <ImageView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="发现新版本"
-            android:textColor="#ffffffff"
-            android:textSize="19sp"
-            android:textStyle="bold" />
+            android:background="@mipmap/img_dingbu" />
         <!-- 对话框消息内容 -->
 
         <TextView
             android:id="@+id/mdialog_message"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginRight="15dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             android:layout_weight="1"
             android:gravity="center_vertical"
+            android:lineSpacingExtra="5dp"
             android:textColor="#ff1a1a1a"
             android:textSize="15sp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <!-- 对话框确定/取消按钮 -->
+
+            <LinearLayout
+                android:id="@+id/dialog_btnlayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="22dp">
+
+                <Button
+                    android:id="@+id/mdialog_btn1"
+                    style="@style/kuang_button1"
+                    android:background="@drawable/dialog_button_gray"
+                    android:text="下次再说" />
+
+                <View
+                    android:layout_width="20dp"
+                    android:layout_height="0dp" />
+
+                <Button
+                    android:id="@+id/mdialog_btn2"
+                    style="@style/kuang_button1"
+                    android:text="立即更新"
+                    android:textColor="#ffffffff" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_progress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:padding="22dp">
+
+                <ProgressBar
+                    android:id="@+id/progress"
+                    style="@style/StyleProgressBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:progress="0"
+                    android:progressDrawable="@drawable/layer_pd" />
+
+                <TextView
+                    android:id="@+id/tv_progress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center"
+                    android:text="0"
+                    android:textColor="#ff999999"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </RelativeLayout>
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/mdialog_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:text="发现新版本"
+        android:textColor="#ffffffff"
+        android:textSize="19sp"
+        android:textStyle="bold" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <!-- 对话框确定/取消按钮 -->
-
-        <LinearLayout
-            android:id="@+id/dialog_btnlayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="25dp">
-
-            <Button
-                android:id="@+id/mdialog_btn1"
-                style="@style/kuang_button1"
-                android:background="@drawable/dialog_button_gray"
-                android:text="下次再说" />
-
-            <Button
-                android:id="@+id/mdialog_btn2"
-                style="@style/kuang_button1"
-                android:text="立即更新"
-                android:textColor="#ffffffff" />
-        </LinearLayout>
-
-        <ProgressBar
-            android:id="@+id/progress"
-            style="@style/StyleProgressBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:padding="25dp"
-            android:progress="0"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/tv_progress"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/progress"
-            android:layout_marginTop="-15dp"
-            android:gravity="center"
-            android:text="33"
-            android:textColor="#ff999999"
-            android:textSize="12sp" />
-    </RelativeLayout>
-</LinearLayout>
+</RelativeLayout>

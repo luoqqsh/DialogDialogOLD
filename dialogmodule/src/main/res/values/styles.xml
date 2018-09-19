@@ -56,8 +56,6 @@
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@drawable/sel_text_p_blue_disable_gray</item>
         <item name="android:background">@drawable/button_onclick</item>
-        <item name="android:layout_marginLeft">15dp</item>
-        <item name="android:layout_marginRight">15dp</item>
         <item name="android:gravity">center</item>
     </style>
 
