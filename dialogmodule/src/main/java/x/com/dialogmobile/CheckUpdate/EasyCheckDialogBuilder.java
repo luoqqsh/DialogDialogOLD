@@ -200,6 +200,9 @@ public class EasyCheckDialogBuilder {
         ll_progress.setVisibility(View.VISIBLE);
         progress.setProgress(p);
         tv_progress.setText(String.valueOf(p) + "%");
+        if (p == 100) {
+            ll_progress.setVisibility(View.GONE);
+        }
     }
 
 
