@@ -300,6 +300,7 @@ public class EasyCheckDialogBuilder {
 
         if (isfource == 1) {
             btnConfirm.setVisibility(View.GONE);
+            dialog.findViewById(R.id.view).setVisibility(View.GONE);
             btnConfirm.setBackgroundResource(R.drawable.button_onclick);
         } else {
             btnConfirm.setVisibility(View.VISIBLE);

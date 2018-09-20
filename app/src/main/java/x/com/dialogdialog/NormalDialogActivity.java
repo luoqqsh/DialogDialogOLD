@@ -136,6 +136,7 @@ public class NormalDialogActivity extends AppCompatActivity {
                     public void onDialogbtnClick(Context context, Dialog dialog, int whichBtn) {
                         switch (whichBtn) {
                             case 1:
+                                EasyCheckDialogBuilder.setp(60);
                                 Log.d("ww", "1");
                                 break;
                             case 2:
