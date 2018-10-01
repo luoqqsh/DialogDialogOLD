@@ -34,7 +34,7 @@
         android:textColor="@color/font_color_3"
         android:textSize="16sp" />
 
-    <x.com.dialogmobile.LoginDialog.SecurityCodeView
+    <x.com.hl_dialog.LoginDialog.SecurityCodeView
         android:id="@+id/edit_security_code"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

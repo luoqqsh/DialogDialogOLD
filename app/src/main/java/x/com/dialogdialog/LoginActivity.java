@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import x.com.dialogmobile.LoginDialog.LDialogBuilder;
+import x.com.hl_dialog.LoginDialog.LDialogBuilder;
 
 public class LoginActivity extends AppCompatActivity {
     private LDialogBuilder a;

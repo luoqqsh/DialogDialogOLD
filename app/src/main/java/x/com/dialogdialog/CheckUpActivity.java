@@ -10,12 +10,12 @@ import android.widget.Toast;
 import java.io.File;
 
 import androidx.appcompat.app.AppCompatActivity;
-import x.com.dialogmobile.CheckUpdate.CheckDialogFragment;
-import x.com.dialogmobile.MeTools.DownloadHelper;
-import x.com.dialogmobile.NDialogBuilder;
-import x.com.dialogmobile.MeTools.PermissionHelper;
+import x.com.hl_dialog.CheckUpdate.CheckDialogFragment;
+import x.com.hl_dialog.MeTools.DownloadHelper;
+import x.com.hl_dialog.NDialogBuilder;
+import x.com.hl_dialog.MeTools.PermissionHelper;
 
-import static x.com.dialogmobile.NDialogBuilder.MSG_LAYOUT_LEFT;
+import static x.com.hl_dialog.NDialogBuilder.MSG_LAYOUT_LEFT;
 
 
 public class CheckUpActivity extends AppCompatActivity {

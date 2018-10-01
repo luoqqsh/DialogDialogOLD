@@ -10,7 +10,7 @@ import com.squareup.leakcanary.LeakCanary;
 import com.vise.log.ViseLog;
 import com.vise.log.inner.LogcatTree;
 
-import x.com.dialogmobile.MeTools.NeverCrashHelper;
+import x.com.hl_dialog.MeTools.NeverCrashHelper;
 
 public class DialogApplication extends Application {
     @Override

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="x.com.dialogmobile">
+    package="x.com.hl_dialog">
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
@@ -13,8 +13,8 @@
         <!--7.0以上 安装apk-->
         <!--android:authorities="${applicationId}.fileProvider"-->
         <provider
-            android:name=".CheckUpdate.CheckProvider"
-            android:authorities="x.com.dialogmobile.fileProvider"
+            android:name="x.com.hl_dialog.CheckUpdate.CheckProvider"
+            android:authorities="x.com.hl_dialog.fileProvider"
             android:grantUriPermissions="true"
             android:exported="false">
             <meta-data

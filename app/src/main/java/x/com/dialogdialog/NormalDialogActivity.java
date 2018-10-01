@@ -7,16 +7,10 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import x.com.dialogmobile.CheckUpdate.EasyCheckDialogBuilder;
-import x.com.dialogmobile.NDialogBuilder;
-import x.com.dialogmobile.PhotoDialogBuilder;
-import x.com.dialogmobile.ProgressDialog.PDialog1Builder;
-import x.com.dialogmobile.SexDialogBuilder;
-import x.com.dialogmobile.ShareDialogBuilder;
+import x.com.hl_dialog.CheckUpdate.EasyCheckDialogBuilder;
 
 public class NormalDialogActivity extends AppCompatActivity {
     private Dialog a;
