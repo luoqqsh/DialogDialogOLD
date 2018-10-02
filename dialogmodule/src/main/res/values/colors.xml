@@ -5,26 +5,34 @@
     <color name="colorAccent">#D81B60</color>
 
     <color name="font_color_3">#FF333333</color>
-    <color name="font_color_4">#FFC19901</color>
-    <color name="font_color_6">#FF666666</color>
-    <color name="font_color_7">#FF777777</color>
-    <color name="font_color_8">#FFBBBBBB</color>
     <color name="font_color_1">#FF000000</color>
-    <color name="font_color_9">#FF999999</color>
 
-    <color name="jifei">#ff2f80db</color>
     <color name="commonbuttoncolor">#FF2f80db</color>
     <color name="commonbuttoncolor_down">#cc2f80db</color>
     <color name="commontextcolor">#20aee5</color>
     <color name="commonkuangcolor">#ffffffff</color>
     <color name="faildgray">#ffdbdbdb</color>
-    <color name="faildtextcolor">#333333</color>
     <color name="guangbiaocolor">#cc2f80db</color>
-    <color name="cccc">#CCCCCC</color>
     <color name="theme_blue">#20AEE5</color>
     <color name="blue1">#106CDB</color>
-    <color name="white">#ffffff</color>
-
     <color name="error_stroke_color">#F27474</color>
-    <color name="success_stroke_color">#A5DC86</color>
+
+    <color name="white">#ffffff</color>
+    <color name="whitedefault">#fafafa</color>
+    <color name="black">#000000</color>
+    <color name="red">#FF0000</color>
+    <color name="yellow">#FFFF00</color>
+    <color name="green">#00FF00</color>
+    <color name="blue">#0000FF</color>
+    <color name="skyblue">#87CEEB</color>
+    <color name="purple">#800080</color>
+    <color name="gold">#FFD700</color>
+    <color name="gray">#808080</color>
+    <color name="orange">#FFA500</color>
+    <color name="orangered">#FF4500</color>
+    <color name="pink">#FFC0CB</color>
+    <color name="brown">#A52A2A</color>
+    <color name="snowwhite">#FFFAFA</color>
+    <color name="bantouming">#e0000000</color>
+    <color name="touming">#00000000</color>
 </resources>

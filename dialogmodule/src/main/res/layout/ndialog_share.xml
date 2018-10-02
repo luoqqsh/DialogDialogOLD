@@ -5,51 +5,71 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:text="请选择"
-        android:textSize="18sp" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/tv_photo"
+            android:id="@+id/mbtn1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableTop="@mipmap/pro_pic_pop_icon_t"
+            android:drawableTop="@mipmap/fx_weixin"
             android:drawablePadding="12dp"
             android:gravity="center"
-            android:text="拍照"
+            android:text="微信"
             android:textColor="#ff1a1a1a"
             android:textSize="14sp" />
 
         <TextView
-            android:id="@+id/tv_album"
+            android:id="@+id/mbtn2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableTop="@mipmap/pro_pic_pop_icon_p"
+            android:drawableTop="@mipmap/fx__pengyouquan"
             android:drawablePadding="12dp"
             android:gravity="center"
-            android:text="相册"
+            android:text="朋友圈"
             android:textColor="#ff1a1a1a"
             android:textSize="14sp" />
 
+        <TextView
+            android:id="@+id/mbtn3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@mipmap/fx_qq"
+            android:drawablePadding="12dp"
+            android:gravity="center"
+            android:text="QQ"
+            android:textColor="#ff1a1a1a"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/mbtn4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@mipmap/fx_gengduo"
+            android:drawablePadding="12dp"
+            android:gravity="center"
+            android:text="新浪微博"
+            android:textColor="#ff1a1a1a"
+            android:textSize="14sp" />
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#fff0f0f0" />
+
     <TextView
-        android:id="@+id/tv_cancel"
+        android:id="@+id/mbtn5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:gravity="center"
         android:paddingTop="15dp"
         android:paddingBottom="15dp"
