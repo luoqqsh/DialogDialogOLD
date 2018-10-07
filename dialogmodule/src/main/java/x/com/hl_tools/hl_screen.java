@@ -2,6 +2,7 @@ package x.com.hl_tools;
 
 import android.content.Context;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.WindowManager;
 
 public class hl_screen {
@@ -29,6 +30,15 @@ public class hl_screen {
             return -1;
         }
         return px / context.getResources().getDisplayMetrics().density;
+    }
+
+    public static float px2sp(Context context, float pxValue) {
+        return (pxValue / context.getResources().getDisplayMetrics().scaledDensity);
+    }
+
+    public static int sp2px(Context context, int spValue) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
+                spValue, context.getResources().getDisplayMetrics());
     }
 
     /**

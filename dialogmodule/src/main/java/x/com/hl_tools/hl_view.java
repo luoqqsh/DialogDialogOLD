@@ -7,7 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
+import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -93,51 +95,89 @@ public class hl_view {
         }
     }
     /**
-     * 隐藏输入框
-     *
-     * @param view view
+     * scrollview嵌套listview 计算高度
      */
-    public static void hideSoftInput(View view) {
-        if (view != null && view.getWindowToken() != null) {
-            InputMethodManager imm = (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    public static void setListViewHeightBasedOnChildren(ListView listView) {
+        // 获取ListView对应的Adapter
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null) {
+            // pre-condition
+            return;
         }
+
+        int totalHeight = 20;
+        for (int i = 0, len = listAdapter.getCount(); i < len; i++) { // listAdapter.getCount()返回数据项的数目
+            View listItem = listAdapter.getView(i, null, listView);
+            listItem.measure(0, 0); // 计算子项View 的宽高
+            totalHeight += listItem.getMeasuredHeight(); // 统计所有子项的总高度
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight
+                + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        // listView.getDividerHeight()获取子项间分隔符占用的高度
+        // params.height最后得到整个ListView完整显示需要的高度
+        listView.setLayoutParams(params);
+    }
+
+
+    /**
+     * scrollview嵌套expandablelistview 计算高度
+     */
+    public static void setExpandableListviewHeightBasedOnChildren(ExpandableListView listView) {
+        // 获取ListView对应的Adapter
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null) {
+            // pre-condition
+            return;
+        }
+
+        int totalHeight = 20;
+        for (int i = 0, len = listAdapter.getCount(); i < len; i++) { // listAdapter.getCount()返回数据项的数目
+            View listItem = listAdapter.getView(i, null, listView);
+            listItem.measure(0, 0); // 计算子项View 的宽高
+            totalHeight += listItem.getMeasuredHeight(); // 统计所有子项的总高度
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight
+                + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        // listView.getDividerHeight()获取子项间分隔符占用的高度
+        // params.height最后得到整个ListView完整显示需要的高度
+        listView.setLayoutParams(params);
     }
 
     /**
-     * 显示输入框
-     *
-     * @param view view
+     * scrollview嵌套GridView 计算高度
      */
-    public static void showSoftInput(final View view) {
-        showSoftInput(view, 200);
-    }
+    public static void setGridViewHeightBasedOnChildren(GridView listView) {
+        // 获取ListView对应的Adapter
+        ListAdapter listAdapter = listView.getAdapter();
+        int numColumns = listView.getNumColumns();
+        if (listAdapter == null) {
+            // pre-condition
+            return;
+        }
+        int totalHeight = 20;
 
-    /**
-     * 显示输入框
-     *
-     * @param view  view
-     * @param delay 延时 毫秒
-     */
-    public static void showSoftInput(final View view, int delay) {
-        view.requestFocus();
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                InputMethodManager m = (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                m.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+        if (listAdapter.getCount() % numColumns == 0) {
+            for (int i = 0, len = listAdapter.getCount() / numColumns; i < len; i++) { // listAdapter.getCount()返回数据项的数目
+                View listItem = listAdapter.getView(i, null, listView);
+                listItem.measure(0, 0); // 计算子项View 的宽高
+                totalHeight += listItem.getMeasuredHeight(); // 统计所有子项的总高度
             }
-        }, delay);
+        } else {
+            for (int i = 0, len = listAdapter.getCount() / numColumns; i <= len; i++) { // listAdapter.getCount()返回数据项的数目
+                View listItem = listAdapter.getView(i, null, listView);
+                listItem.measure(0, 0); // 计算子项View 的宽高
+                totalHeight += listItem.getMeasuredHeight(); // 统计所有子项的总高度
+            }
+        }
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight
+                + (listView.getVerticalSpacing() * (listAdapter.getCount() / numColumns - 1));
+        //	    listView.getVerticalSpacing()获取子项间分隔符占用的高度
+        listView.setLayoutParams(params);
     }
 
-    /**
-     * 移动光标到文本框最后
-     *
-     * @param editText EditText
-     */
-    public static void moveSelectionToEnd(EditText editText) {
-        Editable etext = editText.getText();
-        Selection.setSelection(etext, etext.length());
-    }
 }
