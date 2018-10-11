@@ -8,9 +8,21 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:paddingTop="20dp"
-        android:paddingBottom="20dp"
-        android:orientation="horizontal">
+        android:paddingBottom="20dp">
+
+        <TextView
+            android:id="@+id/mbtn3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@mipmap/fx_qq"
+            android:drawablePadding="12dp"
+            android:gravity="center"
+            android:text="QQ"
+            android:textColor="#ff1a1a1a"
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/mbtn1"
@@ -36,17 +48,6 @@
             android:textColor="#ff1a1a1a"
             android:textSize="14sp" />
 
-        <TextView
-            android:id="@+id/mbtn3"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawableTop="@mipmap/fx_qq"
-            android:drawablePadding="12dp"
-            android:gravity="center"
-            android:text="QQ"
-            android:textColor="#ff1a1a1a"
-            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/mbtn4"

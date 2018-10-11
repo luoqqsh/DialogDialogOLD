@@ -1,22 +1,19 @@
 package x.com.dialogdialog;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
-import android.widget.Button;
+import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.vise.log.ViseLog;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import x.com.hl_dialog.CheckUpdate.EasyCheckDialogBuilder;
-import x.com.hl_dialog.NDialog;
-import x.com.hl_dialog.NDialogBuilder;
+import x.com.hl_dialog.ListDialog;
 
 public class NormalDialogActivity extends AppCompatActivity {
     private Dialog a;
@@ -29,7 +26,6 @@ public class NormalDialogActivity extends AppCompatActivity {
         ewfe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                a.show();
             }
         });
         //iphone
@@ -50,8 +46,7 @@ public class NormalDialogActivity extends AppCompatActivity {
 //                    }
 //                }).create();
 //        a.show();
-//        //sex
-//
+//        //sex性别选择
 //        a = new NDialog(this, NDialog.nDialog_Sex, 1.0f)
 //                .setDialoglocation(NDialog.DIALOG_LOCATION_BOTTOM)
 //                .setDialogAnimation(NDialog.DIALOG_ANIM_SLID_BOTTOM)
@@ -72,8 +67,7 @@ public class NormalDialogActivity extends AppCompatActivity {
 //                }).create();
 //        a.show();
 ////
-        //share
-
+        //share分享
 //        a = new NDialog(this, NDialog.nDialog_Share, 1)
 //                .setDialoglocation(NDialog.DIALOG_LOCATION_BOTTOM)
 //                .setDialogAnimation(NDialog.DIALOG_ANIM_SLID_BOTTOM)
@@ -103,6 +97,7 @@ public class NormalDialogActivity extends AppCompatActivity {
 //                            }
 //                        }).create();
 //        a.show();
+        //拍照选项
 //        a = new NDialog(this, NDialog.nDialog_Photo, 1)
 //                .setDialoglocation(NDialog.DIALOG_LOCATION_BOTTOM)
 //                .setDialogAnimation(NDialog.DIALOG_ANIM_SLID_BOTTOM)
@@ -124,23 +119,26 @@ public class NormalDialogActivity extends AppCompatActivity {
 //                    }
 //                }).create();
 //        a.show();
-        a = new NDialog(this, NDialog.nDialog_Update, 1)
-                .setTouchOutSideCancelable(false, false)
-                .setMessage("111", Gravity.LEFT)
-                .setBtnClickListener(true, "下次再说", "立即更新", new NDialog.onDialogbtnClickListener() {
-                    @Override
-                    public void onDialogbtnClick(Context context, Dialog dialog, int whichBtn) {
-                        switch (whichBtn) {
-                            case 1:
-                                Toast.makeText(context, "下次再说", Toast.LENGTH_SHORT).show();
-                                break;
-                            case 2:
-                                Toast.makeText(context, "立即更新", Toast.LENGTH_SHORT).show();
-                                break;
-                        }
-                    }
-                }).create();
-        a.show();
+        //检查更新框
+//        a = new NDialog(this, NDialog.nDialog_Update, 1)
+//                .setTouchOutSideCancelable(false, false)
+//                .setMessage("111", Gravity.LEFT)
+//                .setBtnClickListener(true, "下次再说", "立即更新", new NDialog.onDialogbtnClickListener() {
+//                    @Override
+//                    public void onDialogbtnClick(Context context, Dialog dialog, int whichBtn) {
+//                        switch (whichBtn) {
+//                            case 1:
+//                                Toast.makeText(context, "下次再说", Toast.LENGTH_SHORT).show();
+//                                break;
+//                            case 2:
+//                                Toast.makeText(context, "立即更新", Toast.LENGTH_SHORT).show();
+//                                break;
+//                        }
+//                    }
+//                }).create();
+//        a.show();
+
+
 //        a = new PDialog1Builder(this, 0, 1.0f).setMessage("www").settime(1000).setTouchOutSideCancelable(false)
 //                .setonInputCodeListener(new PDialog1Builder.onProgressFinishListener() {
 //                    @Override
@@ -178,5 +176,18 @@ public class NormalDialogActivity extends AppCompatActivity {
 //                }).create();
 //        a.show();
 //        EasyCheckDialogBuilder.setp(60);
+        List<String> names = new ArrayList<>();
+        names.add("你拍一");
+        names.add("我拍二");
+        names.add("然后忘了");
+        ListDialog dialog = new ListDialog(this, R.style.transparentFrameWindowStyle, names);
+        dialog.setItemColor(R.color.colorAccent, R.color.colorPrimary);
+//        dialog.setItemListener(new ListDialog.SelectDialogListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Toast.makeText(NormalDialogActivity.this, names.get(position), Toast.LENGTH_SHORT).show();
+//            }
+//        });
+        dialog.show();
     }
 }
