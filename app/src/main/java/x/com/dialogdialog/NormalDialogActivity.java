@@ -3,31 +3,60 @@ package x.com.dialogdialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import x.com.hl_dialog.ListDialog;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+import x.com.hl_dialog.DFLoadingDialog;
+import x.com.hl_dialog.DFNDialog;
 
-public class NormalDialogActivity extends AppCompatActivity {
-    private Dialog a;
+
+public class NormalDialogActivity extends BaseActivity {
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+       
         TextView ewfe = findViewById(R.id.ewfe);
         ewfe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+//                DialogUtil.showLoadDialog();
+                a.show(getSupportFragmentManager(), "fff");
             }
         });
+        //dialogfragment
+//        DFNDialog a = DFNDialog.newInstance(3, "e3");
+//        a.setMessage("dddddddddd", 4);
+//        a.show(getSupportFragmentManager(), "fff");
+//        a.dismiss();
+
+        ViewPager vp = findViewById(R.id.viewpager);
+        Fragment fragmenttest = new Fragmentdialogtest();
+        Fragment fragmenttest2 = new Fragmentdialogtest();
+        List<Fragment>fragments=new ArrayList<>();
+        fragments.add(fragmenttest);
+        fragments.add(fragmenttest2);
+        PagerAdapter pagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
+            @Override
+            public Fragment getItem(int position) {
+                return fragments.get(position);
+            }
+
+            @Override
+            public int getCount() {
+                return fragments.size();
+            }
+        };
+        vp.setAdapter(pagerAdapter);
         //iphone
 //        a = new NDialog(this, NDialog.NDialog_Iphone, 0.8f)
 //                .setTouchOutSideCancelable(false, false)
@@ -61,7 +90,6 @@ public class NormalDialogActivity extends AppCompatActivity {
 //                            case 2:
 //                                Toast.makeText(context, "男", Toast.LENGTH_SHORT).show();
 //                                break;
-//
 //                        }
 //                    }
 //                }).create();
@@ -176,18 +204,20 @@ public class NormalDialogActivity extends AppCompatActivity {
 //                }).create();
 //        a.show();
 //        EasyCheckDialogBuilder.setp(60);
-        List<String> names = new ArrayList<>();
-        names.add("你拍一");
-        names.add("我拍二");
-        names.add("然后忘了");
-        ListDialog dialog = new ListDialog(this, R.style.transparentFrameWindowStyle, names);
-        dialog.setItemColor(R.color.colorAccent, R.color.colorPrimary);
+
+        //listdialog
+//        List<String> names = new ArrayList<>();
+//        names.add("你拍一");
+//        names.add("我拍二");
+//        names.add("然后忘了");
+//        ListDialog dialog = new ListDialog(this, R.style.transparentFrameWindowStyle, names);
+//        dialog.setItemColor(R.color.colorAccent, R.color.colorPrimary);
 //        dialog.setItemListener(new ListDialog.SelectDialogListener() {
 //            @Override
 //            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 //                Toast.makeText(NormalDialogActivity.this, names.get(position), Toast.LENGTH_SHORT).show();
 //            }
 //        });
-        dialog.show();
+//        dialog.show();
     }
 }

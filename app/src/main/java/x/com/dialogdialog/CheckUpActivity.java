@@ -18,10 +18,10 @@ import x.com.hl_dialog.MeTools.PermissionHelper;
 import static x.com.hl_dialog.NDialogBuilder.MSG_LAYOUT_LEFT;
 
 
-public class CheckUpActivity extends AppCompatActivity {
+public class CheckUpActivity extends BaseActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_up);
 
@@ -52,8 +52,8 @@ public class CheckUpActivity extends AppCompatActivity {
                     }
                 })
                 .setAutoInstall(true)
-                .setDismissWhenDownloadFinish(false)
-                .show(getSupportFragmentManager(), "checkup");
+                .setDismissWhenDownloadFinish(false);
+//                .show(getSupportFragmentManager(), "checkup");
 
 
         //下载工具
