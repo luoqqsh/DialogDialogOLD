@@ -21,7 +21,7 @@ public class DFNDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         ViseLog.d("onCreateDialog");
-        Dialog dialog = new NDialog(getActivity(), NDialog.NDialog_Iphone, 0.8f)
+        Dialog dialog = new NDialog(getActivity(), NDialog.nDialog_Update, 0.8f)
                 .setTouchOutSideCancelable(false, false)
                 .setMessage(aa, NDialogBuilder.MSG_LAYOUT_CENTER)
                 .setBtnClickListener(true, "好", "不好", new NDialog.onDialogbtnClickListener() {
@@ -38,7 +38,6 @@ public class DFNDialog extends DialogFragment {
                     }
                 }).create();
         return dialog;
-
     }
 
     public static DFNDialog newInstance(int pid, String message) {
@@ -56,19 +55,4 @@ public class DFNDialog extends DialogFragment {
         aa = message;
         return this;
     }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        ViseLog.d("oncreate");
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ViseLog.d("oncreateview");
-        return super.onCreateView(inflater, container, savedInstanceState);
-    }
-
-
 }

@@ -19,9 +19,9 @@ import x.com.hl_dialog.BuildConfig;
 
 public class hl_file {
     //安装
-    public static void installAPK(final Activity activity, final String apkUrl) {
+    public static void installAPK(final Activity activity, final File apkFile) {
         Intent intent = new Intent();
-        File apkFile = new File(apkUrl);
+//        File apkFile = new File(apkUrl);
         Uri uri;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {//7.0启动姿势<pre name="code" class="html">    //com.xxx.xxx.fileprovider为上述manifest中provider所配置相同；apkFile为问题1中的外部存储apk文件</pre>
 //            uri = FileProvider.getUriForFile(activity, Config.providerAuthorities, apkFile);

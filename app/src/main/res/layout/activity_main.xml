@@ -3,11 +3,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/ewfe"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="sadfsdf" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/ewfe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="sadfsdf" />
+
+        <Button
+            android:id="@+id/qqq"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="qqq" />
+    </LinearLayout>
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewpager"

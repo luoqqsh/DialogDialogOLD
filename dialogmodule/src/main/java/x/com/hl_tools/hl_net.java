@@ -8,6 +8,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import x.com.hl_tools.hl_interface.DownListener;
+
+
 public class hl_net {
     //获取外网ip地址，需要在子线程调用
     public static String GetNetIp() {
@@ -46,5 +49,8 @@ public class hl_net {
             IP = "";
         }
         return IP;
+    }
+    public static void downloadfile(String url, DownListener downListener){
+        downListener.faild(url);
     }
 }

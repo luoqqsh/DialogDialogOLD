@@ -11,6 +11,7 @@ import java.io.File;
 
 import androidx.appcompat.app.AppCompatActivity;
 import x.com.hl_dialog.CheckUpdate.CheckDialogFragment;
+import x.com.hl_dialog.DFUpdateDialog;
 import x.com.hl_dialog.MeTools.DownloadHelper;
 import x.com.hl_dialog.NDialogBuilder;
 import x.com.hl_dialog.MeTools.PermissionHelper;
@@ -24,37 +25,42 @@ public class CheckUpActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_up);
-
-        //检查更新
-        new CheckDialogFragment(this,
-                "版本更新内容",
-                0,
+        DFUpdateDialog.newInstance("版本更新内容", 1,
 //                "http://imtt.dd.qq.com/16891/50CC095EFBE6059601C6FB652547D737.apk?fsname=com.tencent.mm_6.6.7_1321.apk&csr=1bbd",
 //                "http://imtt.dd.qq.com/16891/337A49BBE7A8A0B42E2312893903BBB3.apk?fsname=com.coolsnow.screenshot_5.6.0_56000.apk&csr=1bbd",
-                "http://imtt.dd.qq.com/16891/337A49BBE7A8A0B42E2312893903BBB3.apk?fsname=com.coolsnow.screenshot_5.6.0_56000.apk",
+                "http://imtt.dd.qq.com/16891/337A49BBE7A8A0B42E2312893903BBB3.apk?fsname=com.coolsnow.screenshot_5.6.0_56000.apk"
 //                "http://imtt.dd.qq.com/16891/1F9DFAAC8C158F24D5A320A044AD352A.apk?fsname=com.qiyi.video_9.6.5_81100.apk",
-                0,
-                "下载失败提示信息",
-                new CheckDialogFragment.OnCheckcallback() {
-                    @Override
-                    public void onCancel() {
-                        Toast.makeText(CheckUpActivity.this, "345", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onInstallCancel() {
-
-                    }
-
-                    @Override
-                    public void onDownloadFinish(File apkFile) {
-
-                    }
-                })
-                .setAutoInstall(true)
-                .setDismissWhenDownloadFinish(false);
+        )
+                .show(getSupportFragmentManager(), "checkupnew");
+        //检查更新旧版
+//        new CheckDialogFragment(this,
+//                "版本更新内容",
+//                0,
+////                "http://imtt.dd.qq.com/16891/50CC095EFBE6059601C6FB652547D737.apk?fsname=com.tencent.mm_6.6.7_1321.apk&csr=1bbd",
+////                "http://imtt.dd.qq.com/16891/337A49BBE7A8A0B42E2312893903BBB3.apk?fsname=com.coolsnow.screenshot_5.6.0_56000.apk&csr=1bbd",
+//                "http://imtt.dd.qq.com/16891/337A49BBE7A8A0B42E2312893903BBB3.apk?fsname=com.coolsnow.screenshot_5.6.0_56000.apk",
+////                "http://imtt.dd.qq.com/16891/1F9DFAAC8C158F24D5A320A044AD352A.apk?fsname=com.qiyi.video_9.6.5_81100.apk",
+//                0,
+//                "下载失败提示信息",
+//                new CheckDialogFragment.OnCheckcallback() {
+//                    @Override
+//                    public void onCancel() {
+//                        Toast.makeText(CheckUpActivity.this, "345", Toast.LENGTH_SHORT).show();
+//                    }
+//
+//                    @Override
+//                    public void onInstallCancel() {
+//
+//                    }
+//
+//                    @Override
+//                    public void onDownloadFinish(File apkFile) {
+//
+//                    }
+//                })
+//                .setAutoInstall(true)
+//                .setDismissWhenDownloadFinish(false)
 //                .show(getSupportFragmentManager(), "checkup");
-
 
         //下载工具
 //        new DownloadHelper(this,

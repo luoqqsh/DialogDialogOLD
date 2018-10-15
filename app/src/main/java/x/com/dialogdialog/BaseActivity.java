@@ -8,11 +8,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import x.com.hl_dialog.DFLoadingDialog;
 
 public class BaseActivity extends AppCompatActivity {
-    public DFLoadingDialog a;
+    public DFLoadingDialog a1;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        DialogUtil.createLoadDialog(this);
-         a = new DFLoadingDialog();
+         a1 = new DFLoadingDialog();
     }
 }

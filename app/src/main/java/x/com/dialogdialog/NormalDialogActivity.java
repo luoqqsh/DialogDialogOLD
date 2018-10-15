@@ -1,39 +1,50 @@
 package x.com.dialogdialog;
 
 import android.app.Dialog;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-import x.com.hl_dialog.DFLoadingDialog;
-import x.com.hl_dialog.DFNDialog;
-
+import x.com.hl_dialog.NDialog;
 
 public class NormalDialogActivity extends BaseActivity {
+    private Dialog a2;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-       
+
         TextView ewfe = findViewById(R.id.ewfe);
         ewfe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                DialogUtil.showLoadDialog();
-                a.show(getSupportFragmentManager(), "fff");
+//                a1.show(getSupportFragmentManager(), "fff");
+                a2.show();
             }
         });
-        //dialogfragment
+        TextView qqq = findViewById(R.id.qqq);
+        qqq.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(NormalDialogActivity.this, CheckUpActivity.class);
+                startActivity(intent);
+            }
+        });
+        //显示加载框
 //        DFNDialog a = DFNDialog.newInstance(3, "e3");
 //        a.setMessage("dddddddddd", 4);
 //        a.show(getSupportFragmentManager(), "fff");
@@ -42,7 +53,7 @@ public class NormalDialogActivity extends BaseActivity {
         ViewPager vp = findViewById(R.id.viewpager);
         Fragment fragmenttest = new Fragmentdialogtest();
         Fragment fragmenttest2 = new Fragmentdialogtest();
-        List<Fragment>fragments=new ArrayList<>();
+        List<Fragment> fragments = new ArrayList<>();
         fragments.add(fragmenttest);
         fragments.add(fragmenttest2);
         PagerAdapter pagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
@@ -57,7 +68,7 @@ public class NormalDialogActivity extends BaseActivity {
             }
         };
         vp.setAdapter(pagerAdapter);
-        //iphone
+        //iphone样式
 //        a = new NDialog(this, NDialog.NDialog_Iphone, 0.8f)
 //                .setTouchOutSideCancelable(false, false)
 //                .setMessage("我是鬼，我来抓你了！", NDialogBuilder.MSG_LAYOUT_CENTER)
@@ -75,7 +86,7 @@ public class NormalDialogActivity extends BaseActivity {
 //                    }
 //                }).create();
 //        a.show();
-//        //sex性别选择
+//        //sex性别选择样式
 //        a = new NDialog(this, NDialog.nDialog_Sex, 1.0f)
 //                .setDialoglocation(NDialog.DIALOG_LOCATION_BOTTOM)
 //                .setDialogAnimation(NDialog.DIALOG_ANIM_SLID_BOTTOM)
@@ -95,7 +106,7 @@ public class NormalDialogActivity extends BaseActivity {
 //                }).create();
 //        a.show();
 ////
-        //share分享
+        //share分享样式
 //        a = new NDialog(this, NDialog.nDialog_Share, 1)
 //                .setDialoglocation(NDialog.DIALOG_LOCATION_BOTTOM)
 //                .setDialogAnimation(NDialog.DIALOG_ANIM_SLID_BOTTOM)
@@ -125,7 +136,7 @@ public class NormalDialogActivity extends BaseActivity {
 //                            }
 //                        }).create();
 //        a.show();
-        //拍照选项
+        //拍照选项样式
 //        a = new NDialog(this, NDialog.nDialog_Photo, 1)
 //                .setDialoglocation(NDialog.DIALOG_LOCATION_BOTTOM)
 //                .setDialogAnimation(NDialog.DIALOG_ANIM_SLID_BOTTOM)
@@ -147,24 +158,24 @@ public class NormalDialogActivity extends BaseActivity {
 //                    }
 //                }).create();
 //        a.show();
-        //检查更新框
-//        a = new NDialog(this, NDialog.nDialog_Update, 1)
-//                .setTouchOutSideCancelable(false, false)
-//                .setMessage("111", Gravity.LEFT)
-//                .setBtnClickListener(true, "下次再说", "立即更新", new NDialog.onDialogbtnClickListener() {
-//                    @Override
-//                    public void onDialogbtnClick(Context context, Dialog dialog, int whichBtn) {
-//                        switch (whichBtn) {
-//                            case 1:
-//                                Toast.makeText(context, "下次再说", Toast.LENGTH_SHORT).show();
-//                                break;
-//                            case 2:
-//                                Toast.makeText(context, "立即更新", Toast.LENGTH_SHORT).show();
-//                                break;
-//                        }
-//                    }
-//                }).create();
-//        a.show();
+        //检查更新框样式
+        a2 = new NDialog(this, NDialog.nDialog_Update, 1)
+                .setTouchOutSideCancelable(false, false)
+                .setMessage("111", Gravity.LEFT)
+                .setBtnClickListener(true, "下次再说", "立即更新", new NDialog.onDialogbtnClickListener() {
+                    @Override
+                    public void onDialogbtnClick(Context context, Dialog dialog, int whichBtn) {
+                        switch (whichBtn) {
+                            case 1:
+                                Toast.makeText(context, "下次再说", Toast.LENGTH_SHORT).show();
+                                break;
+                            case 2:
+                                Toast.makeText(context, "立即更新", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    }
+                }).create();
+        a2.show();
 
 
 //        a = new PDialog1Builder(this, 0, 1.0f).setMessage("www").settime(1000).setTouchOutSideCancelable(false)
