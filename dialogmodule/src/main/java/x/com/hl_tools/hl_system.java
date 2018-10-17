@@ -88,8 +88,7 @@ public class hl_system {
 
     //发送短信
     public static void sendSms(Context context, String phoneNumber, String content) {
-        Uri uri = Uri.parse("smsto:"
-                + (TextUtils.isEmpty(phoneNumber) ? "" : phoneNumber));
+        Uri uri = Uri.parse("smsto:" + (TextUtils.isEmpty(phoneNumber) ? "" : phoneNumber));
         Intent intent = new Intent(Intent.ACTION_SENDTO, uri);
         intent.putExtra("sms_body", TextUtils.isEmpty(content) ? "" : content);
         context.startActivity(intent);
