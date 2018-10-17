@@ -159,7 +159,6 @@ public class hl_permissions {
     private void showDialog(Context context, final String flag) {
         Dialog a = new NDialog(context, NDialog.NDialog_Iphone, 0.8f)
                 .setTouchOutSideCancelable(false, false)
-                .setTitle("悬浮窗权限", NDialog.MSG_LAYOUT_CENTER)
                 .setMessage("您的手机没有授予悬浮窗权限，请开启后再试！", NDialogBuilder.MSG_LAYOUT_CENTER)
                 .setBtnClickListener(true, "稍后再说", "现在去开启", new NDialog.onDialogbtnClickListener() {
                     @Override

@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+import x.com.hl_dialog.DFNDialog;
 import x.com.hl_dialog.NDialog;
 
 public class NormalDialogActivity extends BaseActivity {
@@ -45,7 +46,7 @@ public class NormalDialogActivity extends BaseActivity {
             }
         });
         //显示加载框
-//        DFNDialog a = DFNDialog.newInstance(3, "e3");
+//        DFNDialog a = DFNDialog.newInstance();
 //        a.setMessage("dddddddddd", 4);
 //        a.show(getSupportFragmentManager(), "fff");
 //        a.dismiss();

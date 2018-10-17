@@ -40,12 +40,12 @@ public class DFNDialog extends DialogFragment {
         return dialog;
     }
 
-    public static DFNDialog newInstance(int pid, String message) {
+    public static DFNDialog newInstance() {
         DFNDialog fragment = new DFNDialog();
-        Bundle bundle = new Bundle();
-        bundle.putInt("pid", pid);
-        bundle.putString("message", message);
-        fragment.setArguments(bundle);
+//        Bundle bundle = new Bundle();
+//        bundle.putInt("pid", pid);
+//        bundle.putString("message", message);
+//        fragment.setArguments(bundle);
 
 //        getArguments().getString("message");
         return fragment;
