@@ -17,7 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import x.com.hl_dialog.MeTools.PermissionHelper;
-import x.com.hl_tools.hl_file;
+import x.com.hl_tools.hl_app;
 import x.com.hl_tools.hl_interface.DownListener;
 import x.com.hl_tools.hl_net;
 
@@ -106,7 +106,7 @@ public class DFUpdateDialog extends DialogFragment {
         hl_net.downloadfile(url, new DownListener() {
             @Override
             public void onsuccess(File file) {
-                hl_file.installAPK(getActivity(), file);
+                hl_app.installAPK(getActivity(), file);
             }
 
             @Override
