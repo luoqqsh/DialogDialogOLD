@@ -2,16 +2,20 @@ package x.com.hl_dialog;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
@@ -19,17 +23,19 @@ import x.com.hl_dialog.MeTools.PermissionHelper;
 import x.com.hl_tools.hl_permissions;
 import x.com.hl_tools.model.PermissionModel;
 
-public class DFPermissionDialog extends DialogFragment implements hl_permissions.OnPermissionListener {
+public class DFPermissionDialog extends DialogFragment {
     private List<PermissionModel> list_permission;
     private Fragment fragmentcontext;
     private ListDialog dialog;
+    private static hl_permissions.OnPermissionListener listener;
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         fragmentcontext = this;
         list_permission = new ArrayList<>();
-        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(Objects.requireNonNull(getActivity()), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             list_permission.add(new PermissionModel("允许读写手机存储", true, Manifest.permission.WRITE_EXTERNAL_STORAGE));
         } else {
             list_permission.add(new PermissionModel("允许读写手机存储", false, Manifest.permission.WRITE_EXTERNAL_STORAGE));
@@ -39,7 +45,7 @@ public class DFPermissionDialog extends DialogFragment implements hl_permissions
         } else {
             list_permission.add(new PermissionModel("允许读取本机识别码", false, Manifest.permission.READ_PHONE_STATE));
         }
-        final hl_permissions p = hl_permissions.getInstance(this);
+        final hl_permissions p = hl_permissions.getInstance(listener);
         if (p.checkPermission(getActivity())) {
             list_permission.add(new PermissionModel("允许\"显示悬浮窗\"", true, ""));
         } else {
@@ -47,7 +53,7 @@ public class DFPermissionDialog extends DialogFragment implements hl_permissions
         }
 //        List<String> names = new ArrayList<>();
 //        names.add("允许使用通知");
-        dialog = new ListDialog(getActivity(), R.style.transparentFrameWindowStyle, list_permission,"请允许以下权限");
+        dialog = new ListDialog(getActivity(), R.style.transparentFrameWindowStyle, list_permission, "请允许以下权限");
         dialog.setItemColor(R.color.colorAccent, R.color.colorPrimary);
         dialog.setItemListener(new ListDialog.SelectDialogListener() {
             @Override
@@ -73,24 +79,23 @@ public class DFPermissionDialog extends DialogFragment implements hl_permissions
                 }
             }
         });
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                listener.result(true);
+            }
+        });
         return dialog;
     }
 
-    public static DFPermissionDialog newInstance(String content) {
+    public static DFPermissionDialog newInstance(hl_permissions.OnPermissionListener listener1) {
         DFPermissionDialog fragment = new DFPermissionDialog();
         Bundle bundle = new Bundle();
-        bundle.putString("content", content);
+        listener = listener1;
         fragment.setArguments(bundle);
         return fragment;
     }
 
-    @Override
-    public void result(boolean isSuccess) {
-        if (isSuccess) {
-            list_permission.get(2).setIsapply(true);
-            dialog.refresh();
-        }
-    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

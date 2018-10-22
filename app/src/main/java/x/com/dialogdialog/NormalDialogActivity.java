@@ -1,45 +1,44 @@
 package x.com.dialogdialog;
 
-import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.vise.log.ViseLog;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-import x.com.hl_dialog.DFNDialog;
 import x.com.hl_dialog.DFPermissionDialog;
 import x.com.hl_dialog.NDialog;
+import x.com.hl_tools.hl_permissions;
 
-public class NormalDialogActivity extends BaseActivity {
+public class NormalDialogActivity extends BaseActivity implements hl_permissions.OnPermissionListener {
     private Dialog a2;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         TextView ewfe = findViewById(R.id.ewfe);
         ewfe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DFPermissionDialog a = DFPermissionDialog.newInstance("qqq");
+                DFPermissionDialog a = DFPermissionDialog.newInstance(new hl_permissions.OnPermissionListener() {
+                    @Override
+                    public void result(boolean isSuccess) {
+
+                    }
+                });
                 a.show(getSupportFragmentManager(), "fff");
             }
         });
@@ -56,8 +55,6 @@ public class NormalDialogActivity extends BaseActivity {
 //        a.setMessage("dddddddddd", 4);
 //        a.show(getSupportFragmentManager(), "fff");
 //        a.dismiss();
-
-
 
 
         ViewPager vp = findViewById(R.id.viewpager);
@@ -240,5 +237,10 @@ public class NormalDialogActivity extends BaseActivity {
 //            }
 //        });
 //        dialog.show();
+    }
+
+    @Override
+    public void result(boolean isSuccess) {
+
     }
 }
