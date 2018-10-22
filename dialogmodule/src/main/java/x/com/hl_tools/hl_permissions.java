@@ -47,6 +47,11 @@ public class hl_permissions {
         private static final hl_permissions INSTANCE = new hl_permissions();
     }
 
+    /**
+     * 检查悬浮窗权限
+     * @param context
+     * @return
+     */
     public boolean checkPermission(Context context) {
         //6.0 版本之后由于 google 增加了对悬浮窗权限的管理，所以方式就统一了
         if (Build.VERSION.SDK_INT < 23) {
@@ -157,55 +162,86 @@ public class hl_permissions {
     }
 
     private void showDialog(Context context, final String flag) {
-        Dialog a = new NDialog(context, NDialog.NDialog_Iphone, 0.8f)
-                .setTouchOutSideCancelable(false, false)
-                .setMessage("您的手机没有授予悬浮窗权限，请开启后再试！", NDialogBuilder.MSG_LAYOUT_CENTER)
-                .setBtnClickListener(true, "稍后再说", "现在去开启", new NDialog.onDialogbtnClickListener() {
-                    @Override
-                    public void onDialogbtnClick(Context context, Dialog dialog, int whichBtn) {
-                        switch (whichBtn) {
-                            case 1:
-                                if (null != mOnPermissionListener) {
-                                    mOnPermissionListener.result(false);
-                                }
-                                break;
-                            case 2:
-                                switch (flag) {
-                                    case ROM360:
-                                        QikuUtils.applyPermission(context);
-                                        mOnPermissionListener.result(true);
-                                        break;
-                                    case HUAWEI:
-                                        HuaweiUtils.applyPermission(context);
-                                        mOnPermissionListener.result(true);
-                                        break;
-                                    case MEIZU:
-                                        MeizuUtils.applyPermission(context);
-                                        mOnPermissionListener.result(true);
-                                        break;
-                                    case MIUI:
-                                        MiuiUtils.applyMiuiPermission(context);
-                                        mOnPermissionListener.result(true);
-                                        break;
-                                    case OPPO:
-                                        OppoUtils.applyOppoPermission(context);
-                                        mOnPermissionListener.result(true);
-                                        break;
-                                    case COMMON_ROM:
-                                        try {
-                                            commonROMPermissionApplyInternal(context);
-                                            mOnPermissionListener.result(true);
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                            mOnPermissionListener.result(false);
-                                        }
-                                        break;
-                                }
-                                break;
-                        }
-                    }
-                }).create();
-        a.show();
+        switch (flag) {
+            case ROM360:
+                QikuUtils.applyPermission(context);
+                mOnPermissionListener.result(true);
+                break;
+            case HUAWEI:
+                HuaweiUtils.applyPermission(context);
+                mOnPermissionListener.result(true);
+                break;
+            case MEIZU:
+                MeizuUtils.applyPermission(context);
+                mOnPermissionListener.result(true);
+                break;
+            case MIUI:
+                MiuiUtils.applyMiuiPermission(context);
+                mOnPermissionListener.result(true);
+                break;
+            case OPPO:
+                OppoUtils.applyOppoPermission(context);
+                mOnPermissionListener.result(true);
+                break;
+            case COMMON_ROM:
+                try {
+                    commonROMPermissionApplyInternal(context);
+                    mOnPermissionListener.result(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    mOnPermissionListener.result(false);
+                }
+                break;
+        }
+//        Dialog a = new NDialog(context, NDialog.NDialog_Iphone, 0.8f)
+//                .setTouchOutSideCancelable(false, false)
+//                .setMessage("您的手机没有授予悬浮窗权限，请开启后再试！", NDialogBuilder.MSG_LAYOUT_CENTER)
+//                .setBtnClickListener(true, "稍后再说", "现在去开启", new NDialog.onDialogbtnClickListener() {
+//                    @Override
+//                    public void onDialogbtnClick(Context context, Dialog dialog, int whichBtn) {
+//                        switch (whichBtn) {
+//                            case 1:
+//                                if (null != mOnPermissionListener) {
+//                                    mOnPermissionListener.result(false);
+//                                }
+//                                break;
+//                            case 2:
+//                                switch (flag) {
+//                                    case ROM360:
+//                                        QikuUtils.applyPermission(context);
+//                                        mOnPermissionListener.result(true);
+//                                        break;
+//                                    case HUAWEI:
+//                                        HuaweiUtils.applyPermission(context);
+//                                        mOnPermissionListener.result(true);
+//                                        break;
+//                                    case MEIZU:
+//                                        MeizuUtils.applyPermission(context);
+//                                        mOnPermissionListener.result(true);
+//                                        break;
+//                                    case MIUI:
+//                                        MiuiUtils.applyMiuiPermission(context);
+//                                        mOnPermissionListener.result(true);
+//                                        break;
+//                                    case OPPO:
+//                                        OppoUtils.applyOppoPermission(context);
+//                                        mOnPermissionListener.result(true);
+//                                        break;
+//                                    case COMMON_ROM:
+//                                        try {
+//                                            commonROMPermissionApplyInternal(context);
+//                                            mOnPermissionListener.result(true);
+//                                        } catch (Exception e) {
+//                                            e.printStackTrace();
+//                                            mOnPermissionListener.result(false);
+//                                        }
+//                                        break;
+//                                }
+//                                break;
+//                        }
+//                    }
+//                }).create();
+//        a.show();
 
     }
 

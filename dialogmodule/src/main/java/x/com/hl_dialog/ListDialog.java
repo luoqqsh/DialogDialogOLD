@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,16 +23,19 @@ import com.vise.log.ViseLog;
 
 import java.util.List;
 
+import x.com.hl_tools.model.PermissionModel;
+
 public class ListDialog extends Dialog implements OnClickListener, OnItemClickListener {
     private SelectDialogListener mListener;
     private SelectDialogCancelListener mCancelListener;
 
     private Activity mActivity;
-    private List<String> mName;
+    private List<PermissionModel> mName;
     private String mTitle;
     private boolean mUseCustomColor = false;
     private int mFirstItemColor;
     private int mOtherItemColor;
+    private DialogAdapter dialogAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,20 +46,21 @@ public class ListDialog extends Dialog implements OnClickListener, OnItemClickLi
         // 设置显示动画
         if (window != null) {
             window.setWindowAnimations(R.style.main_menu_animStyle);
-            WindowManager.LayoutParams wl = window.getAttributes();
-            wl.x = 0;
-            wl.y = mActivity.getWindowManager().getDefaultDisplay().getHeight();
-            // 以下这两句是为了保证按钮可以水平满屏
-            wl.width = LayoutParams.MATCH_PARENT;
-            wl.height = LayoutParams.WRAP_CONTENT;
-            // 设置显示位置
-            onWindowAttributesChanged(wl);
+//            window.setGravity(Gravity.CENTER);
+//            WindowManager.LayoutParams wl = window.getAttributes();
+//            wl.x = 0;
+//            wl.y = mActivity.getWindowManager().getDefaultDisplay().getHeight();
+//            // 以下这两句是为了保证按钮可以水平满屏
+//            wl.width = LayoutParams.MATCH_PARENT;
+//            wl.height = LayoutParams.WRAP_CONTENT;
+//            // 设置显示位置
+//            onWindowAttributesChanged(wl);
         }
         initViews();
     }
 
     private void initViews() {
-        DialogAdapter dialogAdapter = new DialogAdapter(mName);
+        dialogAdapter = new DialogAdapter(mName);
         ListView dialogList = findViewById(R.id.dialog_list);
         Button mMBtnCancel = findViewById(R.id.mBtn_Cancel);
         TextView mTvTitle = findViewById(R.id.mTv_Title);
@@ -98,7 +103,7 @@ public class ListDialog extends Dialog implements OnClickListener, OnItemClickLi
      * @param theme    主题
      * @param names    菜单项名称
      */
-    public ListDialog(Activity activity, int theme, List<String> names) {
+    public ListDialog(Activity activity, int theme, List<PermissionModel> names) {
         super(activity, theme);
         mActivity = activity;
         this.mName = names;
@@ -111,7 +116,7 @@ public class ListDialog extends Dialog implements OnClickListener, OnItemClickLi
      * @param cancelListener 取消事件
      * @param names          菜单项名称
      */
-    public ListDialog(Activity activity, int theme, SelectDialogCancelListener cancelListener, List<String> names) {
+    public ListDialog(Activity activity, int theme, SelectDialogCancelListener cancelListener, List<PermissionModel> names) {
         super(activity, theme);
         mActivity = activity;
         mCancelListener = cancelListener;
@@ -126,7 +131,7 @@ public class ListDialog extends Dialog implements OnClickListener, OnItemClickLi
      * @param names    菜单项名称
      * @param title    菜单标题文字
      */
-    public ListDialog(Activity activity, int theme, List<String> names, String title) {
+    public ListDialog(Activity activity, int theme, List<PermissionModel> names, String title) {
         super(activity, theme);
         mActivity = activity;
         this.mName = names;
@@ -139,10 +144,10 @@ public class ListDialog extends Dialog implements OnClickListener, OnItemClickLi
      * @param activity       调用弹出菜单的activity
      * @param theme          主题
      * @param cancelListener 取消点击事件
-     * @param names          名称
+     * @param names          数据
      * @param title          标题
      */
-    public ListDialog(Activity activity, int theme, SelectDialogCancelListener cancelListener, List<String> names, String title) {
+    public ListDialog(Activity activity, int theme, SelectDialogCancelListener cancelListener, List<PermissionModel> names, String title) {
         super(activity, theme);
         mActivity = activity;
         mCancelListener = cancelListener;
@@ -150,6 +155,12 @@ public class ListDialog extends Dialog implements OnClickListener, OnItemClickLi
         mTitle = title;
         // 设置是否点击外围可解散
         setCanceledOnTouchOutside(true);
+    }
+
+    public void refresh() {
+        if (dialogAdapter != null) {
+            dialogAdapter.notifyDataSetChanged();
+        }
     }
 
     /**
@@ -161,7 +172,7 @@ public class ListDialog extends Dialog implements OnClickListener, OnItemClickLi
 
     @Override
     public void onClick(View v) {
-        dismiss();
+
     }
 
     @Override
@@ -171,15 +182,16 @@ public class ListDialog extends Dialog implements OnClickListener, OnItemClickLi
         } else {
             ViseLog.w("未设置item点击事件,设置方法dialog.setItemListener(new ListDialog.SelectDialogListener() {...});");
         }
-        dismiss();
+//        dismiss();
     }
 
+    /////////////////////////////////////////////////////////////////////////////////////////////
     private class DialogAdapter extends BaseAdapter {
-        private List<String> mStrings;
+        private List<PermissionModel> mStrings;
         private ViewHolder viewholder;
         private LayoutInflater layoutInflater;
 
-        DialogAdapter(List<String> strings) {
+        DialogAdapter(List<PermissionModel> strings) {
             this.mStrings = strings;
             this.layoutInflater = mActivity.getLayoutInflater();
         }
@@ -205,11 +217,12 @@ public class ListDialog extends Dialog implements OnClickListener, OnItemClickLi
                 viewholder = new ViewHolder();
                 convertView = layoutInflater.inflate(R.layout.dialog_listitem, null);
                 viewholder.dialogItemButton = convertView.findViewById(R.id.dialog_item_bt);
+                viewholder.dialog_item_apply = convertView.findViewById(R.id.dialog_item_apply);
                 convertView.setTag(viewholder);
             } else {
                 viewholder = (ViewHolder) convertView.getTag();
             }
-            viewholder.dialogItemButton.setText(mStrings.get(position));
+            viewholder.dialogItemButton.setText(mStrings.get(position).getName());
             if (!mUseCustomColor) {
                 mFirstItemColor = mActivity.getResources().getColor(R.color.gray);
                 mOtherItemColor = mActivity.getResources().getColor(R.color.gray);
@@ -227,12 +240,14 @@ public class ListDialog extends Dialog implements OnClickListener, OnItemClickLi
                 viewholder.dialogItemButton.setTextColor(mOtherItemColor);
                 viewholder.dialogItemButton.setBackgroundResource(R.drawable.select_dialog_item_bg_center);
             }
+            viewholder.dialog_item_apply.setText(mStrings.get(position).isIsapply() ? "已授权" : "去设置");
             return convertView;
         }
     }
 
     public static class ViewHolder {
         TextView dialogItemButton;
+        TextView dialog_item_apply;
     }
 
     /**

@@ -3,6 +3,7 @@ package x.com.hl_dialog;
 import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -49,7 +50,7 @@ public class DFUpdateDialog extends DialogFragment {
                         dismiss();
                         break;
                     case 2:
-                        if (havepermission(context) == 1) {
+                        if (havepermission(context) == PackageManager.PERMISSION_GRANTED) {
                             startdownload();
                         } else {
                             applypression();

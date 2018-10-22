@@ -1,24 +1,30 @@
 package x.com.dialogdialog;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.vise.log.ViseLog;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import x.com.hl_dialog.DFNDialog;
+import x.com.hl_dialog.DFPermissionDialog;
 import x.com.hl_dialog.NDialog;
 
 public class NormalDialogActivity extends BaseActivity {
@@ -33,8 +39,8 @@ public class NormalDialogActivity extends BaseActivity {
         ewfe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                a1.show(getSupportFragmentManager(), "fff");
-                a2.show();
+                DFPermissionDialog a = DFPermissionDialog.newInstance("qqq");
+                a.show(getSupportFragmentManager(), "fff");
             }
         });
         TextView qqq = findViewById(R.id.qqq);
@@ -50,6 +56,9 @@ public class NormalDialogActivity extends BaseActivity {
 //        a.setMessage("dddddddddd", 4);
 //        a.show(getSupportFragmentManager(), "fff");
 //        a.dismiss();
+
+
+
 
         ViewPager vp = findViewById(R.id.viewpager);
         Fragment fragmenttest = new Fragmentdialogtest();
