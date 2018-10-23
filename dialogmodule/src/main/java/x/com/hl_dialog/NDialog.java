@@ -20,7 +20,7 @@ public class NDialog {
     /**
      * 对话框模版样式
      */
-    public static final int NDialog_Iphone = R.layout.ndialog_iphone;
+    public static final int nDialog_Iphone = R.layout.ndialog_iphone;
     public static final int nDialog_Sex = R.layout.ndialog_sex;
     public static final int nDialog_Share = R.layout.ndialog_share;
     public static final int nDialog_Photo = R.layout.ndialog_photo;
@@ -157,7 +157,7 @@ public class NDialog {
 
     /**
      * 设置是否系统弹窗
-     *
+     * 需要悬浮窗权限
      * @return this
      */
     public NDialog setsystemalert(boolean isSystemAlert) {
@@ -252,12 +252,6 @@ public class NDialog {
      * @author zhl
      */
     public interface onDialogbtnClickListener {
-        int BUTTON_1 = 1;
-        int BUTTON_2 = 2;
-        int BUTTON_3 = 3;
-        int BUTTON_4 = 4;
-        int BUTTON_5 = 5;
-
         void onDialogbtnClick(Context context, Dialog dialog, int whichBtn);
     }
 
@@ -294,187 +288,49 @@ public class NDialog {
      * @return
      */
     @SuppressLint("ClickableViewAccessibility")
-    private NDialog setClickListener(final boolean isDissmiss, String btn1text, String btn2text, String btn3text, String btn4text, String btn5text, final onDialogbtnClickListener btnClickListener) {
-        if (btn1text != null) {
-            // 设置确认按钮
-            final TextView mbtn1 = dialog.findViewById(R.id.mbtn1);
-            if (mbtn1 == null) {
-                ViseLog.e("请检查id是否正确，将第一个按钮id设置为mbtn1");
-                return null;
-            }
-            mbtn1.setText(btn1text);
-            mbtn1.setVisibility(View.VISIBLE);
-            // 给按钮绑定监听器
-            mbtn1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (isDissmiss) {
-                        dialog.dismiss();
-                    }
-                    if (btnClickListener != null) {
-                        btnClickListener.onDialogbtnClick(context, dialog,
-                                onDialogbtnClickListener.BUTTON_1);
-                    }
-                }
-            });
-            mbtn1.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-                    switch (motionEvent.getAction()) {
-                        case MotionEvent.ACTION_DOWN:
-                            mbtn1.setAlpha(alpha);
-                            break;
-                        case MotionEvent.ACTION_UP:
-                            mbtn1.setAlpha(1f);
-                            break;
-                    }
-                    return false;
-                }
-            });
-        }
-        if (btn2text != null) {
-            // 设置确认按钮
-            final TextView mbtn2 = dialog.findViewById(R.id.mbtn2);
-            if (mbtn2 == null) {
-                ViseLog.e("请检查id是否正确，将第二个按钮id设置为mbtn2");
-                return null;
-            }
-            mbtn2.setText(btn2text);
-            mbtn2.setVisibility(View.VISIBLE);
-            // 给按钮绑定监听器
-            mbtn2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (isDissmiss) {
-                        dialog.dismiss();
-                    }
-                    if (btnClickListener != null) {
-                        btnClickListener.onDialogbtnClick(context, dialog,
-                                onDialogbtnClickListener.BUTTON_2);
-                    }
-                }
-            });
-            mbtn2.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-                    switch (motionEvent.getAction()) {
-                        case MotionEvent.ACTION_DOWN:
-                            mbtn2.setAlpha(alpha);
-                            break;
-                        case MotionEvent.ACTION_UP:
-                            mbtn2.setAlpha(1f);
-                            break;
-                    }
-                    return false;
-                }
-            });
-        }
-        if (btn3text != null) {
-            // 设置确认按钮
-            final TextView mbtn3 = dialog.findViewById(R.id.mbtn3);
-            if (mbtn3 == null) {
-                ViseLog.e("请检查id是否正确，将第三个按钮id设置为mbtn3");
-                return null;
-            }
-            mbtn3.setText(btn3text);
-            mbtn3.setVisibility(View.VISIBLE);
-            // 给按钮绑定监听器
-            mbtn3.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (isDissmiss) {
-                        dialog.dismiss();
-                    }
-                    if (btnClickListener != null) {
-                        btnClickListener.onDialogbtnClick(context, dialog,
-                                onDialogbtnClickListener.BUTTON_3);
-                    }
-                }
-            });
-            mbtn3.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-                    switch (motionEvent.getAction()) {
-                        case MotionEvent.ACTION_DOWN:
-                            mbtn3.setAlpha(alpha);
-                            break;
-                        case MotionEvent.ACTION_UP:
-                            mbtn3.setAlpha(1f);
-                            break;
-                    }
-                    return false;
-                }
-            });
-        }
-        if (btn4text != null) {
-            // 设置确认按钮
-            final TextView mbtn4 = dialog.findViewById(R.id.mbtn4);
-            if (mbtn4 == null) {
-                ViseLog.e("请检查id是否正确，将第四个按钮id设置为mbtn4");
-                return null;
-            }
-            mbtn4.setText(btn4text);
-            mbtn4.setVisibility(View.VISIBLE);
-            // 给按钮绑定监听器
-            mbtn4.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (isDissmiss) {
-                        dialog.dismiss();
-                    }
-                    if (btnClickListener != null) {
-                        btnClickListener.onDialogbtnClick(context, dialog,
-                                onDialogbtnClickListener.BUTTON_4);
-                    }
-                }
-            });
-            mbtn4.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-                    switch (motionEvent.getAction()) {
-                        case MotionEvent.ACTION_DOWN:
-                            mbtn4.setAlpha(alpha);
-                            break;
-                        case MotionEvent.ACTION_UP:
-                            mbtn4.setAlpha(1f);
-                            break;
-                    }
-                    return false;
-                }
-            });
-        }
+    private NDialog setClickListener(final boolean isDissmiss, String btn1text, String btn2text, String btn3text,
+                                     String btn4text, String btn5text, final onDialogbtnClickListener btnClickListener) {
+        setbtnlistener(btn1text, isDissmiss, btnClickListener, 1, R.id.mbtn1);
+        setbtnlistener(btn2text, isDissmiss, btnClickListener, 2, R.id.mbtn2);
+        setbtnlistener(btn3text, isDissmiss, btnClickListener, 3, R.id.mbtn3);
+        setbtnlistener(btn4text, isDissmiss, btnClickListener, 4, R.id.mbtn4);
+        setbtnlistener(btn5text, isDissmiss, btnClickListener, 5, R.id.mbtn5);
+        return this;
+    }
 
-        if (btn5text != null) {
+    @SuppressLint("ClickableViewAccessibility")
+    private NDialog setbtnlistener(String btntext, final boolean isDissmiss,
+                                   final onDialogbtnClickListener btnClickListener, final int i, int id) {
+        if (btntext != null) {
             // 设置确认按钮
-            final TextView mbtn5 = dialog.findViewById(R.id.mbtn5);
-            if (mbtn5 == null) {
-                ViseLog.e("请检查id是否正确，将第四个按钮id设置为mbtn4");
+            final TextView mbtn = dialog.findViewById(id);
+            if (mbtn == null) {
+                ViseLog.e("请检查id是否正确，将第" + i + "个按钮id设置为mbtn" + i);
                 return null;
             }
-            mbtn5.setText(btn5text);
-            mbtn5.setVisibility(View.VISIBLE);
+            mbtn.setText(btntext);
+            mbtn.setVisibility(View.VISIBLE);
             // 给按钮绑定监听器
-            mbtn5.setOnClickListener(new View.OnClickListener() {
+            mbtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (isDissmiss) {
                         dialog.dismiss();
                     }
                     if (btnClickListener != null) {
-                        btnClickListener.onDialogbtnClick(context, dialog,
-                                onDialogbtnClickListener.BUTTON_5);
+                        btnClickListener.onDialogbtnClick(context, dialog, i);
                     }
                 }
             });
-            mbtn5.setOnTouchListener(new View.OnTouchListener() {
+            mbtn.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View view, MotionEvent motionEvent) {
                     switch (motionEvent.getAction()) {
                         case MotionEvent.ACTION_DOWN:
-                            mbtn5.setAlpha(alpha);
+                            mbtn.setAlpha(alpha);
                             break;
                         case MotionEvent.ACTION_UP:
-                            mbtn5.setAlpha(1f);
+                            mbtn.setAlpha(1f);
                             break;
                     }
                     return false;
