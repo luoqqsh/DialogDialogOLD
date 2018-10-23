@@ -2,7 +2,6 @@ package x.com.hl_dialog;
 
 import android.Manifest;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -79,12 +78,7 @@ public class DFPermissionDialog extends DialogFragment {
                 }
             }
         });
-        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                listener.result(true);
-            }
-        });
+
         return dialog;
     }
 
@@ -101,5 +95,11 @@ public class DFPermissionDialog extends DialogFragment {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         PermissionHelper.getInstance().requestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        listener.result(true);
     }
 }

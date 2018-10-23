@@ -10,6 +10,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.vise.log.ViseLog;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +38,7 @@ public class NormalDialogActivity extends BaseActivity implements hl_permissions
                 DFPermissionDialog a = DFPermissionDialog.newInstance(new hl_permissions.OnPermissionListener() {
                     @Override
                     public void result(boolean isSuccess) {
-
+                        ViseLog.d(isSuccess);
                     }
                 });
                 a.show(getSupportFragmentManager(), "fff");
