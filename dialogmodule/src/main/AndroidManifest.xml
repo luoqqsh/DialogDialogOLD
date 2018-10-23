@@ -15,7 +15,7 @@
         <!--android:authorities="${applicationId}.fileProvider"-->
         <provider
             android:name="x.com.hl_dialog.CheckUpdate.CheckProvider"
-            android:authorities="x.com.hl_dialog.fileProvider"
+            android:authorities="${applicationId}.fileProvider"
             android:grantUriPermissions="true"
             android:exported="false">
             <meta-data

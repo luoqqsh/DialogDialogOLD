@@ -165,28 +165,28 @@ public class hl_permissions {
         switch (flag) {
             case ROM360:
                 QikuUtils.applyPermission(context);
-                mOnPermissionListener.result(true);
+//                mOnPermissionListener.result(true);
                 break;
             case HUAWEI:
                 HuaweiUtils.applyPermission(context);
-                mOnPermissionListener.result(true);
+//                mOnPermissionListener.result(true);
                 break;
             case MEIZU:
                 MeizuUtils.applyPermission(context);
-                mOnPermissionListener.result(true);
+//                mOnPermissionListener.result(true);
                 break;
             case MIUI:
                 MiuiUtils.applyMiuiPermission(context);
-                mOnPermissionListener.result(true);
+//                mOnPermissionListener.result(true);
                 break;
             case OPPO:
                 OppoUtils.applyOppoPermission(context);
-                mOnPermissionListener.result(true);
+//                mOnPermissionListener.result(true);
                 break;
             case COMMON_ROM:
                 try {
                     commonROMPermissionApplyInternal(context);
-                    mOnPermissionListener.result(true);
+//                    mOnPermissionListener.result(true);
                 } catch (Exception e) {
                     e.printStackTrace();
                     mOnPermissionListener.result(false);
