@@ -1,201 +1,138 @@
 package x.com.hl_tools;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
-import android.net.Uri;
+import android.content.Intent;
+import android.os.IBinder;
+import android.os.RemoteException;
+import android.view.KeyEvent;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.android.internal.telephony.ITelephony;
 
-import x.com.hl_tools.model.TPhoneContact;
-import x.com.hl_tools.model.TPhoneRecord;
-
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 public class hl_phone {
-    public static final Uri CONTENT_URI_HISTORY = Uri.parse("content://com.njty.phoneContacts/history");
-    public static final Uri CONTENT_URI_CONTACTS = Uri.parse("content://com.njty.phoneContacts/contacts");
-    public static final Uri CONTENT_URI_CONFIG = Uri.parse("content://com.njty.phoneContacts/configuration");
-
-    //获取所有电话本信息
-    public static List<TPhoneContact> getPhoneBooks(Context context) {
-        Cursor cursor = context.getContentResolver().query(CONTENT_URI_CONTACTS, new String[]{"*"}, null, null, null);
-        List<TPhoneContact> list = new ArrayList<TPhoneContact>();
-        list.clear();
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                do {
-                    TPhoneContact phone = new TPhoneContact();
-                    phone.setPhoneNum(cursor.getString(cursor.getColumnIndex("phoneNum")));
-                    phone.setFlag((byte) cursor.getInt(cursor.getColumnIndex("flag")));
-                    phone.setName(cursor.getString(cursor.getColumnIndex("name")));
-                    phone.set_id((byte) cursor.getInt(cursor.getColumnIndex("_id")));
-                    list.add(phone);
-                } while (cursor.moveToNext());
-            }
-            cursor.close();
-        }
-
-        return list;
-    }
-
-    //插入联系人
-    public static boolean insertContact(Context context, TPhoneContact contact) {
-        ContentValues values = new ContentValues();
-        values.put("phoneNum", contact.getPhoneNum());
-        values.put("flag", contact.getFlag());
-        values.put("name", contact.getName());
-        return context.getContentResolver().insert(CONTENT_URI_CONTACTS, values) != null;
-    }
-
-    //删除联系人
-    public static boolean deleContact(Context context, String phoneNum) {
-        int num = context.getContentResolver().delete(CONTENT_URI_CONTACTS, "phoneNum=?", new String[]{phoneNum});
-        return num > 0;
-    }
-
-    public static boolean deleContact(Context context, int id) {
-        int num = context.getContentResolver().delete(CONTENT_URI_CONTACTS, "_id=?", new String[]{String.valueOf(id)});
-        return num > 0;
-    }
-
-    //更新联系人
-    public static boolean updateContact(Context context, TPhoneContact contact) {
-        ContentValues values = new ContentValues();
-        values.put("_id", contact.get_id());
-        values.put("phoneNum", contact.getPhoneNum());
-        values.put("flag", contact.getFlag());
-        values.put("name", contact.getName());
-        int num = context.getContentResolver().update(CONTENT_URI_CONTACTS, values, "_id=?", new String[]{String.valueOf(contact.get_id())});
-        return num > 0;
-    }
-
-    //获取电话通话记录
-    public static List<TPhoneRecord> getPhoneRecord(Context context) {
-        Cursor cursor = context.getContentResolver().query(CONTENT_URI_HISTORY, new String[]{"*"}, null, null, null);
-        List<TPhoneRecord> list = new ArrayList<TPhoneRecord>();
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                do {
-                    TPhoneRecord record = new TPhoneRecord();
-                    record.set_id(cursor.getInt(cursor.getColumnIndex("_id")));
-                    record.setCallType(cursor.getInt(cursor.getColumnIndex("callType")));
-                    record.setLength(cursor.getInt(cursor.getColumnIndex("length")));
-                    record.setPhoneNum(cursor.getString(cursor.getColumnIndex("phoneNum")));
-                    record.setTime(cursor.getString(cursor.getColumnIndex("time")));
-                    list.add(record);
-                } while (cursor.moveToNext());
-            }
-            cursor.close();
-        }
-        return list;
-    }
-
-    //设置来电马赛克
-    public static void setIncomingMosaic(Context context, boolean status) {
-        ContentValues values = new ContentValues();
-        values.put("key", "Incoming_mosaic");
-        if (status) {
-            values.put("value", "1");
-        } else {
-            values.put("value", "0");
-        }
-        context.getContentResolver().update(CONTENT_URI_CONFIG, values, "key=?", new String[]{"Incoming_mosaic"});
-    }
-
-    //获取来电马赛克
-    public static boolean getIncomingMosaic(Context context) {
-        boolean flag = false;
-        String value;
-        Cursor cursor = context.getContentResolver().query(CONTENT_URI_CONFIG, new String[]{"value"}, "key=?", new String[]{"Incoming_mosaic"}, null);
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                value = cursor.getString(cursor.getColumnIndex("value"));
-                if (value.equals("1")) {
-                    flag = true;
-                } else {
-                    flag = false;
-                }
+    //安卓4.1以上不可用
+    public static void open(Context context) {
+        try {
+            Method method = Class.forName("android.os.ServiceManager").getMethod("getService", String.class);
+            IBinder binder = (IBinder) method.invoke(null, new Object[]{Context.TELEPHONY_SERVICE});
+            ITelephony telephony = ITelephony.Stub.asInterface(binder);
+//                    telephony.endCall();//挂断电话
+            telephony.answerRingingCall();//接听电话
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (RemoteException e) {
+            try {
+                Intent intent = new Intent("android.intent.action.MEDIA_BUTTON");
+                KeyEvent keyEvent = new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_HEADSETHOOK);
+                intent.putExtra("android.intent.extra.KEY_EVENT", keyEvent);
+                context.sendOrderedBroadcast(intent, "android.permission.CALL_PRIVILEGED");
+                intent = new Intent("android.intent.action.MEDIA_BUTTON");
+                keyEvent = new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_HEADSETHOOK);
+                intent.putExtra("android.intent.extra.KEY_EVENT", keyEvent);
+                context.sendOrderedBroadcast(intent, "android.permission.CALL_PRIVILEGED");
+                Intent localIntent1 = new Intent(Intent.ACTION_HEADSET_PLUG);
+                localIntent1.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                localIntent1.putExtra("state", 1);
+                localIntent1.putExtra("microphone", 1);
+                localIntent1.putExtra("name", "Headset");
+                context.sendOrderedBroadcast(localIntent1, "android.permission.CALL_PRIVILEGED");
+                Intent localIntent2 = new Intent(Intent.ACTION_MEDIA_BUTTON);
+                KeyEvent localKeyEvent1 = new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_HEADSETHOOK);
+                localIntent2.putExtra("android.intent.extra.KEY_EVENT", localKeyEvent1);
+                context.sendOrderedBroadcast(localIntent2, "android.permission.CALL_PRIVILEGED");
+                Intent localIntent3 = new Intent(Intent.ACTION_MEDIA_BUTTON);
+                KeyEvent localKeyEvent2 = new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_HEADSETHOOK);
+                localIntent3.putExtra("android.intent.extra.KEY_EVENT", localKeyEvent2);
+                context.sendOrderedBroadcast(localIntent3, "android.permission.CALL_PRIVILEGED");
+                Intent localIntent4 = new Intent(Intent.ACTION_HEADSET_PLUG);
+                localIntent4.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                localIntent4.putExtra("state", 0);
+                localIntent4.putExtra("microphone", 1);
+                localIntent4.putExtra("name", "Headset");
+                context.sendOrderedBroadcast(localIntent4, "android.permission.CALL_PRIVILEGED");
+            } catch (Exception e2) {
+                e2.printStackTrace();
+                Intent meidaButtonIntent = new Intent(Intent.ACTION_MEDIA_BUTTON);
+                KeyEvent keyEvent = new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_HEADSETHOOK);
+                meidaButtonIntent.putExtra(Intent.EXTRA_KEY_EVENT, keyEvent);
+                context.sendOrderedBroadcast(meidaButtonIntent, null);
             }
         }
-        cursor.close();
-        return flag;
     }
 
-    //设置是否去电马赛克
-    public static void setOutgoingingMosaic(Context context, boolean status) {
-        ContentValues values = new ContentValues();
-        values.put("key", "Outgoing_mosaic");
-        if (status) {
-            values.put("value", "1");
-        } else {
-            values.put("value", "0");
+    public static void open2(Context context) {
+        // 放开耳机按钮 ，使用有序广播
+        Intent upIntent = new Intent(Intent.ACTION_MEDIA_BUTTON);
+
+        KeyEvent keyEvent2 = new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_HEADSETHOOK);
+        upIntent.putExtra("android.intent.extra.KEY_EVENT", keyEvent2);
+
+        context.sendOrderedBroadcast(upIntent, "android.permission.CALL_PRIVILEGED");
+
+        // 插耳机
+        Intent pushIntent = new Intent(Intent.ACTION_HEADSET_PLUG);
+
+        pushIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        pushIntent.putExtra("state", 1);
+        pushIntent.putExtra("microphone", 1);
+        pushIntent.putExtra("name", "Headset");
+
+        context.sendOrderedBroadcast(pushIntent, "android.permission.CALL_PRIVILEGED");
+
+        // 按下耳机按钮
+
+        Intent localIntent2 = new Intent(Intent.ACTION_MEDIA_BUTTON);
+
+        KeyEvent localKeyEvent1 = new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_HEADSETHOOK);
+        localIntent2.putExtra("android.intent.extra.KEY_EVENT", localKeyEvent1);
+
+        context.sendOrderedBroadcast(localIntent2, "android.permission.CALL_PRIVILEGED");
+
+        // 放开耳机按钮
+
+        upIntent = new Intent(Intent.ACTION_MEDIA_BUTTON);
+
+        keyEvent2 = new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_HEADSETHOOK);
+        upIntent.putExtra("android.intent.extra.KEY_EVENT", keyEvent2);
+
+        context.sendOrderedBroadcast(upIntent, "android.permission.CALL_PRIVILEGED");
+
+        // 拔出耳机 ，不然手机就一直保持插入耳机状态
+
+        Intent pullIntent = new Intent(Intent.ACTION_HEADSET_PLUG);
+
+        pullIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        pullIntent.putExtra("state", 0);
+        pullIntent.putExtra("microphone", 1);
+        pullIntent.putExtra("name", "Headset");
+
+        context.sendOrderedBroadcast(pullIntent, "android.permission.CALL_PRIVILEGED");
+    }
+
+    public static void close() {
+        try {
+            Method method = Class.forName("android.os.ServiceManager").getMethod("getService", String.class);
+            IBinder binder = (IBinder) method.invoke(null, new Object[]{Context.TELEPHONY_SERVICE});
+            ITelephony telephony = ITelephony.Stub.asInterface(binder);
+            telephony.endCall();//挂断电话
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (RemoteException e) {
+            e.printStackTrace();
         }
-        context.getContentResolver().update(CONTENT_URI_CONFIG, values, "key=?", new String[]{"Outgoing_mosaic"});
-    }
-
-
-    //获取是否去电马赛克
-    public static boolean getOutgoingMosaic(Context context) {
-        boolean flag = false;
-        String value;
-        Cursor cursor = context.getContentResolver().query(CONTENT_URI_CONFIG, new String[]{"value"}, "key=?", new String[]{"Outgoing_mosaic"}, null);
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                value = cursor.getString(cursor.getColumnIndex("value"));
-                flag = value.equals("1");
-            }
-            cursor.close();
-        }
-        return flag;
-    }
-
-    //加入白名单,flag: 1：可以呼入；2：可以呼出；3：可呼入/呼出 ，同一号码只能增加一次，多次添加会失败
-    public static boolean addWhiteList(Context context, String phoneNum, int flag) {
-        ContentValues values = new ContentValues();
-        values.put("phoneNum", phoneNum);
-        values.put("name", "打的吧乘客");
-        values.put("flag", flag);
-
-        Uri result = context.getContentResolver().insert(CONTENT_URI_CONTACTS, values);
-        return result != null;
-    }
-
-    //删除呼入
-    public static boolean deleteWhiteList(Context context, String phoneNum) {
-        int num = context.getContentResolver().delete(CONTENT_URI_CONTACTS, "phoneNum=?", new String[]{phoneNum});
-        return num > 0;
-    }
-
-    //获取呼入电话白名单
-    public static List<String> getIncomingWhiteList(Context context) {
-        List<String> list = new ArrayList<String>();
-        Cursor cursor = context.getContentResolver().query(CONTENT_URI_CONTACTS, new String[]{"*"}, "flag=1 or flag=3", null, null);
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                do {
-                    list.add(cursor.getString(cursor.getColumnIndex("phoneNum")));
-                }
-                while (cursor.moveToNext());
-            }
-            cursor.close();
-        }
-        return list;
-    }
-
-    //获取呼出电话白名单
-    public static List<String> getOutgoingWhiteList(Context context) {
-        List<String> list = new ArrayList<String>();
-        Cursor cursor = context.getContentResolver().query(CONTENT_URI_CONTACTS, new String[]{"*"}, "flag=2 or flag=3", null, null);
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                do {
-                    list.add(cursor.getString(cursor.getColumnIndex("phoneNum")));
-                }
-                while (cursor.moveToNext());
-            }
-            cursor.close();
-        }
-        return list;
     }
 }

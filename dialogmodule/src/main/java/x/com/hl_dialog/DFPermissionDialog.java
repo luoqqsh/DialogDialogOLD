@@ -44,6 +44,11 @@ public class DFPermissionDialog extends DialogFragment {
         } else {
             list_permission.add(new PermissionModel("允许读取本机识别码", false, Manifest.permission.READ_PHONE_STATE));
         }
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
+            list_permission.add(new PermissionModel("允许读取联系人", true, Manifest.permission.READ_CONTACTS));
+        } else {
+            list_permission.add(new PermissionModel("允许读取联系人", false, Manifest.permission.READ_CONTACTS));
+        }
         final hl_permissions p = hl_permissions.getInstance(listener);
         if (p.checkPermission(getActivity())) {
             list_permission.add(new PermissionModel("允许\"显示悬浮窗\"", true, ""));
@@ -58,7 +63,7 @@ public class DFPermissionDialog extends DialogFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 if (!list_permission.get(position).isIsapply()) {
-                    if (position == 2) {
+                    if (position == 3) {
                         p.applyPermission(getActivity());
                     } else {
                         PermissionHelper.getInstance().applyPermission(fragmentcontext, new String[]{list_permission.get(position).getPermission()}, new PermissionHelper.RequestPermissionCallBack() {

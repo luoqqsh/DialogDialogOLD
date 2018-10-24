@@ -22,6 +22,7 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import x.com.hl_dialog.DFPermissionDialog;
 import x.com.hl_dialog.NDialog;
+import x.com.hl_tools.hl_contacts;
 import x.com.hl_tools.hl_permissions;
 
 public class NormalDialogActivity extends BaseActivity implements hl_permissions.OnPermissionListener {
@@ -32,6 +33,7 @@ public class NormalDialogActivity extends BaseActivity implements hl_permissions
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         TextView ewfe = findViewById(R.id.ewfe);
+        ViseLog.d(hl_contacts.testContactNameByNumber("12315", this));
         ewfe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

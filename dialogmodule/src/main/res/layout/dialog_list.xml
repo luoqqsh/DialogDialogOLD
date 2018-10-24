@@ -41,7 +41,7 @@
         android:layout_marginTop="5dip"
         android:background="@drawable/shape_dialog_item_bg_only"
         android:gravity="center"
-        android:text="取消"
+        android:text="完成"
         android:textColor="#0073FF"
         android:textSize="18sp" />
 
