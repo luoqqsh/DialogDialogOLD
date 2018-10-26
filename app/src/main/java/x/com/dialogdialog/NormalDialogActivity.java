@@ -119,12 +119,8 @@ public class NormalDialogActivity extends BaseActivity implements hl_permissions
 //        a.show();
 ////
 //        share分享样式
-        a = new NDialog(this, NDialog.nDialog_Share, 1)
-                .setDialoglocation(NDialog.DIALOG_LOCATION_BOTTOM)
-                .setDialogAnimation(NDialog.DIALOG_ANIM_SLID_BOTTOM)
-                .setTouchOutSideCancelable(false, false)
-                .setBtnClickListener(true, "微信", "朋友圈", "QQ",
-                        "新浪微博", "取消", new NDialog.onDialogbtnClickListener() {
+        a = new NDialog(this,R.layout.dialog_select, 1)
+                .setBtnClickListener(true, "微信", "朋友圈",  new NDialog.onDialogbtnClickListener() {
                             @Override
                             public void onDialogbtnClick(Context context, Dialog dialog, int whichBtn) {
                                 switch (whichBtn) {
@@ -134,15 +130,7 @@ public class NormalDialogActivity extends BaseActivity implements hl_permissions
                                     case 2:
                                         Toast.makeText(context, "朋友圈", Toast.LENGTH_SHORT).show();
                                         break;
-                                    case 3:
-                                        Toast.makeText(context, "QQ", Toast.LENGTH_SHORT).show();
-                                        break;
-                                    case 4:
-                                        Toast.makeText(context, "新浪微博", Toast.LENGTH_SHORT).show();
-                                        break;
-                                    case 5:
-                                        Toast.makeText(context, "取消", Toast.LENGTH_SHORT).show();
-                                        break;
+
 
                                 }
                             }
