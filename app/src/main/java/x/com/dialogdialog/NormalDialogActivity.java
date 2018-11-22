@@ -2,27 +2,16 @@ package x.com.dialogdialog;
 
 import android.Manifest;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import com.vise.log.ViseLog;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-import x.com.hl_dialog.DFPermissionListDialog;
-import x.com.hl_dialog.NDialog;
-import x.com.hl_tools.hl_contacts;
 import x.com.hl_tools.hl_permissions;
 import x.com.hl_tools.hl_permissionsOther;
 
