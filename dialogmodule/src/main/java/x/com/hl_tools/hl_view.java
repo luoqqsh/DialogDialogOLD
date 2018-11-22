@@ -1,12 +1,7 @@
 package x.com.hl_tools;
 
-import android.content.Context;
-import android.text.Editable;
-import android.text.Selection;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
 import android.widget.GridView;
@@ -14,8 +9,6 @@ import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class hl_view {
     private static final int DELAY = 1000;

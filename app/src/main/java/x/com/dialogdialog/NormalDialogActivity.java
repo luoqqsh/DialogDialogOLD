@@ -1,10 +1,10 @@
 package x.com.dialogdialog;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,12 +20,13 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-import x.com.hl_dialog.DFPermissionDialog;
+import x.com.hl_dialog.DFPermissionListDialog;
 import x.com.hl_dialog.NDialog;
 import x.com.hl_tools.hl_contacts;
 import x.com.hl_tools.hl_permissions;
+import x.com.hl_tools.hl_permissionsOther;
 
-public class NormalDialogActivity extends BaseActivity implements hl_permissions.OnPermissionListener {
+public class NormalDialogActivity extends BaseActivity implements hl_permissionsOther.OnPermissionListener {
     private Dialog a;
 
     @Override
@@ -33,18 +34,37 @@ public class NormalDialogActivity extends BaseActivity implements hl_permissions
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         TextView ewfe = findViewById(R.id.ewfe);
-        ViseLog.d(hl_contacts.testContactNameByNumber("12315", this));
         ewfe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //权限弹窗
-                DFPermissionDialog a = DFPermissionDialog.newInstance(new hl_permissions.OnPermissionListener() {
-                    @Override
-                    public void result(boolean isSuccess) {
-                        ViseLog.d(isSuccess);
-                    }
-                });
-                a.show(getSupportFragmentManager(), "fff");
+//                DFPermissionListDialog a = DFPermissionListDialog.newInstance(new hl_permissionsOther.OnPermissionListener() {
+//                    @Override
+//                    public void result(boolean isSuccess) {
+//                        ViseLog.d(isSuccess);
+//                    }
+//                });
+//                a.show(getSupportFragmentManager(), "fff");
+                //检查权限
+                if (!hl_permissionsOther.checksetsystem(NormalDialogActivity.this)) {
+                    hl_permissionsOther.gotosetsystem(NormalDialogActivity.this);
+                }
+                //检查权限
+//                ViseLog.d(hl_permissions.checkpermission(NormalDialogActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE));
+                hl_permissions.getInstance().applyPermission(NormalDialogActivity.this,
+                        new String[]{Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        new hl_permissions.RequestPermissionCallBack() {
+                            @Override
+                            public void requestPermissionSuccess() {
+                                ViseLog.d("true2222");
+                            }
+
+                            @Override
+                            public void requestPermissionFail() {
+                                ViseLog.d("false1111");
+                            }
+                        });
+
             }
         });
         TextView qqq = findViewById(R.id.qqq);
@@ -62,24 +82,6 @@ public class NormalDialogActivity extends BaseActivity implements hl_permissions
 //        a.dismiss();
 
 
-        ViewPager vp = findViewById(R.id.viewpager);
-        Fragment fragmenttest = new Fragmentdialogtest();
-        Fragment fragmenttest2 = new Fragmentdialogtest();
-        List<Fragment> fragments = new ArrayList<>();
-        fragments.add(fragmenttest);
-        fragments.add(fragmenttest2);
-        PagerAdapter pagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
-            @Override
-            public Fragment getItem(int position) {
-                return fragments.get(position);
-            }
-
-            @Override
-            public int getCount() {
-                return fragments.size();
-            }
-        };
-        vp.setAdapter(pagerAdapter);
         //iphone样式
 //        a = new NDialog(this, NDialog.NDialog_Iphone, 0.8f)
 //                .setTouchOutSideCancelable(false, false)
@@ -119,23 +121,23 @@ public class NormalDialogActivity extends BaseActivity implements hl_permissions
 //        a.show();
 ////
 //        share分享样式
-        a = new NDialog(this,R.layout.dialog_select, 1)
-                .setBtnClickListener(true, "微信", "朋友圈",  new NDialog.onDialogbtnClickListener() {
-                            @Override
-                            public void onDialogbtnClick(Context context, Dialog dialog, int whichBtn) {
-                                switch (whichBtn) {
-                                    case 1:
-                                        Toast.makeText(context, "微信", Toast.LENGTH_SHORT).show();
-                                        break;
-                                    case 2:
-                                        Toast.makeText(context, "朋友圈", Toast.LENGTH_SHORT).show();
-                                        break;
-
-
-                                }
-                            }
-                        }).create();
-        a.show();
+//        a = new NDialog(this,R.layout.dialog_select, 1)
+//                .setBtnClickListener(true, "微信", "朋友圈",  new NDialog.onDialogbtnClickListener() {
+//                            @Override
+//                            public void onDialogbtnClick(Context context, Dialog dialog, int whichBtn) {
+//                                switch (whichBtn) {
+//                                    case 1:
+//                                        Toast.makeText(context, "微信", Toast.LENGTH_SHORT).show();
+//                                        break;
+//                                    case 2:
+//                                        Toast.makeText(context, "朋友圈", Toast.LENGTH_SHORT).show();
+//                                        break;
+//
+//
+//                                }
+//                            }
+//                        }).create();
+//        a.show();
         //拍照选项样式
 //        a = new NDialog(this, NDialog.nDialog_Photo, 1)
 //                .setDialoglocation(NDialog.DIALOG_LOCATION_BOTTOM)

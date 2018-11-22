@@ -1,4 +1,4 @@
-package x.com.hl_dialog.MeTools;
+package x.com.hl_tools;
 
 import android.content.Context;
 import android.view.Gravity;
@@ -14,10 +14,11 @@ import x.com.hl_dialog.R;
  * Toast
  */
 
-public class NewToast extends Toast {
-    public NewToast(Context context) {
+public class hl_toast extends Toast {
+    public hl_toast(Context context) {
         super(context);
     }
+
     public static Toast makeText(Context context, int resId, CharSequence text, int duration) {
         Toast result = new Toast(context);
 
@@ -27,8 +28,8 @@ public class NewToast extends Toast {
         View layout = inflater.inflate(R.layout.toast_message, null);
 
         //实例化ImageView和TextView对象
-        ImageView imageView = (ImageView) layout.findViewById(R.id.dialog_title);
-        TextView textView = (TextView) layout.findViewById(R.id.toast_message);
+        ImageView imageView = layout.findViewById(R.id.dialog_title);
+        TextView textView = layout.findViewById(R.id.toast_message);
 
         imageView.setImageResource(resId);
         textView.setText(text);

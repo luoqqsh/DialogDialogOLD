@@ -9,12 +9,10 @@ import android.widget.Toast;
 
 import java.io.File;
 
-import androidx.appcompat.app.AppCompatActivity;
-import x.com.hl_dialog.CheckUpdate.CheckDialogFragment;
 import x.com.hl_dialog.DFUpdateDialog;
 import x.com.hl_dialog.MeTools.DownloadHelper;
 import x.com.hl_dialog.NDialogBuilder;
-import x.com.hl_dialog.MeTools.PermissionHelper;
+import x.com.hl_tools.hl_permissions;
 
 import static x.com.hl_dialog.NDialogBuilder.MSG_LAYOUT_LEFT;
 
@@ -134,10 +132,10 @@ public class CheckUpActivity extends BaseActivity {
 
     public void requesPermission(View view) {
         //权限申请
-        PermissionHelper.getInstance().applyPermission(this,
+        hl_permissions.getInstance().applyPermission(this,
                 new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
                         Manifest.permission.READ_EXTERNAL_STORAGE
-                }, new PermissionHelper.RequestPermissionCallBack() {
+                }, new hl_permissions.RequestPermissionCallBack() {
                     @Override
                     public void requestPermissionSuccess() {
                         //申请成功

@@ -18,7 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import x.com.hl_dialog.MeTools.DownloadHelper;
 import x.com.hl_dialog.NDialogBuilder;
-import x.com.hl_dialog.MeTools.PermissionHelper;
+import x.com.hl_tools.hl_permissions;
 import x.com.hl_dialog.R;
 
 public class CheckDialogFragment extends DialogFragment {
@@ -86,10 +86,10 @@ public class CheckDialogFragment extends DialogFragment {
                                         }
                                         break;
                                     case 2://立即更新
-                                        PermissionHelper.getInstance().applyPermission(
+                                        hl_permissions.getInstance().applyPermission(
                                                 CheckDialogFragment.this,
                                                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ? mPermissionList_O : mPermissionList,
-                                                new PermissionHelper.RequestPermissionCallBack() {
+                                                new hl_permissions.RequestPermissionCallBack() {
                                                     @Override
                                                     public void requestPermissionSuccess() {
                                                         dismiss();
@@ -163,7 +163,7 @@ public class CheckDialogFragment extends DialogFragment {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        PermissionHelper.getInstance().requestPermissionsResult(requestCode, permissions, grantResults);
+        hl_permissions.getInstance().requestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override

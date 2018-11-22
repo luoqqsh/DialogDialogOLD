@@ -17,7 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
-import x.com.hl_dialog.MeTools.PermissionHelper;
+import x.com.hl_tools.hl_permissions;
 import x.com.hl_tools.hl_app;
 import x.com.hl_tools.hl_interface.DownListener;
 import x.com.hl_tools.hl_net;
@@ -82,7 +82,7 @@ public class DFUpdateDialog extends DialogFragment {
     }
 
     private void applypression() {
-        PermissionHelper.getInstance().applyPermission(this, mPermissionList, new PermissionHelper.RequestPermissionCallBack() {
+        hl_permissions.getInstance().applyPermission(this, mPermissionList, new hl_permissions.RequestPermissionCallBack() {
             @Override
             public void requestPermissionSuccess() {
                 startdownload();
@@ -90,7 +90,7 @@ public class DFUpdateDialog extends DialogFragment {
 
             @Override
             public void requestPermissionFail() {
-                Toast.makeText(getActivity(), "您已拒绝文件读取权限，无法下载更新包！", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "您已拒绝文件读写权限，无法下载更新包！", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -127,6 +127,6 @@ public class DFUpdateDialog extends DialogFragment {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        PermissionHelper.getInstance().requestPermissionsResult(requestCode, permissions, grantResults);
+        hl_permissions.getInstance().requestPermissionsResult(requestCode, permissions, grantResults);
     }
 }

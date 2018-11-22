@@ -3,18 +3,18 @@ package x.com.hl_tools;
 import android.content.Context;
 import android.media.AudioManager;
 
-public class AudioUtil {
+public class hl_audio {
 
     private AudioManager mAudioManager;
-    private static AudioUtil mInstance;
+    private static hl_audio mInstance;
 
-    private AudioUtil(Context context){
+    private hl_audio(Context context){
         mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
     }
 
-    public synchronized static AudioUtil getInstance(Context context){
+    public synchronized static hl_audio getInstance(Context context){
         if(mInstance == null){
-            mInstance = new AudioUtil(context);
+            mInstance = new hl_audio(context);
         }
         return mInstance;
     }
