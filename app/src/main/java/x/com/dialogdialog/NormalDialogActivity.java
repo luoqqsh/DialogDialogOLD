@@ -2,9 +2,11 @@ package x.com.dialogdialog;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 
@@ -12,6 +14,7 @@ import com.vise.log.ViseLog;
 
 
 import androidx.annotation.Nullable;
+import x.com.hl_dialog.FWDialog;
 import x.com.hl_tools.hl_permissions;
 import x.com.hl_tools.hl_permissionsOther;
 
@@ -62,6 +65,9 @@ public class NormalDialogActivity extends BaseActivity implements hl_permissions
             public void onClick(View view) {
                 Intent intent = new Intent(NormalDialogActivity.this, CheckUpActivity.class);
                 startActivity(intent);
+
+                WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+                FWDialog fwDialog=new FWDialog(wm,view,2);
             }
         });
         //显示加载框

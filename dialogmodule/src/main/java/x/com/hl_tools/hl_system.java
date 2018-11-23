@@ -1,11 +1,15 @@
 package x.com.hl_tools;
 
 import android.app.ActivityManager;
+import android.app.usage.UsageEvents;
+import android.app.usage.UsageStats;
+import android.app.usage.UsageStatsManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
@@ -15,6 +19,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+
+import androidx.annotation.RequiresApi;
 
 public class hl_system {
     //返回键设为home键
@@ -146,4 +152,48 @@ public class hl_system {
         return result;
     }
 
+    /**
+     * 判断手机当前前台显示的APP
+     *
+     * @param context
+     * @return
+     */
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private String getForegroundApp(Context context) {
+        /**
+         * 此功能需要在设置的（允许查看使用情况的应用）里打开，在很多手机设置里没有发现这一入口。
+         需要在代码里打开，注意要判断一下系统版本
+         */
+//        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP){
+//            startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
+//        }
+        boolean isInit = true;
+        UsageStatsManager usageStatsManager =
+                (UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE);
+        long ts = System.currentTimeMillis();
+        List<UsageStats> queryUsageStats =
+                usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_BEST, 0, ts);
+        UsageEvents usageEvents = usageStatsManager.queryEvents(isInit ? 0 : ts - 5000, ts);
+        if (usageEvents == null) {
+            return null;
+        }
+
+        UsageEvents.Event event = new UsageEvents.Event();
+        UsageEvents.Event lastEvent = null;
+        while (usageEvents.getNextEvent(event)) {
+            // if from notification bar, class name will be null
+            if (event.getPackageName() == null || event.getClassName() == null) {
+                continue;
+            }
+
+            if (lastEvent == null || lastEvent.getTimeStamp() < event.getTimeStamp()) {
+                lastEvent = event;
+            }
+        }
+
+        if (lastEvent == null) {
+            return null;
+        }
+        return lastEvent.getPackageName();
+    }
 }

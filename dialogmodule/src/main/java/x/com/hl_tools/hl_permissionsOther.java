@@ -1,11 +1,16 @@
 package x.com.hl_tools;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Dialog;
+import android.app.usage.UsageStats;
+import android.app.usage.UsageStatsManager;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
@@ -13,6 +18,7 @@ import android.util.Log;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.List;
 import java.util.Set;
 
 import androidx.core.app.NotificationManagerCompat;
@@ -187,6 +193,54 @@ public class hl_permissionsOther {
                     Uri.parse("package:" + context.getPackageName()));
             context.startActivity(intent);
         }
+    }
+
+    /**
+     * 有权查看使用情况的应用
+     *
+     * @param context 上下文
+     * @return 结果
+     */
+    private static boolean isNoOption(Context context) {
+        PackageManager packageManager = context.getApplicationContext()
+                .getPackageManager();
+        Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
+        List<ResolveInfo> list = packageManager.queryIntentActivities(intent,
+                PackageManager.MATCH_DEFAULT_ONLY);
+        return list.size() > 0;
+    }
+
+    /**
+     * 是否启用权查看使用情况的应用
+     *
+     * @param context 上下文
+     * @return 结果
+     */
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP_MR1)
+    private boolean isNoSwitch(Context context) {
+        long ts = System.currentTimeMillis();
+        UsageStatsManager usageStatsManager = (UsageStatsManager) context.getApplicationContext()
+                .getSystemService(Context.USAGE_STATS_SERVICE);
+        List<UsageStats> queryUsageStats = usageStatsManager.queryUsageStats(
+                UsageStatsManager.INTERVAL_BEST, 0, ts);
+        if (queryUsageStats == null || queryUsageStats.isEmpty()) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 跳转权查看使用情况的应用页面
+     *
+     * @param context 上下文
+     */
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public static void gotosetUSAGE_STATS(Context context) {
+        if (isNoOption(context)) {
+            Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
+            context.startActivity(intent);
+        }
+
     }
 
     ///////////////////////////////以下内容仅和悬浮窗相关///////////////////////////////////////////////
