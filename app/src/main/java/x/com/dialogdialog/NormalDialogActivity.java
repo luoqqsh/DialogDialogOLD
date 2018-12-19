@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.telephony.PhoneStateListener;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -14,9 +15,11 @@ import com.vise.log.ViseLog;
 
 
 import androidx.annotation.Nullable;
+
 import x.com.hl_dialog.FWDialog;
 import x.com.hl_tools.hl_permissions;
 import x.com.hl_tools.hl_permissionsOther;
+import x.com.hl_tools.hl_screen;
 
 public class NormalDialogActivity extends BaseActivity implements hl_permissionsOther.OnPermissionListener {
     private Dialog a;
@@ -26,6 +29,13 @@ public class NormalDialogActivity extends BaseActivity implements hl_permissions
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         TextView ewfe = findViewById(R.id.ewfe);
+        TextView quicktest = findViewById(R.id.quicktest);
+        quicktest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(NormalDialogActivity.this, QuickTestActivity.class));
+            }
+        });
         ewfe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -63,11 +73,13 @@ public class NormalDialogActivity extends BaseActivity implements hl_permissions
         qqq.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(NormalDialogActivity.this, CheckUpActivity.class);
-                startActivity(intent);
-
-                WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
-                FWDialog fwDialog=new FWDialog(wm,view,2);
+//                Intent intent = new Intent(NormalDialogActivity.this, CheckUpActivity.class);
+//                startActivity(intent);
+                ViseLog.d(hl_screen.dpToPx(NormalDialogActivity.this, 11));
+                ViseLog.d(hl_screen.dpToPx(NormalDialogActivity.this, 55));
+                ViseLog.d(hl_screen.dpToPx(NormalDialogActivity.this, 2));
+//                WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+//                FWDialog fwDialog=new FWDialog(wm,view,2);
             }
         });
         //显示加载框

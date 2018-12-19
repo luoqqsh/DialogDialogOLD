@@ -47,9 +47,9 @@ public class hl_app {
             ApplicationInfo appInfo = info.applicationInfo;
 //            String appName = pm.getApplicationLabel(appInfo).toString();
             String packageName = appInfo.packageName;  //获取安装包名称
-            ViseLog.i("Abel_Test" + "包名是：" + packageName);
+            ViseLog.i("包名：" + packageName);
             String version = info.versionName; //获取版本信息
-            ViseLog.i("Abel_Tes" + "版本信息：" + version);
+            ViseLog.i("版本：" + version);
             return packageName;
         }
         return null;

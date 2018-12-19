@@ -24,7 +24,7 @@ public class hl_activityx {
     /**
      * 添加一个Activity到堆栈中
      *
-     * @param activity
+     * @param activity activity
      */
     public static void addActivity(Activity activity) {
         if (null == mActivityStack) {
@@ -36,7 +36,7 @@ public class hl_activityx {
     /**
      * 从堆栈中移除指定的Activity
      *
-     * @param activity
+     * @param activity activity
      */
     public static void removeActivity(Activity activity) {
         if (activity != null) {
@@ -47,7 +47,7 @@ public class hl_activityx {
     /**
      * 获取顶部的Activity
      *
-     * @return
+     * @return activity
      */
     public static Activity getTopActivity() {
         if (mActivityStack.isEmpty()) {
