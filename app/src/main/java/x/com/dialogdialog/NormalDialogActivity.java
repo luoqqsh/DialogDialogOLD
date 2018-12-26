@@ -1,13 +1,9 @@
 package x.com.dialogdialog;
 
-import android.Manifest;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.telephony.PhoneStateListener;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.TextView;
 
 
@@ -16,8 +12,6 @@ import com.vise.log.ViseLog;
 
 import androidx.annotation.Nullable;
 
-import x.com.hl_dialog.FWDialog;
-import x.com.hl_tools.hl_permissions;
 import x.com.hl_tools.hl_permissionsOther;
 import x.com.hl_tools.hl_screen;
 
@@ -48,24 +42,24 @@ public class NormalDialogActivity extends BaseActivity implements hl_permissions
 //                });
 //                a.show(getSupportFragmentManager(), "fff");
                 //检查权限
-                if (!hl_permissionsOther.checksetsystem(NormalDialogActivity.this)) {
-                    hl_permissionsOther.gotosetsystem(NormalDialogActivity.this);
-                }
-                //检查权限
-//                ViseLog.d(hl_permissions.checkpermission(NormalDialogActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE));
-                hl_permissions.getInstance().applyPermission(NormalDialogActivity.this,
-                        new String[]{Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                        new hl_permissions.RequestPermissionCallBack() {
-                            @Override
-                            public void requestPermissionSuccess() {
-                                ViseLog.d("true2222");
-                            }
-
-                            @Override
-                            public void requestPermissionFail() {
-                                ViseLog.d("false1111");
-                            }
-                        });
+//                if (!hl_permissionsOther.checksetsystem(NormalDialogActivity.this)) {
+//                    hl_permissionsOther.gotosetsystem(NormalDialogActivity.this);
+//                }
+//                //检查权限
+////                ViseLog.d(hl_permissions.checkpermission(NormalDialogActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE));
+//                hl_permissions.getInstance().applyPermission(NormalDialogActivity.this,
+//                        new String[]{Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+//                        new hl_permissions.RequestPermissionCallBack() {
+//                            @Override
+//                            public void requestPermissionSuccess() {
+//                                ViseLog.d("true2222");
+//                            }
+//
+//                            @Override
+//                            public void requestPermissionFail() {
+//                                ViseLog.d("false1111");
+//                            }
+//                        });
 
             }
         });

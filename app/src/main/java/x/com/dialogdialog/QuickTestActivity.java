@@ -38,7 +38,7 @@ public class QuickTestActivity extends AppCompatActivity implements View.OnClick
                 hl_assest.copyFilesFassets(context, "3dtest/winter", dpath);
                 break;
             case R.id.btn2:
-                boolean isex = hl_file.isExist(dpath+"/eye.jpg");
+                boolean isex = hl_file.isExist(dpath + "/eye.jpg");
                 ViseLog.d(isex);
                 break;
             case R.id.btn3:

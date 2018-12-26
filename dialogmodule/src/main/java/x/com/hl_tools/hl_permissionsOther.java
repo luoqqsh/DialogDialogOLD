@@ -320,7 +320,7 @@ public class hl_permissionsOther {
 
     private void showDialog(Context context, final String flag, boolean isneeddialog) {
         if (isneeddialog) {
-            Dialog a = new NDialog(context, NDialog.nDialog_Photo, 0.8f)
+            Dialog a = new NDialog(context, NDialog.nDialog_Iphone, 0.8f)
                     .setTouchOutSideCancelable(false, false)
                     .setMessage("您的手机没有授予悬浮窗权限，请开启后再试！", NDialogBuilder.MSG_LAYOUT_CENTER)
                     .setBtnClickListener(true, "稍后再说", "现在去开启", new NDialog.onDialogbtnClickListener() {
