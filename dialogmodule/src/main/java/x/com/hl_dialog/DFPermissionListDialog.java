@@ -74,7 +74,7 @@ public class DFPermissionListDialog extends DialogFragment {
                             }
 
                             @Override
-                            public void requestPermissionFail() {
+                            public void requestPermissionFail(boolean isNoTip) {
                                 list_permission.get(position).setIsapply(false);
                                 dialog.refresh();
                             }

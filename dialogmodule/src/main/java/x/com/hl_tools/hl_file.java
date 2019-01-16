@@ -3,6 +3,8 @@ package x.com.hl_tools;
 import android.content.Context;
 import android.os.Environment;
 
+import androidx.annotation.NonNull;
+
 import java.io.File;
 
 public class hl_file {
@@ -48,6 +50,15 @@ public class hl_file {
     public static boolean isExist(String path) {
         File file = new File(path);
         return file.exists();
+    }
+
+    public static File getParentFile(@NonNull Context context) {
+        final File externalSaveDir = context.getExternalCacheDir();
+        if (externalSaveDir == null) {
+            return context.getCacheDir();
+        } else {
+            return externalSaveDir;
+        }
     }
 }
 

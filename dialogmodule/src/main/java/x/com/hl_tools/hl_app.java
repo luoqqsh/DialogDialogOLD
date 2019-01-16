@@ -9,13 +9,9 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.text.TextUtils;
-
 import com.vise.log.ViseLog;
-
 import java.io.File;
-
 import androidx.core.content.FileProvider;
-import x.com.hl_dialog.BuildConfig;
 
 public class hl_app {
     //安装
@@ -25,7 +21,7 @@ public class hl_app {
         Uri uri;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {//7.0启动姿势<pre name="code" class="html">    //com.xxx.xxx.fileprovider为上述manifest中provider所配置相同；apkFile为问题1中的外部存储apk文件</pre>
 //            uri = FileProvider.getUriForFile(activity, Config.providerAuthorities, apkFile);
-            uri = FileProvider.getUriForFile(activity, BuildConfig.APPLICATION_ID + ".fileProvider", apkFile);
+            uri = FileProvider.getUriForFile(activity, activity.getPackageName() + ".fileProvider", apkFile);
             intent.setAction(Intent.ACTION_INSTALL_PACKAGE);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);//7.0以后，系统要求授予临时uri读取权限，安装完毕以后，系统会自动收回权限，次过程没有用户交互
         } else {//7.0以下启动姿势
@@ -66,6 +62,26 @@ public class hl_app {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    public static int getVersionCode(Context context) {
+        try {
+            PackageManager manager = context.getPackageManager();
+            PackageInfo info = manager.getPackageInfo(context.getPackageName(), 0);
+            return info.versionCode;
+        } catch (Exception e) {
+            return 1;
+        }
+    }
+
+    public static String getVersionName(Context context, String packageName) {
+        try {
+            PackageManager manager = context.getPackageManager();
+            PackageInfo info = manager.getPackageInfo(packageName, 0);
+            return info.versionName;
+        } catch (Exception e) {
+            return "1.0.0";
         }
     }
 }

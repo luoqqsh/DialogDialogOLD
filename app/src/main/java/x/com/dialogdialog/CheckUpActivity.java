@@ -143,7 +143,7 @@ public class CheckUpActivity extends BaseActivity {
                     }
 
                     @Override
-                    public void requestPermissionFail() {
+                    public void requestPermissionFail(boolean isNoTip) {
                         //申请被拒绝
                         Toast.makeText(CheckUpActivity.this, "申请失败", Toast.LENGTH_SHORT).show();
                     }

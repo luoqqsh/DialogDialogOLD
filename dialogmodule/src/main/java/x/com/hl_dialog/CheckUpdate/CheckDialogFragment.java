@@ -140,7 +140,7 @@ public class CheckDialogFragment extends DialogFragment {
                                                     }
 
                                                     @Override
-                                                    public void requestPermissionFail() {
+                                                    public void requestPermissionFail(boolean isNoTip) {
                                                         dismiss();
                                                         Toast.makeText(activity, "权限申请失败", Toast.LENGTH_SHORT).show();
                                                     }

@@ -6,14 +6,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-
-import com.vise.log.ViseLog;
-
-
 import androidx.annotation.Nullable;
 
 import x.com.hl_tools.hl_permissionsOther;
-import x.com.hl_tools.hl_screen;
 
 public class NormalDialogActivity extends BaseActivity implements hl_permissionsOther.OnPermissionListener {
     private Dialog a;
@@ -27,7 +22,8 @@ public class NormalDialogActivity extends BaseActivity implements hl_permissions
         quicktest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(NormalDialogActivity.this, QuickTestActivity.class));
+                Intent intent = new Intent(NormalDialogActivity.this, CheckUpActivity.class);
+                startActivity(intent);
             }
         });
         ewfe.setOnClickListener(new View.OnClickListener() {
@@ -41,7 +37,7 @@ public class NormalDialogActivity extends BaseActivity implements hl_permissions
 //                    }
 //                });
 //                a.show(getSupportFragmentManager(), "fff");
-                //检查权限
+                  //检查权限
 //                if (!hl_permissionsOther.checksetsystem(NormalDialogActivity.this)) {
 //                    hl_permissionsOther.gotosetsystem(NormalDialogActivity.this);
 //                }
@@ -69,9 +65,6 @@ public class NormalDialogActivity extends BaseActivity implements hl_permissions
             public void onClick(View view) {
 //                Intent intent = new Intent(NormalDialogActivity.this, CheckUpActivity.class);
 //                startActivity(intent);
-                ViseLog.d(hl_screen.dpToPx(NormalDialogActivity.this, 11));
-                ViseLog.d(hl_screen.dpToPx(NormalDialogActivity.this, 55));
-                ViseLog.d(hl_screen.dpToPx(NormalDialogActivity.this, 2));
 //                WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
 //                FWDialog fwDialog=new FWDialog(wm,view,2);
             }

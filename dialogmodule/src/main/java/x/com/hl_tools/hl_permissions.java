@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.widget.Toast;
 
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -18,12 +20,14 @@ public class hl_permissions {
     public interface RequestPermissionCallBack {
         void requestPermissionSuccess();
 
-        void requestPermissionFail();
+        void requestPermissionFail(boolean isNoTip);
     }
 
     private static final int REQUESTCODE = 1;
+ 
     private static hl_permissions hlpermissions;
     private RequestPermissionCallBack mPermissionCallBack;
+    private Activity activity;
 
     public static hl_permissions getInstance() {
         if (hlpermissions == null) {
@@ -42,6 +46,7 @@ public class hl_permissions {
      */
     public void applyPermission(Fragment fragment, String[] permissionList, RequestPermissionCallBack permissionCallBack) {
         applyPermission(null, fragment, permissionList, permissionCallBack);
+        this.activity = fragment.getActivity();
     }
 
     /**
@@ -49,6 +54,7 @@ public class hl_permissions {
      */
     public void applyPermission(Activity activity, String[] permissionList, RequestPermissionCallBack permissionCallBack) {
         applyPermission(activity, null, permissionList, permissionCallBack);
+        this.activity = activity;
     }
 
     private void applyPermission(Activity activity, Fragment fragment, String[] permissionList, RequestPermissionCallBack permissionCallBack) {
@@ -87,17 +93,24 @@ public class hl_permissions {
      */
     public void requestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode == REQUESTCODE) {
+            boolean isNoTip = false;
             boolean isApplyFail = false;
-            for (int grantResult : grantResults) {
-                if (grantResult != PERMISSION_GRANTED) {
+            for (int i = 0; i < grantResults.length; i++) {
+                if (grantResults[i] != PERMISSION_GRANTED) {
                     //存在权限申请被拒绝
                     isApplyFail = true;
-                    break;
+                    if (!ActivityCompat.shouldShowRequestPermissionRationale(activity, permissions[i])) {
+                        isNoTip = true;
+                    }
                 }
             }
             if (isApplyFail) {
                 //被拒绝了
-                mPermissionCallBack.requestPermissionFail();
+                if (isNoTip) {
+                    Toast.makeText(activity, "您已拒绝权限，请前往权限管理开启", Toast.LENGTH_LONG).show();
+                }
+                mPermissionCallBack.requestPermissionFail(isNoTip);
+                
             } else {
                 //申请成功
                 mPermissionCallBack.requestPermissionSuccess();

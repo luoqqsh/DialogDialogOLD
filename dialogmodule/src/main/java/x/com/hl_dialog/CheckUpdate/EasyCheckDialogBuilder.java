@@ -105,7 +105,7 @@ public class EasyCheckDialogBuilder {
         }
         // 设置对话框风格
         if (layoutStyle == 0) {
-            layoutStyle = R.layout.easycheck_layout2;
+            layoutStyle = R.layout.ndialog_update;
         }
         dialog.setContentView(layoutStyle);
         Window window = dialog.getWindow();

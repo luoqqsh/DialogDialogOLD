@@ -45,7 +45,7 @@ public class hl_img {
     }
 
     //保存照片
-    public static void saveImage(ImageView imageView, Context context) throws IOException {
+    public static void saveImage(ImageView imageView, Context context) {
         imageView.setDrawingCacheEnabled(true);//开启catch，开启之后才能获取ImageView中的bitmap
         Bitmap bitmap = imageView.getDrawingCache();//获取imageview中的图像
         saveBitmap(bitmap, context);
@@ -100,7 +100,9 @@ public class hl_img {
                 }
             }
         }
-
     }
-    
+
+    public static Bitmap createBitmap(Context context, String assets) throws IOException {
+        return BitmapFactory.decodeStream(context.getResources().getAssets().open(assets));
+    }
 }

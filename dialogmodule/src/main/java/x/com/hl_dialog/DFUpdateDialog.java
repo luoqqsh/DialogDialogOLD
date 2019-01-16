@@ -3,8 +3,13 @@ package x.com.hl_dialog;
 import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -17,6 +22,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
+
+import x.com.hl_tools.hl_file;
 import x.com.hl_tools.hl_permissions;
 import x.com.hl_tools.hl_app;
 import x.com.hl_tools.hl_interface.DownListener;
@@ -35,14 +42,13 @@ public class DFUpdateDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        String content = getArguments() != null ? getArguments().getString("content") : "";
+        final String content = getArguments() != null ? getArguments().getString("content") : "";
         url = getArguments() != null ? getArguments().getString("url") : null;
         int isforce = getArguments() != null ? getArguments().getInt("isforce") : 0;
-
-        NDialog dialog = new NDialog(getActivity(), NDialog.nDialog_Update, 1.0f)
+        NDialog nDialog = new NDialog(getActivity(), NDialog.nDialog_Update, 1.0f)
                 .setTouchOutSideCancelable(false, false)
-                .setMessage(content, NDialogBuilder.MSG_LAYOUT_CENTER);
-        dialog.setBtnClickListener(false, isforce == 1 ? null : "下次再说", "立即更新", new NDialog.onDialogbtnClickListener() {
+                .setMessage(content, NDialog.MSG_LAYOUT_CENTER);
+        nDialog.setBtnClickListener(false, isforce == 1 ? null : "下次再说", "立即更新", new NDialog.onDialogbtnClickListener() {
             @Override
             public void onDialogbtnClick(Context context, Dialog dialog, int whichBtn) {
                 switch (whichBtn) {
@@ -50,8 +56,8 @@ public class DFUpdateDialog extends DialogFragment {
                         dismiss();
                         break;
                     case 2:
-                        if (havepermission(context) == PackageManager.PERMISSION_GRANTED) {
-                            startdownload();
+                        if (havepermission(getActivity()) == PackageManager.PERMISSION_GRANTED) {
+                            startdownload(getActivity());
                         } else {
                             applypression();
                         }
@@ -59,11 +65,30 @@ public class DFUpdateDialog extends DialogFragment {
                 }
             }
         });
-        Dialog xdialog = dialog.create();
+        Dialog xdialog = nDialog.create();
         tv_status = xdialog.findViewById(R.id.tv_progress);
+        View view = xdialog.findViewById(R.id.view);
         pb_prog = xdialog.findViewById(R.id.progress);
         dialog_btnlayout = xdialog.findViewById(R.id.dialog_btnlayout);
         ll_progress = xdialog.findViewById(R.id.ll_progress);
+
+        if (isforce == 1) {
+            view.setVisibility(View.GONE);
+            nDialog.setTouchOutSideCancelable(false, false);
+            xdialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+                @Override
+                public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                    if (keyCode == KeyEvent.KEYCODE_BACK) {
+                        return true;
+                    }
+                    return false;
+                }
+            });
+
+        } else {
+            view.setVisibility(View.VISIBLE);
+            nDialog.setTouchOutSideCancelable(false, true);
+        }
         return xdialog;
     }
 
@@ -85,29 +110,37 @@ public class DFUpdateDialog extends DialogFragment {
         hl_permissions.getInstance().applyPermission(this, mPermissionList, new hl_permissions.RequestPermissionCallBack() {
             @Override
             public void requestPermissionSuccess() {
-                startdownload();
+                startdownload(getActivity());
             }
 
             @Override
-            public void requestPermissionFail() {
+            public void requestPermissionFail(boolean isNoTip) {
                 Toast.makeText(getActivity(), "您已拒绝文件读写权限，无法下载更新包！", Toast.LENGTH_SHORT).show();
+                if (isNoTip) {
+                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                    Uri uri = Uri.fromParts("package", getActivity().getPackageName(), null);
+                    intent.setData(uri);
+                    startActivityForResult(intent, 2);
+                }
             }
         });
     }
 
-    private void startdownload() {
+    private void startdownload(Context context) {
         if (url == null) {
             Toast.makeText(getActivity(), "下载地址错误！", Toast.LENGTH_SHORT).show();
             return;
         }
-        //开始下载
-        Toast.makeText(getActivity(), "开始下载！", Toast.LENGTH_SHORT).show();
         dialog_btnlayout.setVisibility(View.GONE);
         ll_progress.setVisibility(View.VISIBLE);
-        hl_net.downloadfile(url, new DownListener() {
+        final File parentFile = hl_file.getParentFile(context);
+        String downloadfile = parentFile.getPath() + "/" + 3500 + hl_app.getVersionName(context, context.getPackageName()) + ".apk";
+        hl_net.downloadfile(url, downloadfile, new DownListener() {
             @Override
             public void onsuccess(File file) {
                 hl_app.installAPK(getActivity(), file);
+                dialog_btnlayout.setVisibility(View.VISIBLE);
+                ll_progress.setVisibility(View.GONE);
             }
 
             @Override
@@ -118,7 +151,7 @@ public class DFUpdateDialog extends DialogFragment {
 
             @Override
             public void downloading(int progress) {
-                tv_status.setText("");
+                tv_status.setText(progress + "%");
                 pb_prog.setProgress(progress);
             }
         });
