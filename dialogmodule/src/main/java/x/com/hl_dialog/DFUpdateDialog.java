@@ -78,10 +78,7 @@ public class DFUpdateDialog extends DialogFragment {
             xdialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
                 @Override
                 public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-                    if (keyCode == KeyEvent.KEYCODE_BACK) {
-                        return true;
-                    }
-                    return false;
+                    return keyCode == KeyEvent.KEYCODE_BACK;
                 }
             });
 
@@ -115,12 +112,13 @@ public class DFUpdateDialog extends DialogFragment {
 
             @Override
             public void requestPermissionFail(boolean isNoTip) {
-                Toast.makeText(getActivity(), "您已拒绝文件读写权限，无法下载更新包！", Toast.LENGTH_SHORT).show();
                 if (isNoTip) {
                     Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                     Uri uri = Uri.fromParts("package", getActivity().getPackageName(), null);
                     intent.setData(uri);
                     startActivityForResult(intent, 2);
+                } else {
+                    Toast.makeText(getActivity(), "您已拒绝文件读写权限，无法下载更新包！", Toast.LENGTH_SHORT).show();
                 }
             }
         });
