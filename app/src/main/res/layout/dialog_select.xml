@@ -14,7 +14,7 @@
         android:textSize="20sp" />
 
     <TextView
-        android:id="@+id/mdialog_btn1"
+        android:id="@+id/mbtn1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -24,7 +24,7 @@
         android:textSize="18sp" />
 
     <TextView
-        android:id="@+id/mdialog_btn2"
+        android:id="@+id/mbtn2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"

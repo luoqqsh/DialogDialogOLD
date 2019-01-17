@@ -298,8 +298,8 @@ public class EasyCheckDialogBuilder {
      */
     @SuppressLint("ClickableViewAccessibility")
     private EasyCheckDialogBuilder setClickListener(final boolean isDissmiss, final EasyCheckDialogBuilder.onDialogbtnClickListener btnClickListener) {
-        final Button btnConfirm = dialog.findViewById(R.id.mdialog_btn1);
-        final Button btnCancel = dialog.findViewById(R.id.mdialog_btn2);
+        final Button btnConfirm = dialog.findViewById(R.id.mbtn1);
+        final Button btnCancel = dialog.findViewById(R.id.mbtn2);
 
         if (isfource == 1) {
             btnConfirm.setVisibility(View.GONE);

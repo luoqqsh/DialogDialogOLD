@@ -7,7 +7,9 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
+import x.com.hl_dialog.DFLoadingDialog;
 import x.com.hl_tools.hl_permissionsOther;
 
 public class NormalDialogActivity extends BaseActivity implements hl_permissionsOther.OnPermissionListener {
@@ -37,7 +39,7 @@ public class NormalDialogActivity extends BaseActivity implements hl_permissions
 //                    }
 //                });
 //                a.show(getSupportFragmentManager(), "fff");
-                  //检查权限
+                //检查权限
 //                if (!hl_permissionsOther.checksetsystem(NormalDialogActivity.this)) {
 //                    hl_permissionsOther.gotosetsystem(NormalDialogActivity.this);
 //                }
@@ -69,17 +71,19 @@ public class NormalDialogActivity extends BaseActivity implements hl_permissions
 //                FWDialog fwDialog=new FWDialog(wm,view,2);
             }
         });
-        //显示加载框
+        //显示普通弹窗
 //        DFNDialog a = DFNDialog.newInstance();
 //        a.setMessage("dddddddddd", 4);
 //        a.show(getSupportFragmentManager(), "fff");
-//        a.dismiss();
 
-
+        //显示加载框
+        DFLoadingDialog a = new DFLoadingDialog();
+        AppCompatActivity activity=this;
+        a.show(activity.getSupportFragmentManager(), "fff");
         //iphone样式
 //        a = new NDialog(this, NDialog.NDialog_Iphone, 0.8f)
 //                .setTouchOutSideCancelable(false, false)
-//                .setMessage("我是鬼，我来抓你了！", NDialogBuilder.MSG_LAYOUT_CENTER)
+//                .setMessage("我是鬼，我来抓你了！", NDialog.MSG_LAYOUT_CENTER)
 //                .setBtnClickListener(true, "好", "不好", new NDialog.onDialogbtnClickListener() {
 //                    @Override
 //                    public void onDialogbtnClick(Context context, Dialog dialog, int whichBtn) {

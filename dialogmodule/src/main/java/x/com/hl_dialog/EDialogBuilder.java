@@ -268,7 +268,7 @@ public class EDialogBuilder {
 
     //默认一个按钮
     public EDialogBuilder setBtnClickListener(final boolean isDissmiss, String btn1text, final onDialogbtnClickListener btnClickListener) {
-        return this.setClickListener(isDissmiss, R.id.mdialog_btn1, btn1text, 0, "", btnClickListener);
+        return this.setClickListener(isDissmiss, R.id.mbtn1, btn1text, 0, "", btnClickListener);
     }
 
     //自定义一个按钮
@@ -278,7 +278,7 @@ public class EDialogBuilder {
 
     //默认两个个按钮
     public EDialogBuilder setBtnClickListener(final boolean isDissmiss, String btn1text, String btn2text, final onDialogbtnClickListener btnClickListener) {
-        return this.setClickListener(isDissmiss, R.id.mdialog_btn1, btn1text, R.id.mdialog_btn2, btn2text, btnClickListener);
+        return this.setClickListener(isDissmiss, R.id.mbtn1, btn1text, R.id.mbtn2, btn2text, btnClickListener);
     }
 
     //自定义两个个按钮

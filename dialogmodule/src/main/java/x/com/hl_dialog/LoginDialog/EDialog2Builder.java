@@ -159,8 +159,8 @@ public class EDialog2Builder {
             public void deleteContent(boolean isDelete) {
             }
         });
-        btnConfirm = dialog.findViewById(R.id.mdialog_btn1);
-        btnCancel = dialog.findViewById(R.id.mdialog_btn2);
+        btnConfirm = dialog.findViewById(R.id.mbtn1);
+        btnCancel = dialog.findViewById(R.id.mbtn2);
         this.dialog = dialog;
         this.context = context;
 
@@ -321,7 +321,7 @@ public class EDialog2Builder {
     @SuppressLint("ClickableViewAccessibility")
     private EDialog2Builder setClickListener(final boolean isDissmiss, String btn1text, String btn2text, final onDialogbtnClickListener btnClickListener) {
         // 设置确认按钮
-        final Button btnConfirm = dialog.findViewById(R.id.mdialog_btn1);
+        final Button btnConfirm = dialog.findViewById(R.id.mbtn1);
         btnConfirm.setText(btn1text);
         btnConfirm.setVisibility(View.VISIBLE);
         // 给按钮绑定监听器
@@ -357,7 +357,7 @@ public class EDialog2Builder {
         });
         if (btn2text != null) {
             // 设置取消按钮
-            final Button btnCancel = dialog.findViewById(R.id.mdialog_btn2);
+            final Button btnCancel = dialog.findViewById(R.id.mbtn2);
             btnCancel.setVisibility(View.VISIBLE);
             btnCancel.setText(btn2text);
             btnCancel.setOnClickListener(new View.OnClickListener() {
