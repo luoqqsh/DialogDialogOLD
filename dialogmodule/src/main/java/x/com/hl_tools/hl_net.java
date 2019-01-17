@@ -19,7 +19,7 @@ import x.com.hl_tools.hl_interface.DownListener;
 
 public class hl_net {
     //获取外网ip地址，需要在子线程调用
-    public static String GetNetIp() {
+    public static String getNetIp() {
         String IP;
         try {
             URL url = new URL("http://ip.taobao.com/service/getIpInfo2.php?ip=myip");
@@ -57,7 +57,7 @@ public class hl_net {
         return IP;
     }
 
-    public static void downloadfile(final String url, String downloadfile, final DownListener downListener) {
+    public static void downloadFile(final String url, String downloadfile, final DownListener downListener) {
         FileDownloader.getImpl().create(url)
                 .setPath(downloadfile)
                 .setListener(new FileDownloadLargeFileListener() {

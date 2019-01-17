@@ -11,7 +11,7 @@ import android.widget.ListView;
 
 
 public class hl_view {
-    private static final int DELAY = 1000;
+    private static final long DELAY = 500L;
     private static long lastClickTime = 0;
 
     //防止手抖

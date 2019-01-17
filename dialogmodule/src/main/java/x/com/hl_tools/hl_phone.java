@@ -2,12 +2,10 @@ package x.com.hl_tools;
 
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.telecom.TelecomManager;
-import android.view.KeyEvent;
 
 import com.android.internal.telephony.ITelephony;
 
@@ -39,7 +37,7 @@ public class hl_phone {
 
     //安卓8.0以上版本接电话，需要ANSWER_PHONE_CALL权限
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public static void openring(Context context) {
+    public static void openRing(Context context) {
         TelecomManager telecomManager = (TelecomManager) context.getSystemService(TELECOM_SERVICE);
         Method method;
         try {

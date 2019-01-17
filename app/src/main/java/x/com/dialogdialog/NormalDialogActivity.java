@@ -40,11 +40,11 @@ public class NormalDialogActivity extends BaseActivity implements hl_permissions
 //                });
 //                a.show(getSupportFragmentManager(), "fff");
                 //检查权限
-//                if (!hl_permissionsOther.checksetsystem(NormalDialogActivity.this)) {
-//                    hl_permissionsOther.gotosetsystem(NormalDialogActivity.this);
+//                if (!hl_permissionsOther.checkSetSystem(NormalDialogActivity.this)) {
+//                    hl_permissionsOther.gotoSetSystem(NormalDialogActivity.this);
 //                }
 //                //检查权限
-////                ViseLog.d(hl_permissions.checkpermission(NormalDialogActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE));
+////                ViseLog.d(hl_permissions.checkPermission(NormalDialogActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE));
 //                hl_permissions.getInstance().applyPermission(NormalDialogActivity.this,
 //                        new String[]{Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
 //                        new hl_permissions.RequestPermissionCallBack() {

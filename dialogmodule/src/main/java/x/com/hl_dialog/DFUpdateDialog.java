@@ -28,6 +28,7 @@ import x.com.hl_tools.hl_permissions;
 import x.com.hl_tools.hl_app;
 import x.com.hl_tools.hl_interface.DownListener;
 import x.com.hl_tools.hl_net;
+import x.com.hl_tools.hl_permissionsOther;
 
 public class DFUpdateDialog extends DialogFragment {
     private final String[] mPermissionList = new String[]{
@@ -113,10 +114,7 @@ public class DFUpdateDialog extends DialogFragment {
             @Override
             public void requestPermissionFail(boolean isNoTip) {
                 if (isNoTip) {
-                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                    Uri uri = Uri.fromParts("package", getActivity().getPackageName(), null);
-                    intent.setData(uri);
-                    startActivityForResult(intent, 2);
+                    hl_permissionsOther.gotoAppSet(getActivity());
                 } else {
                     Toast.makeText(getActivity(), "您已拒绝文件读写权限，无法下载更新包！", Toast.LENGTH_SHORT).show();
                 }
@@ -133,7 +131,7 @@ public class DFUpdateDialog extends DialogFragment {
         ll_progress.setVisibility(View.VISIBLE);
         final File parentFile = hl_file.getParentFile(context);
         String downloadfile = parentFile.getPath() + "/" + 3500 + hl_app.getVersionName(context, context.getPackageName()) + ".apk";
-        hl_net.downloadfile(url, downloadfile, new DownListener() {
+        hl_net.downloadFile(url, downloadfile, new DownListener() {
             @Override
             public void onsuccess(File file) {
                 hl_app.installAPK(getActivity(), file);

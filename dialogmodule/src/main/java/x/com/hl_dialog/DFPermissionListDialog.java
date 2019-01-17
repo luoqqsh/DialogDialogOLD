@@ -64,7 +64,7 @@ public class DFPermissionListDialog extends DialogFragment {
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 if (!list_permission.get(position).isIsapply()) {
                     if (position == 3) {
-                        p.gotosetFW(getActivity(),true);
+                        p.gotoSetFloatWindow(getActivity(),true);
                     } else {
                         hl_permissions.getInstance().applyPermission(fragmentcontext, new String[]{list_permission.get(position).getPermission()}, new hl_permissions.RequestPermissionCallBack() {
                             @Override

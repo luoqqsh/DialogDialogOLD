@@ -36,7 +36,7 @@ public class hl_permissions {
         return hlpermissions;
     }
 
-    public static boolean checkpermission(Context context, String permission) {
+    public static boolean checkPermission(Context context, String permission) {
         if (permission == null) return false;
         return ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED;
     }

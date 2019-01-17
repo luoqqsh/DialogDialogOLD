@@ -91,7 +91,7 @@ public class hl_permissionsOther {
      * @param context      上下文
      * @param isneeddialog 是否需要显示申请对话框
      */
-    public void gotosetFW(Context context, boolean isneeddialog) {
+    public void gotoSetFloatWindow(Context context, boolean isneeddialog) {
         if (Build.VERSION.SDK_INT < 23) {
             if (RomUtils.checkIsMiuiRom()) {
                 miuiROMPermissionApply(context, isneeddialog);
@@ -115,7 +115,7 @@ public class hl_permissionsOther {
      * @param context 上下文
      * @return 结果
      */
-    public static boolean checksetNotification(Context context) {
+    public static boolean checkNotification(Context context) {
         Set<String> packageNames = NotificationManagerCompat.getEnabledListenerPackages(context);
         return packageNames.contains(context.getPackageName());
     }
@@ -126,7 +126,7 @@ public class hl_permissionsOther {
      * @param context 上下文
      * @return 是否成功
      */
-    public static boolean gotosetNotification(Context context) {
+    public static boolean gotoSetNotification(Context context) {
         try {
             Intent intent = new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS");
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -153,11 +153,11 @@ public class hl_permissionsOther {
      *
      * @param context 上下文
      */
-    public static void gotoappset(Context context) {
+    public static void gotoAppSet(Context context) {
         Intent localIntent = new Intent();
         localIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         if (Build.VERSION.SDK_INT >= 9) {
-            localIntent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
+            localIntent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
             localIntent.setData(Uri.fromParts("package", context.getPackageName(), null));
         } else if (Build.VERSION.SDK_INT <= 8) {
             localIntent.setAction(Intent.ACTION_VIEW);
@@ -173,7 +173,7 @@ public class hl_permissionsOther {
      * @param context 上下文
      * @return 结果
      */
-    public static boolean checksetsystem(Context context) {
+    public static boolean checkSetSystem(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             return Settings.System.canWrite(context);
         } else {
@@ -186,7 +186,7 @@ public class hl_permissionsOther {
      *
      * @param context 上下文
      */
-    public static void gotosetsystem(Context context) {
+    public static void gotoSetSystem(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             // 判断是否有WRITE_SETTINGS权限if(!Settings.System.canWrite(this))
             Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS,
@@ -235,7 +235,7 @@ public class hl_permissionsOther {
      * @param context 上下文
      */
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public static void gotosetUSAGE_STATS(Context context) {
+    public static void gotoSetUsage(Context context) {
         if (isNoOption(context)) {
             Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
             context.startActivity(intent);
@@ -333,18 +333,18 @@ public class hl_permissionsOther {
                                     }
                                     break;
                                 case 2:
-                                    goset(flag, context);
+                                    goSet(flag, context);
                                     break;
                             }
                         }
                     }).create();
             a.show();
         } else {
-            goset(flag, context);
+            goSet(flag, context);
         }
     }
 
-    private void goset(String flag, Context context) {
+    private void goSet(String flag, Context context) {
         switch (flag) {
             case ROM360:
                 QikuUtils.applyPermission(context);
