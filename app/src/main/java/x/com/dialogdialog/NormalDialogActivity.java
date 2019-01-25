@@ -65,6 +65,8 @@ public class NormalDialogActivity extends BaseActivity implements hl_permissions
         qqq.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                
+                
 //                Intent intent = new Intent(NormalDialogActivity.this, CheckUpActivity.class);
 //                startActivity(intent);
 //                WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
