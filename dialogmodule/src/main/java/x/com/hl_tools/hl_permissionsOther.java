@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Set;
 
 import androidx.core.app.NotificationManagerCompat;
+
 import x.com.hl_dialog.NDialog;
 import x.com.hl_dialog.NDialogBuilder;
 import x.com.hl_tools.permissions.HuaweiUtils;
@@ -217,7 +218,7 @@ public class hl_permissionsOther {
      * @return 结果
      */
     @TargetApi(Build.VERSION_CODES.LOLLIPOP_MR1)
-    private boolean isNoSwitch(Context context) {
+    public static boolean checkUsage(Context context) {
         long ts = System.currentTimeMillis();
         UsageStatsManager usageStatsManager = (UsageStatsManager) context.getApplicationContext()
                 .getSystemService(Context.USAGE_STATS_SERVICE);

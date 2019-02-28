@@ -47,7 +47,7 @@ public class hl_sharedPreferences {
                 editor.putLong(key, (Long) object);
                 break;
         }
-        editor.apply();
+        editor.commit();
     }
 
 
@@ -80,6 +80,6 @@ public class hl_sharedPreferences {
 
     public static void clear(Context context) {
         SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
-        sp.edit().clear().apply();
+        sp.edit().clear().commit();
     }
 }  

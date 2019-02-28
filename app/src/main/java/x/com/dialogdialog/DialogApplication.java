@@ -1,6 +1,7 @@
 package x.com.dialogdialog;
 
 import android.app.Application;
+import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -14,6 +15,10 @@ import com.vise.log.inner.LogcatTree;
 import x.com.hl_dialog.MeTools.NeverCrashHelper;
 
 public class DialogApplication extends Application {
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+    }
     @Override
     public void onCreate() {
         super.onCreate();

@@ -93,6 +93,7 @@ public class NDialog {
     /**
      * 构造器
      *
+     * @param context          context
      * @param layoutStyle      布局样式
      * @param widthcoefficient 对话框宽度所占屏幕宽度的比重（0-1）
      * @param dimEnable        是否显示阴影
@@ -158,6 +159,7 @@ public class NDialog {
     /**
      * 设置是否系统弹窗
      * 需要悬浮窗权限
+     *
      * @return this
      */
     public NDialog setsystemalert(boolean isSystemAlert) {

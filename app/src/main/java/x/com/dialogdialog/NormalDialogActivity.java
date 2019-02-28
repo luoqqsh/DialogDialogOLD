@@ -4,10 +4,13 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.vise.log.ViseLog;
 
 import x.com.hl_dialog.DFLoadingDialog;
 import x.com.hl_tools.hl_permissionsOther;
@@ -21,6 +24,18 @@ public class NormalDialogActivity extends BaseActivity implements hl_permissions
         setContentView(R.layout.activity_main);
         TextView ewfe = findViewById(R.id.ewfe);
         TextView quicktest = findViewById(R.id.quicktest);
+        TextView chajian = findViewById(R.id.chajian);
+        chajian.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                
+            }
+        });
+        
+        
+        
+        
+       
         quicktest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

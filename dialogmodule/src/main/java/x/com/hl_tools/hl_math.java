@@ -8,8 +8,8 @@ import java.text.DecimalFormat;
 
 public class hl_math {
     //保留n位小数
-    public static String RoundingDouble(String str, String doubletype) {
-        DecimalFormat df = new DecimalFormat(doubletype);
+    public static String RoundingDouble(String str, String doubleType) {
+        DecimalFormat df = new DecimalFormat(doubleType);
         return df.format(Double.parseDouble(str));
     }
 
@@ -24,6 +24,7 @@ public class hl_math {
         }
         return number;
     }
+
     /**
      * 限制2位小数
      */
@@ -43,7 +44,7 @@ public class hl_math {
             }
 
             public void onTextChanged(CharSequence s, int arg1, int arg2, int arg3) {
-                if (s.toString().trim().substring(0).equals(".")) {
+                if (s.toString().trim().equals(".")) {
                     s = "0" + s;
                     etChangeAmt.setText(s);
                     etChangeAmt.setSelection(2);
