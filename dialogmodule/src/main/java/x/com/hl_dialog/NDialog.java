@@ -10,7 +10,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -56,12 +55,10 @@ public class NDialog {
     //从右往左滑动动画
     public static final int DIALOG_ANIM_SLID_RIGHT = R.style.DialogAnimationSlidRight;
 
-    // 弹出dialog时候是否要显示阴影
-    private static boolean dimEnable = true;
     /**
      * 对话框宽度所占屏幕宽度的比例
      */
-    public static final float WIDTHFACTOR = 0.75f;
+    public static float WIDTHFACTOR = 0.8f;
     /**
      * Dialog对象
      */
@@ -77,7 +74,7 @@ public class NDialog {
      * @param widthcoefficient 对话框宽度时占屏幕宽度的比重（0-1）
      */
     public NDialog(Context context, int layoutStyle, float widthcoefficient) {
-        this(context, layoutStyle, widthcoefficient, dimEnable);
+        this(context, layoutStyle, widthcoefficient, true);
     }
 
     /**
@@ -87,7 +84,7 @@ public class NDialog {
      * @param widthcoefficient 对话框宽度时占屏幕宽度的比重（0-1）
      */
     public NDialog(Context context, float widthcoefficient) {
-        this(context, R.layout.ndialog_default, widthcoefficient, dimEnable);
+        this(context, R.layout.ndialog_default, widthcoefficient, true);
     }
 
     /**
@@ -98,7 +95,7 @@ public class NDialog {
      * @param widthcoefficient 对话框宽度所占屏幕宽度的比重（0-1）
      * @param dimEnable        是否显示阴影
      */
-    private NDialog(Context context, int layoutStyle, float widthcoefficient, boolean dimEnable) {
+    public NDialog(Context context, int layoutStyle, float widthcoefficient, boolean dimEnable) {
         Dialog dialog;
         if (dimEnable) {
             dialog = new Dialog(context, R.style.Dialog);
@@ -110,7 +107,11 @@ public class NDialog {
         Window window = dialog.getWindow();
         // 获取屏幕宽度
         DisplayMetrics metrics = new DisplayMetrics();
-        window.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        if (window != null) {
+            window.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        } else {
+            ViseLog.e("window为空");
+        }
         int screenwidth = metrics.widthPixels;
         int width;
         if (widthcoefficient > 0) {
@@ -119,7 +120,11 @@ public class NDialog {
             width = (int) (screenwidth * WIDTHFACTOR);
         }
         // 设置对话框宽度
-        window.getAttributes().width = width;
+        if (window != null) {
+            window.getAttributes().width = width;
+        } else {
+            ViseLog.e("window为空");
+        }
         this.dialog = dialog;
         this.context = context;
     }
