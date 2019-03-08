@@ -28,14 +28,12 @@ public class NormalDialogActivity extends BaseActivity implements hl_permissions
         chajian.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
+                Intent intent = new Intent(NormalDialogActivity.this, H5Activity.class);
+                startActivity(intent);
             }
         });
-        
-        
-        
-        
-       
+
+
         quicktest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,8 +78,8 @@ public class NormalDialogActivity extends BaseActivity implements hl_permissions
         qqq.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                
-                
+
+
 //                Intent intent = new Intent(NormalDialogActivity.this, CheckUpActivity.class);
 //                startActivity(intent);
 //                WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
@@ -95,7 +93,7 @@ public class NormalDialogActivity extends BaseActivity implements hl_permissions
 
         //显示加载框
         DFLoadingDialog a = new DFLoadingDialog();
-        AppCompatActivity activity=this;
+        AppCompatActivity activity = this;
         a.show(activity.getSupportFragmentManager(), "fff");
         //iphone样式
 //        a = new NDialog(this, NDialog.NDialog_Iphone, 0.8f)

@@ -11,6 +11,11 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        ndk {
+//            //APP的build.gradle设置支持的SO库架构   'x86',armeabi-v7a
+//            ,'x86','arm64-v8a','x86_64'
+            abiFilters 'armeabi', "armeabi-v7a", "x86"
+        }
     }
     buildTypes {
         release {

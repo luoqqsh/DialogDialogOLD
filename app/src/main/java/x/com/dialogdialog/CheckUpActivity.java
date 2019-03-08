@@ -132,7 +132,7 @@ public class CheckUpActivity extends BaseActivity {
 
     public void requesPermission(View view) {
         //权限申请
-        hl_permissions.getInstance().applyPermission(this,
+        hl_permissions.applyPermission(this,
                 new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
                         Manifest.permission.READ_EXTERNAL_STORAGE
                 }, new hl_permissions.RequestPermissionCallBack() {

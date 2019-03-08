@@ -86,7 +86,7 @@ public class CheckDialogFragment extends DialogFragment {
                                         }
                                         break;
                                     case 2://立即更新
-                                        hl_permissions.getInstance().applyPermission(
+                                        hl_permissions.applyPermission(
                                                 CheckDialogFragment.this,
                                                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ? mPermissionList_O : mPermissionList,
                                                 new hl_permissions.RequestPermissionCallBack() {
@@ -163,7 +163,7 @@ public class CheckDialogFragment extends DialogFragment {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        hl_permissions.getInstance().requestPermissionsResult(requestCode, permissions, grantResults);
+        hl_permissions.requestPermissionsResult(getActivity(),requestCode, permissions, grantResults);
     }
 
     @Override

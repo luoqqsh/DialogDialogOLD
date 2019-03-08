@@ -18,6 +18,7 @@ import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+
 import x.com.hl_tools.hl_permissions;
 import x.com.hl_tools.hl_permissionsOther;
 import x.com.hl_tools.model.PermissionModel;
@@ -64,9 +65,9 @@ public class DFPermissionListDialog extends DialogFragment {
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 if (!list_permission.get(position).isIsapply()) {
                     if (position == 3) {
-                        p.gotoSetFloatWindow(getActivity(),true);
+                        p.gotoSetFloatWindow(getActivity(), true);
                     } else {
-                        hl_permissions.getInstance().applyPermission(fragmentcontext, new String[]{list_permission.get(position).getPermission()}, new hl_permissions.RequestPermissionCallBack() {
+                        hl_permissions.applyPermission(fragmentcontext, new String[]{list_permission.get(position).getPermission()}, new hl_permissions.RequestPermissionCallBack() {
                             @Override
                             public void requestPermissionSuccess() {
                                 list_permission.get(position).setIsapply(true);
@@ -99,7 +100,7 @@ public class DFPermissionListDialog extends DialogFragment {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        hl_permissions.getInstance().requestPermissionsResult(requestCode, permissions, grantResults);
+        hl_permissions.requestPermissionsResult(getActivity(), requestCode, permissions, grantResults);
     }
 
     @Override

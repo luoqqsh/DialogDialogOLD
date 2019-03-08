@@ -13,6 +13,7 @@ import com.vise.log.ViseLog;
 import com.vise.log.inner.LogcatTree;
 
 import x.com.hl_dialog.MeTools.NeverCrashHelper;
+import x.com.hl_web.TbsManager;
 
 public class DialogApplication extends Application {
     @Override
@@ -40,6 +41,7 @@ public class DialogApplication extends Application {
 //            e.printStackTrace();
             showToast(e.getMessage());
         });
+//        TbsManager.getInstance().init(this);
     }
 
     private void showToast(final String text) {

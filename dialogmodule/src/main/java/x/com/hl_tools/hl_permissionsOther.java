@@ -14,6 +14,7 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.lang.reflect.Field;
@@ -21,7 +22,10 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Set;
 
+import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationManagerCompat;
+
+import com.vise.log.ViseLog;
 
 import x.com.hl_dialog.NDialog;
 import x.com.hl_dialog.NDialogBuilder;
@@ -120,7 +124,44 @@ public class hl_permissionsOther {
         Set<String> packageNames = NotificationManagerCompat.getEnabledListenerPackages(context);
         return packageNames.contains(context.getPackageName());
     }
+    /**
+     * 是否启用辅助功能服务
+     *
+     * @param mContext             context
+     * @param serviceCanonicalName 服务类名
+     * @return 结果
+     */
+    public static boolean checkAccessibilitySettingsOn(Context mContext, String serviceCanonicalName) {
+        int accessibilityEnabled = 0;
+        // TestService为对应的服务
+        final String service = mContext.getPackageName() + "/" + serviceCanonicalName;
+        try {
+            accessibilityEnabled = Settings.Secure.getInt(mContext.getApplicationContext().getContentResolver(),
+                    android.provider.Settings.Secure.ACCESSIBILITY_ENABLED);
+        } catch (Settings.SettingNotFoundException e) {
+            ViseLog.e("Error finding setting, default accessibility to not found: " + e.getMessage());
+        }
+        TextUtils.SimpleStringSplitter mStringColonSplitter = new TextUtils.SimpleStringSplitter(':');
 
+        if (accessibilityEnabled == 1) {
+            String settingValue = Settings.Secure.getString(mContext.getApplicationContext().getContentResolver(),
+                    Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);
+            // com.z.buildingaccessibilityservices/com.z.buildingaccessibilityservices.TestService
+            if (settingValue != null) {
+                mStringColonSplitter.setString(settingValue);
+                while (mStringColonSplitter.hasNext()) {
+                    String accessibilityService = mStringColonSplitter.next();
+//                    ViseLog.e("-------------- > accessibilityService :: " + accessibilityService + " " + service);
+                    if (accessibilityService.equalsIgnoreCase(service)) {
+                        return true;
+                    }
+                }
+            }
+        } else {
+            ViseLog.e("***ACCESSIBILITY IS DISABLED***");
+        }
+        return false;
+    }
     /**
      * 去设置通知
      *
@@ -202,6 +243,7 @@ public class hl_permissionsOther {
      * @param context 上下文
      * @return 结果
      */
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private static boolean isNoOption(Context context) {
         PackageManager packageManager = context.getApplicationContext()
                 .getPackageManager();
@@ -224,10 +266,7 @@ public class hl_permissionsOther {
                 .getSystemService(Context.USAGE_STATS_SERVICE);
         List<UsageStats> queryUsageStats = usageStatsManager.queryUsageStats(
                 UsageStatsManager.INTERVAL_BEST, 0, ts);
-        if (queryUsageStats == null || queryUsageStats.isEmpty()) {
-            return false;
-        }
-        return true;
+        return queryUsageStats != null && !queryUsageStats.isEmpty();
     }
 
     /**
@@ -238,10 +277,17 @@ public class hl_permissionsOther {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public static void gotoSetUsage(Context context) {
         if (isNoOption(context)) {
-            Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
-            context.startActivity(intent);
+            context.startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
         }
+    }
 
+    /**
+     * 跳转到辅助功能设置页面
+     *
+     * @param context context
+     */
+    public static void gotoSetAccessibility(Context context) {
+        context.startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));
     }
 
     ///////////////////////////////以下内容仅和悬浮窗相关///////////////////////////////////////////////
@@ -349,33 +395,32 @@ public class hl_permissionsOther {
         switch (flag) {
             case ROM360:
                 QikuUtils.applyPermission(context);
-                mOnPermissionListener.result(true);
                 break;
             case HUAWEI:
                 HuaweiUtils.applyPermission(context);
-                mOnPermissionListener.result(true);
                 break;
             case MEIZU:
                 MeizuUtils.applyPermission(context);
-                mOnPermissionListener.result(true);
                 break;
             case MIUI:
                 MiuiUtils.applyMiuiPermission(context);
-                mOnPermissionListener.result(true);
                 break;
             case OPPO:
                 OppoUtils.applyOppoPermission(context);
-                mOnPermissionListener.result(true);
                 break;
             case COMMON_ROM:
                 try {
                     commonROMPermissionApplyInternal(context);
-                    mOnPermissionListener.result(true);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    mOnPermissionListener.result(false);
+                    if (mOnPermissionListener != null) {
+                        mOnPermissionListener.result(false);
+                    }
                 }
                 break;
+        }
+        if (mOnPermissionListener != null) {
+            mOnPermissionListener.result(true);
         }
     }
 

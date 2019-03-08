@@ -102,7 +102,7 @@ public class DFUpdateDialog extends DialogFragment {
     }
 
     private void applypression() {
-        hl_permissions.getInstance().applyPermission(this, mPermissionList, new hl_permissions.RequestPermissionCallBack() {
+        hl_permissions.applyPermission(this, mPermissionList, new hl_permissions.RequestPermissionCallBack() {
             @Override
             public void requestPermissionSuccess() {
                 startdownload(getActivity());
@@ -153,6 +153,6 @@ public class DFUpdateDialog extends DialogFragment {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        hl_permissions.getInstance().requestPermissionsResult(requestCode, permissions, grantResults);
+        hl_permissions.requestPermissionsResult(getActivity(),requestCode, permissions, grantResults);
     }
 }
