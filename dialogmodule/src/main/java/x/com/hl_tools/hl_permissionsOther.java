@@ -146,12 +146,10 @@ public class hl_permissionsOther {
         if (accessibilityEnabled == 1) {
             String settingValue = Settings.Secure.getString(mContext.getApplicationContext().getContentResolver(),
                     Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);
-            // com.z.buildingaccessibilityservices/com.z.buildingaccessibilityservices.TestService
             if (settingValue != null) {
                 mStringColonSplitter.setString(settingValue);
                 while (mStringColonSplitter.hasNext()) {
                     String accessibilityService = mStringColonSplitter.next();
-//                    ViseLog.e("-------------- > accessibilityService :: " + accessibilityService + " " + service);
                     if (accessibilityService.equalsIgnoreCase(service)) {
                         return true;
                     }
