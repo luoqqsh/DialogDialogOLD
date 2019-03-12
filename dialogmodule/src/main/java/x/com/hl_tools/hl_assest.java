@@ -2,11 +2,11 @@ package x.com.hl_tools;
 
 import android.content.Context;
 
-import com.vise.log.ViseLog;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+
+import x.com.hl_log.ViseLog;
 
 public class hl_assest {
     //assets对应src/main/assets目录

@@ -2,27 +2,15 @@ package x.com.hl_web;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.util.AttributeSet;
 
-import com.tencent.smtt.export.external.interfaces.JsPromptResult;
-import com.tencent.smtt.export.external.interfaces.JsResult;
-import com.tencent.smtt.export.external.interfaces.SslError;
-import com.tencent.smtt.export.external.interfaces.SslErrorHandler;
 import com.tencent.smtt.sdk.CookieManager;
 import com.tencent.smtt.sdk.CookieSyncManager;
-import com.tencent.smtt.sdk.WebChromeClient;
 import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
-import com.tencent.smtt.sdk.WebViewClient;
-import com.vise.log.ViseLog;
 
-import java.util.List;
 import java.util.Map;
+
 
 public class x5WebView extends WebView {
     private Context mContext;
@@ -35,18 +23,22 @@ public class x5WebView extends WebView {
 
     public x5WebView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
+        this.mContext = context;
     }
 
     public x5WebView(Context context, AttributeSet attributeSet, int i) {
         super(context, attributeSet, i);
+        this.mContext = context;
     }
 
     public x5WebView(Context context, AttributeSet attributeSet, int i, boolean b) {
         super(context, attributeSet, i, b);
+        this.mContext = context;
     }
 
     public x5WebView(Context context, AttributeSet attributeSet, int i, Map<String, Object> map, boolean b) {
         super(context, attributeSet, i, map, b);
+        this.mContext = context;
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -107,134 +99,6 @@ public class x5WebView extends WebView {
 //        }
     }
 
-    public void initWebClient() {
-        //处理各种通知 & 请求事件
-        setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView webView, String url) {
-                //方式1：加载一个网页：
-//                webView.loadUrl("http://www.google.com/");
-                //方式2：加载apk包中的html页面
-//                webView.loadUrl("file:///android_asset/test.html");
-                //方式3：加载手机本地的html页面
-//                webView.loadUrl("content://com.android.htmlfileprovider/sdcard/test.html");
-                //方式4：加载 HTML 页面的一小段内容.内容里不能出现 ’#’, ‘%’, ‘\’ , ‘?’ 这四个字符，
-                //若出现了需用 %23, %25, %27, %3f 对应来替代，否则会出现异常
-//                webView.loadData("需要截取展示的内容", "展示内容的类型", "字节码");
-                //方式5：Android调用js代码。callJS()对应js相应的代码。该方法会刷新页面
-                //JS代码调用一定要在 onPageFinished（） 回调之后才能调用，否则不会调用。
-//                webView.loadUrl("javascript:callJS()");
-                //方式6：Android调用js代码。要求安卓4.4以上，不会刷新页面。效率高
-//                webView.evaluateJavascript("javascript:callJS()", new ValueCallback<String>() {
-//                    @Override
-//                    public void onReceiveValue(String value) {
-//                        //此处为 js 返回的结果
-//                    }
-//                });
-                //方式7:协议拦截实现与js交互,根据以下内容进行判断
-//                Uri uri = Uri.parse(url);
-//                ViseLog.d(uri.getScheme() + uri.getAuthority());
-                if (!url.startsWith("http")) {
-                    Intent intent = new Intent();
-                    intent.setAction(Intent.ACTION_VIEW);
-                    Uri uri = Uri.parse(url);
-                    intent.setData(uri);
-                    if (isIntentExisting(mContext, intent)) {
-                        mContext.startActivity(intent);
-                    }
-                } else {
-                    webView.loadUrl(url);
-                }
-                return true;
-            }
-
-            @Override
-            public void onPageStarted(WebView webView, String url, Bitmap bitmap) {
-                super.onPageStarted(webView, url, bitmap);
-                ViseLog.d(url);
-            }
-
-            @Override
-            public void onPageFinished(WebView webView, String url) {
-                super.onPageFinished(webView, url);
-                ViseLog.d(url);
-            }
-
-            //每一个资源（比如图片）的加载都会调用一次。
-            @Override
-            public void onLoadResource(WebView webView, String url) {
-                super.onLoadResource(webView, url);
-                ViseLog.d(url);
-            }
-
-            //请求错误处理。
-            @Override
-            public void onReceivedError(WebView webView, int errorCode, String description, String failingUrl) {
-                super.onReceivedError(webView, errorCode, description, failingUrl);
-                ViseLog.d(failingUrl);
-                ViseLog.d(errorCode);
-                ViseLog.d(description);
-            }
-
-            //处理https请求
-            @Override
-            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-                handler.proceed();    //表示等待证书响应
-                // handler.cancel();      //表示挂起连接，为默认方式
-                // handler.handleMessage(null);    //可做其他处理
-            }
-        });
-    }
-
-    public static boolean isIntentExisting(Context context, Intent intent) {
-        PackageManager packageManager = context.getPackageManager();
-        List<ResolveInfo> resolveInfo = packageManager.queryIntentActivities(intent, PackageManager.MATCH_ALL);
-        return resolveInfo.size() > 0;
-    }
-
-    public void initWebChromeClient() {
-        //辅助 WebView 处理 Javascript 的对话框,网站图标,网站标题等等。
-        setWebChromeClient(new WebChromeClient() {
-            //获得网页加载进度
-            @Override
-            public void onProgressChanged(WebView view, int newProgress) {
-                ViseLog.d(newProgress);
-            }
-
-            //获得网页中的标题
-            @Override
-            public void onReceivedTitle(WebView view, String title) {
-                ViseLog.d(title);
-            }
-
-            //支持javascript的警告框
-            @Override
-            public boolean onJsAlert(WebView view, String url, String message, final JsResult result) {
-                ViseLog.d(message);
-                ViseLog.d(result);
-                return true;
-            }
-
-            //支持javascript的确认框
-            @Override
-            public boolean onJsConfirm(WebView view, String url, String message, final JsResult result) {
-                ViseLog.d(message);
-                ViseLog.d(result);
-                // 返回布尔值：判断点击时确认还是取消。true表示点击了确认；false表示点击了取消；
-                return true;
-            }
-
-            //支持javascript输入框
-            @Override
-            public boolean onJsPrompt(WebView view, String url, String message, String defaultValue, final JsPromptResult result) {
-                return true;
-            }
-        });
-    }
-    public void initDownload(){
-        
-    }
-
     public void setCookies(String url, String[] cookies) {
         CookieSyncManager.createInstance(mContext);
         CookieManager cookieManager = CookieManager.getInstance();
@@ -247,15 +111,40 @@ public class x5WebView extends WebView {
         String cookie = cookieManager.getCookie(url);
     }
 
-    public void goBackPage() {
-        if (canGoBack()) {
-            goBack();
-        }
+    public void loadUrl(String url) {
+//        方式1：加载一个网页：
+//        webView.loadUrl("http://www.google.com/");
+//        方式2：加载apk包中的html页面
+//        webView.loadUrl("file:///android_asset/test.html");
+//        方式3：加载手机本地的html页面
+//        webView.loadUrl("content://com.android.htmlfileprovider/sdcard/test.html");
+//        方式4：加载 HTML 页面的一小段内容.内容里不能出现 ’#’, ‘%’, ‘\’ , ‘?’ 这四个字符，
+//        若出现了需用 %23, %25, %27, %3f 对应来替代，否则会出现异常
+//        webView.loadData("需要截取展示的内容", "展示内容的类型", "字节码");
+//        方式5：Android调用js代码。callJS()对应js相应的代码。该方法会刷新页面
+//        JS代码调用一定要在 onPageFinished（） 回调之后才能调用，否则不会调用。
+//        webView.loadUrl("javascript:callJS()");
+//        方式6：Android调用js代码。要求安卓4.4以上，不会刷新页面。效率高
+//        webView.evaluateJavascript("javascript:callJS()", new ValueCallback<String>() {
+//            @Override
+//            public void onReceiveValue(String value) {
+        //此处为 js 返回的结果
+//            }
+//        });
+//        方式7:协议拦截实现与js交互,根据以下内容进行判断
+//        Uri uri = Uri.parse(url);
+//        ViseLog.d(uri.getScheme() + uri.getAuthority());
+        super.loadUrl(url);
     }
 
-    public void goForwardPage() {
-        if (canGoForward()) {
-            goForward();
-        }
+    public void destroyWebView() {
+        loadDataWithBaseURL(null, "", "text/html", "utf-8", null);
+        clearHistory();
+        stopLoading();
+        removeAllViewsInLayout();
+        removeAllViews();
+        setWebViewClient(null);
+        CookieSyncManager.getInstance().stopSync();
+        destroy();
     }
 }

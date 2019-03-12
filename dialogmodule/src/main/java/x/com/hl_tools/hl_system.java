@@ -47,7 +47,7 @@ public class hl_system {
         ActivityManager activityManager = (ActivityManager) mContext
                 .getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningServiceInfo> serviceList = activityManager
-                .getRunningServices(30);
+                .getRunningServices(100);
         if (!(serviceList.size() > 0)) {
             return false;
         }

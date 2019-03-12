@@ -5,7 +5,7 @@ public class PermissionModel {
     private boolean isapply = false;
     private String permission;
 
-    public PermissionModel(String name, boolean isapply,String permission) {
+    public PermissionModel(String name, boolean isapply, String permission) {
         this.name = name;
         this.isapply = isapply;
         this.permission = permission;

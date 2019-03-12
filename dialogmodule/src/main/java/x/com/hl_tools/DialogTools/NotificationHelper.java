@@ -1,4 +1,4 @@
-package x.com.hl_dialog.MeTools;
+package x.com.hl_tools.DialogTools;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -11,6 +11,7 @@ import android.util.Log;
 import android.widget.RemoteViews;
 
 import androidx.core.app.NotificationCompat;
+
 import x.com.hl_dialog.R;
 
 import static android.content.Context.NOTIFICATION_SERVICE;

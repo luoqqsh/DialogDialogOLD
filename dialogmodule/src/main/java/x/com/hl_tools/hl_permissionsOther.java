@@ -25,10 +25,8 @@ import java.util.Set;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationManagerCompat;
 
-import com.vise.log.ViseLog;
-
 import x.com.hl_dialog.NDialog;
-import x.com.hl_dialog.NDialogBuilder;
+import x.com.hl_log.ViseLog;
 import x.com.hl_tools.permissions.HuaweiUtils;
 import x.com.hl_tools.permissions.MeizuUtils;
 import x.com.hl_tools.permissions.MiuiUtils;
@@ -367,7 +365,7 @@ public class hl_permissionsOther {
         if (isneeddialog) {
             Dialog a = new NDialog(context, NDialog.nDialog_Iphone, 0.8f)
                     .setTouchOutSideCancelable(false, false)
-                    .setMessage("您的手机没有授予悬浮窗权限，请开启后再试！", NDialogBuilder.MSG_LAYOUT_CENTER)
+                    .setMessage("您的手机没有授予悬浮窗权限，请开启后再试！", NDialog.MSG_LAYOUT_CENTER)
                     .setBtnClickListener(true, "稍后再说", "现在去开启", new NDialog.onDialogbtnClickListener() {
                         @Override
                         public void onDialogbtnClick(Context context, Dialog dialog, int whichBtn) {

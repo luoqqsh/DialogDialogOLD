@@ -9,29 +9,29 @@
         android:orientation="vertical">
 
         <Button
-            android:id="@+id/ewfe"
+            android:id="@+id/tongzhi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="sadfsdf" />
+            android:text="通知" />
 
         <Button
-            android:id="@+id/qqq"
+            android:id="@+id/x5web"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="qqq" />
+            android:text="x5内核" />
 
         <Button
-            android:id="@+id/quicktest"
+            android:id="@+id/log"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="quicktest" />
+            android:text="Log" />
 
         <Button
             android:id="@+id/chajian"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="插件测试" />
-        
+
     </LinearLayout>
-    
+
 </LinearLayout>

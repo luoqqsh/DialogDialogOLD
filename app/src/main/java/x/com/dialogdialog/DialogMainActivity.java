@@ -1,0 +1,213 @@
+package x.com.dialogdialog;
+
+import android.Manifest;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+
+import x.com.hl_dialog.DFLoadingDialog;
+import x.com.hl_dialog.DFNDialog;
+import x.com.hl_dialog.DFPermissionListDialog;
+import x.com.hl_dialog.DFUpdateDialog;
+import x.com.hl_dialog.NDialog;
+import x.com.hl_dialog.NDialogBuilder;
+import x.com.hl_dialog.ProgressDialog.PDialog1Builder;
+import x.com.hl_log.ViseLog;
+import x.com.hl_tools.hl_permissions;
+import x.com.hl_tools.hl_permissionsOther;
+
+public class DialogMainActivity extends BaseActivity implements hl_permissionsOther.OnPermissionListener {
+    private Context mContext;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        mContext = this;
+        findViewById(R.id.tongzhi).setOnClickListener(view -> startActivity(new Intent(mContext, NotificationActivity.class)));
+        findViewById(R.id.x5web).setOnClickListener(v -> startActivity(new Intent(mContext, H5Activity.class)));
+        findViewById(R.id.log).setOnClickListener(v -> startActivity(new Intent(mContext, LogActivity.class)));
+        findViewById(R.id.chajian).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+    }
+
+    private void permissions() {
+        //检查权限
+        //需要在activity重写onRequestPermissionsResult回调方法。不处理回调不写
+        hl_permissions.applyPermission(DialogMainActivity.this,
+                new String[]{Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                new hl_permissions.RequestPermissionCallBack() {
+                    @Override
+                    public void requestPermissionSuccess() {
+                        ViseLog.d("true2222");
+                    }
+
+                    @Override
+                    public void requestPermissionFail(boolean isNoTip) {
+
+                    }
+                });
+
+        //权限列表弹窗
+        DFPermissionListDialog i = DFPermissionListDialog.newInstance(new hl_permissionsOther.OnPermissionListener() {
+            @Override
+            public void result(boolean isSuccess) {
+                ViseLog.d(isSuccess);
+            }
+        });
+        i.show(getSupportFragmentManager(), "fff");
+    }
+
+    private void updates() {
+        //检查更新框样式
+        Dialog g = new NDialog(this, NDialog.nDialog_Update, 1)
+                .setTouchOutSideCancelable(false, false)
+                .setMessage("111", Gravity.LEFT)
+                .setBtnClickListener(true, "下次再说", "立即更新", new NDialog.onDialogbtnClickListener() {
+                    @Override
+                    public void onDialogbtnClick(Context context, Dialog dialog, int whichBtn) {
+                        switch (whichBtn) {
+                            case 1:
+                                Toast.makeText(context, "下次再说", Toast.LENGTH_SHORT).show();
+                                break;
+                            case 2:
+                                Toast.makeText(context, "立即更新", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    }
+                }).create();
+        g.show();
+
+        //检查更新样式2
+        DFUpdateDialog.newInstance("版本更新内容", 1,
+                "http://imtt.dd.qq.com/16891/337A49BBE7A8A0B42E2312893903BBB3.apk?fsname=com.coolsnow.screenshot_5.6.0_56000.apk"
+        ).show(getSupportFragmentManager(), "checkupnew");
+    }
+
+    private void dialogs() {
+        //显示加载框
+        DFLoadingDialog a = new DFLoadingDialog();
+        a.show(getSupportFragmentManager(), "loadingDialog");
+        //隐藏加载框
+        a.dismiss();
+
+        //显示普通弹窗
+        DFNDialog b = DFNDialog.newInstance();
+        b.setMessage("dddddddddd", 4);
+        b.show(getSupportFragmentManager(), "normalDialog");
+
+        //显示iPhone样式弹窗
+        Dialog c = new NDialog(this, NDialog.nDialog_Iphone, 0.8f)
+                .setTouchOutSideCancelable(false, false)
+                .setMessage("我是鬼，我来抓你了！", NDialog.MSG_LAYOUT_CENTER)
+                .setBtnClickListener(true, "好", "不好", new NDialog.onDialogbtnClickListener() {
+                    @Override
+                    public void onDialogbtnClick(Context context, Dialog dialog, int whichBtn) {
+                        switch (whichBtn) {
+                            case 1:
+                                Toast.makeText(context, "点击了好", Toast.LENGTH_SHORT).show();
+                                break;
+                            case 2:
+                                Toast.makeText(context, "点击了不好", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    }
+                }).create();
+        c.show();
+
+        //sex性别选择样式
+        Dialog d = new NDialog(this, NDialog.nDialog_Sex, 1.0f)
+                .setDialoglocation(NDialog.DIALOG_LOCATION_BOTTOM)
+                .setDialogAnimation(NDialog.DIALOG_ANIM_SLID_BOTTOM)
+                .setTouchOutSideCancelable(false, false)
+                .setBtnClickListener(true, "女", "男", "取消", new NDialog.onDialogbtnClickListener() {
+                    @Override
+                    public void onDialogbtnClick(Context context, Dialog dialog, int whichBtn) {
+                        switch (whichBtn) {
+                            case 1:
+                                Toast.makeText(context, "女", Toast.LENGTH_SHORT).show();
+                                break;
+                            case 2:
+                                Toast.makeText(context, "男", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    }
+                }).create();
+        d.show();
+
+        //share分享样式
+        Dialog e = new NDialog(this, R.layout.dialog_select, 1)
+                .setBtnClickListener(true, "微信", "朋友圈", new NDialog.onDialogbtnClickListener() {
+                    @Override
+                    public void onDialogbtnClick(Context context, Dialog dialog, int whichBtn) {
+                        switch (whichBtn) {
+                            case 1:
+                                Toast.makeText(context, "微信", Toast.LENGTH_SHORT).show();
+                                break;
+                            case 2:
+                                Toast.makeText(context, "朋友圈", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    }
+                }).create();
+        e.show();
+
+        //拍照选项样式
+        Dialog f = new NDialog(this, NDialog.nDialog_Photo, 1)
+                .setDialoglocation(NDialog.DIALOG_LOCATION_BOTTOM)
+                .setDialogAnimation(NDialog.DIALOG_ANIM_SLID_BOTTOM)
+                .setTouchOutSideCancelable(false, false)
+                .setBtnClickListener(true, "拍照", "相册", "取消", new NDialog.onDialogbtnClickListener() {
+                    @Override
+                    public void onDialogbtnClick(Context context, Dialog dialog, int whichBtn) {
+                        switch (whichBtn) {
+                            case 1:
+                                Toast.makeText(context, "拍照", Toast.LENGTH_SHORT).show();
+                                break;
+                            case 2:
+                                Toast.makeText(context, "相册", Toast.LENGTH_SHORT).show();
+                                break;
+                            case 3:
+                                Toast.makeText(context, "取消", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    }
+                }).create();
+        f.show();
+
+        //加载进度框，10秒后弹出出错提示
+        Dialog h = new PDialog1Builder(this, 0, 1.0f).setMessage("www").settime(1000).setTouchOutSideCancelable(false)
+                .setonInputCodeListener(new PDialog1Builder.onProgressFinishListener() {
+                    @Override
+                    public void onProgressFinish() {
+                        Dialog errordialog = new NDialogBuilder(DialogMainActivity.this, 0, 1.0f)
+                                .setTouchOutSideCancelable(false)
+                                .setMessage("345tret", NDialogBuilder.MSG_LAYOUT_LEFT)
+                                .setDialogAnimation(NDialogBuilder.DIALOG_ANIM_NORMAL)
+                                .setBtnClickListener(true, "", new NDialogBuilder.onDialogbtnClickListener() {
+                                    @Override
+                                    public void onDialogbtnClick(Context context, Dialog dialog, int whichBtn) {
+                                    }
+                                })
+                                .create();
+                        errordialog.show();
+                    }
+                }).create();
+        h.show();
+    }
+
+    @Override
+    public void result(boolean isSuccess) {
+
+    }
+}

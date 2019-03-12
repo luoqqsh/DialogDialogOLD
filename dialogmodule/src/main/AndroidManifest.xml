@@ -3,6 +3,7 @@
     package="x.com.hl_dialog">
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:allowBackup="true"
@@ -11,7 +12,7 @@
         <!--7.0以上 安装apk-->
         <!--android:authorities="${applicationId}.fileProvider"-->
         <provider
-            android:name="x.com.hl_dialog.CheckUpdate.CheckProvider"
+            android:name="x.com.hl_dialog.Provider.CheckProvider"
             android:authorities="${applicationId}.fileProvider"
             android:grantUriPermissions="true"
             android:exported="false">

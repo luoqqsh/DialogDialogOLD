@@ -1,4 +1,4 @@
-package x.com.hl_dialog.MeTools;
+package x.com.hl_tools.DialogTools;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -58,6 +58,6 @@ public class NeverCrashHelper {
     }
 
     public interface CrashHandler{
-        void uncaughtException(Thread t,Throwable e);
+        void uncaughtException(Thread t, Throwable e);
     }
 }

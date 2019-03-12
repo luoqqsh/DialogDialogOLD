@@ -10,13 +10,13 @@ import android.widget.LinearLayout;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.tencent.smtt.sdk.DownloadListener;
-import com.vise.log.ViseLog;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 import x.com.hl_tools.hl_permissions;
+import x.com.hl_web.x5WebChromeClient;
+import x.com.hl_web.x5WebClient;
+import x.com.hl_web.x5WebDownloadListener;
 import x.com.hl_web.x5WebView;
 
 public class H5Activity extends AppCompatActivity {
@@ -25,7 +25,6 @@ public class H5Activity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        webView = new x5WebView(this);
         LinearLayout mLayout = new LinearLayout(getApplicationContext());
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         webView = new x5WebView(this);
@@ -33,33 +32,14 @@ public class H5Activity extends AppCompatActivity {
         mLayout.addView(webView);
 
         setContentView(mLayout);
-        String[] permission = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE, Manifest.permission.ACCESS_NETWORK_STATE,Manifest.permission.ACCESS_FINE_LOCATION};
-        hl_permissions.applyPermission(this, permission, new hl_permissions.RequestPermissionCallBack() {
-            @Override
-            public void requestPermissionSuccess() {
-
-            }
-
-            @Override
-            public void requestPermissionFail(boolean isNoTip) {
-
-            }
-        });
-//        TbsManager.getInstance().init(this);
+        String[] permission = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE, Manifest.permission.ACCESS_NETWORK_STATE, Manifest.permission.ACCESS_FINE_LOCATION};
+        hl_permissions.applyPermission(this, permission);
+//        x5Manager.getInstance().init(this);
         webView.initWebSetting();
-        webView.initWebClient();
-        webView.initWebChromeClient();
+        webView.setWebViewClient(new x5WebClient());
+        webView.setWebChromeClient(new x5WebChromeClient());
         webView.addJavascriptInterface(new JavaScriptInterface(), "JSInterface");
-        webView.setDownloadListener(new DownloadListener() {
-            @Override
-            public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
-                ViseLog.d(url);
-                ViseLog.d(userAgent);
-                ViseLog.d(contentDisposition);
-                ViseLog.d(mimetype);
-                ViseLog.d(contentLength);
-            }
-        });
+        webView.setDownloadListener(new x5WebDownloadListener());
         String encode = null;
         try {
             encode = URLEncoder.encode("", "utf-8");
@@ -80,14 +60,30 @@ public class H5Activity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
-        if (webView != null) {
-            webView.loadDataWithBaseURL(null, "", "text/html", "utf-8", null);
-            webView.clearHistory();
+//        InputMethodManagerUtils.fixInputMethodManagerLeak(this);
+        try {
+            if (webView != null) {
+                webView.destroyWebView();
+                webView = null;
+            }
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        } finally {
+            super.onDestroy();
+        }
+    }
 
-            ((ViewGroup) webView.getParent()).removeView(webView);
-            webView.destroy();
-            webView = null;
+    private void goBackPage() {
+        if (webView.canGoBack()) {
+            webView.goBack();
+        } else {
+            finish();
+        }
+    }
+
+    private void goForwardPage() {
+        if (webView.canGoForward()) {
+            webView.goForward();
         }
     }
 
@@ -107,7 +103,7 @@ public class H5Activity extends AppCompatActivity {
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if ((keyCode == KeyEvent.KEYCODE_BACK)) {
-            webView.goBackPage();
+            goBackPage();
             return true;
         }
         return super.onKeyDown(keyCode, event);
@@ -121,4 +117,6 @@ public class H5Activity extends AppCompatActivity {
         }
         //...
     }
+
+
 }

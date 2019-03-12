@@ -9,9 +9,10 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.text.TextUtils;
-import com.vise.log.ViseLog;
 import java.io.File;
 import androidx.core.content.FileProvider;
+
+import x.com.hl_log.ViseLog;
 
 public class hl_app {
     //安装

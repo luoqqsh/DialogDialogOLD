@@ -1,4 +1,4 @@
-package x.com.hl_dialog.MeTools;
+package x.com.hl_tools.DialogTools;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -14,6 +14,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.core.content.FileProvider;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -23,8 +26,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-import androidx.annotation.NonNull;
-import androidx.core.content.FileProvider;
 import x.com.hl_dialog.BuildConfig;
 import x.com.hl_dialog.NDialogBuilder;
 import x.com.hl_dialog.ProgressDialog.PDialog2Builder;

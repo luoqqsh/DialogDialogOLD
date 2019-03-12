@@ -1,24 +1,13 @@
 package x.com.hl_dialog;
 
-import android.annotation.SuppressLint;
+
 import android.annotation.TargetApi;
-import android.app.Activity;
-import android.app.Dialog;
-import android.content.Context;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.os.Build;
-import android.util.DisplayMetrics;
 import android.view.Display;
-import android.view.Gravity;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.vise.log.ViseLog;
 
 public class FWDialog {
 

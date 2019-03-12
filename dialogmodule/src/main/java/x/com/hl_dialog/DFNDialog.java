@@ -5,11 +5,11 @@ import android.content.Context;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.vise.log.ViseLog;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+
+import x.com.hl_log.ViseLog;
 
 public class DFNDialog extends DialogFragment {
     private String aa = "ww;";
@@ -20,7 +20,7 @@ public class DFNDialog extends DialogFragment {
         ViseLog.d("onCreateDialog");
         Dialog dialog = new NDialog(getActivity(), NDialog.nDialog_Update, 0.8f)
                 .setTouchOutSideCancelable(false, false)
-                .setMessage(aa, NDialogBuilder.MSG_LAYOUT_CENTER)
+                .setMessage(aa, NDialog.MSG_LAYOUT_CENTER)
                 .setBtnClickListener(true, "好", "不好", new NDialog.onDialogbtnClickListener() {
                     @Override
                     public void onDialogbtnClick(Context context, Dialog dialog, int whichBtn) {

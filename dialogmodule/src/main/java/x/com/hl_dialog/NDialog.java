@@ -13,7 +13,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.vise.log.ViseLog;
+import x.com.hl_log.ViseLog;
 
 public class NDialog {
     /**

@@ -3,8 +3,6 @@ package x.com.hl_tools;
 import com.liulishuo.filedownloader.BaseDownloadTask;
 import com.liulishuo.filedownloader.FileDownloadLargeFileListener;
 import com.liulishuo.filedownloader.FileDownloader;
-import com.vise.log.ViseLog;
-
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -14,6 +12,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import x.com.hl_log.ViseLog;
 import x.com.hl_tools.hl_interface.DownListener;
 
 

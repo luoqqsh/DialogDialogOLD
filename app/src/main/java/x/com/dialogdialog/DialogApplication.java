@@ -9,11 +9,11 @@ import android.widget.Toast;
 
 import com.liulishuo.filedownloader.FileDownloader;
 import com.squareup.leakcanary.LeakCanary;
-import com.vise.log.ViseLog;
-import com.vise.log.inner.LogcatTree;
 
-import x.com.hl_dialog.MeTools.NeverCrashHelper;
-import x.com.hl_web.TbsManager;
+import x.com.hl_log.ViseLog;
+import x.com.hl_log.inner.LogcatTree;
+import x.com.hl_tools.DialogTools.NeverCrashHelper;
+import x.com.hl_web.x5Manager;
 
 public class DialogApplication extends Application {
     @Override
@@ -41,7 +41,7 @@ public class DialogApplication extends Application {
 //            e.printStackTrace();
             showToast(e.getMessage());
         });
-//        TbsManager.getInstance().init(this);
+        x5Manager.getInstance().init(this);
     }
 
     private void showToast(final String text) {

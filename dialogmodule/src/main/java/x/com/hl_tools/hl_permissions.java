@@ -33,6 +33,10 @@ public class hl_permissions {
     /**
      * 基于Fragment动态权限申请
      */
+    public static void applyPermission(Fragment fragment, String[] permissionList) {
+        applyPermission(null, fragment, permissionList, null);
+    }
+
     public static void applyPermission(Fragment fragment, String[] permissionList, RequestPermissionCallBack permissionCallBack) {
         applyPermission(null, fragment, permissionList, permissionCallBack);
     }
@@ -40,6 +44,10 @@ public class hl_permissions {
     /**
      * 基于Activity动态权限申请
      */
+    public static void applyPermission(Activity activity, String[] permissionList) {
+        applyPermission(activity, null, permissionList, null);
+    }
+
     public static void applyPermission(Activity activity, String[] permissionList, RequestPermissionCallBack permissionCallBack) {
         applyPermission(activity, null, permissionList, permissionCallBack);
     }
@@ -63,8 +71,10 @@ public class hl_permissions {
                     fragment.requestPermissions(permissionList, 1);
                 }
             } else {
-                permissionCallBack.requestPermissionSuccess();
-                mPermissionCallBack = null;
+                if (permissionCallBack != null) {
+                    permissionCallBack.requestPermissionSuccess();
+                    mPermissionCallBack = null;
+                }
             }
         } else {
             //6.0以下直接执行

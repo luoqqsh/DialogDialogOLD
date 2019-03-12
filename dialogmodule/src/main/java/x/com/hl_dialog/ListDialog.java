@@ -11,7 +11,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
@@ -19,10 +18,9 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.vise.log.ViseLog;
-
 import java.util.List;
 
+import x.com.hl_log.ViseLog;
 import x.com.hl_tools.model.PermissionModel;
 
 public class ListDialog extends Dialog implements OnClickListener, OnItemClickListener {
