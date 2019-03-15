@@ -9,6 +9,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import x.com.hl_dialog.DFLoadingDialog;
@@ -36,7 +37,7 @@ public class DialogMainActivity extends BaseActivity implements hl_permissionsOt
         findViewById(R.id.chajian).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                new NDialog(mContext, NDialog.ndialog_Trans, 0, false).createTrans(200);
             }
         });
     }
@@ -70,7 +71,7 @@ public class DialogMainActivity extends BaseActivity implements hl_permissionsOt
 
     private void updates() {
         //检查更新框样式
-        Dialog g = new NDialog(this, NDialog.nDialog_Update, 1)
+        Dialog g = new NDialog(this, NDialog.nDialog_Update, 1, true)
                 .setTouchOutSideCancelable(false, false)
                 .setMessage("111", Gravity.LEFT)
                 .setBtnClickListener(true, "下次再说", "立即更新", new NDialog.onDialogbtnClickListener() {
@@ -100,6 +101,9 @@ public class DialogMainActivity extends BaseActivity implements hl_permissionsOt
         a.show(getSupportFragmentManager(), "loadingDialog");
         //隐藏加载框
         a.dismiss();
+
+        //透明弹窗
+        new NDialog(mContext, NDialog.ndialog_Trans, 0, false).createTrans(150);
 
         //显示普通弹窗
         DFNDialog b = DFNDialog.newInstance();
@@ -209,5 +213,11 @@ public class DialogMainActivity extends BaseActivity implements hl_permissionsOt
     @Override
     public void result(boolean isSuccess) {
 
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        hl_permissions.requestPermissionsResult(this, requestCode, permissions, grantResults);
     }
 }

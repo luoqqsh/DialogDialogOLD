@@ -35,5 +35,5 @@
     <color name="brown">#A52A2A</color>
     <color name="snowwhite">#FFFAFA</color>
     <color name="bantouming">#e0000000</color>
-    <color name="touming">#00000000</color>
+    <color name="trans">#00000000</color>
 </resources>

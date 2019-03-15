@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.os.CountDownTimer;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -24,6 +26,8 @@ public class NDialog {
     public static final int nDialog_Share = R.layout.ndialog_share;
     public static final int nDialog_Photo = R.layout.ndialog_photo;
     public static final int nDialog_Update = R.layout.ndialog_update;
+    public static final int nDialog_Normal = R.layout.ndialog_layout;
+    public static final int ndialog_Trans = R.layout.ndialog_trans;
     /**
      * 对话框处于屏幕顶部位置
      */
@@ -55,10 +59,6 @@ public class NDialog {
     //从右往左滑动动画
     public static final int DIALOG_ANIM_SLID_RIGHT = R.style.DialogAnimationSlidRight;
 
-    /**
-     * 对话框宽度所占屏幕宽度的比例
-     */
-    public static float WIDTHFACTOR = 0.8f;
     /**
      * Dialog对象
      */
@@ -114,10 +114,10 @@ public class NDialog {
         }
         int screenwidth = metrics.widthPixels;
         int width;
-        if (widthcoefficient > 0) {
+        if (widthcoefficient >= 0) {
             width = (int) (screenwidth * widthcoefficient);
         } else {
-            width = (int) (screenwidth * WIDTHFACTOR);
+            width = (int) (screenwidth * 0.8f);
         }
         // 设置对话框宽度
         if (window != null) {
@@ -132,19 +132,19 @@ public class NDialog {
 
     //属性设置
     public NDialog setTouchOutSideCancelable(boolean outside, boolean cancelable) {
-        this.dialog.setCanceledOnTouchOutside(outside);
-        this.dialog.setCancelable(cancelable);
+        dialog.setCanceledOnTouchOutside(outside);
+        dialog.setCancelable(cancelable);
         return this;
     }
 
     /**
      * 设置显示关闭按钮
-     * isshowclose 是否显示关闭按钮
+     * isShowClose 是否显示关闭按钮
      *
      * @return this
      */
-    public NDialog isshowclose(boolean isshowclose) {
-        if (isshowclose) {
+    public NDialog isShowClose(boolean isShowClose) {
+        if (isShowClose) {
             ImageView imgv_close = dialog.findViewById(R.id.imgv_close);
             if (imgv_close == null) {
                 ViseLog.e("请检查id是否正确，将关闭按钮id设置为imgv_close");
@@ -167,9 +167,13 @@ public class NDialog {
      *
      * @return this
      */
-    public NDialog setsystemalert(boolean isSystemAlert) {
+    public NDialog setSystemAlert(boolean isSystemAlert) {
         if (isSystemAlert) {
-            dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+            if (dialog.getWindow() != null) {
+                dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+            } else {
+                ViseLog.e("setSystemAlert时，getWindow为空");
+            }
         }
         return this;
     }
@@ -232,8 +236,8 @@ public class NDialog {
     /**
      * 设置对话框的位置
      *
-     * @param location
-     * @return
+     * @param location 位置
+     * @return this
      */
     public NDialog setDialoglocation(int location) {
         Window window = this.dialog.getWindow();
@@ -357,5 +361,26 @@ public class NDialog {
             dialog.setOwnerActivity((Activity) context);
         }
         return dialog;
+    }
+
+    /**
+     * 一段时间后关闭对话框
+     *
+     * @param time 时间，单位毫秒
+     */
+    public void createTrans(long time) {
+        if (context instanceof Activity) {
+            dialog.setOwnerActivity((Activity) context);
+        }
+        dialog.show();
+        new CountDownTimer(time, 1) {
+            public void onTick(long millisUntilFinished) {
+            }
+
+            public void onFinish() {
+                //显示错误对话框
+                dialog.dismiss();
+            }
+        }.start();
     }
 }

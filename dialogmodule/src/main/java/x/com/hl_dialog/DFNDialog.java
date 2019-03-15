@@ -2,23 +2,27 @@ package x.com.hl_dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+
 import x.com.hl_log.ViseLog;
 
 public class DFNDialog extends DialogFragment {
-    private String aa = "ww;";
+    private String aa = "DFNDialog";
+    private OnDismissListener onDismissListener;
 
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         ViseLog.d("onCreateDialog");
-        Dialog dialog = new NDialog(getActivity(), NDialog.nDialog_Update, 0.8f)
+        Dialog dialog = new NDialog(getActivity(), NDialog.nDialog_Update, 0.8f, true)
                 .setTouchOutSideCancelable(false, false)
                 .setMessage(aa, NDialog.MSG_LAYOUT_CENTER)
                 .setBtnClickListener(true, "好", "不好", new NDialog.onDialogbtnClickListener() {
@@ -34,9 +38,21 @@ public class DFNDialog extends DialogFragment {
                         }
                     }
                 }).create();
+
+        //返回键处理
+        dialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+            @Override
+            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    dismiss();
+                }
+                return false;
+            }
+        });
         return dialog;
     }
 
+    //传值例子
     public static DFNDialog newInstance() {
         DFNDialog fragment = new DFNDialog();
 //        Bundle bundle = new Bundle();
@@ -48,8 +64,22 @@ public class DFNDialog extends DialogFragment {
         return fragment;
     }
 
+    public interface OnDismissListener {
+        void OnDismiss();
+    }
+
     public DFNDialog setMessage(String message, int layout) {
         aa = message;
         return this;
+    }
+
+    public void setOnDismissListener(OnDismissListener onDismissListener) {
+        this.onDismissListener = onDismissListener;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        onDismissListener.OnDismiss();
     }
 }

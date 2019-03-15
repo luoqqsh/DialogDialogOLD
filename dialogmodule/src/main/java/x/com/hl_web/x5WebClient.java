@@ -19,7 +19,7 @@ import x.com.hl_log.ViseLog;
 public class x5WebClient extends WebViewClient {
     @Override
     public boolean shouldOverrideUrlLoading(WebView webView, String url) {
-        
+
         if (!url.startsWith("http")) {
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_VIEW);
@@ -37,13 +37,13 @@ public class x5WebClient extends WebViewClient {
     @Override
     public void onPageStarted(WebView webView, String url, Bitmap bitmap) {
         super.onPageStarted(webView, url, bitmap);
-//                ViseLog.d(url);
+//        ViseLog.d(url);
     }
 
     @Override
     public void onPageFinished(WebView webView, String url) {
         super.onPageFinished(webView, url);
-        ViseLog.d(url);
+//        ViseLog.d(url);
     }
 
     //每一个资源（比如图片）的加载都会调用一次。
@@ -57,9 +57,9 @@ public class x5WebClient extends WebViewClient {
     @Override
     public void onReceivedError(WebView webView, int errorCode, String description, String failingUrl) {
         super.onReceivedError(webView, errorCode, description, failingUrl);
-        ViseLog.d(failingUrl);
-        ViseLog.d(errorCode);
-        ViseLog.d(description);
+//        ViseLog.d(failingUrl);
+//        ViseLog.d(errorCode);
+//        ViseLog.d(description);
     }
 
     //处理https请求
