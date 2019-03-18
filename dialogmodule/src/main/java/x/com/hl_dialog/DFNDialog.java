@@ -64,13 +64,13 @@ public class DFNDialog extends DialogFragment {
         return fragment;
     }
 
-    public interface OnDismissListener {
-        void OnDismiss();
-    }
-
     public DFNDialog setMessage(String message, int layout) {
         aa = message;
         return this;
+    }
+
+    public interface OnDismissListener {
+        void OnDismiss();
     }
 
     public void setOnDismissListener(OnDismissListener onDismissListener) {
@@ -80,6 +80,8 @@ public class DFNDialog extends DialogFragment {
     @Override
     public void onStop() {
         super.onStop();
-        onDismissListener.OnDismiss();
+        if (onDismissListener != null) {
+            onDismissListener.OnDismiss();
+        }
     }
 }

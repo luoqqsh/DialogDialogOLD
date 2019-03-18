@@ -37,7 +37,9 @@ public class DialogMainActivity extends BaseActivity implements hl_permissionsOt
         findViewById(R.id.chajian).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new NDialog(mContext, NDialog.ndialog_Trans, 0, false).createTrans(200);
+                DFNDialog b = DFNDialog.newInstance();
+                b.setMessage("dddddddddd", 4);
+                b.show(getSupportFragmentManager(), "normalDialog");
             }
         });
     }
