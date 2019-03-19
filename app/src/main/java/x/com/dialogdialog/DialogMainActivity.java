@@ -40,6 +40,24 @@ public class DialogMainActivity extends BaseActivity implements hl_permissionsOt
                 DFNDialog b = DFNDialog.newInstance();
                 b.setMessage("dddddddddd", 4);
                 b.show(getSupportFragmentManager(), "normalDialog");
+
+                Dialog g = new NDialog(mContext, NDialog.nDialog_Update, 1, true)
+                        .setTouchOutSideCancelable(false, false)
+                        .setMessage("111", Gravity.LEFT)
+                        .setBtnClickListener(true, "下次再说", "立即更新", new NDialog.onDialogbtnClickListener() {
+                            @Override
+                            public void onDialogbtnClick(Context context, Dialog dialog, int whichBtn) {
+                                switch (whichBtn) {
+                                    case 1:
+                                        Toast.makeText(context, "下次再说", Toast.LENGTH_SHORT).show();
+                                        break;
+                                    case 2:
+                                        Toast.makeText(context, "立即更新", Toast.LENGTH_SHORT).show();
+                                        break;
+                                }
+                            }
+                        }).create();
+                g.show();
             }
         });
     }
