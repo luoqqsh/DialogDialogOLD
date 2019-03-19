@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.util.Log;
 
 import com.tencent.smtt.export.external.interfaces.SslError;
 import com.tencent.smtt.export.external.interfaces.SslErrorHandler;
@@ -14,12 +15,10 @@ import com.tencent.smtt.sdk.WebViewClient;
 
 import java.util.List;
 
-import x.com.hl_log.ViseLog;
-
 public class x5WebClient extends WebViewClient {
     @Override
     public boolean shouldOverrideUrlLoading(WebView webView, String url) {
-
+        Log.w("x5web", url);
         if (!url.startsWith("http")) {
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_VIEW);
