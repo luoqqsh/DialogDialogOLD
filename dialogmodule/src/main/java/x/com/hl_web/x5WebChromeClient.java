@@ -9,8 +9,6 @@ import com.tencent.smtt.export.external.interfaces.JsResult;
 import com.tencent.smtt.sdk.WebChromeClient;
 import com.tencent.smtt.sdk.WebView;
 
-import x.com.hl_log.ViseLog;
-
 public class x5WebChromeClient extends WebChromeClient {
     //获得网页加载进度
     @Override
@@ -21,7 +19,7 @@ public class x5WebChromeClient extends WebChromeClient {
     //获得网页中的标题
     @Override
     public void onReceivedTitle(WebView view, String title) {
-        Log.i("x5web", "title:" + title);
+        Log.i("hl-x5web", "title:" + title);
     }
 
     //支持javascript的警告框
@@ -70,6 +68,4 @@ public class x5WebChromeClient extends WebChromeClient {
     public View getVideoLoadingProgressView() {
         return null;
     }
-
-
 }
