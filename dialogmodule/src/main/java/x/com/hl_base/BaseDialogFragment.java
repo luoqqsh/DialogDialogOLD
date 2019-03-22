@@ -16,6 +16,9 @@ public class BaseDialogFragment extends DialogFragment {
             onDismissListener.OnDismiss();
             onDismissListener = null;
         }
+        if (getFragmentManager() != null) {
+            getFragmentManager().beginTransaction().remove(this);
+        }
     }
 
     @Override

@@ -1,5 +1,6 @@
 package x.com.hl_web;
 
+import android.util.Log;
 import android.view.View;
 
 import com.tencent.smtt.export.external.interfaces.IX5WebChromeClient;
@@ -14,13 +15,13 @@ public class x5WebChromeClient extends WebChromeClient {
     //获得网页加载进度
     @Override
     public void onProgressChanged(WebView view, int newProgress) {
-        ViseLog.d(newProgress);
+//        ViseLog.d(newProgress);
     }
 
     //获得网页中的标题
     @Override
     public void onReceivedTitle(WebView view, String title) {
-        ViseLog.d(title);
+        Log.i("x5web", "title:" + title);
     }
 
     //支持javascript的警告框
