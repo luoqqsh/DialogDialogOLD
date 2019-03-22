@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.CountDownTimer;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
@@ -357,9 +356,6 @@ public class NDialog {
      * @return dialog
      */
     public Dialog create() {
-//        if (context instanceof Activity) {
-//            dialog.setOwnerActivity((Activity) context);
-//        }
         return dialog;
     }
 

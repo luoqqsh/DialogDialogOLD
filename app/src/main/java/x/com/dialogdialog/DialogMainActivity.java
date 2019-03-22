@@ -31,33 +31,18 @@ public class DialogMainActivity extends BaseActivity implements hl_permissionsOt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mContext = this;
+        DFLoadingDialog a = new DFLoadingDialog();
         findViewById(R.id.tongzhi).setOnClickListener(view -> startActivity(new Intent(mContext, NotificationActivity.class)));
         findViewById(R.id.x5web).setOnClickListener(v -> startActivity(new Intent(mContext, H5Activity.class)));
         findViewById(R.id.log).setOnClickListener(v -> startActivity(new Intent(mContext, LogActivity.class)));
-        findViewById(R.id.chajian).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.dialog).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DFNDialog b = DFNDialog.newInstance();
                 b.setMessage("dddddddddd", 4);
-                b.show(getSupportFragmentManager(), "normalDialog");
-
-                Dialog g = new NDialog(mContext, NDialog.nDialog_Update, 1, true)
-                        .setTouchOutSideCancelable(false, false)
-                        .setMessage("111", Gravity.LEFT)
-                        .setBtnClickListener(true, "下次再说", "立即更新", new NDialog.onDialogbtnClickListener() {
-                            @Override
-                            public void onDialogbtnClick(Context context, Dialog dialog, int whichBtn) {
-                                switch (whichBtn) {
-                                    case 1:
-                                        Toast.makeText(context, "下次再说", Toast.LENGTH_SHORT).show();
-                                        break;
-                                    case 2:
-                                        Toast.makeText(context, "立即更新", Toast.LENGTH_SHORT).show();
-                                        break;
-                                }
-                            }
-                        }).create();
-                g.show();
+                if (!b.isAdded()) {
+                    b.show(getSupportFragmentManager(), "normalDialog");
+                }
             }
         });
     }
@@ -112,13 +97,14 @@ public class DialogMainActivity extends BaseActivity implements hl_permissionsOt
         //检查更新样式2
         DFUpdateDialog.newInstance("版本更新内容", 1,
                 "http://imtt.dd.qq.com/16891/337A49BBE7A8A0B42E2312893903BBB3.apk?fsname=com.coolsnow.screenshot_5.6.0_56000.apk"
-        ).show(getSupportFragmentManager(), "checkupnew");
+        ).show(getSupportFragmentManager(), "checkUpNew");
     }
 
     private void dialogs() {
         //显示加载框
         DFLoadingDialog a = new DFLoadingDialog();
         a.show(getSupportFragmentManager(), "loadingDialog");
+        a.dismissAllowingStateLoss();
         //隐藏加载框
         a.dismiss();
 
@@ -128,8 +114,9 @@ public class DialogMainActivity extends BaseActivity implements hl_permissionsOt
         //显示普通弹窗
         DFNDialog b = DFNDialog.newInstance();
         b.setMessage("dddddddddd", 4);
-        b.show(getSupportFragmentManager(), "normalDialog");
-
+        if (!b.isAdded()) {
+            b.show(getSupportFragmentManager(), "normalDialog");
+        }
         //显示iPhone样式弹窗
         Dialog c = new NDialog(this, NDialog.nDialog_Iphone, 0.8f)
                 .setTouchOutSideCancelable(false, false)

@@ -3,6 +3,7 @@ package x.com.hl_web;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 
 import com.tencent.smtt.sdk.CookieManager;
 import com.tencent.smtt.sdk.CookieSyncManager;
@@ -87,7 +88,7 @@ public class x5WebView extends WebView {
         webSettings.setBlockNetworkImage(false);
         // 特征标记
         webSettings.setUserAgentString(webSettings.getUserAgentString() + "3500game");
-
+        Log.i("hl-x5web", "x5 UserAgent:" + webSettings.getUserAgentString());
         webSettings.setBlockNetworkImage(false);
         webSettings.setBlockNetworkLoads(false);
         //String cacheDirPath = "路径";
@@ -109,6 +110,7 @@ public class x5WebView extends WebView {
         }
         CookieSyncManager.getInstance().sync();
         String cookie = cookieManager.getCookie(url);
+        Log.i("hl-x5web", "cookie:" + cookie);
     }
 
     public void loadUrl(String url) {

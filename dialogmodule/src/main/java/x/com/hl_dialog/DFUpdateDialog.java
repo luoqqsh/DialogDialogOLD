@@ -18,8 +18,8 @@ import java.io.File;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.DialogFragment;
 
+import x.com.hl_base.BaseDialogFragment;
 import x.com.hl_tools.hl_file;
 import x.com.hl_tools.hl_permissions;
 import x.com.hl_tools.hl_app;
@@ -27,7 +27,7 @@ import x.com.hl_tools.hl_interface.DownListener;
 import x.com.hl_tools.hl_net;
 import x.com.hl_tools.hl_permissionsOther;
 
-public class DFUpdateDialog extends DialogFragment {
+public class DFUpdateDialog extends BaseDialogFragment {
     private final String[] mPermissionList = new String[]{
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_EXTERNAL_STORAGE,

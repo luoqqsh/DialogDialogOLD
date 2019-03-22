@@ -1,10 +1,9 @@
 package x.com.hl_web;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.tencent.smtt.sdk.QbSdk;
-
-import x.com.hl_log.ViseLog;
 
 /**
  * Created by pp on 17/5/19.
@@ -26,12 +25,16 @@ public class x5Manager {
         QbSdk.PreInitCallback cb = new QbSdk.PreInitCallback() {
             @Override
             public void onViewInitFinished(boolean arg0) {
-                ViseLog.d(arg0);
+                if (arg0) {
+                    Log.i("hl-x5Sdk", "成功加载腾讯X5内核");
+                } else {
+                    Log.i("hl-x5Sdk", "加载失败，启用系统内核");
+                }
             }
 
             @Override
             public void onCoreInitFinished() {
-                ViseLog.d("onCoreInitFinished");
+                Log.i("hl-x5Sdk", "内核加载完毕");
             }
         };
 

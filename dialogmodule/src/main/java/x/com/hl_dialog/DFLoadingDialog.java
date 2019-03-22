@@ -6,9 +6,11 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 
-public class DFLoadingDialog extends DialogFragment {
+import x.com.hl_base.BaseDialogFragment;
+
+public class DFLoadingDialog extends BaseDialogFragment {
+
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {

@@ -16,14 +16,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
+import x.com.hl_base.BaseDialogFragment;
 import x.com.hl_tools.hl_permissions;
 import x.com.hl_tools.hl_permissionsOther;
 import x.com.hl_tools.model.PermissionModel;
 
-public class DFPermissionListDialog extends DialogFragment {
+public class DFPermissionListDialog extends BaseDialogFragment {
     private List<PermissionModel> list_permission;
     private Fragment fragmentcontext;
     private ListDialog dialog;
