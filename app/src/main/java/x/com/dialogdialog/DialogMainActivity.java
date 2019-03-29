@@ -23,7 +23,7 @@ import x.com.hl_log.ViseLog;
 import x.com.hl_tools.hl_permissions;
 import x.com.hl_tools.hl_permissionsOther;
 
-public class DialogMainActivity extends BaseActivity implements hl_permissionsOther.OnPermissionListener {
+public class DialogMainActivity extends BaseActivity{
     private Context mContext;
 
     @Override
@@ -31,7 +31,6 @@ public class DialogMainActivity extends BaseActivity implements hl_permissionsOt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mContext = this;
-        DFLoadingDialog a = new DFLoadingDialog();
         findViewById(R.id.tongzhi).setOnClickListener(view -> startActivity(new Intent(mContext, NotificationActivity.class)));
         findViewById(R.id.x5web).setOnClickListener(v -> startActivity(new Intent(mContext, H5Activity.class)));
         findViewById(R.id.log).setOnClickListener(v -> startActivity(new Intent(mContext, LogActivity.class)));
@@ -215,11 +214,6 @@ public class DialogMainActivity extends BaseActivity implements hl_permissionsOt
                     }
                 }).create();
         h.show();
-    }
-
-    @Override
-    public void result(boolean isSuccess) {
-
     }
 
     @Override

@@ -18,10 +18,8 @@ public class hl_app {
     //安装
     public static void installAPK(final Activity activity, final File apkFile) {
         Intent intent = new Intent();
-//        File apkFile = new File(apkUrl);
         Uri uri;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {//7.0启动姿势<pre name="code" class="html">    //com.xxx.xxx.fileprovider为上述manifest中provider所配置相同；apkFile为问题1中的外部存储apk文件</pre>
-//            uri = FileProvider.getUriForFile(activity, Config.providerAuthorities, apkFile);
             uri = FileProvider.getUriForFile(activity, activity.getPackageName() + ".fileProvider", apkFile);
             intent.setAction(Intent.ACTION_INSTALL_PACKAGE);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);//7.0以后，系统要求授予临时uri读取权限，安装完毕以后，系统会自动收回权限，次过程没有用户交互
