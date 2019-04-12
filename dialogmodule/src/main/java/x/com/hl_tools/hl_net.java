@@ -47,9 +47,7 @@ public class hl_net {
 //                            + data.getString("isp") + ")";
                     IP = data.getString("ip");
                 } else IP = "";
-
             } else IP = "";
-
         } catch (Exception e) {
             IP = "";
         }

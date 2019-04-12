@@ -1,0 +1,158 @@
+package x.com.hl_gl.util;
+
+import android.content.Context;
+import android.content.res.Resources;
+import android.opengl.GLES20;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+import x.com.hl_log.ViseLog;
+
+import static android.opengl.GLES20.GL_FRAGMENT_SHADER;
+import static android.opengl.GLES20.GL_LINK_STATUS;
+import static android.opengl.GLES20.GL_VALIDATE_STATUS;
+import static android.opengl.GLES20.GL_VERTEX_SHADER;
+import static android.opengl.GLES20.glCreateProgram;
+import static android.opengl.GLES20.glGetProgramInfoLog;
+
+public class ShaderUtil {
+
+    /**
+     * 从assets加载着色器资源
+     *
+     * @param res  context.getResources()
+     * @param vert 顶点着色器
+     * @param frag 片元着色器
+     * @return programId
+     */
+    public static int createGlProgramByAssets(Resources res, String vert, String frag) {
+        return createGlProgramByString(uRes(res, vert), uRes(res, frag));
+    }
+
+    /**
+     * 从raw加载着色器资源
+     *
+     * @param context context
+     * @param vert    顶点着色器
+     * @param frag    片元着色器
+     * @return programId
+     */
+    public static int createGlProgramByRaw(Context context, int vert, int frag) {
+        String vertexSharder = readRawTextFile(context, vert);
+        String framentShader = readRawTextFile(context, frag);
+        return createGlProgramByString(vertexSharder, framentShader);
+    }
+
+    /**
+     * 加载着色器并创建program
+     *
+     * @param vertexShader   顶点着色器string
+     * @param fragmentShader 片元着色器string
+     * @return programId
+     */
+    public static int createGlProgramByString(String vertexShader, String fragmentShader) {
+        int vertexShaderId = loadShader(GL_VERTEX_SHADER, vertexShader);
+        int fragmentShaderId = loadShader(GL_FRAGMENT_SHADER, fragmentShader);
+        if (vertexShaderId == 0) {
+            ViseLog.e("顶点着色器创建失败：\n" + vertexShader);
+            return 0;
+        }
+        if (fragmentShaderId == 0) {
+            ViseLog.e("片元着色器创建失败：\n" + fragmentShader);
+            return 0;
+        }
+        int programId = glCreateProgram();
+        if (programId == 0) {
+            ViseLog.e("programId = 0,创建失败：\n" +
+                    "vertexShaderId：" + vertexShaderId + "  " +
+                    "fragmentShaderId：" + fragmentShaderId);
+            return 0;
+        }
+        GLES20.glAttachShader(programId, vertexShaderId);
+        GLES20.glAttachShader(programId, fragmentShaderId);
+        GLES20.glLinkProgram(programId);
+        int[] linkStatus = new int[1];
+        GLES20.glGetProgramiv(programId, GL_LINK_STATUS, linkStatus, 0);
+        if (linkStatus[0] != GLES20.GL_TRUE) {
+            ViseLog.e("programId", glGetProgramInfoLog(programId));
+            GLES20.glDeleteProgram(programId);
+            return 0;
+        }
+        int[] linkVALIDATEStatus = new int[1];
+        GLES20.glGetProgramiv(programId, GL_VALIDATE_STATUS, linkVALIDATEStatus, 0);
+        if (linkStatus[0] != GLES20.GL_TRUE) {
+            ViseLog.e("programId", glGetProgramInfoLog(programId));
+            GLES20.glDeleteProgram(programId);
+            return 0;
+        }
+
+        //合并成功后删除着色器
+        GLES20.glDeleteShader(vertexShaderId);
+        GLES20.glDeleteShader(fragmentShaderId);
+        return programId;
+    }
+
+    /**
+     * 加载着色器
+     *
+     * @param shaderType 着色器类型：GLES20.GL_VERTEX_SHADER、GLES20.GL_FRAGMENT_SHADER
+     * @param source     着色器string字符串
+     * @return 着色器id
+     */
+    private static int loadShader(int shaderType, String source) {
+        int shader = GLES20.glCreateShader(shaderType);
+        if (shader != 0) {
+            GLES20.glShaderSource(shader, source);
+            GLES20.glCompileShader(shader);
+            //查看配置 主动获取是否成功，非必须
+            int[] compiled = new int[1];
+            GLES20.glGetShaderiv(shader, GLES20.GL_COMPILE_STATUS, compiled, 0);
+            if (compiled[0] != GLES20.GL_TRUE) {
+                ViseLog.e(shaderType + "着色器读取创建失败。\n" + GLES20.glGetShaderInfoLog(shader));
+                GLES20.glDeleteShader(shader);
+                shader = 0;
+            }
+        }
+        return shader;
+    }
+
+    //通过路径加载Assets中的文本内容
+    public static String uRes(Resources mRes, String path) {
+        StringBuilder result = new StringBuilder();
+        try {
+            InputStream is = mRes.getAssets().open(path);
+            int ch;
+            byte[] buffer = new byte[1024];
+            while (-1 != (ch = is.read(buffer))) {
+                result.append(new String(buffer, 0, ch));
+            }
+        } catch (Exception e) {
+            return null;
+        }
+        return result.toString().replaceAll("\\r\\n", "\n");
+    }
+
+    public static String readRawTextFile(Context context, int rawId) {
+        InputStream is = context.getResources().openRawResource(rawId);
+        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+        String line;
+        StringBuilder sb = new StringBuilder();
+        try {
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
+                sb.append("\n");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            br.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return sb.toString();
+    }
+}

@@ -70,7 +70,7 @@ public class hl_app {
             PackageInfo info = manager.getPackageInfo(context.getPackageName(), 0);
             return info.versionCode;
         } catch (Exception e) {
-            return 1;
+            return 0;
         }
     }
 

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Toast;
 
@@ -19,11 +20,13 @@ import x.com.hl_dialog.DFUpdateDialog;
 import x.com.hl_dialog.NDialog;
 import x.com.hl_dialog.NDialogBuilder;
 import x.com.hl_dialog.ProgressDialog.PDialog1Builder;
+import x.com.hl_gl.GLView;
 import x.com.hl_log.ViseLog;
+import x.com.hl_player.MediaController;
 import x.com.hl_tools.hl_permissions;
 import x.com.hl_tools.hl_permissionsOther;
 
-public class DialogMainActivity extends BaseActivity{
+public class DialogMainActivity extends BaseActivity {
     private Context mContext;
 
     @Override
@@ -32,8 +35,11 @@ public class DialogMainActivity extends BaseActivity{
         setContentView(R.layout.activity_main);
         mContext = this;
         findViewById(R.id.tongzhi).setOnClickListener(view -> startActivity(new Intent(mContext, NotificationActivity.class)));
+        findViewById(R.id.media).setOnClickListener(view -> startActivity(new Intent(mContext, MediaActivity.class)));
         findViewById(R.id.x5web).setOnClickListener(v -> startActivity(new Intent(mContext, H5Activity.class)));
         findViewById(R.id.log).setOnClickListener(v -> startActivity(new Intent(mContext, LogActivity.class)));
+        findViewById(R.id.open).setOnClickListener(v -> startActivity(new Intent(mContext, GLActivity.class)));
+
         findViewById(R.id.dialog).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

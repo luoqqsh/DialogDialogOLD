@@ -9,6 +9,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        
         <Button
             android:id="@+id/tongzhi"
             android:layout_width="wrap_content"
@@ -43,7 +44,12 @@
             android:id="@+id/close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="close" />
+            android:text="close" />    
+        <Button
+            android:id="@+id/media"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="media" />
 
     </LinearLayout>
 

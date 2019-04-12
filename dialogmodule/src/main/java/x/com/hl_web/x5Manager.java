@@ -19,7 +19,6 @@ public class x5Manager {
         return ma;
     }
 
-
     public void init(Context context) {
         QbSdk.setDownloadWithoutWifi(true);
         QbSdk.PreInitCallback cb = new QbSdk.PreInitCallback() {

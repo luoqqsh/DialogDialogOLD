@@ -8,9 +8,9 @@ import androidx.annotation.NonNull;
 import java.io.File;
 
 public class hl_file {
-//    Environment.getDataDirectory() = /data
-//    Environment.getDownloadCacheDirectory()= /cache
-//    Environment.getExternalStorageDirectory() = /mnt/sdcard
+//  data目录        Environment.getDataDirectory() = /data
+//  下载缓存         Environment.getDownloadCacheDirectory()= /cache
+//  外置SD卡目录     Environment.getExternalStorageDirectory() = /mnt/sdcard
 //    Environment.getExternalStoragePublicDirectory(“test”)= /mnt/sdcard/test
 //    Environment.getRootDirectory() = /system
 //    getPackageCodePath() = /data/app/com.my.app-1.apk
