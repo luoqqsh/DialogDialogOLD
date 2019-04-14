@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.net.FileNameMap;
 import java.net.URLConnection;
 
+import x.com.hl_log.ViseLog;
+
 public class hl_media {
     /**
      * 刷新媒体库
@@ -63,7 +65,7 @@ public class hl_media {
         String fileName = file.getName();
         FileNameMap fileNameMap = URLConnection.getFileNameMap();
         String type = fileNameMap.getContentTypeFor(fileName);
-        return !file.exists() && type.contains("video/");
+        return file.exists() && type.contains("video");
     }
 
     /**

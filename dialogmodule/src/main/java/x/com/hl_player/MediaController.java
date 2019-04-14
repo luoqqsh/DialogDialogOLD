@@ -25,7 +25,7 @@ public class MediaController {
     //进度单位统一为毫秒;
     private boolean isPrepared = false;
     private PreparedListener preparedListener;
-    private SurfaceView surfaceView;
+    private SurfaceHolder surfaceView;
 
     public interface PreparedListener {
         void onPreparedListener(MediaPlayer mediaPlayer);
@@ -43,11 +43,11 @@ public class MediaController {
         doPrepare(mediaPath, null, isStartWhenPrepared, true);
     }
 
-    public void doPrepare(String mediaPath, SurfaceView surfaceView, boolean isStartWhenPrepared) {
+    public void doPrepare(String mediaPath, SurfaceHolder surfaceView, boolean isStartWhenPrepared) {
         doPrepare(mediaPath, surfaceView, isStartWhenPrepared, true);
     }
 
-    private void doPrepare(String mediaPath, final SurfaceView surfaceView, boolean isStartWhenPrepared, boolean isFirst) {
+    private void doPrepare(String mediaPath, final SurfaceHolder surfaceView, boolean isStartWhenPrepared, boolean isFirst) {
         if (!(new File(mediaPath)).exists()) {
             ViseLog.e("指定媒体文件不存在。  " + mediaPath);
             return;
@@ -113,32 +113,36 @@ public class MediaController {
         }
     }
 
-    private void initVideo(final String path, SurfaceView surfaceView, final boolean isFirst) {
+    private void initVideo(final String path, SurfaceHolder surfaceView, final boolean isFirst) {
         ViseLog.d(hl_media.isVedioFile(path));
         if (surfaceView != null && hl_media.isVedioFile(path)) {
-            SurfaceHolder surfaceHolder = surfaceView.getHolder();
-            surfaceHolder.addCallback(new SurfaceHolder.Callback2() {
-                @Override
-                public void surfaceRedrawNeeded(SurfaceHolder holder) {
-
-                }
-
-                @Override
-                public void surfaceCreated(SurfaceHolder holder) {
-                    mediaPlayer.setDisplay(holder);
-                    initMediaPlayer(path, isFirst);
-                }
-
-                @Override
-                public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-
-                }
-
-                @Override
-                public void surfaceDestroyed(SurfaceHolder holder) {
-                    doRelease();
-                }
-            });
+            mediaPlayer.setSurface(surfaceView.getSurface());
+            initMediaPlayer(path, isFirst);
+            surfaceView.setKeepScreenOn(true);
+//            surfaceView.addCallback(new SurfaceHolder.Callback2() {
+//                @Override
+//                public void surfaceRedrawNeeded(SurfaceHolder surfaceHolder) {
+//
+//                }
+//
+//                @Override
+//                public void surfaceCreated(SurfaceHolder holder) {
+//                    ViseLog.d("surfaceCreated");
+//                    mediaPlayer.setDisplay(holder);
+//
+//                }
+//
+//                @Override
+//                public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+//                    ViseLog.d("surfaceChanged");
+//                }
+//
+//                @Override
+//                public void surfaceDestroyed(SurfaceHolder holder) {
+//                    ViseLog.d("surfaceDestroyed");
+//                    doRelease();
+//                }
+//            });
         }
     }
 

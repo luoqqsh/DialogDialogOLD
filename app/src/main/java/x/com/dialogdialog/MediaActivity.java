@@ -40,7 +40,7 @@ public class MediaActivity extends AppCompatActivity {
         surface = findViewById(R.id.surface);
         findViewById(R.id.select).setOnClickListener(v -> {
             mediaController = new MediaController();
-            mediaController.doPrepare(musicpath, false);
+            mediaController.doPrepare(videopath, surface.getHolder(),true);
         });
         findViewById(R.id.play).setOnClickListener(v -> mediaController.doStart());
         findViewById(R.id.pause).setOnClickListener(v -> mediaController.doPause());

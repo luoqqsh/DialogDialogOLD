@@ -34,6 +34,7 @@ public class DialogMainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mContext = this;
+        permissions();
         findViewById(R.id.tongzhi).setOnClickListener(view -> startActivity(new Intent(mContext, NotificationActivity.class)));
         findViewById(R.id.media).setOnClickListener(view -> startActivity(new Intent(mContext, MediaActivity.class)));
         findViewById(R.id.x5web).setOnClickListener(v -> startActivity(new Intent(mContext, H5Activity.class)));
@@ -70,13 +71,13 @@ public class DialogMainActivity extends BaseActivity {
                 });
 
         //权限列表弹窗
-        DFPermissionListDialog i = DFPermissionListDialog.newInstance(new hl_permissionsOther.OnPermissionListener() {
-            @Override
-            public void result(boolean isSuccess) {
-                ViseLog.d(isSuccess);
-            }
-        });
-        i.show(getSupportFragmentManager(), "fff");
+//        DFPermissionListDialog i = DFPermissionListDialog.newInstance(new hl_permissionsOther.OnPermissionListener() {
+//            @Override
+//            public void result(boolean isSuccess) {
+//                ViseLog.d(isSuccess);
+//            }
+//        });
+//        i.show(getSupportFragmentManager(), "fff");
     }
 
     private void updates() {
