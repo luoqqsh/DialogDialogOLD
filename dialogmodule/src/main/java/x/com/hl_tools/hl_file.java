@@ -24,6 +24,8 @@ public class hl_file {
 //    getFilesDir()	= /data/data/com.my.app/files
 
     //内置存储根目录/storage/emulated/0
+    //安卓Q沙盒目录Context.getExternalFilesDir() = 
+    //安卓Q沙盒图片Context.getExternalFilesDir(Environment.DIRECTORY_PICTURES) =  
     public static final String SDROOT = Environment.getExternalStorageDirectory().getPath();
 
     /**

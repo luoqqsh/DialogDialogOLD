@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.SurfaceView;
@@ -25,9 +26,13 @@ import x.com.hl_log.ViseLog;
 import x.com.hl_player.MediaController;
 import x.com.hl_tools.hl_permissions;
 import x.com.hl_tools.hl_permissionsOther;
+import x.com.hl_view.DanMu.DanMuController;
+import x.com.hl_view.DanMu.DanMuView;
+import x.com.hl_view.DanMu.OnSimpleListener;
 
 public class DialogMainActivity extends BaseActivity {
     private Context mContext;
+    private DanMuView danMuView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,13 +56,37 @@ public class DialogMainActivity extends BaseActivity {
                 }
             }
         });
+        danmu();
+    }
+
+    private void danmu() {
+        //弹幕使用
+        danMuView = findViewById(R.id.danmu);
+        danMuView.setText("hfeqwdqw");//设置文本
+        danMuView.setTextColor(0xffff0000);//设置文本颜色
+        danMuView.setTextSizeScaleOfWidth(0.6f);//设置文字大小0-1，大于1会超出屏幕范围
+        danMuView.setBackColor(0xff00ff00);//设置背景颜色
+        danMuView.setDirection(0);//设置方向，0-从右往左，1-从左往右
+        danMuView.setSpeed(15);//设置速度1-10,不建议超出这个范围
+        danMuView.start();//开始播放
+//        danMuView.stop();//停止
+        danMuView.setOnCompleteListener(new OnSimpleListener() {
+            @Override
+            public void onListen() {
+            }
+        });
     }
 
     private void permissions() {
         //检查权限
         //需要在activity重写onRequestPermissionsResult回调方法。不处理回调不写
-        hl_permissions.applyPermission(DialogMainActivity.this,
-                new String[]{Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+        String[] q;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            q = new String[]{Manifest.permission.READ_PHONE_STATE, Manifest.permission.READ_MEDIA_IMAGES, Manifest.permission.READ_MEDIA_VIDEO, Manifest.permission.READ_MEDIA_AUDIO};
+        } else {
+            q = new String[]{Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        }
+        hl_permissions.applyPermission(DialogMainActivity.this, q,
                 new hl_permissions.RequestPermissionCallBack() {
                     @Override
                     public void requestPermissionSuccess() {
