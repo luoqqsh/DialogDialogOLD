@@ -2,6 +2,7 @@ package x.com.hl_tools;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
@@ -122,6 +123,21 @@ public class hl_permissionsOther {
         Set<String> packageNames = NotificationManagerCompat.getEnabledListenerPackages(context);
         return packageNames.contains(context.getPackageName());
     }
+
+    /**
+     * 检查是否有安装未知应用权限
+     *
+     * @param context 上下文
+     * @return 结果
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private boolean isHasInstallPermissionWithO(Context context) {
+        if (context == null) {
+            return false;
+        }
+        return context.getPackageManager().canRequestPackageInstalls();
+    }
+
     /**
      * 是否启用辅助功能服务
      *
@@ -158,6 +174,19 @@ public class hl_permissionsOther {
         }
         return false;
     }
+
+    /**
+     * 去设置安装未知应用
+     *
+     * @param context 上下文
+     * @return 是否成功
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static void gotoSetUnknownApp(Activity context) {
+        Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES);
+        context.startActivityForResult(intent, 1);
+    }
+
     /**
      * 去设置通知
      *

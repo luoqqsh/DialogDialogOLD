@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
-import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Toast;
 
@@ -16,17 +15,13 @@ import androidx.annotation.Nullable;
 
 import x.com.hl_dialog.DFLoadingDialog;
 import x.com.hl_dialog.DFNDialog;
-import x.com.hl_dialog.DFPermissionListDialog;
 import x.com.hl_dialog.DFUpdateDialog;
 import x.com.hl_dialog.NDialog;
 import x.com.hl_dialog.NDialogBuilder;
 import x.com.hl_dialog.ProgressDialog.PDialog1Builder;
-import x.com.hl_gl.GLView;
 import x.com.hl_log.ViseLog;
-import x.com.hl_player.MediaController;
+import x.com.hl_tools.hl_orientation;
 import x.com.hl_tools.hl_permissions;
-import x.com.hl_tools.hl_permissionsOther;
-import x.com.hl_view.DanMu.DanMuController;
 import x.com.hl_view.DanMu.DanMuView;
 import x.com.hl_view.DanMu.OnSimpleListener;
 
@@ -38,13 +33,18 @@ public class DialogMainActivity extends BaseActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
         mContext = this;
         permissions();
         findViewById(R.id.tongzhi).setOnClickListener(view -> startActivity(new Intent(mContext, NotificationActivity.class)));
-        findViewById(R.id.media).setOnClickListener(view -> startActivity(new Intent(mContext, MediaActivity.class)));
+        findViewById(R.id.media).setOnClickListener(view -> startActivity(new Intent(mContext, HHMediaActivity.class)));
         findViewById(R.id.x5web).setOnClickListener(v -> startActivity(new Intent(mContext, H5Activity.class)));
         findViewById(R.id.log).setOnClickListener(v -> startActivity(new Intent(mContext, LogActivity.class)));
         findViewById(R.id.open).setOnClickListener(v -> startActivity(new Intent(mContext, GLActivity.class)));
+        findViewById(R.id.close).setOnClickListener(v -> {
+            hl_orientation orientation = new hl_orientation();
+            orientation.orientationEnable(this, null);
+        });
 
         findViewById(R.id.dialog).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,12 +56,13 @@ public class DialogMainActivity extends BaseActivity {
                 }
             }
         });
-        danmu();
+
+
     }
 
     private void danmu() {
         //弹幕使用
-        danMuView = findViewById(R.id.danmu);
+//        danMuView = findViewById(R.id.danmu);
         danMuView.setText("hfeqwdqw");//设置文本
         danMuView.setTextColor(0xffff0000);//设置文本颜色
         danMuView.setTextSizeScaleOfWidth(0.6f);//设置文字大小0-1，大于1会超出屏幕范围
@@ -86,6 +87,7 @@ public class DialogMainActivity extends BaseActivity {
         } else {
             q = new String[]{Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
         }
+
         hl_permissions.applyPermission(DialogMainActivity.this, q,
                 new hl_permissions.RequestPermissionCallBack() {
                     @Override
@@ -253,7 +255,8 @@ public class DialogMainActivity extends BaseActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         hl_permissions.requestPermissionsResult(this, requestCode, permissions, grantResults);
     }

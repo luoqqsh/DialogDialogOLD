@@ -6,7 +6,9 @@ import android.view.SurfaceView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import x.com.hl_player.MediaController;
+import x.com.hl_player.MediaPlayerController;
+import x.com.hl_tools.hl_device;
+import x.com.hl_tools.hl_leak;
 
 public class MediaActivity extends AppCompatActivity {
     //  /storage/emulated/0/Music/虫儿飞 - 郑伊健.mp3
@@ -29,7 +31,7 @@ public class MediaActivity extends AppCompatActivity {
 //  /storage/emulated/0/DCIM/wallpaperFairy/videoWallpaper/c0197187ca9868c646f734310cd23eee.mp4
 //  /storage/emulated/0/ClearWatermark/CWDownLoadTool/我的下载/bb327cd9d2c4d45cde8b168cb48f0e26.mp4
     private SurfaceView surface;
-    private MediaController mediaController;
+    private MediaPlayerController mediaPlayerController;
     private String musicpath = "/storage/emulated/0/Music/不可说 - 霍建华、赵丽颖.mp3";
     private String videopath = "/storage/emulated/0/DCIM/wallpaperFairy/videoWallpaper/69a2ff59895cdf8a7ccaf2d73046f638.mp4";
 
@@ -38,12 +40,30 @@ public class MediaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mediaplay);
         surface = findViewById(R.id.surface);
+//        TextureView textureview = findViewById(R.id.textureview);
+        //不支持设置透明度
+        mediaPlayerController = new MediaPlayerController(surface);
+        mediaPlayerController.setLooping(false);
+        //正常设置透明度
+//        mediaPlayerController = new MediaPlayerController(textureview);
+
         findViewById(R.id.select).setOnClickListener(v -> {
-            mediaController = new MediaController();
-            mediaController.doPrepare(videopath, surface.getHolder(),true);
+            mediaPlayerController.doPrepare(videopath);
         });
-        findViewById(R.id.play).setOnClickListener(v -> mediaController.doStart());
-        findViewById(R.id.pause).setOnClickListener(v -> mediaController.doPause());
-        findViewById(R.id.stop).setOnClickListener(v -> mediaController.doStop());
+        findViewById(R.id.play).setOnClickListener(v -> mediaPlayerController.doStart());
+        findViewById(R.id.pause).setOnClickListener(v -> mediaPlayerController.doPause());
+        findViewById(R.id.stop).setOnClickListener(v -> mediaPlayerController.doStop());
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mediaPlayerController != null) {
+            mediaPlayerController.doRelease();
+        }
+        if (hl_device.isHuaWeiPhone()) {
+            hl_leak.fixLeak(this);
+        }
     }
 }

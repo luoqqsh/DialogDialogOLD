@@ -12,6 +12,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.FileNameMap;
 import java.net.URLConnection;
+import java.util.Formatter;
+import java.util.Locale;
 
 import x.com.hl_log.ViseLog;
 
@@ -92,5 +94,27 @@ public class hl_media {
      */
     public static boolean isAudioFile(String filePath) {
         return true;
+    }
+
+    /**
+     * 获取00：00格式时间
+     * @param timeMs 时长，单位毫秒
+     * @return 00：00格式文本
+     */
+    public static String stringForTime(long timeMs) {
+        if (timeMs <= 0 || timeMs >= 24 * 60 * 60 * 1000) {
+            return "00:00";
+        }
+        long totalSeconds = timeMs / 1000;
+        int seconds = (int) (totalSeconds % 60);
+        int minutes = (int) ((totalSeconds / 60) % 60);
+        int hours = (int) (totalSeconds / 3600);
+        StringBuilder stringBuilder = new StringBuilder();
+        Formatter mFormatter = new Formatter(stringBuilder, Locale.getDefault());
+        if (hours > 0) {
+            return mFormatter.format("%02d:%02d:%02d", hours, minutes, seconds).toString();
+        } else {
+            return mFormatter.format("%02d:%02d", minutes, seconds).toString();
+        }
     }
 }

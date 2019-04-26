@@ -1,12 +1,14 @@
 package x.com.hl_tools;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.WindowManager;
 
-public class hl_screen {
+import androidx.appcompat.app.ActionBar;
 
+public class hl_screen {
 
     public static float dpToPx(Context context, float dp) {
         if (context == null) {
@@ -87,5 +89,30 @@ public class hl_screen {
         // 获得状态栏高度
         int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
         return context.getResources().getDimensionPixelSize(resourceId);
+    }
+
+    @SuppressLint("RestrictedApi")
+    public static void hideSupportActionBar(Context context) {
+        if (hl_context.getAppCompActivity(context) != null) {
+            ActionBar ab = hl_context.getAppCompActivity(context).getSupportActionBar();
+            if (ab != null) {
+                ab.setShowHideAnimationEnabled(false);
+                ab.hide();
+            }
+        }
+        hl_context.getWindow(context).setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    }
+
+    @SuppressLint("RestrictedApi")
+    public static void showSupportActionBar(Context context) {
+        if (hl_context.getAppCompActivity(context) != null) {
+            ActionBar ab = hl_context.getAppCompActivity(context).getSupportActionBar();
+            if (ab != null) {
+                ab.setShowHideAnimationEnabled(false);
+                ab.show();
+            }
+        }
+        hl_context.getWindow(context).clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 }
