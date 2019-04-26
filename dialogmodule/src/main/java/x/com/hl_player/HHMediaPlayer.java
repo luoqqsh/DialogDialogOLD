@@ -76,7 +76,7 @@ public class HHMediaPlayer extends HHPlayerBase {
         if (mediaPlayer != null && isCanControl()) {
             return mediaPlayer.getCurrentPosition();
         } else {
-            Log.e(TAG, "媒体文件未准备好" + mPlayerState);
+            Log.e(TAG, "获取当前位置失败" + mPlayerState);
             return 0;
         }
     }
