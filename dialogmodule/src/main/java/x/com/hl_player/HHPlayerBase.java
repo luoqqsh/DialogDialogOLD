@@ -9,15 +9,15 @@ import x.com.hl_base.HOnListener;
  * 播放器基础类
  */
 public abstract class HHPlayerBase {
-    protected String musicPath;
-    protected PlayerState mPlayerState;
+    String musicPath;
+    PlayerState mPlayerState = PlayerState.NONE;
     protected String TAG = "HHPlayerBase";
-    protected float volume = 1;
-    protected boolean isLooping = true; //是否循环播放
-    protected boolean isPrepared = false;//是否准备好
-    protected boolean isStartWhenPrepared = true;//是否准备好立即播放
-    protected HOnListener<Object> preparedListener;
-    protected HOnListener<Object> completionListener;
+    float volume = 1;
+    boolean isLooping = true; //是否循环播放
+    boolean isPrepared = false;//是否准备好
+    boolean isStartWhenPrepared = true;//是否准备好立即播放
+    HOnListener<Object> preparedListener;
+    HOnListener<Object> completionListener;
 
     enum PlayerState {
         ERROR,//出错
@@ -29,7 +29,7 @@ public abstract class HHPlayerBase {
         PAUSED,//暂停中
         PHONE,//通话中
         PLAYBACK_COMPLETED,//播放完成
-        END//结束，需要重新new
+        NONE//结束，需要重新new
     }
 
     public abstract void prepare(String mediaPath);
@@ -39,6 +39,8 @@ public abstract class HHPlayerBase {
     public abstract void pause();
 
     public abstract void stop();
+
+    public abstract void reset();
 
     public abstract void seekTo(long position);
 

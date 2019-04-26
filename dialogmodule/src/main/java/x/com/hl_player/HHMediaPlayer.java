@@ -73,7 +73,7 @@ public class HHMediaPlayer extends HHPlayerBase {
 
     @Override
     public long getCurrentPosition() {
-        if (mPlayerState == PlayerState.PLAYING && mediaPlayer != null) {
+        if (mediaPlayer != null && isCanControl()) {
             return mediaPlayer.getCurrentPosition();
         } else {
             Log.e(TAG, "媒体文件未准备好" + mPlayerState);
@@ -83,7 +83,7 @@ public class HHMediaPlayer extends HHPlayerBase {
 
     @Override
     public long getMediaDuration() {
-        if (mPlayerState != PlayerState.IDLE && mPlayerState != PlayerState.ERROR && mediaPlayer != null) {
+        if (isCanControl() && mediaPlayer != null) {
             return mediaPlayer.getDuration();
         } else {
             Log.e(TAG, "获取总时长失败" + mPlayerState);
@@ -106,6 +106,7 @@ public class HHMediaPlayer extends HHPlayerBase {
                 Log.e(TAG, "doStart");
             } catch (Exception e) {
                 e.printStackTrace();
+                Log.e(TAG, "start失败" + mPlayerState);
                 mPlayerState = PlayerState.ERROR;
                 dealError();
             }
@@ -122,13 +123,14 @@ public class HHMediaPlayer extends HHPlayerBase {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            Log.e(TAG, "pause失败" + mPlayerState);
             mPlayerState = PlayerState.ERROR;
         }
     }
 
     @Override
     public void seekTo(long position) {
-        if (mediaPlayer != null && mPlayerState == PlayerState.PREPARED) {
+        if (mediaPlayer != null && isCanControl()) {
             mPlayerState = PlayerState.PREPARING;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 mediaPlayer.seekTo(position, MediaPlayer.SEEK_CLOSEST);
@@ -140,7 +142,7 @@ public class HHMediaPlayer extends HHPlayerBase {
 
     @Override
     public void stop() {
-        if (mPlayerState != PlayerState.IDLE) {
+        if (isCanControl()) {
             try {
                 //调用stop方法之后要调用prepare方法，不然无法播放
                 mediaPlayer.stop();
@@ -149,9 +151,15 @@ public class HHMediaPlayer extends HHPlayerBase {
                 Log.e(TAG, "doStop");
             } catch (Exception e) {
                 e.printStackTrace();
+                Log.e(TAG, "stop失败" + mPlayerState);
                 mPlayerState = PlayerState.ERROR;
             }
         }
+    }
+
+    @Override
+    public void reset() {
+        mediaPlayer.reset();
     }
 
     @Override
@@ -159,8 +167,7 @@ public class HHMediaPlayer extends HHPlayerBase {
         if (mediaPlayer != null) {
             stop();
             mediaPlayer.release();
-            isStartWhenPrepared = false;
-            mPlayerState = PlayerState.END;
+            mPlayerState = PlayerState.NONE;
             isPrepared = false;
             mediaPlayer = null;
             Log.e(TAG, "doRelease");
@@ -210,6 +217,7 @@ public class HHMediaPlayer extends HHPlayerBase {
             mediaPlayer.setOnSeekCompleteListener(new MediaPlayer.OnSeekCompleteListener() {
                 @Override
                 public void onSeekComplete(MediaPlayer mp) {
+                    Log.e(TAG, "Seek Complete");
                     mp.start();
                     mPlayerState = PlayerState.PLAYING;
                 }
@@ -217,6 +225,7 @@ public class HHMediaPlayer extends HHPlayerBase {
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
+                    Log.e(TAG, "play Completion");
                     mPlayerState = PlayerState.PLAYBACK_COMPLETED;
                     if (completionListener != null) {
                         completionListener.onListen(mp);
@@ -245,5 +254,10 @@ public class HHMediaPlayer extends HHPlayerBase {
 
     private boolean isPlaying() {
         return mPlayerState == PlayerState.PLAYING && mediaPlayer.isPlaying();
+    }
+
+    private boolean isCanControl() {
+        return mPlayerState == PlayerState.PLAYING || mPlayerState == PlayerState.PAUSED || mPlayerState == PlayerState.PHONE
+                || mPlayerState == PlayerState.PLAYBACK_COMPLETED || mPlayerState == PlayerState.PREPARED;
     }
 }

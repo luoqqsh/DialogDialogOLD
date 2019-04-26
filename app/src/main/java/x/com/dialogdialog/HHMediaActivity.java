@@ -57,6 +57,7 @@ public class HHMediaActivity extends AppCompatActivity {
 
         hhPlayer = new HHPlayer(new HHMediaPlayer(), surface);
         hhPlayer.setStartWhenPrepared(false);
+        hhPlayer.setLooping(false);
         //正常设置透明度
 //        mediaPlayerController = new MediaPlayerController(textureview);
 
@@ -64,8 +65,15 @@ public class HHMediaActivity extends AppCompatActivity {
         findViewById(R.id.play).setOnClickListener(v -> hhPlayer.start());
         findViewById(R.id.pause).setOnClickListener(v -> hhPlayer.pause());
         findViewById(R.id.stop).setOnClickListener(v -> hhPlayer.stop());
+        findViewById(R.id.reset).setOnClickListener(v -> hhPlayer.reset());
         findViewById(R.id.full).setOnClickListener(v -> hhPlayer.fullScreen());
         findViewById(R.id.mute).setOnClickListener(v -> hhPlayer.setMute(!ismute));
+        findViewById(R.id.get).setOnClickListener(v -> {
+            ViseLog.d(hhPlayer.getCurrentPosition());
+            ViseLog.d(hhPlayer.getMediaDuration());
+            ViseLog.d(hhPlayer.getMediaPath());
+            ViseLog.d(hhPlayer.getState());
+        });
         hhPlayer.setPreparedListener(new HOnListener<Object>() {
             @Override
             public void onListen(Object o) {
@@ -75,7 +83,8 @@ public class HHMediaActivity extends AppCompatActivity {
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                hhPlayer.seekTo(i );
+//                hhPlayer.seekTo(i * 1000);
+                ViseLog.d("?/");
             }
 
             @Override

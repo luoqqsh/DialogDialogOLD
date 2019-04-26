@@ -39,7 +39,7 @@ public class HHPlayer {
     }
 
     public void setVolume(float volume) {
-        if (volume > 0 && volume < 1) {
+        if (volume >= 0 && volume <= 1) {
             hhPlayerBase.setVolume(volume);
         } else {
             hhPlayerBase.setVolume(1);
@@ -59,10 +59,15 @@ public class HHPlayer {
         hhPlayerBase.pause();
     }
 
+    public void reset() {
+        hhPlayerBase.reset();
+    }
+
     public void stop() {
         hhPlayerBase.stop();
     }
 
+    //单位毫秒
     public void seekTo(long position) {
         hhPlayerBase.seekTo(position);
     }
