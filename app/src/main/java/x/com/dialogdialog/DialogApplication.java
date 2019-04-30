@@ -7,6 +7,8 @@ import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.multidex.MultiDexApplication;
+
 import com.liulishuo.filedownloader.FileDownloader;
 import com.squareup.leakcanary.LeakCanary;
 
@@ -15,7 +17,7 @@ import x.com.hl_log.inner.LogcatTree;
 import x.com.hl_tools.DialogTools.NeverCrashHelper;
 import x.com.hl_web.x5Manager;
 
-public class DialogApplication extends Application {
+public class DialogApplication extends MultiDexApplication {
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);

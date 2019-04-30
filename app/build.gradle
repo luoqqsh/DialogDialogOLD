@@ -11,6 +11,7 @@ android {
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         ndk {
 //            //APP的build.gradle设置支持的SO库架构   'x86',armeabi-v7a
@@ -39,6 +40,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+    implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'com.squareup.leakcanary:leakcanary-android:1.6.3'
     implementation project(':dialogmodule')
 

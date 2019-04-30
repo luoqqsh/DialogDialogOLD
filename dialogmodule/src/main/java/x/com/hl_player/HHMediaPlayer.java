@@ -21,31 +21,14 @@ public class HHMediaPlayer extends HHPlayerBase {
     private MediaPlayer mediaPlayer;
 
     @Override
-    public void setSurface(SurfaceView surfaceView, SurfaceView surfaceView2) {
+    public void setSurface(SurfaceView surfaceView) {
         TAG = "HH-MediaPlayer-surface";
         mediaPlayer = new MediaPlayer();
         surfaceView.setKeepScreenOn(true);
-        surfaceView2.getHolder().addCallback(new SurfaceHolder.Callback() {
-            @Override
-            public void surfaceCreated(SurfaceHolder holder) {
-                mediaPlayer.setDisplay(holder);
-                ViseLog.d("a121123");
-            }
-
-            @Override
-            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-            }
-
-            @Override
-            public void surfaceDestroyed(SurfaceHolder holder) {
-                release();
-            }
-        });
         surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
                 mediaPlayer.setDisplay(holder);
-                ViseLog.d("a121");
             }
 
             @Override
@@ -110,6 +93,9 @@ public class HHMediaPlayer extends HHPlayerBase {
 
     @Override
     public void prepare(String mediaPath) {
+        if ("HHPlayerBase".equals(TAG)) {
+            TAG = "HH-MediaPlayer-Music";
+        }
         musicPath = mediaPath;
         doPrepare(mediaPath, true);
     }

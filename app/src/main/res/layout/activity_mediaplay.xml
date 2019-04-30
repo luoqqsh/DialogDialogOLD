@@ -13,8 +13,8 @@
             android:layout_width="match_parent"
             android:layout_height="150dp" />
 
-        <SurfaceView
-            android:id="@+id/surface2"
+        <TextureView
+            android:id="@+id/textureview"
             android:layout_width="match_parent"
             android:layout_height="150dp" />
 

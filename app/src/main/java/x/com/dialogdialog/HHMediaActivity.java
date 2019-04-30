@@ -2,19 +2,28 @@ package x.com.dialogdialog;
 
 import android.os.Bundle;
 import android.view.SurfaceView;
+import android.view.TextureView;
 import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatSeekBar;
+
+import org.json.JSONObject;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 import x.com.hl_base.HOnListener;
 import x.com.hl_log.ViseLog;
 import x.com.hl_player.HHMediaPlayer;
 import x.com.hl_player.HHPlayer;
 import x.com.hl_player.MediaPlayerController;
+import x.com.hl_rx.TaskDelayBManager;
+import x.com.hl_rx.TaskDelayManager;
 import x.com.hl_tools.hl_device;
 import x.com.hl_tools.hl_leak;
 
@@ -45,24 +54,26 @@ public class HHMediaActivity extends AppCompatActivity {
     private boolean ismute = false;
     private TextView currenttime;
     private AppCompatSeekBar seekBar;
-    private SurfaceView surface2;
+    private TextureView textureview;
+    private TextView tvback5;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mediaplay);
-        surface2 = findViewById(R.id.surface2);
+        textureview = findViewById(R.id.textureview);
         surface = findViewById(R.id.surface);
         currenttime = findViewById(R.id.currenttime);
         seekBar = findViewById(R.id.seekbar);
+        seekBar.setMax(100);
 //        TextureView textureview = findViewById(R.id.textureview);
 
 
-        hhPlayer = new HHPlayer(new HHMediaPlayer(), surface, surface2);
+//        hhPlayer = new HHPlayer(new HHMediaPlayer(), surface);
+        hhPlayer = new HHPlayer(new HHMediaPlayer(), textureview);
         hhPlayer.setStartWhenPrepared(false);
         hhPlayer.setLooping(false);
         //正常设置透明度
-//        mediaPlayerController = new MediaPlayerController(textureview);
 
         findViewById(R.id.select).setOnClickListener(v -> hhPlayer.prepare(videopath));
         findViewById(R.id.play).setOnClickListener(v -> hhPlayer.start());
@@ -78,7 +89,9 @@ public class HHMediaActivity extends AppCompatActivity {
                 hhPlayer.seekTo(hhPlayer.getCurrentPosition() + 5000);
             }
         });
-        findViewById(R.id.back5).setOnClickListener(v -> {
+        tvback5 = findViewById(R.id.back5);
+        tvback5.setText("123415");
+        tvback5.setOnClickListener(v -> {
             if (hhPlayer.getCurrentPosition() > 5000) {
                 hhPlayer.seekTo(hhPlayer.getCurrentPosition() - 5000);
             }
@@ -100,7 +113,7 @@ public class HHMediaActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
 //                hhPlayer.seekTo(i * 1000);
-                ViseLog.d("?/");
+//                ViseLog.d("?/");
             }
 
             @Override
@@ -113,6 +126,22 @@ public class HHMediaActivity extends AppCompatActivity {
 
             }
         });
+
+        getCurrent();
+    }
+
+
+    private void getCurrent() {
+//        TaskDelayBManager a = new TaskDelayBManager() {
+//
+//            @Override
+//            public void onListen(Long index) {
+//                ViseLog.d(index);
+//                tvback5.setText(String.valueOf(index));
+//                tvback5.setBackgroundColor(getResources().getColor(R.color.red));
+//            }
+//        };
+//        a.loop(1000);
 
     }
 

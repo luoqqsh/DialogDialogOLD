@@ -16,9 +16,9 @@ public class HHPlayer {
         this.hhPlayerBase = hhPlayerBase;
     }
 
-    public HHPlayer(HHPlayerBase hhPlayerBase, SurfaceView surface, SurfaceView surface2) {
+    public HHPlayer(HHPlayerBase hhPlayerBase, SurfaceView surface) {
         this.hhPlayerBase = hhPlayerBase;
-        hhPlayerBase.setSurface(surface, surface2);
+        hhPlayerBase.setSurface(surface);
     }
 
     public HHPlayer(HHPlayerBase hhPlayerBase, TextureView texture) {

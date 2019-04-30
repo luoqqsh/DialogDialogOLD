@@ -1,13 +1,15 @@
-package x.com.hl_view.DanMu;
-
-import io.reactivex.Observer;
+package x.com.hl_rx;
 
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
+import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+/**
+ * 子线程使用
+ */
 public abstract class TaskDelayBManager {
 
     private Disposable mDisposable;

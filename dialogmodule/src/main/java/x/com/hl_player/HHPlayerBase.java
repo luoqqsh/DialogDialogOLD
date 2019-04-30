@@ -55,7 +55,7 @@ public abstract class HHPlayerBase {
     public abstract long getMediaDuration();
 
 
-    public void setSurface(SurfaceView surface, SurfaceView surface2) {
+    public void setSurface(SurfaceView surface) {
 
     }
 
