@@ -16,9 +16,9 @@ public class HHPlayer {
         this.hhPlayerBase = hhPlayerBase;
     }
 
-    public HHPlayer(HHPlayerBase hhPlayerBase, SurfaceView surface) {
+    public HHPlayer(HHPlayerBase hhPlayerBase, SurfaceView surface, SurfaceView surface2) {
         this.hhPlayerBase = hhPlayerBase;
-        hhPlayerBase.setSurface(surface);
+        hhPlayerBase.setSurface(surface, surface2);
     }
 
     public HHPlayer(HHPlayerBase hhPlayerBase, TextureView texture) {
@@ -70,6 +70,11 @@ public class HHPlayer {
     //单位毫秒
     public void seekTo(long position) {
         hhPlayerBase.seekTo(position);
+    }
+
+    //0为暂停，1为正常。。。
+    public void setSpeed(float speed) {
+        hhPlayerBase.setSpeed(speed);
     }
 
     public void release() {

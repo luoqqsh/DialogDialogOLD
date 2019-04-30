@@ -21,14 +21,31 @@ public class HHMediaPlayer extends HHPlayerBase {
     private MediaPlayer mediaPlayer;
 
     @Override
-    public void setSurface(SurfaceView surfaceView) {
+    public void setSurface(SurfaceView surfaceView, SurfaceView surfaceView2) {
         TAG = "HH-MediaPlayer-surface";
         mediaPlayer = new MediaPlayer();
         surfaceView.setKeepScreenOn(true);
+        surfaceView2.getHolder().addCallback(new SurfaceHolder.Callback() {
+            @Override
+            public void surfaceCreated(SurfaceHolder holder) {
+                mediaPlayer.setDisplay(holder);
+                ViseLog.d("a121123");
+            }
+
+            @Override
+            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+            }
+
+            @Override
+            public void surfaceDestroyed(SurfaceHolder holder) {
+                release();
+            }
+        });
         surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
                 mediaPlayer.setDisplay(holder);
+                ViseLog.d("a121");
             }
 
             @Override
@@ -178,6 +195,16 @@ public class HHMediaPlayer extends HHPlayerBase {
     public void setVolume(float volume) {
         this.volume = volume;
         mediaPlayer.setVolume(volume, volume);
+    }
+
+    @Override
+    public void setSpeed(float speed) {
+        if (mPlayerState != PlayerState.IDLE) {
+            Log.e(TAG, "speed:" + speed);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                mediaPlayer.setPlaybackParams(mediaPlayer.getPlaybackParams().setSpeed(speed));
+            }
+        }
     }
 
     private void doPrepare(String mediaPath, boolean isFirst) {

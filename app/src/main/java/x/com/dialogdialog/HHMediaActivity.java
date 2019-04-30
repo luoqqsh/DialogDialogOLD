@@ -2,6 +2,7 @@ package x.com.dialogdialog;
 
 import android.os.Bundle;
 import android.view.SurfaceView;
+import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -44,18 +45,20 @@ public class HHMediaActivity extends AppCompatActivity {
     private boolean ismute = false;
     private TextView currenttime;
     private AppCompatSeekBar seekBar;
+    private SurfaceView surface2;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mediaplay);
+        surface2 = findViewById(R.id.surface2);
         surface = findViewById(R.id.surface);
         currenttime = findViewById(R.id.currenttime);
         seekBar = findViewById(R.id.seekbar);
 //        TextureView textureview = findViewById(R.id.textureview);
 
 
-        hhPlayer = new HHPlayer(new HHMediaPlayer(), surface);
+        hhPlayer = new HHPlayer(new HHMediaPlayer(), surface, surface2);
         hhPlayer.setStartWhenPrepared(false);
         hhPlayer.setLooping(false);
         //正常设置透明度
@@ -68,6 +71,19 @@ public class HHMediaActivity extends AppCompatActivity {
         findViewById(R.id.reset).setOnClickListener(v -> hhPlayer.reset());
         findViewById(R.id.full).setOnClickListener(v -> hhPlayer.fullScreen());
         findViewById(R.id.mute).setOnClickListener(v -> hhPlayer.setMute(!ismute));
+        findViewById(R.id.fast).setOnClickListener(v -> hhPlayer.setSpeed(2));
+        findViewById(R.id.slow).setOnClickListener(v -> hhPlayer.setSpeed(0.5f));
+        findViewById(R.id.go5).setOnClickListener(v -> {
+            if (hhPlayer.getCurrentPosition() + 5000 < hhPlayer.getMediaDuration()) {
+                hhPlayer.seekTo(hhPlayer.getCurrentPosition() + 5000);
+            }
+        });
+        findViewById(R.id.back5).setOnClickListener(v -> {
+            if (hhPlayer.getCurrentPosition() > 5000) {
+                hhPlayer.seekTo(hhPlayer.getCurrentPosition() - 5000);
+            }
+        });
+        findViewById(R.id.slow).setOnClickListener(v -> hhPlayer.setSpeed(0.5f));
         findViewById(R.id.get).setOnClickListener(v -> {
             ViseLog.d(hhPlayer.getCurrentPosition());
             ViseLog.d(hhPlayer.getMediaDuration());

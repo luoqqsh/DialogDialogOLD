@@ -48,12 +48,14 @@ public abstract class HHPlayerBase {
 
     public abstract void setVolume(float volume);
 
+    public abstract void setSpeed(float speed);
+
     public abstract long getCurrentPosition();
 
     public abstract long getMediaDuration();
 
 
-    public void setSurface(SurfaceView surface) {
+    public void setSurface(SurfaceView surface, SurfaceView surface2) {
 
     }
 

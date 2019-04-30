@@ -13,6 +13,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.airbnb.lottie.LottieAnimationView;
+
 import x.com.hl_dialog.DFLoadingDialog;
 import x.com.hl_dialog.DFNDialog;
 import x.com.hl_dialog.DFUpdateDialog;
@@ -28,6 +30,7 @@ import x.com.hl_view.DanMu.OnSimpleListener;
 public class DialogMainActivity extends BaseActivity {
     private Context mContext;
     private DanMuView danMuView;
+    private LottieAnimationView animation_view;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,7 +59,6 @@ public class DialogMainActivity extends BaseActivity {
                 }
             }
         });
-
 
     }
 
