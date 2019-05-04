@@ -1,7 +1,7 @@
 package x.com.dialogdialog;
 
-import android.app.Application;
 import android.content.Context;
+import android.os.Debug;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -25,6 +25,8 @@ public class DialogApplication extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+        //参数：分析结果存在的文件
+//        Debug.startMethodTracing("/storage/emulated/0/DCIM/app.trash");
         ViseLog.getLogConfig()
                 .configAllowLog(true)//是否输出日志
                 .configShowBorders(true)//是否排版显示
@@ -44,6 +46,7 @@ public class DialogApplication extends MultiDexApplication {
             showToast(e.getMessage());
         });
         x5Manager.getInstance().init(this);
+//        Debug.stopMethodTracing();
     }
 
     private void showToast(final String text) {
