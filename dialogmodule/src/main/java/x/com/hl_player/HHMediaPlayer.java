@@ -12,6 +12,7 @@ import android.view.TextureView;
 import java.io.File;
 
 import x.com.hl_log.ViseLog;
+import x.com.hl_rx.TaskDelayManager;
 
 /**
  * MediaPlayer具体实现
@@ -19,6 +20,7 @@ import x.com.hl_log.ViseLog;
 public class HHMediaPlayer extends HHPlayerBase {
 
     private MediaPlayer mediaPlayer;
+    private TaskDelayManager a;
 
     @Override
     public void setSurface(SurfaceView surfaceView) {
@@ -105,6 +107,7 @@ public class HHMediaPlayer extends HHPlayerBase {
         if (!isPlaying() && isPrepared) {
             try {
                 mediaPlayer.start();
+                getCurrentStart();
                 mPlayerState = PlayerState.PLAYING;
                 Log.e(TAG, "doStart");
             } catch (Exception e) {
@@ -134,6 +137,7 @@ public class HHMediaPlayer extends HHPlayerBase {
     @Override
     public void seekTo(long position) {
         if (mediaPlayer != null && isCanControl()) {
+            Log.e(TAG, "seekTo");
             mPlayerState = PlayerState.PREPARING;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 mediaPlayer.seekTo(position, MediaPlayer.SEEK_CLOSEST);
@@ -150,6 +154,7 @@ public class HHMediaPlayer extends HHPlayerBase {
                 //调用stop方法之后要调用prepare方法，不然无法播放
                 mediaPlayer.stop();
                 isPrepared = false;
+                getCurrentStop();
                 mPlayerState = PlayerState.IDLE;
                 Log.e(TAG, "doStop");
             } catch (Exception e) {
@@ -163,6 +168,7 @@ public class HHMediaPlayer extends HHPlayerBase {
     @Override
     public void reset() {
         mediaPlayer.reset();
+        getCurrentStop();
     }
 
     @Override
@@ -170,6 +176,7 @@ public class HHMediaPlayer extends HHPlayerBase {
         if (mediaPlayer != null) {
             stop();
             mediaPlayer.release();
+            getCurrentStop();
             mPlayerState = PlayerState.NONE;
             isPrepared = false;
             mediaPlayer = null;
@@ -222,8 +229,7 @@ public class HHMediaPlayer extends HHPlayerBase {
                     isPrepared = true;
                     Log.e(TAG, "Prepared OK");
                     if (isStartWhenPrepared) {
-                        mp.start();
-                        mPlayerState = PlayerState.PLAYING;
+                        start();
                     }
                 }
             });
@@ -231,8 +237,7 @@ public class HHMediaPlayer extends HHPlayerBase {
                 @Override
                 public void onSeekComplete(MediaPlayer mp) {
                     Log.e(TAG, "Seek Complete");
-                    mp.start();
-                    mPlayerState = PlayerState.PLAYING;
+                    start();
                 }
             });
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -272,5 +277,26 @@ public class HHMediaPlayer extends HHPlayerBase {
     private boolean isCanControl() {
         return mPlayerState == PlayerState.PLAYING || mPlayerState == PlayerState.PAUSED || mPlayerState == PlayerState.PHONE
                 || mPlayerState == PlayerState.PLAYBACK_COMPLETED || mPlayerState == PlayerState.PREPARED;
+    }
+
+    private void getCurrentStart() {
+        if (a == null) {
+            a = new TaskDelayManager() {
+                @Override
+                public void onListen(Long index) {
+                    if (progessListener != null) {
+                        progessListener.onListen((long) mediaPlayer.getCurrentPosition());
+                    }
+                }
+            };
+            a.loop(1000);
+        }
+    }
+
+    private void getCurrentStop() {
+        if (a != null) {
+            a.cancel();
+            a = null;
+        }
     }
 }

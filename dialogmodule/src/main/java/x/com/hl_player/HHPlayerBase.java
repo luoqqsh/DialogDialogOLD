@@ -17,6 +17,7 @@ public abstract class HHPlayerBase {
     boolean isPrepared = false;//是否准备好
     boolean isStartWhenPrepared = true;//是否准备好立即播放
     HOnListener<Object> preparedListener;
+    HOnListener<Long> progessListener;
     HOnListener<Object> completionListener;
 
     enum PlayerState {
@@ -32,6 +33,12 @@ public abstract class HHPlayerBase {
         NONE//结束，需要重新new
     }
 
+    enum PlayerMode{
+        MODE_FULL_SCREEN,
+        MODE_NORMAL,
+        MODE_TINY_WINDOW
+    }
+    
     public abstract void prepare(String mediaPath);
 
     public abstract void start();
@@ -85,6 +92,10 @@ public abstract class HHPlayerBase {
 
     public void setPreparedListener(HOnListener<Object> preparedListener) {
         this.preparedListener = preparedListener;
+    }
+
+    public void setProgessListener(HOnListener<Long> progessListener) {
+        this.progessListener = progessListener;
     }
 
     public void setCompletionListener(HOnListener<Object> completionListener) {

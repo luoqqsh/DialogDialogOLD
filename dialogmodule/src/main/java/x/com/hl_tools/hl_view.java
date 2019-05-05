@@ -1,13 +1,18 @@
 package x.com.hl_tools;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+
+import androidx.appcompat.app.ActionBar;
 
 
 public class hl_view {
@@ -87,6 +92,7 @@ public class hl_view {
             lv.setLayoutParams(params);
         }
     }
+
     /**
      * scrollview嵌套listview 计算高度
      */
@@ -173,4 +179,25 @@ public class hl_view {
         listView.setLayoutParams(params);
     }
 
+    @SuppressLint("RestrictedApi")
+    public static void showActionBar(Context context) {
+        ActionBar ab = hl_context.getAppCompActivity(context).getSupportActionBar();
+        if (ab != null) {
+            ab.setShowHideAnimationEnabled(false);
+            ab.show();
+        }
+        hl_context.scanForActivity(context)
+                .getWindow()
+                .clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    }
+
+    @SuppressLint("RestrictedApi")
+    public static void hideActionBar(Context context) {
+        ActionBar ab = hl_context.getAppCompActivity(context).getSupportActionBar();
+        if (ab != null) {
+            ab.setShowHideAnimationEnabled(false);
+            ab.hide();
+        }
+        hl_context.scanForActivity(context).getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    }
 }

@@ -10,14 +10,14 @@ import androidx.appcompat.app.ActionBar;
 
 public class hl_screen {
 
-    public static float dpToPx(Context context, float dp) {
+    public static float dp2Px(Context context, float dp) {
         if (context == null) {
             return -1;
         }
         return dp * context.getResources().getDisplayMetrics().density;
     }
 
-    public static float pxToDp(Context context, float px) {
+    public static float px2Dp(Context context, float px) {
         if (context == null) {
             return -1;
         }

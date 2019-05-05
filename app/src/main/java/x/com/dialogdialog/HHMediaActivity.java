@@ -26,6 +26,7 @@ import x.com.hl_rx.TaskDelayBManager;
 import x.com.hl_rx.TaskDelayManager;
 import x.com.hl_tools.hl_device;
 import x.com.hl_tools.hl_leak;
+import x.com.hl_tools.hl_time;
 
 public class HHMediaActivity extends AppCompatActivity {
     //  /storage/emulated/0/Music/虫儿飞 - 郑伊健.mp3
@@ -67,8 +68,6 @@ public class HHMediaActivity extends AppCompatActivity {
         seekBar = findViewById(R.id.seekbar);
         seekBar.setMax(100);
 //        TextureView textureview = findViewById(R.id.textureview);
-
-
 //        hhPlayer = new HHPlayer(new HHMediaPlayer(), surface);
         hhPlayer = new HHPlayer(new HHMediaPlayer(), textureview);
         hhPlayer.setStartWhenPrepared(false);
@@ -90,7 +89,6 @@ public class HHMediaActivity extends AppCompatActivity {
             }
         });
         tvback5 = findViewById(R.id.back5);
-        tvback5.setText("123415");
         tvback5.setOnClickListener(v -> {
             if (hhPlayer.getCurrentPosition() > 5000) {
                 hhPlayer.seekTo(hhPlayer.getCurrentPosition() - 5000);
@@ -109,10 +107,17 @@ public class HHMediaActivity extends AppCompatActivity {
                 seekBar.setMax((int) (hhPlayer.getMediaDuration() / 1000));
             }
         });
+        hhPlayer.setProgessListener(new HOnListener<Long>() {
+            @Override
+            public void onListen(Long o) {
+                currenttime.setText(hl_time.formatTime(o));
+                seekBar.setProgress((int) (o / 1000));
+            }
+        });
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-//                hhPlayer.seekTo(i * 1000);
+                hhPlayer.seekTo(i * 1000);
 //                ViseLog.d("?/");
             }
 
@@ -126,22 +131,6 @@ public class HHMediaActivity extends AppCompatActivity {
 
             }
         });
-
-        getCurrent();
-    }
-
-
-    private void getCurrent() {
-//        TaskDelayBManager a = new TaskDelayBManager() {
-//
-//            @Override
-//            public void onListen(Long index) {
-//                ViseLog.d(index);
-//                tvback5.setText(String.valueOf(index));
-//                tvback5.setBackgroundColor(getResources().getColor(R.color.red));
-//            }
-//        };
-//        a.loop(1000);
 
     }
 
