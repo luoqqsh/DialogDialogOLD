@@ -72,7 +72,6 @@ public class HHMediaActivity extends AppCompatActivity {
         hhPlayer = new HHPlayer(new HHMediaPlayer(), textureview);
         hhPlayer.setStartWhenPrepared(false);
         hhPlayer.setLooping(false);
-        //正常设置透明度
 
         findViewById(R.id.select).setOnClickListener(v -> hhPlayer.prepare(videopath));
         findViewById(R.id.play).setOnClickListener(v -> hhPlayer.start());
@@ -116,8 +115,10 @@ public class HHMediaActivity extends AppCompatActivity {
         });
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                hhPlayer.seekTo(i * 1000);
+            public void onProgressChanged(SeekBar seekBar, int progess, boolean fromUser) {
+                if (fromUser) {
+                    hhPlayer.seekTo(progess * 1000);
+                }
 //                ViseLog.d("?/");
             }
 

@@ -62,8 +62,6 @@ public class MediaActivity extends AppCompatActivity {
         if (mediaPlayerController != null) {
             mediaPlayerController.doRelease();
         }
-        if (hl_device.isHuaWeiPhone()) {
-            hl_leak.fixLeak(this);
-        }
+        hl_leak.fixInput(this);
     }
 }

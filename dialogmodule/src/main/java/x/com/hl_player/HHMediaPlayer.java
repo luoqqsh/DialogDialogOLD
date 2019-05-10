@@ -213,15 +213,14 @@ public class HHMediaPlayer extends HHPlayerBase {
         }
         mPlayerState = PlayerState.IDLE;
         try {
-            mediaPlayer.setDataSource(mediaPath);
-            mPlayerState = PlayerState.INITIALIZED;
-            mediaPlayer.setVolume(volume, volume);
-            mediaPlayer.setLooping(isLooping);
             mPlayerState = PlayerState.PREPARING;
+            mediaPlayer.setDataSource(mediaPath);
             mediaPlayer.prepareAsync();//异步
             mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mp) {
+                    mediaPlayer.setVolume(volume, volume);
+                    mediaPlayer.setLooping(isLooping);
                     mPlayerState = PlayerState.PREPARED;
                     if (preparedListener != null) {
                         preparedListener.onListen(mp);

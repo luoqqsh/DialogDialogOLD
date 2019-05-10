@@ -19,6 +19,11 @@ import static android.opengl.GLES20.glCreateProgram;
 import static android.opengl.GLES20.glGetProgramInfoLog;
 
 public class ShaderUtil {
+    public static final String ACOORD = "aCoord";//共有-采样点的坐标
+    public static final String VMATRIX = "vMatrix";//顶点-矩阵变换
+    public static final String VCOORD = "vCoord";//顶点-采样图片的坐标
+    public static final String VPOSITION = "vPosition";//顶点-位置
+    public static final String VTEXTURE = "vTexture";//片元-纹理采样器
 
     /**
      * 从assets加载着色器资源

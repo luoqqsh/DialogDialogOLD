@@ -61,4 +61,6 @@ precision 开头声明数据精度
      * .glsl - 通用着色器
      */
      
+manifest配置：
+<uses-feature android:glEsVersion="0x00030000" android:required="true" />
 

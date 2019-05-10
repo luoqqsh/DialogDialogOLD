@@ -1,6 +1,7 @@
 package x.com.hl_tools;
 
 import android.content.Context;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import java.lang.reflect.Field;
@@ -31,6 +32,30 @@ public class hl_leak {
             } catch (Throwable t) {
                 t.printStackTrace();
             }
+        }
+    }
+
+    public static void fixInput(Context context) {
+        method(context, "mServedView");
+        method(context, "mNextServedView");
+    }
+
+    private static void method(Context context, String attr) {
+        InputMethodManager im = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        try {
+            Field mCurRootViewField = InputMethodManager.class.getDeclaredField(attr);
+            mCurRootViewField.setAccessible(true);
+            //取对象
+            Object mCurRootView = mCurRootViewField.get(im);
+            if (mCurRootView != null) {
+                Context newcontext = ((View) mCurRootView).getContext();
+                if (newcontext == context) {
+                    //破坏GC链
+                    mCurRootViewField.set(im, null);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

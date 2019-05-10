@@ -25,7 +25,6 @@ public abstract class HHPlayerBase {
         IDLE,//闲置，初始化
         PREPARING,//PREPAR中
         PREPARED,//PREPAR完毕
-        INITIALIZED,//资源设置完毕
         PLAYING,//播放中
         PAUSED,//暂停中
         PHONE,//通话中

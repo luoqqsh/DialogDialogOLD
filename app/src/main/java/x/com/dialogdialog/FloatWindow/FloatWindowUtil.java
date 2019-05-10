@@ -3,7 +3,6 @@ package x.com.dialogdialog.FloatWindow;
 import android.content.Context;
 import android.graphics.PixelFormat;
 import android.os.Build;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 

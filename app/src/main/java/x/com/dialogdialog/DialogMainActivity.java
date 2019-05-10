@@ -36,7 +36,7 @@ public class DialogMainActivity extends BaseActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
+
         mContext = this;
         permissions();
         findViewById(R.id.tongzhi).setOnClickListener(view -> startActivity(new Intent(mContext, NotificationActivity.class)));
@@ -85,7 +85,8 @@ public class DialogMainActivity extends BaseActivity {
         //需要在activity重写onRequestPermissionsResult回调方法。不处理回调不写
         String[] q;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            q = new String[]{Manifest.permission.READ_PHONE_STATE, Manifest.permission.READ_MEDIA_IMAGES, Manifest.permission.READ_MEDIA_VIDEO, Manifest.permission.READ_MEDIA_AUDIO};
+            q = null;
+//            q = new String[]{Manifest.permission.READ_PHONE_STATE, Manifest.permission.read, Manifest.permission.READ_MEDIA_VIDEO, Manifest.permission.READ_MEDIA_AUDIO};
         } else {
             q = new String[]{Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
         }
