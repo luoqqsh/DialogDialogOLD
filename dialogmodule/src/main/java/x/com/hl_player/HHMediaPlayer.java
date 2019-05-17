@@ -195,7 +195,11 @@ public class HHMediaPlayer extends HHPlayerBase {
         if (mPlayerState != PlayerState.IDLE) {
             Log.e(TAG, "speed:" + speed);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                mediaPlayer.setPlaybackParams(mediaPlayer.getPlaybackParams().setSpeed(speed));
+                try {
+                    mediaPlayer.setPlaybackParams(mediaPlayer.getPlaybackParams().setSpeed(speed));
+                }catch (Exception e){
+                    Log.e("errorERROR", String.valueOf(mPlayerState));
+                }
             }
         }
     }
