@@ -12,20 +12,18 @@ import android.view.TextureView;
 import java.io.File;
 
 import x.com.hl_log.ViseLog;
-import x.com.hl_rx.TaskDelayManager;
 
 /**
  * MediaPlayer具体实现
  */
 public class HHMediaPlayer extends HHPlayerBase {
-
     private MediaPlayer mediaPlayer;
-    private TaskDelayManager a;
 
     @Override
     public void setSurface(SurfaceView surfaceView) {
         TAG = "HH-MediaPlayer-surface";
         mediaPlayer = new MediaPlayer();
+        initListener();
         surfaceView.setKeepScreenOn(true);
         surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
@@ -48,6 +46,7 @@ public class HHMediaPlayer extends HHPlayerBase {
     public void setTexture(TextureView textureView) {
         TAG = "HH-MediaPlayer-texture";
         mediaPlayer = new MediaPlayer();
+        initListener();
         textureView.setSurfaceTextureListener(new TextureView.SurfaceTextureListener() {
             @Override
             public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int width, int height) {
@@ -75,22 +74,18 @@ public class HHMediaPlayer extends HHPlayerBase {
 
     @Override
     public long getCurrentPosition() {
-        if (mediaPlayer != null && isCanControl()) {
+        if (mediaPlayer != null) {
             return mediaPlayer.getCurrentPosition();
-        } else {
-            Log.e(TAG, "获取当前位置失败" + mPlayerState);
-            return 0;
         }
+        return 0;
     }
 
     @Override
     public long getMediaDuration() {
-        if (isCanControl() && mediaPlayer != null) {
+        if (mediaPlayer != null) {
             return mediaPlayer.getDuration();
-        } else {
-            Log.e(TAG, "获取总时长失败" + mPlayerState);
-            return 0;
         }
+        return 0;
     }
 
     @Override
@@ -98,47 +93,27 @@ public class HHMediaPlayer extends HHPlayerBase {
         if ("HHPlayerBase".equals(TAG)) {
             TAG = "HH-MediaPlayer-Music";
         }
-        musicPath = mediaPath;
+        this.mediaPath = mediaPath;
         doPrepare(mediaPath, true);
     }
 
     @Override
     public void start() {
-        if (!isPlaying() && isPrepared) {
-            try {
-                mediaPlayer.start();
-                getCurrentStart();
-                mPlayerState = PlayerState.PLAYING;
-                Log.e(TAG, "doStart");
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e(TAG, "start失败" + mPlayerState);
-                mPlayerState = PlayerState.ERROR;
-                dealError();
-            }
+        if (mediaPlayer != null) {
+            mediaPlayer.start();
         }
     }
 
     @Override
     public void pause() {
-        try {
-            if (isPlaying()) {
-                mediaPlayer.pause();
-                mPlayerState = PlayerState.PAUSED;
-                Log.e(TAG, "doPause");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(TAG, "pause失败" + mPlayerState);
-            mPlayerState = PlayerState.ERROR;
+        if (mediaPlayer != null) {
+            mediaPlayer.pause();
         }
     }
 
     @Override
     public void seekTo(long position) {
-        if (mediaPlayer != null && isCanControl()) {
-            Log.e(TAG, "seekTo");
-            mPlayerState = PlayerState.PREPARING;
+        if (mediaPlayer != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 mediaPlayer.seekTo(position, MediaPlayer.SEEK_CLOSEST);
             } else {
@@ -149,105 +124,68 @@ public class HHMediaPlayer extends HHPlayerBase {
 
     @Override
     public void stop() {
-        if (isCanControl()) {
-            try {
-                //调用stop方法之后要调用prepare方法，不然无法播放
-                mediaPlayer.stop();
-                isPrepared = false;
-                getCurrentStop();
-                mPlayerState = PlayerState.IDLE;
-                Log.e(TAG, "doStop");
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e(TAG, "stop失败" + mPlayerState);
-                mPlayerState = PlayerState.ERROR;
-            }
+        //调用stop方法之后要调用prepare方法，不然无法播放
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
         }
     }
 
     @Override
     public void reset() {
-        mediaPlayer.reset();
-        getCurrentStop();
+        if (mediaPlayer != null) {
+            mediaPlayer.reset();
+        }
     }
 
     @Override
     public void release() {
         if (mediaPlayer != null) {
-            stop();
             mediaPlayer.release();
-            getCurrentStop();
-            mPlayerState = PlayerState.NONE;
-            isPrepared = false;
             mediaPlayer = null;
-            Log.e(TAG, "doRelease");
         }
     }
 
     @Override
     public void setVolume(float volume) {
         this.volume = volume;
-        mediaPlayer.setVolume(volume, volume);
+        if (mediaPlayer != null) {
+            mediaPlayer.setVolume(volume, volume);
+        }
     }
 
     @Override
     public void setSpeed(float speed) {
-        if (mPlayerState != PlayerState.IDLE) {
-            Log.e(TAG, "speed:" + speed);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                try {
-                    mediaPlayer.setPlaybackParams(mediaPlayer.getPlaybackParams().setSpeed(speed));
-                }catch (Exception e){
-                    Log.e("errorERROR", String.valueOf(mPlayerState));
-                }
-            }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            mediaPlayer.setPlaybackParams(mediaPlayer.getPlaybackParams().setSpeed(speed));
         }
     }
 
-    private void doPrepare(String mediaPath, boolean isFirst) {
-        if (!(new File(mediaPath)).exists()) {
-            ViseLog.e("指定媒体文件不存在。  " + mediaPath);
-            return;
-        }
-        this.musicPath = mediaPath;
+    private void initListener() {
         if (mediaPlayer != null) {
-            mediaPlayer.reset();
-        } else {
-            mediaPlayer = new MediaPlayer();
-        }
-        mPlayerState = PlayerState.IDLE;
-        try {
-            mPlayerState = PlayerState.PREPARING;
-            mediaPlayer.setDataSource(mediaPath);
-            mediaPlayer.prepareAsync();//异步
             mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mp) {
+                    playerPrePareState = PlayerPrePareState.PREPARED;
+                    mPlayerState = PlayerState.PREPARED;
+                    isPrepared = true;
                     mediaPlayer.setVolume(volume, volume);
                     mediaPlayer.setLooping(isLooping);
-                    mPlayerState = PlayerState.PREPARED;
                     if (preparedListener != null) {
                         preparedListener.onListen(mp);
                     }
-                    isPrepared = true;
                     Log.e(TAG, "Prepared OK");
-                    if (isStartWhenPrepared) {
-                        start();
-                    }
                 }
             });
             mediaPlayer.setOnSeekCompleteListener(new MediaPlayer.OnSeekCompleteListener() {
                 @Override
                 public void onSeekComplete(MediaPlayer mp) {
+                    mp.start();
                     Log.e(TAG, "Seek Complete");
-                    start();
                 }
             });
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
-                    Log.e(TAG, "play Completion");
-                    mPlayerState = PlayerState.PLAYBACK_COMPLETED;
                     if (completionListener != null) {
                         completionListener.onListen(mp);
                     }
@@ -256,50 +194,50 @@ public class HHMediaPlayer extends HHPlayerBase {
             mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
                 @Override
                 public boolean onError(MediaPlayer mp, int what, int extra) {
+                    Log.e(TAG, "监听到错误。  " + mPlayerState);
                     mPlayerState = PlayerState.ERROR;
+                    playerPrePareState = PlayerPrePareState.ERROR;
                     ViseLog.e("ERROR: " + what + "  " + extra);
                     return false;
                 }
             });
+        }
+    }
+
+    private void doPrepare(String mediaPath, boolean isFirst) {
+        if (!new File(mediaPath).exists()) {
+            ViseLog.e("指定媒体文件不存在。  " + mediaPath);
+            return;
+        }
+        this.mediaPath = mediaPath;
+        if (mediaPlayer != null) {
+            mediaPlayer.reset();
+        } else {
+            mediaPlayer = new MediaPlayer();
+            initListener();
+        }
+        mPlayerState = PlayerState.IDLE;
+        try {
+            playerPrePareState = PlayerPrePareState.PREPARING;
+            mediaPlayer.setDataSource(mediaPath);
+            mediaPlayer.prepareAsync();//异步
         } catch (Exception e) {
             e.printStackTrace();
             mPlayerState = PlayerState.ERROR;
-            Log.e(TAG, "Prepare失败。  " + musicPath);
+            playerPrePareState = PlayerPrePareState.ERROR;
+            Log.e(TAG, "Prepare失败。  " + this.mediaPath);
             if (isFirst) dealError();
         }
     }
 
     private void dealError() {
-        doPrepare(musicPath, false);
+        doPrepare(mediaPath, false);
     }
 
-    private boolean isPlaying() {
-        return mPlayerState == PlayerState.PLAYING && mediaPlayer.isPlaying();
+    @Override
+    public boolean isPlaying() {
+        return mediaPlayer.isPlaying();
     }
 
-    private boolean isCanControl() {
-        return mPlayerState == PlayerState.PLAYING || mPlayerState == PlayerState.PAUSED || mPlayerState == PlayerState.PHONE
-                || mPlayerState == PlayerState.PLAYBACK_COMPLETED || mPlayerState == PlayerState.PREPARED;
-    }
 
-    private void getCurrentStart() {
-        if (a == null) {
-            a = new TaskDelayManager() {
-                @Override
-                public void onListen(Long index) {
-                    if (progessListener != null) {
-                        progessListener.onListen((long) mediaPlayer.getCurrentPosition());
-                    }
-                }
-            };
-            a.loop(1000);
-        }
-    }
-
-    private void getCurrentStop() {
-        if (a != null) {
-            a.cancel();
-            a = null;
-        }
-    }
 }

@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -102,19 +103,22 @@ public class DFUpdateDialog extends BaseDialogFragment {
     }
 
     private void applypression() {
-        hl_permissions.applyPermission(this, mPermissionList, new hl_permissions.RequestPermissionCallBack() {
+        hl_permissions.applyWriteStoragePermission(getContext(), new hl_permissions.RequestPermissionCallBack() {
             @Override
             public void requestPermissionSuccess() {
                 startdownload(getActivity());
             }
 
             @Override
-            public void requestPermissionFail(boolean isNoTip) {
-                if (isNoTip) {
-                    hl_permissionsOther.gotoAppSet(getActivity());
-                } else {
-                    Toast.makeText(getActivity(), "您已拒绝文件读写权限，无法下载更新包！", Toast.LENGTH_SHORT).show();
+            public void requestPermissionFail(Map<String, Boolean> failPermission) {
+                for (boolean value : failPermission.values()) {
+                    if (value) {
+                        hl_permissionsOther.gotoAppSet(getActivity());
+                        Toast.makeText(getActivity(), "您已拒绝文件读写权限，无法下载更新包！", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                 }
+                Toast.makeText(getActivity(), "您已拒绝文件读写权限，无法下载更新包！", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -148,11 +152,5 @@ public class DFUpdateDialog extends BaseDialogFragment {
                 pb_prog.setProgress(progress);
             }
         });
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        hl_permissions.requestPermissionsResult(getActivity(),requestCode, permissions, grantResults);
     }
 }

@@ -2,20 +2,17 @@ package x.com.hl_tools;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-
-
 /**
  * SharedPreferences的一个工具类，调用setParam就能保存String, Integer, Boolean, Float, Long类型的参数
  * 同样调用getParam就能获取到保存在手机里面的数据
  *
- * @author xiaanming
+ * @author luoqqsh
  */
 public class hl_sharedPreferences {
     /**
      * 保存在手机里面的文件名
      */
     private static final String FILE_NAME = "share_date";
-
 
     /**
      * 保存数据的方法，我们需要拿到保存数据的具体类型，然后根据类型调用不同的保存方法
@@ -24,12 +21,10 @@ public class hl_sharedPreferences {
      * @param key     key
      * @param object  类型
      */
-    public static void setParam(Context context, String key, Object object) {
-
+    public static boolean setParam(Context context, String key, Object object) {
         String type = object.getClass().getSimpleName();
         SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
-
         switch (type) {
             case "String":
                 editor.putString(key, (String) object);
@@ -47,7 +42,7 @@ public class hl_sharedPreferences {
                 editor.putLong(key, (Long) object);
                 break;
         }
-        editor.commit();
+        return editor.commit();
     }
 
 
@@ -78,8 +73,8 @@ public class hl_sharedPreferences {
         return null;
     }
 
-    public static void clear(Context context) {
+    public static boolean clear(Context context) {
         SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
-        sp.edit().clear().commit();
+        return sp.edit().clear().commit();
     }
 }  

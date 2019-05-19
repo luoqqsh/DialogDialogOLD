@@ -15,6 +15,8 @@ import androidx.annotation.Nullable;
 
 import com.airbnb.lottie.LottieAnimationView;
 
+import java.util.Map;
+
 import x.com.hl_dialog.DFLoadingDialog;
 import x.com.hl_dialog.DFNDialog;
 import x.com.hl_dialog.DFUpdateDialog;
@@ -83,15 +85,8 @@ public class DialogMainActivity extends BaseActivity {
     private void permissions() {
         //检查权限
         //需要在activity重写onRequestPermissionsResult回调方法。不处理回调不写
-        String[] q;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            q = null;
-//            q = new String[]{Manifest.permission.READ_PHONE_STATE, Manifest.permission.read, Manifest.permission.READ_MEDIA_VIDEO, Manifest.permission.READ_MEDIA_AUDIO};
-        } else {
-            q = new String[]{Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
-        }
 
-        hl_permissions.applyPermission(DialogMainActivity.this, q,
+        hl_permissions.applyWriteStoragePermission(DialogMainActivity.this,
                 new hl_permissions.RequestPermissionCallBack() {
                     @Override
                     public void requestPermissionSuccess() {
@@ -99,9 +94,11 @@ public class DialogMainActivity extends BaseActivity {
                     }
 
                     @Override
-                    public void requestPermissionFail(boolean isNoTip) {
-
+                    public void requestPermissionFail(Map<String, Boolean> failPermission) {
+                        ViseLog.d(failPermission);
                     }
+
+
                 });
 
         //权限列表弹窗
@@ -116,23 +113,23 @@ public class DialogMainActivity extends BaseActivity {
 
     private void updates() {
         //检查更新框样式
-        Dialog g = new NDialog(this, NDialog.nDialog_Update, 1, true)
-                .setTouchOutSideCancelable(false, false)
-                .setMessage("111", Gravity.LEFT)
-                .setBtnClickListener(true, "下次再说", "立即更新", new NDialog.onDialogbtnClickListener() {
-                    @Override
-                    public void onDialogbtnClick(Context context, Dialog dialog, int whichBtn) {
-                        switch (whichBtn) {
-                            case 1:
-                                Toast.makeText(context, "下次再说", Toast.LENGTH_SHORT).show();
-                                break;
-                            case 2:
-                                Toast.makeText(context, "立即更新", Toast.LENGTH_SHORT).show();
-                                break;
-                        }
-                    }
-                }).create();
-        g.show();
+//        Dialog g = new NDialog(this, NDialog.nDialog_Update, 1, true)
+//                .setTouchOutSideCancelable(false, false)
+//                .setMessage("111", Gravity.LEFT)
+//                .setBtnClickListener(true, "下次再说", "立即更新", new NDialog.onDialogbtnClickListener() {
+//                    @Override
+//                    public void onDialogbtnClick(Context context, Dialog dialog, int whichBtn) {
+//                        switch (whichBtn) {
+//                            case 1:
+//                                Toast.makeText(context, "下次再说", Toast.LENGTH_SHORT).show();
+//                                break;
+//                            case 2:
+//                                Toast.makeText(context, "立即更新", Toast.LENGTH_SHORT).show();
+//                                break;
+//                        }
+//                    }
+//                }).create();
+//        g.show();
 
         //检查更新样式2
         DFUpdateDialog.newInstance("版本更新内容", 1,
@@ -255,12 +252,5 @@ public class DialogMainActivity extends BaseActivity {
                     }
                 }).create();
         h.show();
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        hl_permissions.requestPermissionsResult(this, requestCode, permissions, grantResults);
     }
 }

@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
@@ -67,7 +68,7 @@ public class DFPermissionListDialog extends BaseDialogFragment {
                     if (position == 3) {
                         p.gotoSetFloatWindow(getActivity(), true);
                     } else {
-                        hl_permissions.applyPermission(fragmentcontext, new String[]{list_permission.get(position).getPermission()}, new hl_permissions.RequestPermissionCallBack() {
+                        hl_permissions.applyPermission(fragmentcontext.getContext(), new String[]{list_permission.get(position).getPermission()}, new hl_permissions.RequestPermissionCallBack() {
                             @Override
                             public void requestPermissionSuccess() {
                                 list_permission.get(position).setIsapply(true);
@@ -75,7 +76,7 @@ public class DFPermissionListDialog extends BaseDialogFragment {
                             }
 
                             @Override
-                            public void requestPermissionFail(boolean isNoTip) {
+                            public void requestPermissionFail(Map<String, Boolean> failPermission) {
                                 list_permission.get(position).setIsapply(false);
                                 dialog.refresh();
                             }
@@ -95,14 +96,6 @@ public class DFPermissionListDialog extends BaseDialogFragment {
         fragment.setArguments(bundle);
         return fragment;
     }
-
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        hl_permissions.requestPermissionsResult(getActivity(), requestCode, permissions, grantResults);
-    }
-
     @Override
     public void onDestroy() {
         super.onDestroy();

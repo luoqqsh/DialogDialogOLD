@@ -33,7 +33,7 @@ public class H5Activity extends AppCompatActivity {
 
         setContentView(mLayout);
         String[] permission = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE, Manifest.permission.ACCESS_NETWORK_STATE, Manifest.permission.ACCESS_FINE_LOCATION};
-        hl_permissions.applyPermission(this, permission);
+        hl_permissions.applyPermission(this, permission, null);
 //        x5Manager.getInstance().init(this);
         webView.initWebSetting();
         webView.setWebViewClient(new x5WebClient());

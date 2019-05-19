@@ -140,6 +140,14 @@
                 android:maxLines="1"
                 android:text="back5" />
 
+            <Button
+                android:id="@+id/release"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:maxLines="1"
+                android:text="release" />
+
 
         </LinearLayout>
 
@@ -155,6 +163,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="00:00" />
+
+            <TextView
+                android:id="@+id/totaltime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" / 00:00" />
 
             <androidx.appcompat.widget.AppCompatSeekBar
                 android:id="@+id/seekbar"

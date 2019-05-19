@@ -4,40 +4,50 @@ import android.view.SurfaceView;
 import android.view.TextureView;
 
 import x.com.hl_base.HOnListener;
+import x.com.hl_rx.TaskDelayManager;
 
 /**
  * 播放器基础类
  */
 public abstract class HHPlayerBase {
-    String musicPath;
-    PlayerState mPlayerState = PlayerState.NONE;
-    protected String TAG = "HHPlayerBase";
+    PlayerState mPlayerState = PlayerState.IDLE;
+    PlayerPrePareState playerPrePareState = PlayerPrePareState.NONE;
+    public String TAG = "HHPlayerBase";
+
+    String mediaPath;
+
     float volume = 1;
     boolean isLooping = true; //是否循环播放
     boolean isPrepared = false;//是否准备好
-    boolean isStartWhenPrepared = true;//是否准备好立即播放
     HOnListener<Object> preparedListener;
     HOnListener<Long> progessListener;
     HOnListener<Object> completionListener;
+    private TaskDelayManager a;
 
     enum PlayerState {
         ERROR,//出错
         IDLE,//闲置，初始化
-        PREPARING,//PREPAR中
-        PREPARED,//PREPAR完毕
         PLAYING,//播放中
+        PREPARED,//准备就绪,准备好未播放的状态，判断准备状态以PlayerPrePareState为准
         PAUSED,//暂停中
         PHONE,//通话中
         PLAYBACK_COMPLETED,//播放完成
         NONE//结束，需要重新new
     }
 
-    enum PlayerMode{
+    enum PlayerPrePareState {
+        PREPARED,
+        PREPARING,
+        NONE,
+        ERROR
+    }
+
+    enum PlayerMode {
         MODE_FULL_SCREEN,
         MODE_NORMAL,
         MODE_TINY_WINDOW
     }
-    
+
     public abstract void prepare(String mediaPath);
 
     public abstract void start();
@@ -60,6 +70,8 @@ public abstract class HHPlayerBase {
 
     public abstract long getMediaDuration();
 
+    public abstract boolean isPlaying();
+
 
     public void setSurface(SurfaceView surface) {
 
@@ -73,20 +85,12 @@ public abstract class HHPlayerBase {
         isLooping = looping;
     }
 
-    public void setStartWhenPrepared(boolean startWhenPrepared) {
-        isStartWhenPrepared = startWhenPrepared;
-    }
-
     public boolean isPrepared() {
         return isPrepared;
     }
 
-    public PlayerState getmPlayerState() {
-        return mPlayerState;
-    }
-
-    public String getMusicPath() {
-        return musicPath;
+    public String getMediaPath() {
+        return mediaPath;
     }
 
     public void setPreparedListener(HOnListener<Object> preparedListener) {
@@ -99,5 +103,32 @@ public abstract class HHPlayerBase {
 
     public void setCompletionListener(HOnListener<Object> completionListener) {
         this.completionListener = completionListener;
+    }
+
+    public boolean isPlayControl() {
+        return mPlayerState == PlayerState.PLAYING || mPlayerState == PlayerState.PAUSED || mPlayerState == PlayerState.PHONE
+                || mPlayerState == PlayerState.PREPARED || mPlayerState == PlayerState.PLAYBACK_COMPLETED
+                && playerPrePareState == PlayerPrePareState.PREPARED;
+    }
+
+    void getCurrentStart() {
+        if (a == null) {
+            a = new TaskDelayManager() {
+                @Override
+                public void onListen(Long index) {
+                    if (progessListener != null) {
+                        progessListener.onListen(getCurrentPosition());
+                    }
+                }
+            };
+            a.loop(1000);
+        }
+    }
+
+    void getCurrentStop() {
+        if (a != null) {
+            a.cancel();
+            a = null;
+        }
     }
 }

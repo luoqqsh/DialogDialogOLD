@@ -3,27 +3,17 @@ package x.com.dialogdialog;
 import android.os.Bundle;
 import android.view.SurfaceView;
 import android.view.TextureView;
-import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatSeekBar;
 
-import org.json.JSONObject;
-
-import java.util.Timer;
-import java.util.TimerTask;
-
 import x.com.hl_base.HOnListener;
 import x.com.hl_log.ViseLog;
 import x.com.hl_player.HHMediaPlayer;
 import x.com.hl_player.HHPlayer;
-import x.com.hl_player.MediaPlayerController;
-import x.com.hl_rx.TaskDelayBManager;
-import x.com.hl_rx.TaskDelayManager;
 import x.com.hl_tools.hl_device;
 import x.com.hl_tools.hl_leak;
 import x.com.hl_tools.hl_time;
@@ -50,10 +40,10 @@ public class HHMediaActivity extends AppCompatActivity {
 //  /storage/emulated/0/ClearWatermark/CWDownLoadTool/我的下载/bb327cd9d2c4d45cde8b168cb48f0e26.mp4
     private SurfaceView surface;
     private String musicpath = "/storage/emulated/0/Music/不可说 - 霍建华、赵丽颖.mp3";
-    private String videopath = "/storage/emulated/0/DCIM/wallpaperFairy/videoWallpaper/69a2ff59895cdf8a7ccaf2d73046f638.mp4";
+    private String videopath = "/storage/emulated/0/DCIM/wallpaperFairy/videoWallpaper/05a03b1bae0031e5a56e8e5e8926a706.mp4";
     private HHPlayer hhPlayer;
     private boolean ismute = false;
-    private TextView currenttime;
+    private TextView currenttime, totaltime;
     private AppCompatSeekBar seekBar;
     private TextureView textureview;
     private TextView tvback5;
@@ -65,13 +55,20 @@ public class HHMediaActivity extends AppCompatActivity {
         textureview = findViewById(R.id.textureview);
         surface = findViewById(R.id.surface);
         currenttime = findViewById(R.id.currenttime);
+        totaltime = findViewById(R.id.totaltime);
         seekBar = findViewById(R.id.seekbar);
         seekBar.setMax(100);
 //        TextureView textureview = findViewById(R.id.textureview);
 //        hhPlayer = new HHPlayer(new HHMediaPlayer(), surface);
         hhPlayer = new HHPlayer(new HHMediaPlayer(), textureview);
-        hhPlayer.setStartWhenPrepared(false);
         hhPlayer.setLooping(false);
+
+        hhPlayer.setCompletionListener(new HOnListener<Object>() {
+            @Override
+            public void onListen(Object o) {
+                ViseLog.d("finishaaa");
+            }
+        });
 
         findViewById(R.id.select).setOnClickListener(v -> hhPlayer.prepare(videopath));
         findViewById(R.id.play).setOnClickListener(v -> hhPlayer.start());
@@ -82,6 +79,7 @@ public class HHMediaActivity extends AppCompatActivity {
         findViewById(R.id.mute).setOnClickListener(v -> hhPlayer.setMute(!ismute));
         findViewById(R.id.fast).setOnClickListener(v -> hhPlayer.setSpeed(2));
         findViewById(R.id.slow).setOnClickListener(v -> hhPlayer.setSpeed(0.5f));
+        findViewById(R.id.release).setOnClickListener(v -> hhPlayer.release());
         findViewById(R.id.go5).setOnClickListener(v -> {
             if (hhPlayer.getCurrentPosition() + 5000 < hhPlayer.getMediaDuration()) {
                 hhPlayer.seekTo(hhPlayer.getCurrentPosition() + 5000);
@@ -98,11 +96,12 @@ public class HHMediaActivity extends AppCompatActivity {
             ViseLog.d(hhPlayer.getCurrentPosition());
             ViseLog.d(hhPlayer.getMediaDuration());
             ViseLog.d(hhPlayer.getMediaPath());
-            ViseLog.d(hhPlayer.getState());
+            ViseLog.d(hhPlayer.getPlayerState());
         });
         hhPlayer.setPreparedListener(new HOnListener<Object>() {
             @Override
             public void onListen(Object o) {
+                totaltime.setText(" / " + hl_time.formatTime(hhPlayer.getMediaDuration()));
                 seekBar.setMax((int) (hhPlayer.getMediaDuration() / 1000));
             }
         });
@@ -142,7 +141,7 @@ public class HHMediaActivity extends AppCompatActivity {
             hhPlayer.release();
         }
         if (hl_device.isHuaWeiPhone()) {
-            hl_leak.fixLeak(this);
+            hl_leak.fixInputMethodManagerLeak(this);
         }
     }
 }

@@ -105,7 +105,7 @@
 //        if ("HHPlayerBase".equals(TAG)) {
 //            TAG = "HH-MediaPlayer-Music";
 //        }
-//        musicPath = mediaPath;
+//        mediaPath = mediaPath;
 //        doPrepare(mediaPath, true);
 //    }
 //
@@ -207,7 +207,7 @@
 //            ViseLog.e("指定媒体文件不存在。  " + mediaPath);
 //            return;
 //        }
-//        this.musicPath = mediaPath;
+//        this.mediaPath = mediaPath;
 //        if (mediaPlayer != null) {
 //            mediaPlayer.reset();
 //        } else {
@@ -265,13 +265,13 @@
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //            mPlayerState = PlayerState.ERROR;
-//            Log.e(TAG, "Prepare失败。  " + musicPath);
+//            Log.e(TAG, "Prepare失败。  " + mediaPath);
 //            if (isFirst) dealError();
 //        }
 //    }
 //
 //    private void dealError() {
-//        doPrepare(musicPath, false);
+//        doPrepare(mediaPath, false);
 //    }
 //
 //    private boolean isPlaying() {

@@ -1,26 +1,20 @@
 package x.com.hl_player;
 
-import android.content.Context;
-import android.content.pm.ActivityInfo;
-import android.view.Gravity;
+
+import android.util.Log;
 import android.view.SurfaceView;
 import android.view.TextureView;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import x.com.hl_base.HOnListener;
 import x.com.hl_log.ViseLog;
-import x.com.hl_tools.hl_context;
-import x.com.hl_tools.hl_screen;
-import x.com.hl_tools.hl_view;
 
 /**
  * 播放器控制类，也就是我们的使用类
  */
 public class HHPlayer {
+
     private HHPlayerBase hhPlayerBase;//播放器内核
-    private HHPlayerBase.PlayerMode mCurrentMode = HHPlayerBase.PlayerMode.MODE_NORMAL;
     private View mContainer;
 
     public HHPlayer(HHPlayerBase hhPlayerBase) {
@@ -58,71 +52,109 @@ public class HHPlayer {
         }
     }
 
-    public void setStartWhenPrepared(boolean startWhenPrepared) {
-        hhPlayerBase.setStartWhenPrepared(startWhenPrepared);
-    }
-
     public void start() {
-        hhPlayerBase.start();
+        if (hhPlayerBase.isPrepared && hhPlayerBase.isPlayControl()) {
+            hhPlayerBase.start();
+            hhPlayerBase.getCurrentStart();
+            hhPlayerBase.mPlayerState = HHPlayerBase.PlayerState.PLAYING;
+            Log.e(hhPlayerBase.TAG, "doStart");
+        }
     }
 
     public void pause() {
-        hhPlayerBase.pause();
+        if (hhPlayerBase.isPlayControl() && hhPlayerBase.isPlaying()) {
+            hhPlayerBase.pause();
+            hhPlayerBase.mPlayerState = HHPlayerBase.PlayerState.PAUSED;
+            Log.e(hhPlayerBase.TAG, "doPause");
+        }
     }
 
     public void reset() {
         hhPlayerBase.reset();
+        hhPlayerBase.getCurrentStop();
     }
 
     public void stop() {
-        hhPlayerBase.stop();
+        if (hhPlayerBase.isPlayControl()) {
+            hhPlayerBase.stop();
+            hhPlayerBase.isPrepared = false;
+            hhPlayerBase.mPlayerState = HHPlayerBase.PlayerState.IDLE;
+            hhPlayerBase.getCurrentStop();
+            Log.d(hhPlayerBase.TAG, "doStop");
+        }
     }
 
     //单位毫秒
     public void seekTo(long position) {
-        hhPlayerBase.seekTo(position);
+        if (hhPlayerBase.isPlayControl()) {
+            hhPlayerBase.playerPrePareState = HHPlayerBase.PlayerPrePareState.PREPARING;
+            hhPlayerBase.seekTo(position);
+        }
+        Log.e(hhPlayerBase.TAG, "seekTo");
     }
 
     //0为暂停，1为正常。。。
     public void setSpeed(float speed) {
-        hhPlayerBase.setSpeed(speed);
+        if (hhPlayerBase.isPlayControl()) {
+            hhPlayerBase.setSpeed(speed);
+        }
     }
 
     public void release() {
         hhPlayerBase.release();
+        stop();
+        hhPlayerBase.getCurrentStop();
+        hhPlayerBase.mPlayerState = HHPlayerBase.PlayerState.NONE;
+        hhPlayerBase.isPrepared = false;
+        Log.e(hhPlayerBase.TAG, "doRelease");
     }
 
     public String getMediaPath() {
-        return hhPlayerBase.getMusicPath();
+        return hhPlayerBase.getMediaPath();
     }
 
     public long getCurrentPosition() {
-        return hhPlayerBase.getCurrentPosition();
+        if (hhPlayerBase.isPlayControl()) {
+            return hhPlayerBase.getCurrentPosition();
+        }
+        return -1;
     }
 
     public long getMediaDuration() {
-        return hhPlayerBase.getMediaDuration();
+        if (hhPlayerBase.isPlayControl()) {
+            return hhPlayerBase.getMediaDuration();
+        }
+        return -1;
     }
 
     public void setPreparedListener(HOnListener<Object> preparedListener) {
         hhPlayerBase.setPreparedListener(preparedListener);
     }
 
-    public void setCompletionListener(HOnListener<Object> completionListener) {
-        hhPlayerBase.setCompletionListener(completionListener);
+    public void setCompletionListener(final HOnListener<Object> completionListener) {
+        hhPlayerBase.setCompletionListener(new HOnListener<Object>() {
+            @Override
+            public void onListen(Object o) {
+                Log.e(hhPlayerBase.TAG, "play Completion");
+                hhPlayerBase.mPlayerState = HHPlayerBase.PlayerState.PLAYBACK_COMPLETED;
+                completionListener.onListen(o);
+            }
+        });
     }
 
     public void setProgessListener(HOnListener<Long> progessListener) {
         hhPlayerBase.setProgessListener(progessListener);
     }
 
-    public HHPlayerBase.PlayerState getState() {
-        return hhPlayerBase.getmPlayerState();
+    public HHPlayerBase.PlayerState getPlayerState() {
+        return hhPlayerBase.mPlayerState;
     }
 
-    public boolean isPrepared() {
-        return hhPlayerBase.isPrepared();
+    public void fullScreen() {
+
     }
+
+/*
 
     public void fullScreen() {
 //        if (mTarget.getWindowType() != VideoView.WindowType.FULLSCREEN) {
@@ -138,13 +170,15 @@ public class HHPlayer {
 //        }
     }
 
-    /**
-     * 全屏，将mContainer(内部包含mTextureView和mController)从当前容器中移除，并添加到android.R.content中.
-     * 切换横屏时需要在manifest的activity标签下添加android:configChanges="orientation|keyboardHidden|screenSize"配置，
-     * 以避免Activity重新走生命周期
-     */
+    */
+/**
+ * 全屏，将mContainer(内部包含mTextureView和mController)从当前容器中移除，并添加到android.R.content中.
+ * 切换横屏时需要在manifest的activity标签下添加android:configChanges="orientation|keyboardHidden|screenSize"配置，
+ * 以避免Activity重新走生命周期
+ *//*
+
     public void enterFullScreen(Context mContext) {
-        if (mCurrentMode == HHPlayerBase.PlayerMode.MODE_FULL_SCREEN) return;
+        if (mCurrentMode == PlayerMode.MODE_FULL_SCREEN) return;
 
         // 隐藏ActionBar、状态栏，并横屏
         hl_view.hideActionBar(mContext);
@@ -153,7 +187,7 @@ public class HHPlayer {
 
         ViewGroup contentView = hl_context.scanForActivity(mContext)
                 .findViewById(android.R.id.content);
-        if (mCurrentMode == HHPlayerBase.PlayerMode.MODE_TINY_WINDOW) {
+        if (mCurrentMode == PlayerMode.MODE_TINY_WINDOW) {
             contentView.removeView(mContainer);
         } else {
 //            this.removeView(mContainer);
@@ -163,18 +197,20 @@ public class HHPlayer {
                 ViewGroup.LayoutParams.MATCH_PARENT);
         contentView.addView(mContainer, params);
 
-        mCurrentMode = HHPlayerBase.PlayerMode.MODE_FULL_SCREEN;
+        mCurrentMode = PlayerMode.MODE_FULL_SCREEN;
     }
 
-    /**
-     * 退出全屏，移除mTextureView和mController，并添加到非全屏的容器中。
-     * 切换竖屏时需要在manifest的activity标签下添加android:configChanges="orientation|keyboardHidden|screenSize"配置，
-     * 以避免Activity重新走生命周期.
-     *
-     * @return true退出全屏.
-     */
+    */
+/**
+ * 退出全屏，移除mTextureView和mController，并添加到非全屏的容器中。
+ * 切换竖屏时需要在manifest的activity标签下添加android:configChanges="orientation|keyboardHidden|screenSize"配置，
+ * 以避免Activity重新走生命周期.
+ *
+ * @return true退出全屏.
+ *//*
+
     public boolean exitFullScreen(Context mContext) {
-        if (mCurrentMode == HHPlayerBase.PlayerMode.MODE_FULL_SCREEN) {
+        if (mCurrentMode == PlayerMode.MODE_FULL_SCREEN) {
             hl_view.showActionBar(mContext);
             hl_context.scanForActivity(mContext)
                     .setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -187,17 +223,19 @@ public class HHPlayer {
                     ViewGroup.LayoutParams.MATCH_PARENT);
 //            this.addView(mContainer, params);
 
-            mCurrentMode = HHPlayerBase.PlayerMode.MODE_NORMAL;
+            mCurrentMode = PlayerMode.MODE_NORMAL;
             return true;
         }
         return false;
     }
 
-    /**
-     * 进入小窗口播放，小窗口播放的实现原理与全屏播放类似。
-     */
+    */
+/**
+ * 进入小窗口播放，小窗口播放的实现原理与全屏播放类似。
+ *//*
+
     public void enterTinyWindow(Context mContext) {
-        if (mCurrentMode == HHPlayerBase.PlayerMode.MODE_TINY_WINDOW) return;
+        if (mCurrentMode == PlayerMode.MODE_TINY_WINDOW) return;
 //        this.removeView(mContainer);
 
         ViewGroup contentView = hl_context.scanForActivity(mContext)
@@ -212,14 +250,16 @@ public class HHPlayer {
 
         contentView.addView(mContainer, params);
 
-        mCurrentMode = HHPlayerBase.PlayerMode.MODE_TINY_WINDOW;
+        mCurrentMode = PlayerMode.MODE_TINY_WINDOW;
     }
 
-    /**
-     * 退出小窗口播放
-     */
+    */
+/**
+ * 退出小窗口播放
+ *//*
+
     public boolean exitTinyWindow(Context mContext) {
-        if (mCurrentMode == HHPlayerBase.PlayerMode.MODE_TINY_WINDOW) {
+        if (mCurrentMode == PlayerMode.MODE_TINY_WINDOW) {
             ViewGroup contentView = hl_context.scanForActivity(mContext)
                     .findViewById(android.R.id.content);
             contentView.removeView(mContainer);
@@ -228,9 +268,10 @@ public class HHPlayer {
                     ViewGroup.LayoutParams.MATCH_PARENT);
 //            this.addView(mContainer, params);
 
-            mCurrentMode = HHPlayerBase.PlayerMode.MODE_NORMAL;
+            mCurrentMode = PlayerMode.MODE_NORMAL;
             return true;
         }
         return false;
     }
+*/
 }
