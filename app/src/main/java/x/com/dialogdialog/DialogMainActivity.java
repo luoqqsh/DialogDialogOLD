@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.core.util.Consumer;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.Map;
@@ -29,6 +30,7 @@ import x.com.hl_dialog.ProgressDialog.PDialog1Builder;
 import x.com.hl_log.ViseLog;
 import x.com.hl_player.HHMediaCodec;
 import x.com.hl_rx.Utils;
+import x.com.hl_tools.DialogTools.myObjectPool;
 import x.com.hl_tools.hl_orientation;
 import x.com.hl_tools.hl_permissions;
 import x.com.hl_tools.hl_sharedP;
@@ -68,7 +70,16 @@ public class DialogMainActivity extends BaseActivity {
             }
         });
 
-      
+        myObjectPool pool = new myObjectPool(2, 4);
+        Object o1 = pool.acquire();
+        Object o2 = pool.acquire();
+        Object o3 = pool.acquire();
+        Object o4 = pool.acquire();
+
+        ViseLog.d(o1.hashCode());
+        ViseLog.d(o2.hashCode());
+        ViseLog.d(o3.hashCode());
+        ViseLog.d(o4.hashCode());
 
     }
 
@@ -93,7 +104,6 @@ public class DialogMainActivity extends BaseActivity {
     private void permissions() {
         //检查权限
         //需要在activity重写onRequestPermissionsResult回调方法。不处理回调不写
-
         hl_permissions.applyWriteStoragePermission(DialogMainActivity.this,
                 new hl_permissions.RequestPermissionCallBack() {
                     @Override
@@ -105,8 +115,6 @@ public class DialogMainActivity extends BaseActivity {
                     public void requestPermissionFail(Map<String, Boolean> failPermission) {
                         ViseLog.d(failPermission);
                     }
-
-
                 });
 
         //权限列表弹窗
