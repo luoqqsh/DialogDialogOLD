@@ -3,6 +3,8 @@ package x.com.hl_player;
 import android.view.SurfaceView;
 import android.view.TextureView;
 
+import java.util.Map;
+
 import x.com.hl_base.HOnListener;
 import x.com.hl_rx.TaskDelayManager;
 
@@ -14,7 +16,7 @@ public abstract class HHPlayerBase {
     PlayerPrePareState playerPrePareState = PlayerPrePareState.NONE;
     public String TAG = "HHPlayerBase";
 
-    String mediaPath;
+    Object mediaPath;
 
     float volume = 1;
     boolean isLooping = true; //是否循环播放
@@ -22,7 +24,9 @@ public abstract class HHPlayerBase {
     HOnListener<Object> preparedListener;
     HOnListener<Long> progessListener;
     HOnListener<Object> completionListener;
+    HOnListener<Integer> OnBufferingUpdateListener;
     private TaskDelayManager a;
+    private Map<String, String> mHeaders;
 
     enum PlayerState {
         ERROR,//出错
@@ -48,7 +52,7 @@ public abstract class HHPlayerBase {
         MODE_TINY_WINDOW
     }
 
-    public abstract void prepare(String mediaPath);
+    public abstract void prepare(Object mediaPath);
 
     public abstract void start();
 
@@ -89,7 +93,7 @@ public abstract class HHPlayerBase {
         return isPrepared;
     }
 
-    public String getMediaPath() {
+    public Object getMediaPath() {
         return mediaPath;
     }
 
@@ -103,6 +107,10 @@ public abstract class HHPlayerBase {
 
     public void setCompletionListener(HOnListener<Object> completionListener) {
         this.completionListener = completionListener;
+    }
+
+    public void setOnBufferingUpdateListener(HOnListener<Integer> OnBufferingUpdateListener) {
+        this.OnBufferingUpdateListener = OnBufferingUpdateListener;
     }
 
     public boolean isPlayControl() {
@@ -130,5 +138,17 @@ public abstract class HHPlayerBase {
             a.cancel();
             a = null;
         }
+    }
+    public Map<String, String> getHeaders() {
+        return mHeaders;
+    }
+
+    /**
+     * 设置请求头
+     *
+     * @param headers 播放地址请求头
+     */
+    public void setHeaders(Map<String, String> headers) {
+        this.mHeaders = mHeaders;
     }
 }

@@ -12,10 +12,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.util.Consumer;
 
 import com.airbnb.lottie.LottieAnimationView;
 
+import java.io.IOException;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import x.com.hl_dialog.DFLoadingDialog;
 import x.com.hl_dialog.DFNDialog;
@@ -24,6 +27,8 @@ import x.com.hl_dialog.NDialog;
 import x.com.hl_dialog.NDialogBuilder;
 import x.com.hl_dialog.ProgressDialog.PDialog1Builder;
 import x.com.hl_log.ViseLog;
+import x.com.hl_player.HHMediaCodec;
+import x.com.hl_rx.Utils;
 import x.com.hl_tools.hl_orientation;
 import x.com.hl_tools.hl_permissions;
 import x.com.hl_tools.hl_sharedP;
@@ -62,6 +67,9 @@ public class DialogMainActivity extends BaseActivity {
                 }
             }
         });
+
+      
+
     }
 
     private void danmu() {

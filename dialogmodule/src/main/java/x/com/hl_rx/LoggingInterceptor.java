@@ -1,6 +1,5 @@
 package x.com.hl_rx;
 
-
 import android.text.TextUtils;
 
 import org.json.JSONArray;
@@ -27,6 +26,9 @@ import okio.Buffer;
 import okio.BufferedSource;
 import x.com.hl_log.ViseLog;
 
+/**
+ * 日志拦截器
+ */
 public class LoggingInterceptor implements Interceptor {
     private volatile Level level = Level.HEADERS;
     private final Charset UTF8 = Charset.forName("UTF-8");

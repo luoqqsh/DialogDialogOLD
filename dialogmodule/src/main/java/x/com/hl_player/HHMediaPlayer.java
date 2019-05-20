@@ -1,5 +1,6 @@
 package x.com.hl_player;
 
+import android.content.res.AssetFileDescriptor;
 import android.graphics.SurfaceTexture;
 import android.media.MediaPlayer;
 import android.os.Build;
@@ -10,6 +11,8 @@ import android.view.SurfaceView;
 import android.view.TextureView;
 
 import java.io.File;
+import java.lang.reflect.Method;
+import java.util.Map;
 
 import x.com.hl_log.ViseLog;
 
@@ -89,7 +92,7 @@ public class HHMediaPlayer extends HHPlayerBase {
     }
 
     @Override
-    public void prepare(String mediaPath) {
+    public void prepare(Object mediaPath) {
         if ("HHPlayerBase".equals(TAG)) {
             TAG = "HH-MediaPlayer-Music";
         }
@@ -201,14 +204,18 @@ public class HHMediaPlayer extends HHPlayerBase {
                     return false;
                 }
             });
+            mediaPlayer.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
+                @Override
+                public void onBufferingUpdate(MediaPlayer mp, int percent) {
+                    if (OnBufferingUpdateListener != null) {
+                        OnBufferingUpdateListener.onListen(percent);
+                    }
+                }
+            });
         }
     }
 
-    private void doPrepare(String mediaPath, boolean isFirst) {
-        if (!new File(mediaPath).exists()) {
-            ViseLog.e("媒体文件不存在。  " + mediaPath);
-            return;
-        }
+    private void doPrepare(Object mediaPath, boolean isFirst) {
         this.mediaPath = mediaPath;
         if (mediaPlayer != null) {
             mediaPlayer.reset();
@@ -219,7 +226,16 @@ public class HHMediaPlayer extends HHPlayerBase {
         mPlayerState = PlayerState.IDLE;
         try {
             playerPrePareState = PlayerPrePareState.PREPARING;
-            mediaPlayer.setDataSource(mediaPath);
+            if (mediaPath instanceof AssetFileDescriptor) {//Android assets file
+                AssetFileDescriptor fd = (AssetFileDescriptor) mediaPath;
+                mediaPlayer.setDataSource(fd.getFileDescriptor(), fd.getStartOffset(), fd.getLength());
+            } else if (mediaPath != null && getHeaders() != null) {//url with headers
+                Class<MediaPlayer> clazz = MediaPlayer.class;
+                Method method = clazz.getDeclaredMethod("setDataSource", String.class, Map.class);
+                method.invoke(mediaPlayer, mediaPath.toString(), getHeaders());
+            } else if (mediaPath != null) {
+                mediaPlayer.setDataSource(mediaPath.toString());
+            }
             mediaPlayer.prepareAsync();//异步
         } catch (Exception e) {
             e.printStackTrace();

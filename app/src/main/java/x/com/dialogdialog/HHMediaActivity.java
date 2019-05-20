@@ -3,6 +3,7 @@ package x.com.dialogdialog;
 import android.os.Bundle;
 import android.view.SurfaceView;
 import android.view.TextureView;
+import android.widget.FrameLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -10,8 +11,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatSeekBar;
 
+import java.io.IOException;
+
 import x.com.hl_base.HOnListener;
 import x.com.hl_log.ViseLog;
+import x.com.hl_player.HHMediaCodec;
 import x.com.hl_player.HHMediaPlayer;
 import x.com.hl_player.HHPlayer;
 import x.com.hl_tools.hl_device;
@@ -38,9 +42,10 @@ public class HHMediaActivity extends AppCompatActivity {
 //  /storage/emulated/0/DCIM/wallpaperFairy/videoWallpaper/c4e3963e691763968b16b20fcf607067.mp4
 //  /storage/emulated/0/DCIM/wallpaperFairy/videoWallpaper/c0197187ca9868c646f734310cd23eee.mp4
 //  /storage/emulated/0/ClearWatermark/CWDownLoadTool/我的下载/bb327cd9d2c4d45cde8b168cb48f0e26.mp4
-    private SurfaceView surface;
+    private FrameLayout surface;
     private String musicpath = "/storage/emulated/0/Music/不可说 - 霍建华、赵丽颖.mp3";
     private String videopath = "/storage/emulated/0/DCIM/wallpaperFairy/videoWallpaper/05a03b1bae0031e5a56e8e5e8926a706.mp4";
+    //    private String videopath = "http://s.bizhijingling.com/uploadfile/userload/vedio/2019/0516/20190516065450574.mp4";
     private HHPlayer hhPlayer;
     private boolean ismute = false;
     private TextView currenttime, totaltime;
@@ -112,13 +117,18 @@ public class HHMediaActivity extends AppCompatActivity {
                 seekBar.setProgress((int) (o / 1000));
             }
         });
+        hhPlayer.setOnBufferingUpdateListener(new HOnListener<Integer>() {
+            @Override
+            public void onListen(Integer integer) {
+                seekBar.setSecondaryProgress(integer);
+            }
+        });
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progess, boolean fromUser) {
                 if (fromUser) {
                     hhPlayer.seekTo(progess * 1000);
                 }
-//                ViseLog.d("?/");
             }
 
             @Override
@@ -132,6 +142,15 @@ public class HHMediaActivity extends AppCompatActivity {
             }
         });
 
+
+        HHMediaCodec hhMediaCodec = new HHMediaCodec();
+        try {
+            hhMediaCodec.init(this, surface);
+            hhMediaCodec.getFileInputStream(videopath);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

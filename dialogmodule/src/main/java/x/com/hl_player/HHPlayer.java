@@ -108,7 +108,7 @@ public class HHPlayer {
         Log.e(hhPlayerBase.TAG, "doRelease");
     }
 
-    public String getMediaPath() {
+    public Object getMediaPath() {
         return hhPlayerBase.getMediaPath();
     }
 
@@ -143,6 +143,10 @@ public class HHPlayer {
 
     public void setProgessListener(HOnListener<Long> progessListener) {
         hhPlayerBase.setProgessListener(progessListener);
+    }
+
+    public void setOnBufferingUpdateListener(HOnListener<Integer> onBufferingUpdateListener) {
+        hhPlayerBase.setOnBufferingUpdateListener(onBufferingUpdateListener);
     }
 
     public HHPlayerBase.PlayerState getPlayerState() {
