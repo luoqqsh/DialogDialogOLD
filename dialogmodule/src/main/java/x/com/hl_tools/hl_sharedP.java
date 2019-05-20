@@ -2,13 +2,17 @@ package x.com.hl_tools;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.text.TextUtils;
+
+import java.io.IOException;
+
+import x.com.hl_log.ViseLog;
+
 /**
- * SharedPreferences的一个工具类，调用setParam就能保存String, Integer, Boolean, Float, Long类型的参数
- * 同样调用getParam就能获取到保存在手机里面的数据
  *
  * @author luoqqsh
  */
-public class hl_sharedPreferences {
+public class hl_sharedP {
     /**
      * 保存在手机里面的文件名
      */
@@ -22,32 +26,20 @@ public class hl_sharedPreferences {
      * @param object  类型
      */
     public static boolean setParam(Context context, String key, Object object) {
-        String type = object.getClass().getSimpleName();
         SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
-        switch (type) {
-            case "String":
-                editor.putString(key, (String) object);
-                break;
-            case "Integer":
-                editor.putInt(key, (Integer) object);
-                break;
-            case "Boolean":
-                editor.putBoolean(key, (Boolean) object);
-                break;
-            case "Float":
-                editor.putFloat(key, (Float) object);
-                break;
-            case "Long":
-                editor.putLong(key, (Long) object);
-                break;
+        try {
+            editor.putString(key, hl_steam.objectToSteam(object));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
         }
         return editor.commit();
     }
 
-
     /**
      * 得到保存数据的方法，我们根据默认值得到保存的数据的具体类型，然后调用相对于的方法获取值
+     * 注意：默认值和你返回的object类型要同一类型
      *
      * @param context       上下文
      * @param key           key
@@ -55,26 +47,30 @@ public class hl_sharedPreferences {
      * @return object数据
      */
     public static Object getParam(Context context, String key, Object defaultObject) {
-        String type = defaultObject.getClass().getSimpleName();
         SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
-
-        switch (type) {
-            case "String":
-                return sp.getString(key, (String) defaultObject);
-            case "Integer":
-                return sp.getInt(key, (Integer) defaultObject);
-            case "Boolean":
-                return sp.getBoolean(key, (Boolean) defaultObject);
-            case "Float":
-                return sp.getFloat(key, (Float) defaultObject);
-            case "Long":
-                return sp.getLong(key, (Long) defaultObject);
+        String o = sp.getString(key, "");
+        try {
+            if (o != null && !TextUtils.isEmpty(o)) {
+                return hl_steam.streamToObject(o);
+            } else {
+                return defaultObject;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return defaultObject;
         }
-        return null;
     }
 
     public static boolean clear(Context context) {
         SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
         return sp.edit().clear().commit();
+    }
+
+    public static boolean remove(Context context, String key) {
+        SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
+        if (TextUtils.isEmpty(key)) {
+            return false;
+        }
+        return sp.edit().remove(key).commit();
     }
 }  

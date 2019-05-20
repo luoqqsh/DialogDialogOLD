@@ -26,6 +26,7 @@ import x.com.hl_dialog.ProgressDialog.PDialog1Builder;
 import x.com.hl_log.ViseLog;
 import x.com.hl_tools.hl_orientation;
 import x.com.hl_tools.hl_permissions;
+import x.com.hl_tools.hl_sharedP;
 import x.com.hl_view.DanMu.DanMuView;
 import x.com.hl_view.DanMu.OnSimpleListener;
 
@@ -61,7 +62,6 @@ public class DialogMainActivity extends BaseActivity {
                 }
             }
         });
-
     }
 
     private void danmu() {

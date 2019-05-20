@@ -1,6 +1,5 @@
 package x.com.hl_player;
 
-
 import android.util.Log;
 import android.view.SurfaceView;
 import android.view.TextureView;

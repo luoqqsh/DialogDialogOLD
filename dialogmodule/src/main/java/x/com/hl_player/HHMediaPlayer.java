@@ -206,7 +206,7 @@ public class HHMediaPlayer extends HHPlayerBase {
 
     private void doPrepare(String mediaPath, boolean isFirst) {
         if (!new File(mediaPath).exists()) {
-            ViseLog.e("指定媒体文件不存在。  " + mediaPath);
+            ViseLog.e("媒体文件不存在。  " + mediaPath);
             return;
         }
         this.mediaPath = mediaPath;
@@ -238,6 +238,4 @@ public class HHMediaPlayer extends HHPlayerBase {
     public boolean isPlaying() {
         return mediaPlayer.isPlaying();
     }
-
-
 }
