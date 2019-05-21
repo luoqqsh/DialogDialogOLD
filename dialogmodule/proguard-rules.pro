@@ -19,3 +19,11 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+#gson
+#如果用用到Gson解析包的，直接添加下面这几行就能成功混淆，不然会报错。
+-keepattributes Signature
+# Gson specific classes
+-keep class sun.misc.Unsafe { *; }
+# Application classes that will be serialized/deserialized over Gson
+-keep class com.google.gson.** { *; }
+-keep class com.google.gson.stream.** { *; }

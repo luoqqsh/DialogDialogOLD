@@ -1,1 +1,1 @@
-include ':app', ':dialogmodule'
+include ':app', ':dialogmodule', ':glide4'
