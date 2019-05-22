@@ -14,9 +14,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import x.com.dialogdialog.Base.BaseActivity;
 import x.com.hl_log.ViseLog;
 
-public class LogActivity extends AppCompatActivity implements View.OnClickListener {
+public class LogActivity extends BaseActivity implements View.OnClickListener {
 
     private Button mPrint_normal_message;
     private Button mPrint_normal_object;
@@ -30,7 +31,7 @@ public class LogActivity extends AppCompatActivity implements View.OnClickListen
     private Button mPrint_xml_message;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log);
         init();

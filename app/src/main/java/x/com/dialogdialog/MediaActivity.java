@@ -6,11 +6,15 @@ import android.view.SurfaceView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import x.com.dialogdialog.Base.BaseActivity;
 import x.com.hl_player.MediaPlayerController;
 import x.com.hl_tools.hl_device;
 import x.com.hl_tools.hl_leak;
 
-public class MediaActivity extends AppCompatActivity {
+/**
+ * 旧版mediaController
+ */
+public class MediaActivity extends BaseActivity {
     //  /storage/emulated/0/Music/虫儿飞 - 郑伊健.mp3
 //  /storage/emulated/0/Music/炽热的青春 - 贾乃亮.mp3
 //  /storage/emulated/0/Music/齿轮 - 赵薇.mp3
@@ -36,9 +40,9 @@ public class MediaActivity extends AppCompatActivity {
     private String videopath = "/storage/emulated/0/DCIM/wallpaperFairy/videoWallpaper/69a2ff59895cdf8a7ccaf2d73046f638.mp4";
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mediaplay);
+        setContentView(R.layout.activity_media);
         surface = findViewById(R.id.surface);
 //        TextureView textureview = findViewById(R.id.textureview);
         //不支持设置透明度

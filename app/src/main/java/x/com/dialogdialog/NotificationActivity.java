@@ -11,12 +11,13 @@ import android.widget.RemoteViews;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import x.com.dialogdialog.Base.BaseActivity;
 import x.com.hl_tools.DialogTools.NotificationHelper;
 
-public class NotificationActivity extends AppCompatActivity{
+public class NotificationActivity extends BaseActivity {
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
 
@@ -108,7 +109,7 @@ public class NotificationActivity extends AppCompatActivity{
 
     public void sendCustom(View view){
         RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.notification_custom_layout);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, Intent.createChooser(new Intent(NotificationActivity.this, DialogToolsActivity.class), "标题"),
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, Intent.createChooser(new Intent(NotificationActivity.this, DialogActivity.class), "标题"),
                 PendingIntent.FLAG_UPDATE_CURRENT);
         remoteViews.setOnClickPendingIntent(R.id.btn, pendingIntent);
         new NotificationHelper(this)
@@ -124,7 +125,7 @@ public class NotificationActivity extends AppCompatActivity{
     }
 
     public void intent(View view){
-        startActivity(new Intent(this, DialogToolsActivity.class));
+        startActivity(new Intent(this, DialogActivity.class));
     }
 
 }

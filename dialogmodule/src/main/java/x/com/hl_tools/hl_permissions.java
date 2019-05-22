@@ -89,10 +89,14 @@ public class hl_permissions {
         }
         if (isApplyFail) {
             //被拒绝了
-            mPermissionCallBack.requestPermissionFail(faildPermission);
+            if (mPermissionCallBack != null) {
+                mPermissionCallBack.requestPermissionFail(faildPermission);
+            }
         } else {
             //申请成功
-            mPermissionCallBack.requestPermissionSuccess();
+            if (mPermissionCallBack != null) {
+                mPermissionCallBack.requestPermissionSuccess();
+            }
         }
         mPermissionCallBack = null;
     }

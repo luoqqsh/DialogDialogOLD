@@ -1,135 +1,77 @@
 package x.com.dialogdialog;
 
-import android.Manifest;
+
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.view.Gravity;
-import android.view.View;
+import android.os.Environment;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.util.Consumer;
+import java.io.File;
 
-import com.airbnb.lottie.LottieAnimationView;
-import com.google.gson.Gson;
-
-import java.io.IOException;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-
+import x.com.dialogdialog.Base.BaseActivity;
 import x.com.hl_dialog.DFLoadingDialog;
 import x.com.hl_dialog.DFNDialog;
+import x.com.hl_dialog.DFPermissionListDialog;
 import x.com.hl_dialog.DFUpdateDialog;
+import x.com.hl_dialog.LoginDialog.LDialogBuilder;
 import x.com.hl_dialog.NDialog;
 import x.com.hl_dialog.NDialogBuilder;
 import x.com.hl_dialog.ProgressDialog.PDialog1Builder;
 import x.com.hl_log.ViseLog;
-import x.com.hl_player.HHMediaCodec;
-import x.com.hl_rx.Utils;
-import x.com.hl_tools.DialogTools.myObjectPool;
-import x.com.hl_tools.hl_orientation;
-import x.com.hl_tools.hl_permissions;
-import x.com.hl_tools.hl_sharedP;
-import x.com.hl_view.DanMu.DanMuView;
-import x.com.hl_view.DanMu.OnSimpleListener;
+import x.com.hl_tools.DialogTools.DownloadHelper;
+import x.com.hl_tools.hl_permissionsOther;
 
-public class DialogMainActivity extends BaseActivity {
-    private Context mContext;
-    private DanMuView danMuView;
-    private LottieAnimationView animation_view;
+public class DialogActivity extends BaseActivity {
+    private LDialogBuilder j;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        mContext = this;
-        permissions();
-        findViewById(R.id.tongzhi).setOnClickListener(view -> startActivity(new Intent(mContext, NotificationActivity.class)));
-        findViewById(R.id.media).setOnClickListener(view -> startActivity(new Intent(mContext, HHMediaActivity.class)));
-        findViewById(R.id.x5web).setOnClickListener(v -> startActivity(new Intent(mContext, H5Activity.class)));
-        findViewById(R.id.log).setOnClickListener(v -> startActivity(new Intent(mContext, LogActivity.class)));
-        findViewById(R.id.open).setOnClickListener(v -> startActivity(new Intent(mContext, GLActivity.class)));
-        findViewById(R.id.close).setOnClickListener(v -> {
-            hl_orientation orientation = new hl_orientation();
-            orientation.orientationEnable(this, null);
-        });
-
-        findViewById(R.id.dialog).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DFNDialog b = DFNDialog.newInstance();
-                b.setMessage("dddddddddd", 4);
-                if (!b.isAdded()) {
-                    b.show(getSupportFragmentManager(), "normalDialog");
-                }
-            }
-        });
-
-        myObjectPool pool = new myObjectPool(2, 4);
-        Object o1 = pool.acquire();
-        Object o2 = pool.acquire();
-        Object o3 = pool.acquire();
-        Object o4 = pool.acquire();
-
-        ViseLog.d(o1.hashCode());
-        ViseLog.d(o2.hashCode());
-        ViseLog.d(o3.hashCode());
-        ViseLog.d(o4.hashCode());
-
+        setContentView(R.layout.activity_dialogtools);
     }
 
-    private void danmu() {
-        //弹幕使用
-//        danMuView = findViewById(R.id.danmu);
-        danMuView.setText("hfeqwdqw");//设置文本
-        danMuView.setTextColor(0xffff0000);//设置文本颜色
-        danMuView.setTextSizeScaleOfWidth(0.6f);//设置文字大小0-1，大于1会超出屏幕范围
-        danMuView.setBackColor(0xff00ff00);//设置背景颜色
-        danMuView.setDirection(0);//设置方向，0-从右往左，1-从左往右
-        danMuView.setSpeed(15);//设置速度1-10,不建议超出这个范围
-        danMuView.start();//开始播放
-//        danMuView.stop();//停止
-        danMuView.setOnCompleteListener(new OnSimpleListener() {
-            @Override
-            public void onListen() {
-            }
-        });
-    }
-
-    private void permissions() {
-        //检查权限
-        //需要在activity重写onRequestPermissionsResult回调方法。不处理回调不写
-        hl_permissions.applyWriteStoragePermission(DialogMainActivity.this,
-                new hl_permissions.RequestPermissionCallBack() {
+    private void downloads() {
+        //下载工具,不支持断点续传
+        new DownloadHelper(this,
+                "http://imtt.dd.qq.com/16891/337A49BBE7A8A0B42E2312893903BBB3.apk?fsname=com.coolsnow.screenshot_5.6.0_56000.apk",
+                new DownloadHelper.DownloadCallBack() {
                     @Override
-                    public void requestPermissionSuccess() {
-                        ViseLog.d("true2222");
+                    public void installCancel() {
+                        //取消安装
                     }
 
                     @Override
-                    public void requestPermissionFail(Map<String, Boolean> failPermission) {
-                        ViseLog.d(failPermission);
+                    public void downloadSuccess(File file) {
+                        //下载成功
                     }
-                });
 
-        //权限列表弹窗
-//        DFPermissionListDialog i = DFPermissionListDialog.newInstance(new hl_permissionsOther.OnPermissionListener() {
-//            @Override
-//            public void result(boolean isSuccess) {
-//                ViseLog.d(isSuccess);
-//            }
-//        });
-//        i.show(getSupportFragmentManager(), "fff");
+                    @Override
+                    public void downloadFail() {
+                        //下载失败
+                    }
+                })
+                //设置是否强制升级
+                .setIsForce(false)
+                //配置通知参数
+                .setNotificationShow(true, "下载通知标题", R.mipmap.ic_launcher)
+                //配置弹框
+                .setDialogShow(true, "取消安装", "立即安装")
+                //配置下载路径
+                .setSavePath(Environment.getExternalStorageDirectory() + "/" + "checkUp")
+                //配置是否为版本升级，true则自动执行安装apk
+                .setCheckUp(true)
+                //配置存储地址 默认Environment.getExternalStorageDirectory() + "/" + "deanDownload";
+                .setSavePath(Environment.getExternalStorageDirectory() + "/" + "deanDownload");
+        //开启下载
+        //.start();
+        //停止下载
+        DownloadHelper.cancelAll();
     }
 
     private void updates() {
         //检查更新框样式
-//        Dialog g = new NDialog(this, NDialog.nDialog_Update, 1, true)
+//        Dialog g = new NDialog(mContext, NDialog.nDialog_Update, 1, true)
 //                .setTouchOutSideCancelable(false, false)
 //                .setMessage("111", Gravity.LEFT)
 //                .setBtnClickListener(true, "下次再说", "立即更新", new NDialog.onDialogbtnClickListener() {
@@ -171,7 +113,7 @@ public class DialogMainActivity extends BaseActivity {
             b.show(getSupportFragmentManager(), "normalDialog");
         }
         //显示iPhone样式弹窗
-        Dialog c = new NDialog(this, NDialog.nDialog_Iphone, 0.8f)
+        Dialog c = new NDialog(mContext, NDialog.nDialog_Iphone, 0.8f)
                 .setTouchOutSideCancelable(false, false)
                 .setMessage("我是鬼，我来抓你了！", NDialog.MSG_LAYOUT_CENTER)
                 .setBtnClickListener(true, "好", "不好", new NDialog.onDialogbtnClickListener() {
@@ -190,7 +132,7 @@ public class DialogMainActivity extends BaseActivity {
         c.show();
 
         //sex性别选择样式
-        Dialog d = new NDialog(this, NDialog.nDialog_Sex, 1.0f)
+        Dialog d = new NDialog(mContext, NDialog.nDialog_Sex, 1.0f)
                 .setDialoglocation(NDialog.DIALOG_LOCATION_BOTTOM)
                 .setDialogAnimation(NDialog.DIALOG_ANIM_SLID_BOTTOM)
                 .setTouchOutSideCancelable(false, false)
@@ -210,7 +152,7 @@ public class DialogMainActivity extends BaseActivity {
         d.show();
 
         //share分享样式
-        Dialog e = new NDialog(this, R.layout.dialog_select, 1)
+        Dialog e = new NDialog(mContext, R.layout.dialog_select, 1)
                 .setBtnClickListener(true, "微信", "朋友圈", new NDialog.onDialogbtnClickListener() {
                     @Override
                     public void onDialogbtnClick(Context context, Dialog dialog, int whichBtn) {
@@ -227,7 +169,7 @@ public class DialogMainActivity extends BaseActivity {
         e.show();
 
         //拍照选项样式
-        Dialog f = new NDialog(this, NDialog.nDialog_Photo, 1)
+        Dialog f = new NDialog(mContext, NDialog.nDialog_Photo, 1)
                 .setDialoglocation(NDialog.DIALOG_LOCATION_BOTTOM)
                 .setDialogAnimation(NDialog.DIALOG_ANIM_SLID_BOTTOM)
                 .setTouchOutSideCancelable(false, false)
@@ -254,7 +196,7 @@ public class DialogMainActivity extends BaseActivity {
                 .setonInputCodeListener(new PDialog1Builder.onProgressFinishListener() {
                     @Override
                     public void onProgressFinish() {
-                        Dialog errordialog = new NDialogBuilder(DialogMainActivity.this, 0, 1.0f)
+                        Dialog errordialog = new NDialogBuilder(mContext, 0, 1.0f)
                                 .setTouchOutSideCancelable(false)
                                 .setMessage("345tret", NDialogBuilder.MSG_LAYOUT_LEFT)
                                 .setDialogAnimation(NDialogBuilder.DIALOG_ANIM_NORMAL)
@@ -268,5 +210,32 @@ public class DialogMainActivity extends BaseActivity {
                     }
                 }).create();
         h.show();
+
+        j = new LDialogBuilder(this).inputphone().setonInputPhoneListener(new LDialogBuilder.onInputPhone() {
+            @Override
+            public void inputPhonenext(String phone, int type) {
+                if (type == 0) {
+                    j.dismissdialog1();
+                    j.inputcode(phone).setonInputCodeListener(new LDialogBuilder.onInputCode() {
+                        @Override
+                        public void inputCodenext(String phone, String code) {
+                            //校验验证码，接口调用
+                        }
+                    });
+                }
+            }
+        });
+        j.dismissdialog2();
+
+
+        //权限列表弹窗
+        DFPermissionListDialog i = DFPermissionListDialog.newInstance(new hl_permissionsOther.OnPermissionListener() {
+            @Override
+            public void result(boolean isSuccess) {
+                ViseLog.d(isSuccess);
+            }
+        });
+        i.show(getSupportFragmentManager(), "fff");
     }
+
 }

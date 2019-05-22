@@ -1,7 +1,6 @@
-package x.com.dialogdialog;
+package x.com.dialogdialog.Base;
 
 import android.content.Context;
-import android.os.Debug;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;

@@ -13,17 +13,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
+import x.com.dialogdialog.Base.BaseActivity;
 import x.com.hl_tools.hl_permissions;
 import x.com.hl_web.x5WebChromeClient;
 import x.com.hl_web.x5WebClient;
 import x.com.hl_web.x5WebDownloadListener;
 import x.com.hl_web.x5WebView;
 
-public class H5Activity extends AppCompatActivity {
+public class H5Activity extends BaseActivity {
     private x5WebView webView;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LinearLayout mLayout = new LinearLayout(getApplicationContext());
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);

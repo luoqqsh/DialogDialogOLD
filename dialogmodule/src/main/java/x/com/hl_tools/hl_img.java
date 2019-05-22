@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.widget.ImageView;
@@ -104,5 +105,12 @@ public class hl_img {
 
     public static Bitmap createBitmap(Context context, String assets) throws IOException {
         return BitmapFactory.decodeStream(context.getResources().getAssets().open(assets));
+    }
+
+    /**
+     * string值转为颜色值
+     */
+    public static int getColorFromString(String color) {
+        return Color.parseColor(color);
     }
 }

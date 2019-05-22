@@ -13,6 +13,7 @@ import androidx.appcompat.widget.AppCompatSeekBar;
 
 import java.io.IOException;
 
+import x.com.dialogdialog.Base.BaseActivity;
 import x.com.hl_base.HOnListener;
 import x.com.hl_log.ViseLog;
 import x.com.hl_player.HHMediaCodec;
@@ -22,7 +23,7 @@ import x.com.hl_tools.hl_device;
 import x.com.hl_tools.hl_leak;
 import x.com.hl_tools.hl_time;
 
-public class HHMediaActivity extends AppCompatActivity {
+public class HHMediaActivity extends BaseActivity {
     //  /storage/emulated/0/Music/虫儿飞 - 郑伊健.mp3
 //  /storage/emulated/0/Music/炽热的青春 - 贾乃亮.mp3
 //  /storage/emulated/0/Music/齿轮 - 赵薇.mp3
@@ -54,7 +55,7 @@ public class HHMediaActivity extends AppCompatActivity {
     private TextView tvback5;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mediaplay);
         textureview = findViewById(R.id.textureview);
