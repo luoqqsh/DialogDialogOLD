@@ -26,7 +26,7 @@
 #指定代码的压缩级别
 -optimizationpasses 5
 
-#包明不混合大小写
+#混淆后类名为小写
 -dontusemixedcaseclassnames
 
 #不去忽略非公共的库类
@@ -35,10 +35,10 @@
 #优化  不优化输入的类文件
 -dontoptimize
 
-#预校验
+#不做预校验操作
 -dontpreverify
 
-#混淆时是否记录日志
+#混淆时记录日志级别
 -verbose
 
 #混淆时所采用的算法
@@ -50,6 +50,20 @@
 #泛型与反射
 -keepattributes Signature
 -keepattributes EnclosingMethod
+
+#保留代码行号，方便异常信息的追踪
+-keepattributes SourceFile,LineNumberTable
+
+###dump mapping -start###
+#dump文件列出apk包内所有class的内部结构
+-dump class_files.txt       
+#seeds.txt文件列出未混淆的类和成员
+-printseeds seeds.txt
+#usage.txt文件列出从apk中删除的代码
+-printusage unused.txt
+#mapping文件列出混淆前后的映射
+-printmapping mapping.txt
+###dump mapping -end###
 
 #保持哪些类不被混淆
 -keep public class * extends android.app.Fragment

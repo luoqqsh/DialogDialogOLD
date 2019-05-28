@@ -1,12 +1,16 @@
 package x.com.hl_tools;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import java.lang.reflect.Field;
 import java.security.AccessController;
+import java.security.Key;
 import java.security.PrivilegedAction;
+import java.util.HashMap;
 
 public class hl_leak {
 
@@ -36,7 +40,7 @@ public class hl_leak {
                     View v_get = (View) obj_get;
                     //不判断的话，可能导致有输入框的页面无法弹出软键盘的问题
 //                    if (v_get.getContext() == destContext) { // 被InputMethodManager持有引用的context是想要目标销毁的
-                        f.set(imm, null); // 置空，破坏掉path to gc节点
+                    f.set(imm, null); // 置空，破坏掉path to gc节点
 //                    }
                 }
             } catch (Throwable t) {
@@ -44,8 +48,8 @@ public class hl_leak {
             }
         }
     }
-    private static void setFieldAccessible(final Field field)
-    {
+
+    private static void setFieldAccessible(final Field field) {
         AccessController.doPrivileged(new PrivilegedAction() {
             @Override
             public Object run() {
@@ -54,6 +58,9 @@ public class hl_leak {
             }
         });
     }
+
+    //******************************************************************//
+    //外部调用
     public static void fixInput(Context context) {
         method(context, "mServedView");
         method(context, "mNextServedView");
@@ -74,6 +81,36 @@ public class hl_leak {
                 if (newcontext == context) {
                     //破坏GC链
                     mCurRootViewField.set(im, null);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    //******************qq群方法-解决华为手机内存泄漏问题*****************************//
+    public static void reflectGC(Activity activity) {
+        try {
+            @SuppressLint("PrivateApi")
+            Class clazz = Class.forName("android.app.HwChangeButtonWindowCtrl");
+            Field field = clazz.getDeclaredField("mInstanceMap");
+            field.setAccessible(true);
+
+            HashMap hashMap = (HashMap) field.get(field.getType().newInstance());
+//            HashMap h = (HashMap) field.getType().newInstance();
+            for (Object key : hashMap.keySet()) {
+                Object o = hashMap.get(key);
+                if (o != null) {
+                    Field f = o.getClass().getDeclaredField("mActivity");
+                    f.setAccessible(true);
+
+                    Object mCurRootView = f.get(o);
+                    if (mCurRootView instanceof Activity) {
+                        Context context = (Context) mCurRootView;
+                        if (context == activity) {
+                            f.set(o, null);
+                        }
+                    }
                 }
             }
         } catch (Exception e) {
