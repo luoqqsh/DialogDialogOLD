@@ -13,21 +13,45 @@ android {
         versionName "1.0"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        //APP的build.gradle设置支持的SO库架构'armeabi',armeabi-v7a,'x86','arm64-v8a','x86_64'
         ndk {
-//            //APP的build.gradle设置支持的SO库架构   'x86',armeabi-v7a
-//            ,'x86','arm64-v8a','x86_64'
-            abiFilters 'armeabi', "armeabi-v7a", "x86"
+            abiFilters 'armeabi', "armeabi-v7a", "x86_64"
+        }
+    }
+    signingConfigs {
+        release {
+            storeFile file('dialog.jks')
+            keyAlias 'dialog'
+            keyPassword 'dialog'
+            storePassword 'dialog'
         }
     }
     buildTypes {
-        release {
+        debug {
             minifyEnabled false
+            multiDexEnabled true
+            shrinkResources false// 移除无用的resource文件
+            zipAlignEnabled true // Zipalign优化
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        release {
+            zipAlignEnabled true
+            shrinkResources true
+            minifyEnabled true
+            multiDexEnabled true
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
     compileOptions {
         targetCompatibility JavaVersion.VERSION_1_8
         sourceCompatibility JavaVersion.VERSION_1_8
+    }
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
     }
 }
 
@@ -43,6 +67,11 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'com.squareup.leakcanary:leakcanary-android:1.6.3'
     implementation project(':dialogmodule')
+    implementation project(':glide4')
 
     implementation 'com.airbnb.android:lottie:3.0.0'
+}
+
+static def releaseTime() {
+    return new Date().format("MMddHH", TimeZone.getTimeZone("GMT+8:00"))
 }
