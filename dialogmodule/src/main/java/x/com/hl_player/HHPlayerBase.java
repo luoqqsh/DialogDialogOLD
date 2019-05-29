@@ -151,9 +151,9 @@ public abstract class HHPlayerBase {
     /**
      * 设置请求头
      *
-     * @param headers 播放地址请求头
+     * @param mHeaders 播放地址请求头
      */
-    public void setHeaders(Map<String, String> headers) {
+    public void setHeaders(Map<String, String> mHeaders) {
         this.mHeaders = mHeaders;
     }
 }
