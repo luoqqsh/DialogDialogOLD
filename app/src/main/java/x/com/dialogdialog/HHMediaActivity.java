@@ -50,7 +50,7 @@ public class HHMediaActivity extends BaseActivity {
     private HHPlayer hhPlayer;
     private boolean ismute = false;
     private TextView currenttime, totaltime;
-    private AppCompatSeekBar seekBar;
+    private AppCompatSeekBar seekBar, seekbar_volume;
     private TextureView textureview;
     private TextView tvback5;
 
@@ -62,8 +62,10 @@ public class HHMediaActivity extends BaseActivity {
         surface = findViewById(R.id.surface);
         currenttime = findViewById(R.id.currenttime);
         totaltime = findViewById(R.id.totaltime);
+        seekbar_volume = findViewById(R.id.seekbar_volume);
         seekBar = findViewById(R.id.seekbar);
         seekBar.setMax(100);
+        seekbar_volume.setMax(10);
 //        TextureView textureview = findViewById(R.id.textureview);
 //        hhPlayer = new HHPlayer(new HHMediaPlayer(), surface);
         hhPlayer = new HHPlayer(new HHMediaPlayer(), textureview);
@@ -103,6 +105,7 @@ public class HHMediaActivity extends BaseActivity {
             ViseLog.d(hhPlayer.getMediaDuration());
             ViseLog.d(hhPlayer.getMediaPath());
             ViseLog.d(hhPlayer.getPlayerState());
+            ViseLog.d(hhPlayer.isPlaying());
         });
         hhPlayer.setPreparedListener(new HOnListener<Object>() {
             @Override
@@ -129,6 +132,24 @@ public class HHMediaActivity extends BaseActivity {
             public void onProgressChanged(SeekBar seekBar, int progess, boolean fromUser) {
                 if (fromUser) {
                     hhPlayer.seekTo(progess * 1000);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+        seekbar_volume.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progess, boolean fromUser) {
+                if (fromUser) {
+                    hhPlayer.setVolume((float) progess / 10);
                 }
             }
 

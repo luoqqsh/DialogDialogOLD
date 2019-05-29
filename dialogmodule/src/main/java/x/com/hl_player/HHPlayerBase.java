@@ -21,10 +21,10 @@ public abstract class HHPlayerBase {
     float volume = 1;
     boolean isLooping = true; //是否循环播放
     boolean isPrepared = false;//是否准备好
-    HOnListener<Object> preparedListener;
-    HOnListener<Long> progessListener;
-    HOnListener<Object> completionListener;
-    HOnListener<Integer> OnBufferingUpdateListener;
+    HOnListener<Object> onPreparedListener;
+    HOnListener<Long> onProgessListener;
+    HOnListener<Object> onCompletionListener;
+    HOnListener<Integer> onBufferingUpdateListener;
     private TaskDelayManager a;
     private Map<String, String> mHeaders;
 
@@ -98,19 +98,19 @@ public abstract class HHPlayerBase {
     }
 
     public void setPreparedListener(HOnListener<Object> preparedListener) {
-        this.preparedListener = preparedListener;
+        this.onPreparedListener = preparedListener;
     }
 
     public void setProgessListener(HOnListener<Long> progessListener) {
-        this.progessListener = progessListener;
+        this.onProgessListener = progessListener;
     }
 
     public void setCompletionListener(HOnListener<Object> completionListener) {
-        this.completionListener = completionListener;
+        this.onCompletionListener = completionListener;
     }
 
     public void setOnBufferingUpdateListener(HOnListener<Integer> OnBufferingUpdateListener) {
-        this.OnBufferingUpdateListener = OnBufferingUpdateListener;
+        this.onBufferingUpdateListener = OnBufferingUpdateListener;
     }
 
     public boolean isPlayControl() {
@@ -119,13 +119,17 @@ public abstract class HHPlayerBase {
                 && playerPrePareState == PlayerPrePareState.PREPARED;
     }
 
+    public boolean isMediaPlaying() {
+        return mPlayerState == PlayerState.PLAYING && isPlaying();
+    }
+
     void getCurrentStart() {
         if (a == null) {
             a = new TaskDelayManager() {
                 @Override
                 public void onListen(Long index) {
-                    if (progessListener != null) {
-                        progessListener.onListen(getCurrentPosition());
+                    if (onProgessListener != null) {
+                        onProgessListener.onListen(getCurrentPosition());
                     }
                 }
             };
@@ -139,6 +143,7 @@ public abstract class HHPlayerBase {
             a = null;
         }
     }
+
     public Map<String, String> getHeaders() {
         return mHeaders;
     }

@@ -71,6 +71,7 @@ public class HHPlayer {
     public void reset() {
         hhPlayerBase.reset();
         hhPlayerBase.getCurrentStop();
+        hhPlayerBase.mPlayerState = HHPlayerBase.PlayerState.IDLE;
     }
 
     public void stop() {
@@ -88,14 +89,15 @@ public class HHPlayer {
         if (hhPlayerBase.isPlayControl()) {
             hhPlayerBase.playerPrePareState = HHPlayerBase.PlayerPrePareState.PREPARING;
             hhPlayerBase.seekTo(position);
+            Log.d(hhPlayerBase.TAG, "seekTo");
         }
-        Log.e(hhPlayerBase.TAG, "seekTo");
     }
 
     //0为暂停，1为正常。。。
     public void setSpeed(float speed) {
         if (hhPlayerBase.isPlayControl()) {
             hhPlayerBase.setSpeed(speed);
+            Log.d(hhPlayerBase.TAG, "setSpeed");
         }
     }
 
@@ -105,11 +107,15 @@ public class HHPlayer {
         hhPlayerBase.getCurrentStop();
         hhPlayerBase.mPlayerState = HHPlayerBase.PlayerState.NONE;
         hhPlayerBase.isPrepared = false;
-        Log.e(hhPlayerBase.TAG, "doRelease");
+        Log.d(hhPlayerBase.TAG, "doRelease");
     }
 
     public Object getMediaPath() {
         return hhPlayerBase.getMediaPath();
+    }
+
+    public boolean isPlaying() {
+        return hhPlayerBase.isMediaPlaying();
     }
 
     public long getCurrentPosition() {

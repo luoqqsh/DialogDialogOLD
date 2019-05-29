@@ -17,7 +17,7 @@ android {
             cmake {
                 arguments "-DANDROID_TOOLCHAIN=clang"
                 //从ndk17版本开始不再支持armeabi
-                abiFilters "armeabi-v7a", "x86_64"
+                abiFilters "armeabi-v7a"
             }
         }
     }

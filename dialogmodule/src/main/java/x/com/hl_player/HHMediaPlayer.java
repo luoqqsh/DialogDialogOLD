@@ -10,7 +10,6 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.TextureView;
 
-import java.io.File;
 import java.lang.reflect.Method;
 import java.util.Map;
 
@@ -78,6 +77,9 @@ public class HHMediaPlayer extends HHPlayerBase {
     @Override
     public long getCurrentPosition() {
         if (mediaPlayer != null) {
+            if (mediaPlayer.getCurrentPosition() > getMediaDuration()) {
+                return getMediaDuration();
+            }
             return mediaPlayer.getCurrentPosition();
         }
         return 0;
@@ -173,8 +175,8 @@ public class HHMediaPlayer extends HHPlayerBase {
                     isPrepared = true;
                     mediaPlayer.setVolume(volume, volume);
                     mediaPlayer.setLooping(isLooping);
-                    if (preparedListener != null) {
-                        preparedListener.onListen(mp);
+                    if (onPreparedListener != null) {
+                        onPreparedListener.onListen(mp);
                     }
                     Log.e(TAG, "Prepared OK");
                 }
@@ -189,8 +191,8 @@ public class HHMediaPlayer extends HHPlayerBase {
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
-                    if (completionListener != null) {
-                        completionListener.onListen(mp);
+                    if (onCompletionListener != null) {
+                        onCompletionListener.onListen(mp);
                     }
                 }
             });
@@ -207,8 +209,8 @@ public class HHMediaPlayer extends HHPlayerBase {
             mediaPlayer.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
                 @Override
                 public void onBufferingUpdate(MediaPlayer mp, int percent) {
-                    if (OnBufferingUpdateListener != null) {
-                        OnBufferingUpdateListener.onListen(percent);
+                    if (onBufferingUpdateListener != null) {
+                        onBufferingUpdateListener.onListen(percent);
                     }
                 }
             });

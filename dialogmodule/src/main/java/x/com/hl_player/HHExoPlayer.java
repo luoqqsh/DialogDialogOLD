@@ -225,8 +225,8 @@
 //                @Override
 //                public void onPrepared(MediaPlayer mp) {
 //                    mPlayerState = PlayerState.PREPARED;
-//                    if (preparedListener != null) {
-//                        preparedListener.onListen(mp);
+//                    if (onPreparedListener != null) {
+//                        onPreparedListener.onListen(mp);
 //                    }
 //                    isPrepared = true;
 //                    Log.e(TAG, "Prepared OK");
@@ -249,8 +249,8 @@
 //                public void onCompletion(MediaPlayer mp) {
 //                    Log.e(TAG, "play Completion");
 //                    mPlayerState = PlayerState.PLAYBACK_COMPLETED;
-//                    if (completionListener != null) {
-//                        completionListener.onListen(mp);
+//                    if (onCompletionListener != null) {
+//                        onCompletionListener.onListen(mp);
 //                    }
 //                }
 //            });

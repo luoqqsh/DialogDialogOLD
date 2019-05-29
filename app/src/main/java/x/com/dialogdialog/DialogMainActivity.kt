@@ -1,5 +1,6 @@
 package x.com.dialogdialog
 
+import android.Manifest
 import android.content.Intent
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_main.*
@@ -72,6 +73,14 @@ class DialogMainActivity : BaseActivity() {
                 ViseLog.d(failPermission)
             }
         })
+        hl_permissions.applyPermission(mContext, arrayOf(Manifest.permission.READ_PHONE_STATE), object : hl_permissions.RequestPermissionCallBack {
+            override fun requestPermissionSuccess() {
 
+            }
+
+            override fun requestPermissionFail(failPermission: Map<String, Boolean>) {
+
+            }
+        })
     }
 }

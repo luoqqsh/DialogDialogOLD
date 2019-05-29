@@ -1,5 +1,6 @@
 package x.com.dialogdialog;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -7,11 +8,15 @@ import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 
+import java.util.Map;
+
 import x.com.dialogdialog.Base.BaseActivity;
 import x.com.hl_dialog.DFNDialog;
+import x.com.hl_log.ViseLog;
 import x.com.hl_tools.hl_drawable;
 import x.com.hl_tools.hl_img;
 import x.com.hl_tools.hl_orientation;
+import x.com.hl_tools.hl_permissions;
 
 public class DialogMainJavaActivity extends BaseActivity {
     @Override
@@ -21,6 +26,18 @@ public class DialogMainJavaActivity extends BaseActivity {
         getWindow().setBackgroundDrawableResource(R.color.brown);
         init();
         test();
+        hl_permissions.applyPermission(mContext, new String[]{Manifest.permission.READ_PHONE_STATE}, new hl_permissions.RequestPermissionCallBack() {
+            @Override
+            public void requestPermissionSuccess() {
+
+            }
+
+            @Override
+            public void requestPermissionFail(Map<String, Boolean> failPermission) {
+
+            }
+        });
+
     }
 
     private void test() {
