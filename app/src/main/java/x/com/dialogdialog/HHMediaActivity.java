@@ -145,6 +145,7 @@ public class HHMediaActivity extends BaseActivity {
 
             }
         });
+        seekbar_volume.setProgress((int) (hhPlayer.getVolume() * 10));
         seekbar_volume.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progess, boolean fromUser) {

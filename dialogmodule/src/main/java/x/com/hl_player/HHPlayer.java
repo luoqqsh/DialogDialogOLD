@@ -51,6 +51,10 @@ public class HHPlayer {
         }
     }
 
+    public float getVolume() {
+        return hhPlayerBase.volume;
+    }
+
     public void start() {
         if (hhPlayerBase.isPrepared && hhPlayerBase.isPlayControl()) {
             hhPlayerBase.start();
