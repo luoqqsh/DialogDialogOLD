@@ -17,9 +17,9 @@ import x.com.hl_log.ViseLog;
  * Created by Lyd on 2019/4/7.
  * MediaPlayer媒体控制器
  */
-public class MediaPlayerController {
+public class MediaPlayerController1 {
     private MediaPlayer mediaPlayer;
-    private String TAG = "MediaPlayerController";
+    private String TAG = "MediaPlayerController1";
     private String musicPath;
     private boolean isStartWhenPrepared = true;
     private float volume = 1;//范围0-1
@@ -41,11 +41,11 @@ public class MediaPlayerController {
         END//结束，需要重新new
     }
 
-    public MediaPlayerController() {
+    public MediaPlayerController1() {
         mediaPlayer = new MediaPlayer();
     }
 
-    public MediaPlayerController(TextureView textureView) {
+    public MediaPlayerController1(TextureView textureView) {
         mediaPlayer = new MediaPlayer();
         textureView.setSurfaceTextureListener(new TextureView.SurfaceTextureListener() {
             @Override
@@ -73,7 +73,7 @@ public class MediaPlayerController {
         });
     }
 
-    public MediaPlayerController(SurfaceView surfaceView) {
+    public MediaPlayerController1(SurfaceView surfaceView) {
         mediaPlayer = new MediaPlayer();
         surfaceView.setKeepScreenOn(true);
         surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
@@ -106,7 +106,7 @@ public class MediaPlayerController {
     }
 
     public void setMediaTag(String TAG) {
-        this.TAG = "MediaPlayerController-" + TAG;
+        this.TAG = "MediaPlayerController1-" + TAG;
     }
 
     public void setOnPreparedListener(PreparedListener preparedListener) {
@@ -145,7 +145,7 @@ public class MediaPlayerController {
                     }
                     isPrepared = true;
                     Log.e(TAG, "Prepared OK");
-                    if (MediaPlayerController.this.isStartWhenPrepared) {
+                    if (MediaPlayerController1.this.isStartWhenPrepared) {
                         mp.start();
                     }
                 }

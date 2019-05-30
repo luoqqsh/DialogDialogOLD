@@ -1,4 +1,4 @@
-package x.com.hl_player;
+package x.com.hl_player.tools;
 
 import android.content.Context;
 import android.util.AttributeSet;

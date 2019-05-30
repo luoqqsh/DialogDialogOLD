@@ -1,4 +1,4 @@
-package x.com.hl_player;
+package x.com.hl_player.base;
 
 import android.content.res.AssetFileDescriptor;
 import android.graphics.SurfaceTexture;
@@ -161,7 +161,9 @@ public class HHMediaPlayer extends HHPlayerBase {
     @Override
     public void setSpeed(float speed) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            mediaPlayer.setPlaybackParams(mediaPlayer.getPlaybackParams().setSpeed(speed));
+            if (mediaPlayer != null) {
+                mediaPlayer.setPlaybackParams(mediaPlayer.getPlaybackParams().setSpeed(speed));
+            }
         }
     }
 

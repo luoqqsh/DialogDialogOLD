@@ -1,33 +1,33 @@
 package x.com.hl_player;
 
+import android.content.Context;
+import android.util.AttributeSet;
 import android.util.Log;
-import android.view.SurfaceView;
-import android.view.TextureView;
 import android.view.View;
+import android.widget.RelativeLayout;
 
 import x.com.hl_base.HOnListener;
 import x.com.hl_log.ViseLog;
+import x.com.hl_player.base.HHPlayerBase;
 
 /**
  * 播放器控制类，也就是我们的使用类
  */
-public class HHPlayer {
+public class HHPlayerView3 extends RelativeLayout {
 
     private HHPlayerBase hhPlayerBase;//播放器内核
     private View mContainer;
 
-    public HHPlayer(HHPlayerBase hhPlayerBase) {
-        this.hhPlayerBase = hhPlayerBase;
+    public HHPlayerView3(Context context) {
+        super(context);
     }
 
-    public HHPlayer(HHPlayerBase hhPlayerBase, SurfaceView surface) {
-        this.hhPlayerBase = hhPlayerBase;
-        hhPlayerBase.setSurface(surface);
+    public HHPlayerView3(Context context, AttributeSet attrs) {
+        super(context, attrs);
     }
 
-    public HHPlayer(HHPlayerBase hhPlayerBase, TextureView texture) {
-        this.hhPlayerBase = hhPlayerBase;
-        hhPlayerBase.setTexture(texture);
+    public HHPlayerView3(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
     }
 
     public void prepare(String path) {
@@ -166,6 +166,8 @@ public class HHPlayer {
     public void fullScreen() {
 
     }
+
+  
 
 /*
 

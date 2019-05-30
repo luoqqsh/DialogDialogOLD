@@ -4,11 +4,9 @@ import android.os.Bundle;
 import android.view.SurfaceView;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import x.com.dialogdialog.Base.BaseActivity;
-import x.com.hl_player.MediaPlayerController;
-import x.com.hl_tools.hl_device;
+import x.com.hl_player.MediaPlayerController1;
 import x.com.hl_tools.hl_leak;
 
 /**
@@ -35,7 +33,7 @@ public class MediaActivity extends BaseActivity {
 //  /storage/emulated/0/DCIM/wallpaperFairy/videoWallpaper/c0197187ca9868c646f734310cd23eee.mp4
 //  /storage/emulated/0/ClearWatermark/CWDownLoadTool/我的下载/bb327cd9d2c4d45cde8b168cb48f0e26.mp4
     private SurfaceView surface;
-    private MediaPlayerController mediaPlayerController;
+    private MediaPlayerController1 mediaPlayerController1;
     private String musicpath = "/storage/emulated/0/Music/不可说 - 霍建华、赵丽颖.mp3";
     private String videopath = "/storage/emulated/0/DCIM/wallpaperFairy/videoWallpaper/69a2ff59895cdf8a7ccaf2d73046f638.mp4";
 
@@ -46,25 +44,25 @@ public class MediaActivity extends BaseActivity {
         surface = findViewById(R.id.surface);
 //        TextureView textureview = findViewById(R.id.textureview);
         //不支持设置透明度
-        mediaPlayerController = new MediaPlayerController(surface);
-        mediaPlayerController.setLooping(false);
+        mediaPlayerController1 = new MediaPlayerController1(surface);
+        mediaPlayerController1.setLooping(false);
         //正常设置透明度
-//        mediaPlayerController = new MediaPlayerController(textureview);
+//        mediaPlayerController1 = new MediaPlayerController1(textureview);
 
         findViewById(R.id.select).setOnClickListener(v -> {
-            mediaPlayerController.doPrepare(videopath);
+            mediaPlayerController1.doPrepare(videopath);
         });
-        findViewById(R.id.play).setOnClickListener(v -> mediaPlayerController.doStart());
-        findViewById(R.id.pause).setOnClickListener(v -> mediaPlayerController.doPause());
-        findViewById(R.id.stop).setOnClickListener(v -> mediaPlayerController.doStop());
+        findViewById(R.id.play).setOnClickListener(v -> mediaPlayerController1.doStart());
+        findViewById(R.id.pause).setOnClickListener(v -> mediaPlayerController1.doPause());
+        findViewById(R.id.stop).setOnClickListener(v -> mediaPlayerController1.doStop());
 
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mediaPlayerController != null) {
-            mediaPlayerController.doRelease();
+        if (mediaPlayerController1 != null) {
+            mediaPlayerController1.doRelease();
         }
         hl_leak.fixInput(this);
     }

@@ -1,14 +1,12 @@
 package x.com.dialogdialog;
 
 import android.os.Bundle;
-import android.view.SurfaceView;
 import android.view.TextureView;
 import android.widget.FrameLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatSeekBar;
 
 import java.io.IOException;
@@ -16,9 +14,9 @@ import java.io.IOException;
 import x.com.dialogdialog.Base.BaseActivity;
 import x.com.hl_base.HOnListener;
 import x.com.hl_log.ViseLog;
-import x.com.hl_player.HHMediaCodec;
-import x.com.hl_player.HHMediaPlayer;
-import x.com.hl_player.HHPlayer;
+import x.com.hl_player.HHPlayer2;
+import x.com.hl_player.tools.HHMediaCodec;
+import x.com.hl_player.base.HHMediaPlayer;
 import x.com.hl_tools.hl_device;
 import x.com.hl_tools.hl_leak;
 import x.com.hl_tools.hl_time;
@@ -47,7 +45,7 @@ public class HHMediaActivity extends BaseActivity {
     private String musicpath = "/storage/emulated/0/Music/不可说 - 霍建华、赵丽颖.mp3";
     private String videopath = "/storage/emulated/0/DCIM/wallpaperFairy/videoWallpaper/05a03b1bae0031e5a56e8e5e8926a706.mp4";
     //    private String videopath = "http://s.bizhijingling.com/uploadfile/userload/vedio/2019/0516/20190516065450574.mp4";
-    private HHPlayer hhPlayer;
+    private HHPlayer2 hhPlayer2;
     private boolean ismute = false;
     private TextView currenttime, totaltime;
     private AppCompatSeekBar seekBar, seekbar_volume;
@@ -67,61 +65,61 @@ public class HHMediaActivity extends BaseActivity {
         seekBar.setMax(100);
         seekbar_volume.setMax(10);
 //        TextureView textureview = findViewById(R.id.textureview);
-//        hhPlayer = new HHPlayer(new HHMediaPlayer(), surface);
-        hhPlayer = new HHPlayer(new HHMediaPlayer(), textureview);
-        hhPlayer.setLooping(false);
+//        hhPlayer2 = new HHPlayer2(new HHMediaPlayer(), surface);
+        hhPlayer2 = new HHPlayer2(new HHMediaPlayer(), textureview);
+        hhPlayer2.setLooping(false);
 
-        hhPlayer.setCompletionListener(new HOnListener<Object>() {
+        hhPlayer2.setCompletionListener(new HOnListener<Object>() {
             @Override
             public void onListen(Object o) {
                 ViseLog.d("finishaaa");
             }
         });
 
-        findViewById(R.id.select).setOnClickListener(v -> hhPlayer.prepare(videopath));
-        findViewById(R.id.play).setOnClickListener(v -> hhPlayer.start());
-        findViewById(R.id.pause).setOnClickListener(v -> hhPlayer.pause());
-        findViewById(R.id.stop).setOnClickListener(v -> hhPlayer.stop());
-        findViewById(R.id.reset).setOnClickListener(v -> hhPlayer.reset());
-        findViewById(R.id.full).setOnClickListener(v -> hhPlayer.fullScreen());
-        findViewById(R.id.mute).setOnClickListener(v -> hhPlayer.setMute(!ismute));
-        findViewById(R.id.fast).setOnClickListener(v -> hhPlayer.setSpeed(2));
-        findViewById(R.id.slow).setOnClickListener(v -> hhPlayer.setSpeed(0.5f));
-        findViewById(R.id.release).setOnClickListener(v -> hhPlayer.release());
+        findViewById(R.id.select).setOnClickListener(v -> hhPlayer2.prepare(videopath));
+        findViewById(R.id.play).setOnClickListener(v -> hhPlayer2.start());
+        findViewById(R.id.pause).setOnClickListener(v -> hhPlayer2.pause());
+        findViewById(R.id.stop).setOnClickListener(v -> hhPlayer2.stop());
+        findViewById(R.id.reset).setOnClickListener(v -> hhPlayer2.reset());
+        findViewById(R.id.full).setOnClickListener(v -> hhPlayer2.fullScreen());
+        findViewById(R.id.mute).setOnClickListener(v -> hhPlayer2.setMute(!ismute));
+        findViewById(R.id.fast).setOnClickListener(v -> hhPlayer2.setSpeed(2));
+        findViewById(R.id.slow).setOnClickListener(v -> hhPlayer2.setSpeed(0.5f));
+        findViewById(R.id.release).setOnClickListener(v -> hhPlayer2.release());
         findViewById(R.id.go5).setOnClickListener(v -> {
-            if (hhPlayer.getCurrentPosition() + 5000 < hhPlayer.getMediaDuration()) {
-                hhPlayer.seekTo(hhPlayer.getCurrentPosition() + 5000);
+            if (hhPlayer2.getCurrentPosition() + 5000 < hhPlayer2.getMediaDuration()) {
+                hhPlayer2.seekTo(hhPlayer2.getCurrentPosition() + 5000);
             }
         });
         tvback5 = findViewById(R.id.back5);
         tvback5.setOnClickListener(v -> {
-            if (hhPlayer.getCurrentPosition() > 5000) {
-                hhPlayer.seekTo(hhPlayer.getCurrentPosition() - 5000);
+            if (hhPlayer2.getCurrentPosition() > 5000) {
+                hhPlayer2.seekTo(hhPlayer2.getCurrentPosition() - 5000);
             }
         });
-        findViewById(R.id.slow).setOnClickListener(v -> hhPlayer.setSpeed(0.5f));
+        findViewById(R.id.slow).setOnClickListener(v -> hhPlayer2.setSpeed(0.5f));
         findViewById(R.id.get).setOnClickListener(v -> {
-            ViseLog.d(hhPlayer.getCurrentPosition());
-            ViseLog.d(hhPlayer.getMediaDuration());
-            ViseLog.d(hhPlayer.getMediaPath());
-            ViseLog.d(hhPlayer.getPlayerState());
-            ViseLog.d(hhPlayer.isPlaying());
+            ViseLog.d(hhPlayer2.getCurrentPosition());
+            ViseLog.d(hhPlayer2.getMediaDuration());
+            ViseLog.d(hhPlayer2.getMediaPath());
+            ViseLog.d(hhPlayer2.getPlayerState());
+            ViseLog.d(hhPlayer2.isPlaying());
         });
-        hhPlayer.setPreparedListener(new HOnListener<Object>() {
+        hhPlayer2.setPreparedListener(new HOnListener<Object>() {
             @Override
             public void onListen(Object o) {
-                totaltime.setText(" / " + hl_time.formatTime(hhPlayer.getMediaDuration()));
-                seekBar.setMax((int) (hhPlayer.getMediaDuration() / 1000));
+                totaltime.setText(" / " + hl_time.formatTime(hhPlayer2.getMediaDuration()));
+                seekBar.setMax((int) (hhPlayer2.getMediaDuration() / 1000));
             }
         });
-        hhPlayer.setProgessListener(new HOnListener<Long>() {
+        hhPlayer2.setProgessListener(new HOnListener<Long>() {
             @Override
             public void onListen(Long o) {
                 currenttime.setText(hl_time.formatTime(o));
                 seekBar.setProgress((int) (o / 1000));
             }
         });
-        hhPlayer.setOnBufferingUpdateListener(new HOnListener<Integer>() {
+        hhPlayer2.setOnBufferingUpdateListener(new HOnListener<Integer>() {
             @Override
             public void onListen(Integer integer) {
                 seekBar.setSecondaryProgress(integer);
@@ -131,7 +129,7 @@ public class HHMediaActivity extends BaseActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progess, boolean fromUser) {
                 if (fromUser) {
-                    hhPlayer.seekTo(progess * 1000);
+                    hhPlayer2.seekTo(progess * 1000);
                 }
             }
 
@@ -145,12 +143,12 @@ public class HHMediaActivity extends BaseActivity {
 
             }
         });
-        seekbar_volume.setProgress((int) (hhPlayer.getVolume() * 10));
+        seekbar_volume.setProgress((int) (hhPlayer2.getVolume() * 10));
         seekbar_volume.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progess, boolean fromUser) {
                 if (fromUser) {
-                    hhPlayer.setVolume((float) progess / 10);
+                    hhPlayer2.setVolume((float) progess / 10);
                 }
             }
 
@@ -179,8 +177,8 @@ public class HHMediaActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (hhPlayer != null) {
-            hhPlayer.release();
+        if (hhPlayer2 != null) {
+            hhPlayer2.release();
         }
         if (hl_device.isHuaWeiPhone()) {
             hl_leak.fixInputMethodManagerLeak(this);

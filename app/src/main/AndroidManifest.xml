@@ -54,6 +54,7 @@
         <activity android:name=".MediaActivity" />
         <activity android:name=".HHMediaActivity" />
         <activity android:name=".DialogMainJavaActivity" />
+        <activity android:name=".HHMediaViewActivity" />
     </application>
 
 </manifest>

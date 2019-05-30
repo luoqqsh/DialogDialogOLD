@@ -1,4 +1,4 @@
-package x.com.hl_player;
+package x.com.hl_player.base;
 
 import android.view.SurfaceView;
 import android.view.TextureView;
@@ -12,23 +12,23 @@ import x.com.hl_rx.TaskDelayManager;
  * 播放器基础类
  */
 public abstract class HHPlayerBase {
-    PlayerState mPlayerState = PlayerState.IDLE;
-    PlayerPrePareState playerPrePareState = PlayerPrePareState.NONE;
+    public PlayerState mPlayerState = PlayerState.IDLE;
+    public PlayerPrePareState playerPrePareState = PlayerPrePareState.NONE;
     public String TAG = "HHPlayerBase";
 
-    Object mediaPath;
+    public Object mediaPath;
 
-    float volume = 1;
-    boolean isLooping = true; //是否循环播放
-    boolean isPrepared = false;//是否准备好
-    HOnListener<Object> onPreparedListener;
-    HOnListener<Long> onProgessListener;
-    HOnListener<Object> onCompletionListener;
-    HOnListener<Integer> onBufferingUpdateListener;
+    public float volume = 1;
+    public boolean isLooping = true; //是否循环播放
+    public boolean isPrepared = false;//是否准备好
+    public HOnListener<Object> onPreparedListener;
+    public HOnListener<Long> onProgessListener;
+    public HOnListener<Object> onCompletionListener;
+    public HOnListener<Integer> onBufferingUpdateListener;
     private TaskDelayManager a;
     private Map<String, String> mHeaders;
 
-    enum PlayerState {
+    public enum PlayerState {
         ERROR,//出错
         IDLE,//闲置，初始化
         PLAYING,//播放中
@@ -39,14 +39,14 @@ public abstract class HHPlayerBase {
         NONE//结束，需要重新new
     }
 
-    enum PlayerPrePareState {
+    public enum PlayerPrePareState {
         PREPARED,
         PREPARING,
         NONE,
         ERROR
     }
 
-    enum PlayerMode {
+    public enum PlayerMode {
         MODE_FULL_SCREEN,
         MODE_NORMAL,
         MODE_TINY_WINDOW
@@ -123,7 +123,7 @@ public abstract class HHPlayerBase {
         return mPlayerState == PlayerState.PLAYING && isPlaying();
     }
 
-    void getCurrentStart() {
+    public void getCurrentStart() {
         if (a == null) {
             a = new TaskDelayManager() {
                 @Override
@@ -137,7 +137,7 @@ public abstract class HHPlayerBase {
         }
     }
 
-    void getCurrentStop() {
+    public void getCurrentStop() {
         if (a != null) {
             a.cancel();
             a = null;

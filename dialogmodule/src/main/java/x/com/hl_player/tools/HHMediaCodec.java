@@ -1,4 +1,4 @@
-package x.com.hl_player;
+package x.com.hl_player.tools;
 
 import android.content.Context;
 import android.media.MediaCodec;
@@ -16,7 +16,7 @@ import java.io.IOException;
 import x.com.hl_log.ViseLog;
 
 public class HHMediaCodec {
-    SurfaceView surfaceView;
+    private SurfaceView surfaceView;
     private MediaCodec mediaCodec;
     private DataInputStream mInputStream;
 
@@ -25,7 +25,7 @@ public class HHMediaCodec {
         ViseLog.d("init");
         //解码
         mediaCodec = MediaCodec.createDecoderByType(MediaFormat.MIMETYPE_VIDEO_MPEG4);
-       
+
         surfaceView = new SurfaceView(context);
         viewGroup.addView(surfaceView);
         surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {

@@ -37,7 +37,6 @@ public class DialogMainJavaActivity extends BaseActivity {
 
             }
         });
-
     }
 
     private void test() {
