@@ -4,14 +4,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 
-import x.com.hl_tools.hl_device;
 import x.com.hl_tools.hl_leak;
 import x.com.hl_tools.hl_permissions;
+
 
 public class ApplyPermissionActivity extends Activity {
     private final int REQUEST_CODE_PERMISSIONS = 1211;
@@ -35,10 +36,14 @@ public class ApplyPermissionActivity extends Activity {
     }
 
     public static void launch(Context context, String[] permissions) {
-        Intent intent = new Intent(context, ApplyPermissionActivity.class);
-        intent.putExtra("permissions", permissions);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
+        if (permissions != null) {
+            Intent intent = new Intent(context, ApplyPermissionActivity.class);
+            intent.putExtra("permissions", permissions);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+        } else {
+            Log.e("权限申请失败", "权限列表获取失败！");
+        }
     }
 
     @Override
@@ -47,7 +52,8 @@ public class ApplyPermissionActivity extends Activity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case REQUEST_CODE_PERMISSIONS:

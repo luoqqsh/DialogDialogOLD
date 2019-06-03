@@ -5,10 +5,19 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.PixelFormat;
+import android.hardware.display.DisplayManager;
+import android.media.Image;
+import android.media.ImageReader;
+import android.media.projection.MediaProjection;
 import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -20,11 +29,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.util.Date;
 
 public class hl_img {
     // 将图片文件转化为字节数组字符串，并对其进行Base64编码处理
-    public static String getImageStr(String imgFile) {
+    public static String imgToStr64(String imgFile) {
         InputStream in;
         byte[] data = null;
         // 读取图片字节数组
@@ -46,10 +56,10 @@ public class hl_img {
     }
 
     //保存照片
-    public static void saveImage(ImageView imageView, Context context) {
+    public static void ImgViewToDcim(ImageView imageView, Context context) {
         imageView.setDrawingCacheEnabled(true);//开启catch，开启之后才能获取ImageView中的bitmap
         Bitmap bitmap = imageView.getDrawingCache();//获取imageview中的图像
-        saveBitmap(bitmap, context);
+        bitmapToDcim(bitmap, context);
         Toast.makeText(context, "保存成功", Toast.LENGTH_SHORT).show();
         imageView.setDrawingCacheEnabled(false);//关闭catch
 
@@ -58,7 +68,7 @@ public class hl_img {
     /**
      * 保存方法
      */
-    public static void saveBitmap(Bitmap bitmap, Context context) {
+    public static void bitmapToDcim(Bitmap bitmap, Context context) {
         //更改的名字
         String imageName = new Date() + ".jpg";
 
@@ -103,7 +113,7 @@ public class hl_img {
         }
     }
 
-    public static Bitmap createBitmap(Context context, String assets) throws IOException {
+    public static Bitmap assetsToBitmap(Context context, String assets) throws IOException {
         return BitmapFactory.decodeStream(context.getResources().getAssets().open(assets));
     }
 
@@ -112,5 +122,16 @@ public class hl_img {
      */
     public static int getColorFromString(String color) {
         return Color.parseColor(color);
+    }
+
+    public static void bitmapToFile(Bitmap bitmap, String filePath) {
+        try {
+            FileOutputStream outputStream = new FileOutputStream(filePath);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+            outputStream.flush();
+            outputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

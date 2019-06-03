@@ -27,6 +27,8 @@ public class hl_file {
     //安卓Q沙盒目录Context.getExternalFilesDir() = 
     //安卓Q沙盒图片Context.getExternalFilesDir(Environment.DIRECTORY_PICTURES) =  
     public static final String SDROOT = Environment.getExternalStorageDirectory().getPath();
+    public static final String DCIM = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) + File.separator;
+    public static final String DOWNLOADS = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator;
 
     /**
      * 获取缓存路径

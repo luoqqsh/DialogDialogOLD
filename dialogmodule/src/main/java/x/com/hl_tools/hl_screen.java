@@ -2,11 +2,18 @@ package x.com.hl_tools;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.media.projection.MediaProjectionManager;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
+import android.view.Display;
 import android.view.WindowManager;
 
 import androidx.appcompat.app.ActionBar;
+
+import java.lang.reflect.Method;
+
+import x.com.hl_tools.permissions.ApplyPermissionActivity;
 
 public class hl_screen {
 
@@ -115,4 +122,8 @@ public class hl_screen {
         }
         hl_context.getWindow(context).clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
+
+    
+
+
 }

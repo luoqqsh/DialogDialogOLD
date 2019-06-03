@@ -18,7 +18,9 @@ import x.com.hl_player.HHPlayer2;
 import x.com.hl_player.tools.HHMediaCodec;
 import x.com.hl_player.base.HHMediaPlayer;
 import x.com.hl_tools.hl_device;
+import x.com.hl_tools.hl_file;
 import x.com.hl_tools.hl_leak;
+import x.com.hl_tools.hl_screen;
 import x.com.hl_tools.hl_time;
 
 public class HHMediaActivity extends BaseActivity {
@@ -164,14 +166,14 @@ public class HHMediaActivity extends BaseActivity {
         });
 
 
-        HHMediaCodec hhMediaCodec = new HHMediaCodec();
-        try {
-            hhMediaCodec.init(this, surface);
-            hhMediaCodec.getFileInputStream(videopath);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        HHMediaCodec hhMediaCodec = new HHMediaCodec();
+//        try {
+//            hhMediaCodec.init(this, surface);
+//            hhMediaCodec.getFileInputStream(videopath);
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
     @Override
