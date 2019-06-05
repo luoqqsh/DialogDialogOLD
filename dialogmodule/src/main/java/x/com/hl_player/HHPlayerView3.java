@@ -1,13 +1,19 @@
 package x.com.hl_player;
 
+import android.app.Activity;
 import android.content.Context;
+import android.provider.Settings;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.View;
+import android.view.SurfaceView;
+import android.view.TextureView;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.RelativeLayout;
 
 import x.com.hl_base.HOnListener;
 import x.com.hl_log.ViseLog;
+import x.com.hl_player.base.HHMediaPlayer;
 import x.com.hl_player.base.HHPlayerBase;
 
 /**
@@ -16,44 +22,60 @@ import x.com.hl_player.base.HHPlayerBase;
 public class HHPlayerView3 extends RelativeLayout {
 
     private HHPlayerBase hhPlayerBase;//播放器内核
-    private View mContainer;
+    private Context mContext;
+    private boolean isChangeBrigtness = false;
 
-    public HHPlayerView3(Context context) {
+    public enum PlayerView {
+        SURFACE,
+        TEXTURE,
+        MUSIC
+    }
+
+    public HHPlayerView3(Context context, HHPlayerBase hhPlayerBase, PlayerView playerView) {
         super(context);
+        mContext = context;
+        init(hhPlayerBase, playerView);
     }
 
     public HHPlayerView3(Context context, AttributeSet attrs) {
         super(context, attrs);
+        mContext = context;
+        init(new HHMediaPlayer(), PlayerView.MUSIC);
     }
 
-    public HHPlayerView3(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
+    public void init(HHPlayerBase hhPlayerBase, PlayerView playerView) {
+        if (this.hhPlayerBase != null) this.hhPlayerBase.release();
+        this.hhPlayerBase = hhPlayerBase;
+        switch (playerView) {
+            case SURFACE:
+                initSurfaceView();
+                break;
+            case TEXTURE:
+                initTextureView();
+                break;
+            case MUSIC:
+                break;
+        }
+    }
+
+    private void initSurfaceView() {
+        SurfaceView mSurfaceView = new SurfaceView(getContext().getApplicationContext());
+        LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+        addView(mSurfaceView, params);
+        hhPlayerBase.initView(mSurfaceView);
+    }
+
+    private void initTextureView() {
+        TextureView mTextureView = new TextureView(getContext().getApplicationContext());
+        LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+        addView(mTextureView, params);
+        hhPlayerBase.initView(mTextureView);
     }
 
     public void prepare(String path) {
         hhPlayerBase.prepare(path);
     }
 
-    public void setLooping(boolean looping) {
-        hhPlayerBase.setLooping(looping);
-    }
-
-    public void setMute(boolean mute) {
-        setVolume(mute ? 0 : 1);
-    }
-
-    public void setVolume(float volume) {
-        if (volume >= 0 && volume <= 1) {
-            hhPlayerBase.setVolume(volume);
-        } else {
-            hhPlayerBase.setVolume(1);
-            ViseLog.e("volume超范围：" + volume);
-        }
-    }
-
-    public float getVolume() {
-        return hhPlayerBase.volume;
-    }
 
     public void start() {
         if (hhPlayerBase.isPrepared && hhPlayerBase.isPlayControl()) {
@@ -95,6 +117,57 @@ public class HHPlayerView3 extends RelativeLayout {
             hhPlayerBase.seekTo(position);
             Log.d(hhPlayerBase.TAG, "seekTo");
         }
+    }
+
+    public void setScreenBrigtness(int brightness) {
+        Window localWindow = ((Activity) mContext).getWindow();
+        WindowManager.LayoutParams localLayoutParams = localWindow.getAttributes();
+        localLayoutParams.screenBrightness = (float) brightness / 100.0F;
+        localWindow.setAttributes(localLayoutParams);
+        isChangeBrigtness = true;
+    }
+
+    private int getSystemScreenBrightness() {
+        try {
+            int brightNess = Settings.System.getInt(mContext.getContentResolver(), "screen_brightness");
+            return (int) ((float) (brightNess * 100) / 255.0F);
+        } catch (Settings.SettingNotFoundException var4) {
+            return -1;
+        }
+    }
+
+    public int getScreenBrightness() {
+        if (this.mContext instanceof Activity) {
+            Window localWindow = ((Activity) this.mContext).getWindow();
+            WindowManager.LayoutParams localLayoutParams = localWindow.getAttributes();
+            float screenBrightness = localLayoutParams.screenBrightness;
+            if (screenBrightness > 1.0F || screenBrightness < 0.1) {
+                return getSystemScreenBrightness();
+            }
+            return (int) (screenBrightness * 100.0F);
+        }
+        return getSystemScreenBrightness();
+    }
+
+    public void setLooping(boolean looping) {
+        hhPlayerBase.setLooping(looping);
+    }
+
+    public void setMute(boolean mute) {
+        setVolume(mute ? 0 : 1);
+    }
+
+    public void setVolume(float volume) {
+        if (volume >= 0 && volume <= 1) {
+            hhPlayerBase.setVolume(volume);
+        } else {
+            hhPlayerBase.setVolume(1);
+            ViseLog.e("volume超范围：" + volume);
+        }
+    }
+
+    public float getVolume() {
+        return hhPlayerBase.volume;
     }
 
     //0为暂停，1为正常。。。
@@ -146,6 +219,9 @@ public class HHPlayerView3 extends RelativeLayout {
             public void onListen(Object o) {
                 Log.e(hhPlayerBase.TAG, "play Completion");
                 hhPlayerBase.mPlayerState = HHPlayerBase.PlayerState.PLAYBACK_COMPLETED;
+                if (isChangeBrigtness) {//播放完恢复原来的亮度，没设置亮度则不启用
+                    setScreenBrigtness(getSystemScreenBrightness());
+                }
                 completionListener.onListen(o);
             }
         });
@@ -167,7 +243,7 @@ public class HHPlayerView3 extends RelativeLayout {
 
     }
 
-  
+
 
 /*
 

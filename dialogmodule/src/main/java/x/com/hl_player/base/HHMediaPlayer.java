@@ -22,7 +22,7 @@ public class HHMediaPlayer extends HHPlayerBase {
     private MediaPlayer mediaPlayer;
 
     @Override
-    public void setSurface(SurfaceView surfaceView) {
+    public void initView(SurfaceView surfaceView) {
         TAG = "HH-MediaPlayer-surface";
         mediaPlayer = new MediaPlayer();
         initListener();
@@ -45,7 +45,7 @@ public class HHMediaPlayer extends HHPlayerBase {
     }
 
     @Override
-    public void setTexture(TextureView textureView) {
+    public void initView(TextureView textureView) {
         TAG = "HH-MediaPlayer-texture";
         mediaPlayer = new MediaPlayer();
         initListener();

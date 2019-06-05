@@ -77,11 +77,11 @@ public abstract class HHPlayerBase {
     public abstract boolean isPlaying();
 
 
-    public void setSurface(SurfaceView surface) {
+    public void initView(SurfaceView surface) {
 
     }
 
-    public void setTexture(TextureView texture) {
+    public void initView(TextureView texture) {
 
     }
 

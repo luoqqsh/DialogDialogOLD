@@ -24,12 +24,12 @@ public class HHPlayer2 {
 
     public HHPlayer2(HHPlayerBase hhPlayerBase, SurfaceView surface) {
         this.hhPlayerBase = hhPlayerBase;
-        hhPlayerBase.setSurface(surface);
+        hhPlayerBase.initView(surface);
     }
 
     public HHPlayer2(HHPlayerBase hhPlayerBase, TextureView texture) {
         this.hhPlayerBase = hhPlayerBase;
-        hhPlayerBase.setTexture(texture);
+        hhPlayerBase.initView(texture);
     }
 
     public void prepare(String path) {

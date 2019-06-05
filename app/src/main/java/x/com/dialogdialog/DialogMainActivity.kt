@@ -30,7 +30,7 @@ class DialogMainActivity : BaseActivity() {
     private fun init() {
         java.setOnClickListener { startActivity(Intent(mContext, DialogMainJavaActivity::class.java)) }
         tongzhi.setOnClickListener { startActivity(Intent(mContext, NotificationActivity::class.java)) }
-        media.setOnClickListener { startActivity(Intent(mContext, HHMediaActivity::class.java)) }
+        media.setOnClickListener { startActivity(Intent(mContext, HHMediaViewActivity::class.java)) }
         x5web.setOnClickListener { startActivity(Intent(mContext, H5Activity::class.java)) }
         log.setOnClickListener { startActivity(Intent(mContext, LogActivity::class.java)) }
         open.setOnClickListener { startActivity(Intent(mContext, GLActivity::class.java)) }
