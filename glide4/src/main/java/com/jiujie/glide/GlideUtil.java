@@ -17,6 +17,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.request.transition.DrawableCrossFadeFactory;
 import com.jiujie.glide.transform.GlideBlurTransform;
 import com.jiujie.glide.transform.GlideCircleTransform;
 import com.jiujie.glide.transform.GlideConnerTransform;
@@ -406,7 +407,7 @@ public class GlideUtil implements ImageLoader {
         return null;
     }
 
-    public <T> void setImage(Object contextObject, T t, ImageView imageView,
+    public <T> void setImage(Object contextObject, T t, final ImageView imageView,
                              int defaultId,
                              boolean isCenterCrop,
                              boolean isShowAnim,
@@ -462,9 +463,13 @@ public class GlideUtil implements ImageLoader {
 
             if (defaultId != 0) {
                 load = load.placeholder(defaultId).error(defaultId).fallback(defaultId);
+//                load = load.placeholder(defaultId);//默认图会在加载完图片后还存在...
+//                load = load.fallback(defaultId);//这个不是加载前的占位图
+//                imageView.setBackgroundResource(defaultId);
             }
             if (isShowAnim) {
-                load = load.transition(DrawableTransitionOptions.withCrossFade());
+//                load = load.transition(DrawableTransitionOptions.withCrossFade());
+                load = load.transition(DrawableTransitionOptions.with(drawableCrossFadeFactory)); //用这种方式能让不消失的占位图消失
             }
 
             if (listener != null) {
@@ -472,13 +477,16 @@ public class GlideUtil implements ImageLoader {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                         Log.e("Glide Exception", "" + e);
-                        listener.onFail();
+//                        if (listener != null)
+                            listener.onFail();
                         return false;
                     }
 
                     @Override
                     public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                        listener.onSuccess(resource);
+//                        if (listener != null)
+                            listener.onSuccess(resource);
+//                        imageView.setBackground(null);
                         return false;
                     }
                 });
@@ -492,4 +500,7 @@ public class GlideUtil implements ImageLoader {
             if (listener != null) listener.onFail();
         }
     }
+
+
+    private DrawableCrossFadeFactory drawableCrossFadeFactory = new DrawableCrossFadeFactory.Builder(200).setCrossFadeEnabled(true).build();
 }

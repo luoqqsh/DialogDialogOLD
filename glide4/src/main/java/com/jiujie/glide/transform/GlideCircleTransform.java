@@ -1,6 +1,5 @@
 package com.jiujie.glide.transform;
 
-
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
