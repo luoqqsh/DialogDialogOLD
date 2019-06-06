@@ -6,10 +6,7 @@ import android.text.TextUtils;
 
 import java.io.IOException;
 
-import x.com.hl_log.ViseLog;
-
 /**
- *
  * @author luoqqsh
  */
 public class hl_sharedP {
@@ -25,7 +22,7 @@ public class hl_sharedP {
      * @param key     key
      * @param object  类型
      */
-    public static boolean setParam(Context context, String key, Object object) {
+    public static boolean setCommitParam(Context context, String key, Object object) {
         SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         try {
@@ -35,6 +32,17 @@ public class hl_sharedP {
             return false;
         }
         return editor.commit();
+    }
+
+    public static void setParam(Context context, String key, Object object) {
+        SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        try {
+            editor.putString(key, hl_steam.objectToSteam(object));
+            editor.apply();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -50,7 +58,7 @@ public class hl_sharedP {
         SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
         String o = sp.getString(key, "");
         try {
-            if (o != null && !TextUtils.isEmpty(o)) {
+            if (!TextUtils.isEmpty(o)) {
                 return hl_steam.streamToObject(o);
             } else {
                 return defaultObject;
@@ -73,4 +81,4 @@ public class hl_sharedP {
         }
         return sp.edit().remove(key).commit();
     }
-}  
+}

@@ -32,11 +32,12 @@ public class hl_permissions {
     }
 
     public static void applyWriteStoragePermission(Context context, RequestPermissionCallBack permissionCallBack) {
+        String[] q;
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
 //            q = null;
 //            q = new String[]{Manifest.permission.READ_PHONE_STATE, Manifest.permission.READ_MEDIA_IMAGES, Manifest.permission.READ_MEDIA_VIDEO, Manifest.permission.READ_MEDIA_AUDIO};
 //        } else {
-        String[] q = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        q = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
 //        }
         applyPermission(context, q, permissionCallBack);
     }
