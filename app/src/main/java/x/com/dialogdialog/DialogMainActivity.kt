@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_main.*
 import x.com.dialogdialog.Base.BaseActivity
+import x.com.dialogdialog.Viewpager2.ViewActivity
 import x.com.hl_dialog.DFNDialog
 import x.com.hl_log.ViseLog
 import x.com.hl_tools.DialogTools.myObjectPool
@@ -35,6 +36,7 @@ class DialogMainActivity : BaseActivity() {
         log.setOnClickListener { startActivity(Intent(mContext, LogActivity::class.java)) }
         open.setOnClickListener { startActivity(Intent(mContext, GLActivity::class.java)) }
         mapping.setOnClickListener { startActivity(Intent(mContext, MappingActivity::class.java)) }
+        view.setOnClickListener { startActivity(Intent(mContext, ViewActivity::class.java)) }
         close.setOnClickListener {
             val orientation = hl_orientation()
             orientation.orientationEnable(this, null)

@@ -56,6 +56,7 @@
         <activity android:name=".DialogMainJavaActivity" />
         <activity android:name=".HHMediaViewActivity" />
         <activity android:name=".MappingActivity" />
+        <activity android:name=".Viewpager2.ViewActivity" />
     </application>
 
 </manifest>

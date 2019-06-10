@@ -6,8 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import x.com.hl_log.ViseLog;
 
 /**
  * Created by gxxing on 2017/8/15.
@@ -26,11 +29,15 @@ public abstract class LazyLoadFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(setContentView(), container, false);
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         isInit = true;
         mContext = getActivity();
         /**初始化的时候去加载数据**/
         isCanLoadData();
-        return view;
     }
 
     /**
@@ -120,7 +127,7 @@ public abstract class LazyLoadFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        
+
     }
 }
 
