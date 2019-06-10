@@ -19,6 +19,7 @@ public abstract class HHPlayerBase {
     public Object mediaPath;
 
     public float volume = 1;
+    public boolean isCompletePlay = false;//是否完成播放
     public boolean isLooping = true; //是否循环播放
     public boolean isPrepared = false;//是否准备好
     public HOnListener<Object> onPreparedListener;

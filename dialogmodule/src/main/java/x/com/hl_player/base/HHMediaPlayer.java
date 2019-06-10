@@ -104,6 +104,7 @@ public class HHMediaPlayer extends HHPlayerBase {
 
     @Override
     public void start() {
+        isCompletePlay = false;
         if (mediaPlayer != null) {
             mediaPlayer.start();
         }
@@ -132,6 +133,8 @@ public class HHMediaPlayer extends HHPlayerBase {
         //调用stop方法之后要调用prepare方法，不然无法播放
         if (mediaPlayer != null) {
             mediaPlayer.stop();
+            isPrepared = false;
+            mPlayerState = HHPlayerBase.PlayerState.IDLE;
         }
     }
 
@@ -193,6 +196,7 @@ public class HHMediaPlayer extends HHPlayerBase {
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
+                    isCompletePlay = true;
                     if (onCompletionListener != null) {
                         onCompletionListener.onListen(mp);
                     }

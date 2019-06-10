@@ -76,7 +76,6 @@ public class HHPlayerView3 extends RelativeLayout {
         hhPlayerBase.prepare(path);
     }
 
-
     public void start() {
         if (hhPlayerBase.isPrepared && hhPlayerBase.isPlayControl()) {
             hhPlayerBase.start();
@@ -103,8 +102,6 @@ public class HHPlayerView3 extends RelativeLayout {
     public void stop() {
         if (hhPlayerBase.isPlayControl()) {
             hhPlayerBase.stop();
-            hhPlayerBase.isPrepared = false;
-            hhPlayerBase.mPlayerState = HHPlayerBase.PlayerState.IDLE;
             hhPlayerBase.getCurrentStop();
             Log.d(hhPlayerBase.TAG, "doStop");
         }

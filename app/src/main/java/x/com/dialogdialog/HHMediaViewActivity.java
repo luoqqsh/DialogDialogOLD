@@ -57,7 +57,7 @@ public class HHMediaViewActivity extends BaseActivity {
         seekBar = findViewById(R.id.seekbar);
         seekBar.setMax(100);
         seekbar_volume.setMax(10);
-        hhPlayerView3.init(new HHMediaPlayer(), HHPlayerView3.PlayerView.TEXTURE);
+        hhPlayerView3.init(new HHMediaPlayer(), HHPlayerView3.PlayerView.SURFACE);
         hhPlayerView3.setLooping(false);
 
         hhPlayerView3.setCompletionListener(new HOnListener<Object>() {
