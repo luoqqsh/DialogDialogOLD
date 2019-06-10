@@ -34,6 +34,7 @@ class DialogMainActivity : BaseActivity() {
         x5web.setOnClickListener { startActivity(Intent(mContext, H5Activity::class.java)) }
         log.setOnClickListener { startActivity(Intent(mContext, LogActivity::class.java)) }
         open.setOnClickListener { startActivity(Intent(mContext, GLActivity::class.java)) }
+        mapping.setOnClickListener { startActivity(Intent(mContext, MappingActivity::class.java)) }
         close.setOnClickListener {
             val orientation = hl_orientation()
             orientation.orientationEnable(this, null)

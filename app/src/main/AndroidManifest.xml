@@ -24,7 +24,7 @@
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
 <!--    安卓Q获取IMei号和序列号-->
     <uses-permission android:name="android.permission.READ_PRIVILEGED_PHONE_STATE "/>
-    
+
 
     <!--有权查看使用情况的应用-->
     <uses-permission
@@ -55,6 +55,7 @@
         <activity android:name=".HHMediaActivity" />
         <activity android:name=".DialogMainJavaActivity" />
         <activity android:name=".HHMediaViewActivity" />
+        <activity android:name=".MappingActivity" />
     </application>
 
 </manifest>

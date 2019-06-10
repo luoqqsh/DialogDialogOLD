@@ -12,7 +12,6 @@ import java.util.Map;
 
 import x.com.dialogdialog.Base.BaseActivity;
 import x.com.hl_dialog.DFNDialog;
-import x.com.hl_log.ViseLog;
 import x.com.hl_tools.hl_drawable;
 import x.com.hl_tools.hl_img;
 import x.com.hl_tools.hl_orientation;
@@ -51,6 +50,7 @@ public class DialogMainJavaActivity extends BaseActivity {
         findViewById(R.id.x5web).setOnClickListener(v -> startActivity(new Intent(mContext, H5Activity.class)));
         findViewById(R.id.log).setOnClickListener(v -> startActivity(new Intent(mContext, LogActivity.class)));
         findViewById(R.id.open).setOnClickListener(v -> startActivity(new Intent(mContext, GLActivity.class)));
+        findViewById(R.id.mapping).setOnClickListener(v -> startActivity(new Intent(mContext, MappingActivity.class)));
         findViewById(R.id.close).setOnClickListener(v -> {
             hl_orientation orientation = new hl_orientation();
             orientation.orientationEnable(this, null);

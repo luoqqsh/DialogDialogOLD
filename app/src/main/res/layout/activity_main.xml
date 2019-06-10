@@ -58,6 +58,12 @@
             android:layout_height="wrap_content"
             android:text="media" />
 
+        <Button
+            android:id="@+id/mapping"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="mapping" />
+
     </LinearLayout>
 
     <LinearLayout
