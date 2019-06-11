@@ -75,6 +75,14 @@ public class HHMediaPlayer extends HHPlayerBase {
     }
 
     @Override
+    public void initView(Surface surface) {
+        TAG = "HH-MediaPlayer-surface";
+        mediaPlayer = new MediaPlayer();
+        initListener();
+        mediaPlayer.setSurface(surface);
+    }
+
+    @Override
     public long getCurrentPosition() {
         if (mediaPlayer != null) {
             if (mediaPlayer.getCurrentPosition() > getMediaDuration()) {

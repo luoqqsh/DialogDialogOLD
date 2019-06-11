@@ -25,6 +25,7 @@ public abstract class LazyLoadFragment extends Fragment {
 
     private View view;
     protected Context mContext;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -38,6 +39,7 @@ public abstract class LazyLoadFragment extends Fragment {
         mContext = getActivity();
         /**初始化的时候去加载数据**/
         isCanLoadData();
+        ViseLog.d("isCanLoadData");
     }
 
     /**
@@ -46,6 +48,7 @@ public abstract class LazyLoadFragment extends Fragment {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
+        ViseLog.d(isVisibleToUser);
         isCanLoadData();
     }
 
@@ -59,7 +62,7 @@ public abstract class LazyLoadFragment extends Fragment {
         if (!isInit) {
             return;
         }
-
+        ViseLog.d(getUserVisibleHint());
         if (getUserVisibleHint()) {
             if (isLoad) {
                 return;

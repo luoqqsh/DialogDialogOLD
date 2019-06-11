@@ -2,6 +2,7 @@ package x.com.hl_player;
 
 
 import android.util.Log;
+import android.view.Surface;
 import android.view.SurfaceView;
 import android.view.TextureView;
 import android.view.View;
@@ -30,6 +31,11 @@ public class HHPlayer2 {
     public HHPlayer2(HHPlayerBase hhPlayerBase, TextureView texture) {
         this.hhPlayerBase = hhPlayerBase;
         hhPlayerBase.initView(texture);
+    }
+
+    public HHPlayer2(HHPlayerBase hhPlayerBase, Surface surface) {
+        this.hhPlayerBase = hhPlayerBase;
+        hhPlayerBase.initView(surface);
     }
 
     public void prepare(String path) {

@@ -1,5 +1,6 @@
 package x.com.hl_player.base;
 
+import android.view.Surface;
 import android.view.SurfaceView;
 import android.view.TextureView;
 
@@ -83,6 +84,10 @@ public abstract class HHPlayerBase {
     }
 
     public void initView(TextureView texture) {
+
+    }
+
+    public void initView(Surface surface) {
 
     }
 

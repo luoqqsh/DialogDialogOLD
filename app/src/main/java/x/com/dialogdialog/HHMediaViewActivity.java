@@ -50,22 +50,48 @@ public class HHMediaViewActivity extends BaseActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mediaview);
+        initUI();
         hhPlayerView3 = findViewById(R.id.hhPlayerView3);
-        currenttime = findViewById(R.id.currenttime);
-        totaltime = findViewById(R.id.totaltime);
-        seekbar_volume = findViewById(R.id.seekbar_volume);
-        seekBar = findViewById(R.id.seekbar);
-        seekBar.setMax(100);
-        seekbar_volume.setMax(10);
         hhPlayerView3.init(new HHMediaPlayer(), HHPlayerView3.PlayerView.SURFACE);
         hhPlayerView3.setLooping(false);
-
         hhPlayerView3.setCompletionListener(new HOnListener<Object>() {
             @Override
             public void onListen(Object o) {
                 ViseLog.d("finishaaa");
             }
         });
+        hhPlayerView3.setPreparedListener(new HOnListener<Object>() {
+            @Override
+            public void onListen(Object o) {
+                seekbar_volume.setProgress((int) (hhPlayerView3.getVolume() * 10));
+                totaltime.setText(" / " + hl_time.formatTime(hhPlayerView3.getMediaDuration()));
+                seekBar.setMax((int) (hhPlayerView3.getMediaDuration() / 1000));
+            }
+        });
+        hhPlayerView3.setProgessListener(new HOnListener<Long>() {
+            @Override
+            public void onListen(Long o) {
+                currenttime.setText(hl_time.formatTime(o));
+                seekBar.setProgress((int) (o / 1000));
+            }
+        });
+        hhPlayerView3.setOnBufferingUpdateListener(new HOnListener<Integer>() {
+            @Override
+            public void onListen(Integer integer) {
+                seekBar.setSecondaryProgress(integer);
+            }
+        });
+
+
+    }
+
+    private void initUI() {
+        currenttime = findViewById(R.id.currenttime);
+        totaltime = findViewById(R.id.totaltime);
+        seekbar_volume = findViewById(R.id.seekbar_volume);
+        seekBar = findViewById(R.id.seekbar);
+        seekBar.setMax(100);
+        seekbar_volume.setMax(10);
 
         findViewById(R.id.select).setOnClickListener(v -> hhPlayerView3.prepare(videopath));
         findViewById(R.id.play).setOnClickListener(v -> hhPlayerView3.start());
@@ -99,26 +125,6 @@ public class HHMediaViewActivity extends BaseActivity {
             hhPlayerView3.setScreenBrigtness(80);
             ViseLog.d(hhPlayerView3.getScreenBrightness());
         });
-        hhPlayerView3.setPreparedListener(new HOnListener<Object>() {
-            @Override
-            public void onListen(Object o) {
-                totaltime.setText(" / " + hl_time.formatTime(hhPlayerView3.getMediaDuration()));
-                seekBar.setMax((int) (hhPlayerView3.getMediaDuration() / 1000));
-            }
-        });
-        hhPlayerView3.setProgessListener(new HOnListener<Long>() {
-            @Override
-            public void onListen(Long o) {
-                currenttime.setText(hl_time.formatTime(o));
-                seekBar.setProgress((int) (o / 1000));
-            }
-        });
-        hhPlayerView3.setOnBufferingUpdateListener(new HOnListener<Integer>() {
-            @Override
-            public void onListen(Integer integer) {
-                seekBar.setSecondaryProgress(integer);
-            }
-        });
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progess, boolean fromUser) {
@@ -137,7 +143,6 @@ public class HHMediaViewActivity extends BaseActivity {
 
             }
         });
-        seekbar_volume.setProgress((int) (hhPlayerView3.getVolume() * 10));
         seekbar_volume.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progess, boolean fromUser) {
@@ -156,8 +161,8 @@ public class HHMediaViewActivity extends BaseActivity {
 
             }
         });
-
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();

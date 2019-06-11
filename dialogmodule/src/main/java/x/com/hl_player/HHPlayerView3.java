@@ -5,8 +5,10 @@ import android.content.Context;
 import android.provider.Settings;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Surface;
 import android.view.SurfaceView;
 import android.view.TextureView;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
@@ -58,6 +60,22 @@ public class HHPlayerView3 extends RelativeLayout {
         }
     }
 
+    public void init(HHPlayerBase hhPlayerBase, Surface surface) {
+        if (this.hhPlayerBase != null) this.hhPlayerBase.release();
+        this.hhPlayerBase = hhPlayerBase;
+        hhPlayerBase.initView(surface);
+    }
+
+    public void init(HHPlayerBase hhPlayerBase, Surface surface, View view) {
+        if (this.hhPlayerBase != null) this.hhPlayerBase.release();
+        this.hhPlayerBase = hhPlayerBase;
+        LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+        addView(view, params);
+
+
+        hhPlayerBase.initView(surface);
+    }
+
     private void initSurfaceView() {
         SurfaceView mSurfaceView = new SurfaceView(getContext().getApplicationContext());
         LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
@@ -70,6 +88,10 @@ public class HHPlayerView3 extends RelativeLayout {
         LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         addView(mTextureView, params);
         hhPlayerBase.initView(mTextureView);
+    }
+
+    private void initSurface(Surface surface) {
+        hhPlayerBase.initView(surface);
     }
 
     public void prepare(String path) {
