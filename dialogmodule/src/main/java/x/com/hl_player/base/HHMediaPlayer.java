@@ -39,6 +39,7 @@ public class HHMediaPlayer extends HHPlayerBase {
 
             @Override
             public void surfaceDestroyed(SurfaceHolder holder) {
+                holder.removeCallback(this);
                 release();
             }
         });

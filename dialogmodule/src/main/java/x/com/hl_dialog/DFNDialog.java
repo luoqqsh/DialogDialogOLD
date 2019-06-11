@@ -74,7 +74,7 @@ public class DFNDialog extends BaseDialogFragment {
 
     public void setOnDismissListener(OnDismissListener onDismissListener) {
         this.onDismissListener = onDismissListener;
-    } 
+    }
 
     @Override
     public void onDismiss(DialogInterface dialog) {

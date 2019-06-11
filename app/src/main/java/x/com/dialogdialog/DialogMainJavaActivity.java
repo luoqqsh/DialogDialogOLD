@@ -14,10 +14,11 @@ import x.com.dialogdialog.Base.BaseActivity;
 import x.com.hl_dialog.DFNDialog;
 import x.com.hl_tools.hl_drawable;
 import x.com.hl_tools.hl_img;
-import x.com.hl_tools.hl_orientation;
 import x.com.hl_tools.hl_permissions;
 
 public class DialogMainJavaActivity extends BaseActivity {
+    private DFNDialog b;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,19 +53,25 @@ public class DialogMainJavaActivity extends BaseActivity {
         findViewById(R.id.open).setOnClickListener(v -> startActivity(new Intent(mContext, GLActivity.class)));
         findViewById(R.id.mapping).setOnClickListener(v -> startActivity(new Intent(mContext, MappingActivity.class)));
         findViewById(R.id.close).setOnClickListener(v -> {
-            hl_orientation orientation = new hl_orientation();
-            orientation.orientationEnable(this, null);
+//            hl_orientation orientation = new hl_orientation();
+//            orientation.orientationEnable(this, null);
+            b.dismiss();
         });
 
         findViewById(R.id.dialog).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DFNDialog b = DFNDialog.newInstance();
+                b = DFNDialog.newInstance();
                 b.setMessage("dddddddddd", 4);
                 if (!b.isAdded()) {
                     b.show(getSupportFragmentManager(), "normalDialog");
                 }
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }
