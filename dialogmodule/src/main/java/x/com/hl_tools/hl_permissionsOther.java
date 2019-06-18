@@ -18,16 +18,17 @@ import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 
+import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationManagerCompat;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Set;
 
-import androidx.annotation.RequiresApi;
-import androidx.core.app.NotificationManagerCompat;
-
 import x.com.hl_dialog.NDialog;
 import x.com.hl_log.ViseLog;
+import x.com.hl_tools.permissions.DefaultPhoneUtils;
 import x.com.hl_tools.permissions.HuaweiUtils;
 import x.com.hl_tools.permissions.MeizuUtils;
 import x.com.hl_tools.permissions.MiuiUtils;
@@ -72,20 +73,10 @@ public class hl_permissionsOther {
      */
     public boolean checkFloatwindow(Context context) {
         //6.0 版本之后由于 google 增加了对悬浮窗权限的管理，所以方式就统一了
-        if (Build.VERSION.SDK_INT < 23) {
-            if (RomUtils.checkIsMiuiRom()) {
-                return miuiPermissionCheck(context);
-            } else if (RomUtils.checkIsMeizuRom()) {
-                return meizuPermissionCheck(context);
-            } else if (RomUtils.checkIsHuaweiRom()) {
-                return huaweiPermissionCheck(context);
-            } else if (RomUtils.checkIs360Rom()) {
-                return qikuPermissionCheck(context);
-            } else if (RomUtils.checkIsOppoRom()) {
-                return oppoROMPermissionCheck(context);
-            }
+        if (Build.VERSION.SDK_INT < 23 || RomUtils.checkIsMeizuRom()) {
+            return DefaultPhoneUtils.checkFloatWindowPermission(context);
         }
-        return commonROMPermissionCheck(context);
+        return Settings.canDrawOverlays(context);
     }
 
     /**
@@ -96,6 +87,11 @@ public class hl_permissionsOther {
      * @param isneeddialog 是否需要显示申请对话框
      */
     public void gotoSetFloatWindow(Context context, boolean isneeddialog) {
+        if (RomUtils.checkIsVivoRom()) {
+            //部分VIVO机型，悬浮窗设置无效，还是手动开吧----如VIVO X9--6.0--25--
+            gotoAppSetPage(context);
+            return;
+        }
         if (Build.VERSION.SDK_INT < 23) {
             if (RomUtils.checkIsMiuiRom()) {
                 miuiROMPermissionApply(context, isneeddialog);
@@ -220,7 +216,7 @@ public class hl_permissionsOther {
      *
      * @param context 上下文
      */
-    public static void gotoAppSet(Context context) {
+    public static void gotoAppSetPage(Context context) {
         Intent localIntent = new Intent();
         localIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         if (Build.VERSION.SDK_INT >= 9) {

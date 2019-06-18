@@ -9,23 +9,28 @@ import android.widget.ImageView;
 import androidx.annotation.Nullable;
 
 import java.util.Map;
+import java.util.Random;
 
 import x.com.dialogdialog.Base.BaseActivity;
 import x.com.hl_dialog.DFNDialog;
+import x.com.hl_log.ViseLog;
 import x.com.hl_tools.hl_drawable;
 import x.com.hl_tools.hl_img;
 import x.com.hl_tools.hl_permissions;
 
 public class DialogMainJavaActivity extends BaseActivity {
     private DFNDialog b;
+    private String aa;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getWindow().setBackgroundDrawableResource(R.color.brown);
+        ViseLog.d(aa);
         init();
         test();
+        ViseLog.d(new Random().nextFloat());
         hl_permissions.applyPermission(mContext, new String[]{Manifest.permission.READ_PHONE_STATE}, new hl_permissions.RequestPermissionCallBack() {
             @Override
             public void requestPermissionSuccess() {

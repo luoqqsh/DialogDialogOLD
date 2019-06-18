@@ -113,7 +113,7 @@ public class DFUpdateDialog extends BaseDialogFragment {
             public void requestPermissionFail(Map<String, Boolean> failPermission) {
                 for (boolean value : failPermission.values()) {
                     if (value) {
-                        hl_permissionsOther.gotoAppSet(getActivity());
+                        hl_permissionsOther.gotoAppSetPage(getActivity());
                         Toast.makeText(getActivity(), "您已拒绝文件读写权限，无法下载更新包！", Toast.LENGTH_SHORT).show();
                         return;
                     }

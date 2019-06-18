@@ -106,4 +106,7 @@ public class RomUtils {
         //https://github.com/zhaozepeng/FloatWindowPermission/pull/26
         return Build.MANUFACTURER.contains("OPPO") || Build.MANUFACTURER.contains("oppo");
     }
+    public static boolean checkIsVivoRom() {
+        return Build.MANUFACTURER.toLowerCase().contains("vivo");
+    }
 }
