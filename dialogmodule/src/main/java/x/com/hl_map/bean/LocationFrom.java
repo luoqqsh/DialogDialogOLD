@@ -7,5 +7,6 @@ public enum LocationFrom {
     MOVEMAP,//移动地图
     MOVEMAP_FINISH,//移动地图完成
     SHOWTIPS,//提示内容搜索
+    DRIVEROUTE,//驾车线路规划
     LATLNG//坐标（集合）
 }

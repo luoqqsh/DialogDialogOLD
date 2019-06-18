@@ -1,6 +1,7 @@
 package com.example.xxing.amap;
 
 import android.content.Context;
+import android.graphics.Color;
 
 import com.amap.api.maps.CoordinateConverter;
 import com.amap.api.maps.model.LatLng;
@@ -36,5 +37,19 @@ public class AmapUtil {
         // 执行转换操作
         LatLng desLatLng = converter.convert();
         return new LatLngBean(desLatLng.latitude, desLatLng.longitude);
+    }
+
+    public static int getcolor(String status) {
+        if (status.equals("畅通")) {
+            return Color.GREEN;
+        } else if (status.equals("缓行")) {
+            return Color.YELLOW;
+        } else if (status.equals("拥堵")) {
+            return Color.RED;
+        } else if (status.equals("严重拥堵")) {
+            return Color.parseColor("#990033");
+        } else {
+            return Color.parseColor("#537edc");
+        }
     }
 }

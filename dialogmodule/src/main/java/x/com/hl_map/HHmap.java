@@ -8,7 +8,9 @@ import x.com.hl_map.bean.LatLngBean;
 import x.com.hl_map.bean.LineBean;
 import x.com.hl_map.bean.LineType;
 import x.com.hl_map.bean.MapType;
+import x.com.hl_map.bean.RouteSearchType;
 import x.com.hl_map.listener.OnCameraChangeListener;
+import x.com.hl_map.listener.OnLocationListener;
 
 public class HHmap {
     private MapController mapController;
@@ -28,6 +30,15 @@ public class HHmap {
 
     public void addMapView(ViewGroup viewGroup, Bundle bundle, OnCameraChangeListener onCameraChangeListener) {
         mapController.addMapView(context, viewGroup, bundle, onCameraChangeListener);
+    }
+
+    public void addGoogleMap(boolean isOpen) {
+        String url = "http://mt2.google.cn/vt/lyrs=m@209712068&scale=2&hl=zh-CN&gl=cn&x=%d&y=%d&z=%d";
+        mapController.addOtherMap(url, isOpen);
+    }
+
+    public void addOtherMap(String url, boolean isOpen) {
+        mapController.addOtherMap(url, isOpen);
     }
 
     public void onDestroy() {
@@ -50,6 +61,10 @@ public class HHmap {
         mapController.moveToPosition(latLngBean, zoom);
     }
 
+    public void moveToPosition(LatLngBean latLngBean1, LatLngBean latLngBean2, int padding) {
+        mapController.moveToPosition(latLngBean1, latLngBean2, padding);
+    }
+
     public Object addMarker(LineBean markerBean) {
         return mapController.addMarker(markerBean);
     }
@@ -59,6 +74,10 @@ public class HHmap {
     }
 
     public boolean removeMarker(Object marker, LineType lineType) {
-        return mapController.removeMarker(marker,lineType);
+        return mapController.removeMarker(marker, lineType);
+    }
+
+    public void searchRoute(RouteSearchType routeSearchType, LatLngBean from, LatLngBean to, String city, OnLocationListener onLocationListener) {
+        mapController.routeSearch(routeSearchType, from, to, city, onLocationListener);
     }
 }

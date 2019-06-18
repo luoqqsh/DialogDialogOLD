@@ -1,7 +1,6 @@
 package x.com.hl_map;
 
 import android.content.Context;
-import android.location.LocationListener;
 import android.os.Bundle;
 import android.view.ViewGroup;
 
@@ -10,6 +9,7 @@ import x.com.hl_map.bean.LineBean;
 import x.com.hl_map.bean.LineType;
 import x.com.hl_map.bean.RouteSearchType;
 import x.com.hl_map.listener.OnCameraChangeListener;
+import x.com.hl_map.listener.OnLocationListener;
 
 public abstract class MapController {
 
@@ -23,6 +23,8 @@ public abstract class MapController {
 
     public abstract void addMapView(Context context, ViewGroup viewGroup, Bundle savedInstanceState, OnCameraChangeListener onCameraChangeListener);
 
+    public abstract void addOtherMap(String map, boolean isOpen);
+
     public abstract void onDestroy();
 
     public abstract void onResume();
@@ -33,7 +35,7 @@ public abstract class MapController {
 
     public abstract void moveToPosition(LatLngBean latLngBean, float zoom);
 
-    public abstract void moveToPosition(LatLngBean latLngBean1, LatLngBean latLngBean2, float zoom);
+    public abstract void moveToPosition(LatLngBean latLngBean1, LatLngBean latLngBean2, int padding);
 
     public abstract Object addMarker(LineBean markerBean);
 
@@ -41,6 +43,6 @@ public abstract class MapController {
 
     public abstract boolean removeMarker(Object line, LineType lineType);
 
-    public abstract void routeSearch(RouteSearchType routeSearchType, LatLngBean from, LatLngBean to, LocationListener locationListener);
+    public abstract void routeSearch(RouteSearchType routeSearchType, LatLngBean from, LatLngBean to, String city, OnLocationListener onLocationListener);
 
 }

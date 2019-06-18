@@ -22,7 +22,7 @@ public class hl_sharedP {
      * @param key     key
      * @param object  类型
      */
-    public static boolean setCommitParam(Context context, String key, Object object) {
+    public static boolean setParamCommit(Context context, String key, Object object) {
         SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         try {

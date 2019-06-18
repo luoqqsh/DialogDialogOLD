@@ -5,11 +5,13 @@ public class Config {
     public static final String amapKey = "bc0a5f96b7eba08c50f6fd21e42a1eb4";
     public static final String baiduKey = "f3mk8HXVjwnngwtC5XINDRGjdXZiViF5";
     public static final String google_api = "AIzaSyCK8jFSQ5kSCbcAHd9OB-pkHjrTJmXPz3A";
-    public static final double testLat = 24.49022007503591;
-    public static final double testLng = 118.11624459022053;
+    public static final double testLat1 = 24.49022007503591;
+    public static final double testLng1 = 118.11624459022053;
+    public static final double testLat2 = 24.533831321967558;
+    public static final double testLng2 = 118.12297559362825;
 
-    public static final double seaLat = 24.262764170116878;
-    public static final double seaLng = 118.35574707569009;
+    public static final double seaLat = 24.532285541356277;
+    public static final double seaLng = 118.1331840809643;
     public static final String cityCode = "0592";
     public static final String city = "厦门市";
 

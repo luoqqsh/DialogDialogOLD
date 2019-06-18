@@ -1,7 +1,6 @@
 package com.example.xxing.map_bamap;
 
 import android.content.Context;
-import android.location.LocationListener;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.ViewGroup;
@@ -50,6 +49,7 @@ import x.com.hl_map.bean.LocationBean;
 import x.com.hl_map.bean.LocationFrom;
 import x.com.hl_map.bean.RouteSearchType;
 import x.com.hl_map.listener.OnCameraChangeListener;
+import x.com.hl_map.listener.OnLocationListener;
 
 public class BmapController extends MapController {
     private BaiduMap mBaiduMap;
@@ -98,6 +98,11 @@ public class BmapController extends MapController {
         }
     }
 
+    @Override
+    public void addOtherMap(String map, boolean isOpen) {
+
+    }
+
     private BaiduMapOptions getMapOption() {
         BaiduMapOptions options = new BaiduMapOptions();
         options.scaleControlEnabled(HHconfig.isScaleControlsEnabled);// 设置是否显示比例尺控件
@@ -140,7 +145,7 @@ public class BmapController extends MapController {
     }
 
     @Override
-    public void moveToPosition(LatLngBean latLngBean1, LatLngBean latLngBean2, float zoom) {
+    public void moveToPosition(LatLngBean latLngBean1, LatLngBean latLngBean2, int padding) {
 
     }
 
@@ -210,7 +215,7 @@ public class BmapController extends MapController {
     }
 
     @Override
-    public void routeSearch(RouteSearchType routeSearchType, LatLngBean from, LatLngBean to, LocationListener locationListener) {
+    public void routeSearch(RouteSearchType routeSearchType, LatLngBean from, LatLngBean to, String city, OnLocationListener locationListener) {
         if (locationListener == null) return;
         RoutePlanSearch mSearch = RoutePlanSearch.newInstance();
         PlanNode stNode, enNode;

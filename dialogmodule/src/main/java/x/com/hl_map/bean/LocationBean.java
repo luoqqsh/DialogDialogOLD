@@ -12,6 +12,7 @@ public class LocationBean {
     private String description;//获取位置语义信息
     private float zoom;//缩放
     private List<LatLngBean> pois;
+    private List<Integer> colorList;
 
     private float bearing;//方向角。定位类型为AMapLocation.LOCATION_TYPE_GPS时，方向角指的是运动方向。
     //定位类型不是AMapLocation.LOCATION_TYPE_GPS时，方向角指的是手机朝向
@@ -122,5 +123,14 @@ public class LocationBean {
 
     public void setPois(List<LatLngBean> pois) {
         this.pois = pois;
+    }
+
+    public List<Integer> getColorList() {
+        return colorList;
+    }
+
+    public void setColorList(List<Integer> colorList) {
+        this.colorList = colorList;
+
     }
 }

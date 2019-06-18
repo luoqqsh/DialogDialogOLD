@@ -1,7 +1,6 @@
 package com.example.xxing.amap;
 
 import android.content.Context;
-import android.location.LocationListener;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.ViewGroup;
@@ -16,21 +15,31 @@ import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.Circle;
 import com.amap.api.maps.model.CircleOptions;
 import com.amap.api.maps.model.LatLng;
+import com.amap.api.maps.model.LatLngBounds;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.Polyline;
 import com.amap.api.maps.model.PolylineOptions;
+import com.amap.api.maps.model.TileOverlay;
+import com.amap.api.maps.model.TileOverlayOptions;
+import com.amap.api.maps.model.UrlTileProvider;
+import com.amap.api.services.core.LatLonPoint;
 import com.amap.api.services.route.BusRouteResult;
 import com.amap.api.services.route.DriveRouteResult;
+import com.amap.api.services.route.DriveStep;
 import com.amap.api.services.route.RideRouteResult;
 import com.amap.api.services.route.RouteSearch;
 import com.amap.api.services.route.WalkRouteResult;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import x.com.hl_log.ViseLog;
 import x.com.hl_map.HHconfig;
 import x.com.hl_map.MapController;
+import x.com.hl_map.bean.ErrorType;
 import x.com.hl_map.bean.LatLngBean;
 import x.com.hl_map.bean.LineBean;
 import x.com.hl_map.bean.LineType;
@@ -38,11 +47,14 @@ import x.com.hl_map.bean.LocationBean;
 import x.com.hl_map.bean.LocationFrom;
 import x.com.hl_map.bean.RouteSearchType;
 import x.com.hl_map.listener.OnCameraChangeListener;
+import x.com.hl_map.listener.OnLocationListener;
 
 public class AmapController extends MapController {
     private AMap aMap;
     private MapView mMapView;
     private Context context;
+    private TileOverlay tileOverlay;
+    private UrlTileProvider tileProvider;
 
     @Override
     public void initMap(Context context) {
@@ -75,6 +87,36 @@ public class AmapController extends MapController {
         }
         setMapOption();
     }
+
+    @Override
+    public void addOtherMap(final String map, boolean isOpen) {
+        if (isOpen) {
+            if (tileProvider == null) {
+                tileProvider = new UrlTileProvider(256, 256) {
+                    @Override
+                    public URL getTileUrl(int x, int y, int zoom) {
+                        try {
+                            return new URL(String.format(map, x, y, zoom));
+                        } catch (MalformedURLException e) {
+                            e.printStackTrace();
+                        }
+                        return null;
+                    }
+                };
+            }
+            tileOverlay = aMap.addTileOverlay(new TileOverlayOptions().tileProvider(tileProvider)
+                    .diskCacheEnabled(true)
+                    .diskCacheDir("/storage/emulated/0/amap/cache")
+                    .diskCacheSize(100000)
+                    .memoryCacheEnabled(true)
+                    .memCacheSize(100000));
+        } else {
+            if (tileOverlay != null) {
+                tileOverlay.remove();
+            }
+        }
+    }
+
 
     private void setMapOption() {
         UiSettings mUiSettings = aMap.getUiSettings();
@@ -114,8 +156,11 @@ public class AmapController extends MapController {
     }
 
     @Override
-    public void moveToPosition(LatLngBean latLngBean1, LatLngBean latLngBean2, float zoom) {
-
+    public void moveToPosition(LatLngBean latLngBean1, LatLngBean latLngBean2, int padding) {
+        LatLngBounds.Builder b = LatLngBounds.builder();
+        b.include(new LatLng(latLngBean1.getLat(), latLngBean1.getLng()));
+        b.include(new LatLng(latLngBean2.getLat(), latLngBean2.getLng()));
+        aMap.animateCamera(CameraUpdateFactory.newLatLngBounds(b.build(), padding));
     }
 
     @Override
@@ -126,9 +171,13 @@ public class AmapController extends MapController {
                     if (!markerBean.isPositionList()) return null;
                     List<LatLng> latLngs = new ArrayList<>();
                     for (int i = 0; i < markerBean.getLatlngs().size(); i++) {
-                        latLngs.add(new LatLng(markerBean.getLat(), markerBean.getLng()));
+                        latLngs.add(new LatLng(markerBean.getLatlngs().get(i).getLat(), markerBean.getLatlngs().get(i).getLng()));
                     }
-                    Polyline line = aMap.addPolyline(new PolylineOptions().addAll(latLngs));
+                    PolylineOptions polylineOptions = new PolylineOptions().addAll(latLngs);
+                    if (markerBean.isColorList()) {
+                        polylineOptions.colorValues(markerBean.getColorList());
+                    }
+                    Polyline line = aMap.addPolyline(polylineOptions);
                     setLineOption(line, markerBean);
                     return line;
                 case CIRCLE:
@@ -185,40 +234,91 @@ public class AmapController extends MapController {
     }
 
     @Override
-    public void routeSearch(RouteSearchType routeSearchType, LatLngBean from, LatLngBean to, LocationListener locationListener) {
-        if (locationListener == null) return;
-        RouteSearch routeSearch = new RouteSearch(context);
-        if (TextUtils.isEmpty(from.getAddress()) || TextUtils.isEmpty(to.getAddress())) {
-        } else {
-        }
-        RouteSearch.DriveRouteQuery query = null;
-        switch (routeSearchType) {
-            case CAR:
-//                query = new RouteSearch.DriveRouteQuery(new RouteSearch.FromAndTo(), drivingMode, null, null, "");
-                break;
-        }
+    public void routeSearch(final RouteSearchType routeSearchType, final LatLngBean from, final LatLngBean to, final String city, final OnLocationListener onLocationListener) {
+        if (onLocationListener == null) return;
+        final RouteSearch routeSearch = new RouteSearch(context);
         routeSearch.setRouteSearchListener(new RouteSearch.OnRouteSearchListener() {
             @Override
             public void onBusRouteSearched(BusRouteResult busRouteResult, int i) {
-
+                if (i == 1000) {
+                } else {
+                    onLocationListener.onError(i, ErrorType.OTHER.getValue());
+                }
+                ViseLog.d(busRouteResult);
             }
 
             @Override
             public void onDriveRouteSearched(DriveRouteResult driveRouteResult, int i) {
-
+                ViseLog.d(driveRouteResult);
+                if (i == 1000) {
+                    LocationBean locationBean = new LocationBean(LocationFrom.DRIVEROUTE, null);
+                    if (driveRouteResult.getPaths().size() > 0) {
+                        List<LatLngBean> latLngBeans = new ArrayList<>();
+                        List<Integer> colorList = new ArrayList<>();
+                        List<DriveStep> items = driveRouteResult.getPaths().get(0).getSteps();
+                        for (int j = 0; j < items.size(); j++) {
+                            List<LatLonPoint> steps = items.get(j).getPolyline();
+                            for (int k = 0; k < steps.size(); k++) {
+                                latLngBeans.add(new LatLngBean(steps.get(k).getLatitude(), steps.get(k).getLongitude()));
+                            }
+                        }
+                        locationBean.setPois(latLngBeans);
+                        locationBean.setColorList(colorList);
+                        onLocationListener.onCurrentLocation(locationBean);
+                    } else {
+                        onLocationListener.onError(ErrorType.NODATA.getCode(), ErrorType.NODATA.getValue());
+                    }
+                } else {
+                    onLocationListener.onError(i, ErrorType.OTHER.getValue());
+                }
             }
 
             @Override
             public void onWalkRouteSearched(WalkRouteResult walkRouteResult, int i) {
-
+                if (i == 1000) {
+                } else {
+                    onLocationListener.onError(i, ErrorType.OTHER.getValue());
+                }
+                ViseLog.d(walkRouteResult);
             }
 
             @Override
             public void onRideRouteSearched(RideRouteResult rideRouteResult, int i) {
-
+                if (i == 1000) {
+                } else {
+                    onLocationListener.onError(i, ErrorType.OTHER.getValue());
+                }
+                ViseLog.d(rideRouteResult);
             }
         });
-        routeSearch.calculateDriveRouteAsyn(query);
+        switch (routeSearchType) {
+            case CAR:
+                if (TextUtils.isEmpty(from.getAddress()) || TextUtils.isEmpty(to.getAddress())) {
+                    RouteSearch.DriveRouteQuery driveRouteQuery = new RouteSearch.DriveRouteQuery(
+                            new RouteSearch.FromAndTo(new LatLonPoint(from.getLat(), from.getLng()), new LatLonPoint(to.getLat(), to.getLng())),
+                            RouteSearch.DRIVEING_PLAN_AVOID_CONGESTION_NO_HIGHWAY, null, null, "");
+                    routeSearch.calculateDriveRouteAsyn(driveRouteQuery);
+                } else {
+//                    RouteSearch.DriveRouteQuery driveRouteQuery = new RouteSearch.DriveRouteQuery(
+//                            new RouteSearch.FromAndTo(from.getAddress(),to.getAddress()),
+//                            RouteSearch.DRIVEING_PLAN_AVOID_CONGESTION_NO_HIGHWAY, null, null, "");
+//                    routeSearch.calculateDriveRouteAsyn(driveRouteQuery);
+                }
+
+                break;
+            case BUS:
+                RouteSearch.BusRouteQuery busRouteQuery = new RouteSearch.BusRouteQuery(new RouteSearch.FromAndTo(new LatLonPoint(from.getLat(), from.getLng()), new LatLonPoint(to.getLat(), to.getLng())), RouteSearch.BUS_DEFAULT, city, 1);
+                routeSearch.calculateBusRouteAsyn(busRouteQuery);
+                break;
+            case BIKE:
+                RouteSearch.RideRouteQuery rideRouteQuery = new RouteSearch.RideRouteQuery(new RouteSearch.FromAndTo(new LatLonPoint(from.getLat(), from.getLng()), new LatLonPoint(to.getLat(), to.getLng())));
+                routeSearch.calculateRideRouteAsyn(rideRouteQuery);
+                break;
+            case WALK:
+                RouteSearch.WalkRouteQuery walkRouteQuery = new RouteSearch.WalkRouteQuery(new RouteSearch.FromAndTo(new LatLonPoint(from.getLat(), from.getLng()), new LatLonPoint(to.getLat(), to.getLng())));
+                routeSearch.calculateWalkRouteAsyn(walkRouteQuery);
+                break;
+        }
     }
 
     private void setLineOption(Object line, LineBean lineBean) {
@@ -232,10 +332,11 @@ public class AmapController extends MapController {
                     if (lineBean.isColor1()) {//颜色
                         l.setColor(lineBean.getColor1());
                     }
+
                     if (lineBean.isPositionList()) {//坐标集合
                         List<LatLng> latLngs = new ArrayList<>();
                         for (int i = 0; i < lineBean.getLatlngs().size(); i++) {
-                            latLngs.add(new LatLng(lineBean.getLat(), lineBean.getLng()));
+                            latLngs.add(new LatLng(lineBean.getLatlngs().get(i).getLat(), lineBean.getLatlngs().get(i).getLng()));
                         }
                         l.setPoints(latLngs);
                     }

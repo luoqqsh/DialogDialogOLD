@@ -6,8 +6,7 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 
-import com.example.xxing.map_bamap.BmapController;
-import com.example.xxing.map_bamap.BmapLocation;
+import com.example.xxing.amap.AmapController;
 import com.example.xxing.map_bamap.BmapSearch;
 
 import x.com.dialogdialog.Base.BaseActivity;
@@ -23,6 +22,7 @@ import x.com.hl_map.bean.LocationBean;
 import x.com.hl_map.bean.LocationFrom;
 import x.com.hl_map.bean.LocationType;
 import x.com.hl_map.bean.MapType;
+import x.com.hl_map.bean.RouteSearchType;
 import x.com.hl_map.listener.OnCameraChangeListener;
 import x.com.hl_map.listener.OnLocationListener;
 
@@ -36,7 +36,7 @@ public class MapActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mapview);
         LinearLayout ll_mapview = findViewById(R.id.ll_mapview);
-        hHmap = new HHmap(this, MapType.BAIDUMAP, new BmapController());
+        hHmap = new HHmap(this, MapType.BAIDUMAP, new AmapController());
         hHmap.addMapView(ll_mapview, savedInstanceState, new OnCameraChangeListener() {
             @Override
             public void onCameraChange(LocationBean latLngs) {
@@ -45,13 +45,17 @@ public class MapActivity extends BaseActivity {
                 }
             }
         });
-        hHmap.moveToPosition(new LatLngBean(Config.testLat, Config.testLng), 17);
+        hHmap.moveToPosition(new LatLngBean(Config.testLat1, Config.testLng1), new LatLngBean(Config.testLat2, Config.testLng2), 100);
+        hHmap.addMarker(new LineBean().setMarker(new LatLngBean(Config.testLat1, Config.testLng1), R.mipmap.map_icon_p));
+        hHmap.addMarker(new LineBean().setMarker(new LatLngBean(Config.testLat2, Config.testLng2), R.mipmap.map_icon_p));
 
-        hhLocation = new HHLocation(getApplicationContext(), MapType.BAIDUMAP, new BmapLocation());
-        hhLocation.setOnLocationListener(new OnLocationListener() {
+        hHmap.searchRoute(RouteSearchType.CAR, new LatLngBean(Config.testLat1, Config.testLng1), new LatLngBean(Config.testLat2, Config.testLng2), Config.city, new OnLocationListener() {
             @Override
             public void onCurrentLocation(LocationBean latLngs) {
                 ViseLog.d(latLngs);
+                LineBean lineBean = new LineBean().setLine(latLngs.getPois(), 10);
+                lineBean.setColorList(latLngs.getColorList());
+                hHmap.addMarker(lineBean);
             }
 
             @Override
@@ -59,8 +63,21 @@ public class MapActivity extends BaseActivity {
 
             }
         });
+//        hhLocation = new HHLocation(getApplicationContext(), MapType.BAIDUMAP, new AmapLocation());
+//        hhLocation.setOnLocationListener(new OnLocationListener() {
+//            @Override
+//            public void onCurrentLocation(LocationBean latLngs) {
+//                ViseLog.d(latLngs);
+//            }
+//
+//            @Override
+//            public void onError(int code, String errorInfo) {
+//
+//            }
+//        });
 //        hhLocation.startLocation();
 
+        hHmap.addGoogleMap(false);
 
     }
 
@@ -68,8 +85,8 @@ public class MapActivity extends BaseActivity {
     public void onDestroy() {
         super.onDestroy();
         hHmap.onDestroy();
-        hhLocation.stopLocation();
-        hhLocation.releaseLocationListener();
+//        hhLocation.stopLocation();
+//        hhLocation.releaseLocationListener();
     }
 
     @Override
@@ -83,7 +100,7 @@ public class MapActivity extends BaseActivity {
     public void onPause() {
         super.onPause();
         hHmap.onPause();
-        hhLocation.stopLocation();
+//        hhLocation.stopLocation();
     }
 
     @Override
@@ -94,14 +111,14 @@ public class MapActivity extends BaseActivity {
 
     public void add(View view) {
         LineBean markerBean = new LineBean(LineType.MARKER);
-        markerBean.setPosition(Config.testLat, Config.testLng);
+        markerBean.setPosition(Config.testLat1, Config.testLng1);
         markerBean.setImgSource(R.mipmap.map_icon_p);
         marker = hHmap.addMarker(markerBean);
     }
 
     public void set(View view) {
         LineBean markerBean = new LineBean(LineType.MARKER);
-        markerBean.setPosition(Config.testLat, Config.testLng);
+        markerBean.setPosition(Config.testLat1, Config.testLng1);
         markerBean.setImgSource(R.mipmap.fx_gengduo);
         hHmap.setMarker(marker, markerBean);
     }
@@ -124,7 +141,7 @@ public class MapActivity extends BaseActivity {
 
             }
         });
-        hhSearch.point2address(Config.testLat, Config.testLng, 1000, LocationType.AMAP, new OnLocationListener() {
+        hhSearch.point2address(Config.testLat1, Config.testLng1, 1000, LocationType.AMAP, new OnLocationListener() {
             @Override
             public void onCurrentLocation(LocationBean latLngs) {
                 ViseLog.d(latLngs);

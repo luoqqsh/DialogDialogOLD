@@ -13,6 +13,7 @@ public class LineBean implements Serializable {
     private boolean isImgResource = false;
     private boolean isColor1 = false;
     private boolean isColor2 = false;
+    private boolean isColorList = false;
 
     //线
     private List<LatLngBean> latlngs;//线的坐标集
@@ -29,9 +30,50 @@ public class LineBean implements Serializable {
     private int imgSource;
     private int color1 = 0xff000000;//颜色，边框颜色。默认黑色
     private int color2 = 0x60000000;//颜色，填充颜色，默认半透明黑色
+    private List<Integer> colorList;
+
+    public LineBean() {
+    }
 
     public LineBean(LineType type) {
         this.type = type;
+    }
+
+    public LineBean setLine(List<LatLngBean> latlngs, int width) {
+        this.type = LineType.LINE;
+        setLatlngs(latlngs);
+        setWidth(width);
+        return this;
+    }
+
+    public LineBean setCircle(LatLngBean latlng, int radius) {
+        this.type = LineType.CIRCLE;
+        setPosition(latlng);
+        setRadius(radius);
+        return this;
+    }
+
+    public LineBean setMarker(LatLngBean latlng, int imgSource) {
+        this.type = LineType.MARKER;
+        setPosition(latlng);
+        setImgSource(imgSource);
+        return this;
+    }
+
+    public LineBean setMarker(LatLngBean latlng, String imgPath) {
+        this.type = LineType.MARKER;
+        setPosition(latlng);
+        setImg(imgPath);
+        return this;
+    }
+
+    public List<Integer> getColorList() {
+        return colorList;
+    }
+
+    public void setColorList(List<Integer> colorList) {
+        this.colorList = colorList;
+        isColorList = true;
     }
 
     public boolean isWidth() {
@@ -66,6 +108,12 @@ public class LineBean implements Serializable {
     public void setPosition(double lat, double lng) {
         this.lat = lat;
         this.lng = lng;
+        isPosition = true;
+    }
+
+    public void setPosition(LatLngBean latLngBean) {
+        this.lat = latLngBean.getLat();
+        this.lng = latLngBean.getLng();
         isPosition = true;
     }
 
@@ -148,5 +196,9 @@ public class LineBean implements Serializable {
 
     public boolean isPositionList() {
         return isPositionList;
+    }
+
+    public boolean isColorList() {
+        return isColorList;
     }
 }
