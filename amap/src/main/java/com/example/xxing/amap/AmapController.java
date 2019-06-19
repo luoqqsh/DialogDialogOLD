@@ -2,6 +2,7 @@ package com.example.xxing.amap;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ViewGroup;
 
 import com.amap.api.maps.AMap;
@@ -13,6 +14,7 @@ import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 
 import x.com.hl_map.MapController;
+import x.com.hl_map.MarkerBean;
 
 public class AmapController extends MapController {
     private AMap aMap;
@@ -63,12 +65,47 @@ public class AmapController extends MapController {
     }
 
     @Override
-    public void addMarker(double lat, double lng, String bitmapSource) {
-        Marker marker = aMap.addMarker(new MarkerOptions().position(new LatLng(lat, lng)).icon(BitmapDescriptorFactory.fromPath(bitmapSource)));
+    public Object addMarker(MarkerBean markerBean) {
+        if (markerBean != null) {
+            return aMap.addMarker(getMarkerOptions(markerBean));
+        }
+        return null;
+    }
+
+
+    @Override
+    public void setMarker(Object marker, MarkerBean markerBean) {
+        if (marker != null) {
+            Marker m = (Marker) marker;
+            m.setMarkerOptions(getMarkerOptions(markerBean));
+        }
     }
 
     @Override
-    public void addMarker(double lat, double lng, int bitmapSource) {
-        aMap.addMarker(new MarkerOptions().position(new LatLng(lat, lng)).icon(BitmapDescriptorFactory.fromResource(bitmapSource)));
+    public boolean removeMarker(Object marker) {
+        if (marker != null) {
+            Marker m = (Marker) marker;
+            if (!m.isRemoved()) {
+                m.remove();
+            }
+            return m.isRemoved();
+        }
+        return false;
+    }
+
+    private MarkerOptions getMarkerOptions(MarkerBean markerBean) {
+        MarkerOptions markerOptions = new MarkerOptions();
+        if (markerBean.getLat() != 0 && markerBean.getLng() != 0) {
+            markerOptions.position(new LatLng(markerBean.getLat(), markerBean.getLng()));
+        } else {
+            Log.e("hl_error", "经纬度异常");
+            return null;
+        }
+        if (markerBean.getImgSource() != 0) {
+            markerOptions.icon(BitmapDescriptorFactory.fromResource(markerBean.getImgSource()));
+        } else {
+            markerOptions.icon(BitmapDescriptorFactory.fromPath(markerBean.getImg()));
+        }
+        return markerOptions;
     }
 }

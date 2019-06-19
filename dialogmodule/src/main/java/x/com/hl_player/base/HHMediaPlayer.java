@@ -13,8 +13,6 @@ import android.view.TextureView;
 import java.lang.reflect.Method;
 import java.util.Map;
 
-import x.com.hl_log.ViseLog;
-
 /**
  * MediaPlayer具体实现
  */
@@ -189,7 +187,7 @@ public class HHMediaPlayer extends HHPlayerBase {
                     isPrepared = true;
                     mediaPlayer.setVolume(volume, volume);
                     mediaPlayer.setLooping(isLooping);
-                    if(isPlayWhenPrepared){
+                    if (isPlayWhenPrepared) {
                         start();
                     }
                     if (onPreparedListener != null) {
@@ -220,7 +218,7 @@ public class HHMediaPlayer extends HHPlayerBase {
                     Log.e(TAG, "监听到错误。  " + mPlayerState);
                     mPlayerState = PlayerState.ERROR;
                     playerPrePareState = PlayerPrePareState.ERROR;
-                    ViseLog.e("ERROR: " + what + "  " + extra);
+                    Log.e(TAG, what + "  " + extra + "\n" + "播放出错：" + mediaPath);
                     return false;
                 }
             });

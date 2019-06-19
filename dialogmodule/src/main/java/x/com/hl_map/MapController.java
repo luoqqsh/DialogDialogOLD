@@ -21,7 +21,9 @@ public abstract class MapController {
 
     public abstract void moveToPosition(double lat, double lon, float zoom);
 
-    public abstract void addMarker(double lat, double lon, String bitmapSource);
+    public abstract Object addMarker(MarkerBean markerBean);
 
-    public abstract void addMarker(double lat, double lon, int bitmapSource);
+    public abstract void setMarker(Object marker, MarkerBean markerBean);
+
+    public abstract boolean removeMarker(Object marker);
 }

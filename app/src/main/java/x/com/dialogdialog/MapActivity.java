@@ -1,6 +1,7 @@
 package x.com.dialogdialog;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
@@ -8,11 +9,14 @@ import androidx.annotation.Nullable;
 import com.example.xxing.amap.AmapController;
 
 import x.com.dialogdialog.Base.BaseActivity;
+import x.com.hl_log.ViseLog;
 import x.com.hl_map.HHmap;
+import x.com.hl_map.MarkerBean;
 
 public class MapActivity extends BaseActivity {
     private LinearLayout ll_mapview;
     private HHmap hHmap;
+    private Object marker;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -22,7 +26,7 @@ public class MapActivity extends BaseActivity {
         hHmap = new HHmap(this, HHmap.MapType.AMAP, new AmapController());
         hHmap.addMapView(ll_mapview, savedInstanceState);
         hHmap.moveToPosition(24, 118, 0);
-        hHmap.addMarker(24, 118, R.mipmap.map_icon_p);
+
     }
 
     @Override
@@ -47,5 +51,24 @@ public class MapActivity extends BaseActivity {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         hHmap.onSaveInstanceState(outState);
+    }
+
+    public void add(View view) {
+        MarkerBean markerBean = new MarkerBean();
+        markerBean.setPosition(24, 118);
+        markerBean.setImgSource(R.mipmap.map_icon_p);
+        marker = hHmap.addMarker(markerBean);
+    }
+
+    public void set(View view) {
+        MarkerBean markerBean = new MarkerBean();
+        markerBean.setPosition(24, 118);
+        markerBean.setImgSource(R.mipmap.fx_gengduo);
+        hHmap.setMarker(marker, markerBean);
+    }
+
+    public void remove(View view) {
+        ViseLog.d(hHmap.removeMarker(marker));
+
     }
 }

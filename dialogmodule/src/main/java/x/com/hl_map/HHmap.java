@@ -48,11 +48,17 @@ public class HHmap {
         mapController.moveToPosition(lat, lng, zoom);
     }
 
-    public void addMarker(double lat, double lng, int bitmapSource) {
-        mapController.addMarker(lat, lng, bitmapSource);
+    public Object addMarker(MarkerBean markerBean) {
+        return mapController.addMarker(markerBean);
     }
 
-    public void addMarker(double lat, double lng, String bitmapSource) {
-        mapController.addMarker(lat, lng, bitmapSource);
+    public void setMarker(Object marker,MarkerBean markerBean) {
+        mapController.setMarker(marker,markerBean);
     }
+
+    public boolean removeMarker(Object marker) {
+        return mapController.removeMarker(marker);
+    }
+
+
 }
