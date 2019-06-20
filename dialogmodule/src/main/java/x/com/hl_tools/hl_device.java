@@ -48,7 +48,7 @@ public class hl_device {
     public static boolean isOppoPhone() {
         String brand = Build.BRAND;
         if (!TextUtils.isEmpty(brand)) {
-            return brand.toLowerCase().contains("oppo");
+            return brand.toLowerCase().contains("oppo") || isOppoR15Phone();
         }
         return false;
     }
