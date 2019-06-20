@@ -1,6 +1,8 @@
 package x.com.hl_tools.model;
 
-public class PermissionModel {
+import java.io.Serializable;
+
+public class PermissionModel implements Serializable {
     private String name = "";
     private boolean isapply = false;
     private String permission;

@@ -5,6 +5,7 @@ import android.text.TextWatcher;
 import android.widget.EditText;
 
 import java.text.DecimalFormat;
+import java.util.Random;
 
 public class hl_math {
     //保留n位小数
@@ -23,6 +24,10 @@ public class hl_math {
             }
         }
         return number;
+    }
+
+    public static float getRandom() {
+        return new Random().nextFloat();
     }
 
     /**

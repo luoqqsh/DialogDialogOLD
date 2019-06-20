@@ -7,10 +7,13 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 
 public class hl_file {
@@ -34,6 +37,8 @@ public class hl_file {
     //安卓Q沙盒图片Context.getExternalFilesDir(Environment.DIRECTORY_PICTURES) =
     public static final String SDROOT = Environment.getExternalStorageDirectory().getPath();
     public static final String DCIM = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) + File.separator;
+    public static final String CAMERA = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) + File.separator + "Camera" + File.separator;
+    public static final String MUSIC = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC) + File.separator;
     public static final String DOWNLOADS = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator;
 
     /**
@@ -42,13 +47,14 @@ public class hl_file {
      * @param context 上下文
      * @return 例子：/storage/emulated/0/Android/data/x.com.dialogdialog/cache
      */
-    public static String getDiskCachePath(Context context) {
+    public static String getAppCachePath(Context context) {
         if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
                 || !Environment.isExternalStorageRemovable()) {
-            return context.getExternalCacheDir().getPath();
-        } else {
-            return context.getCacheDir().getPath();
+            if (context.getExternalCacheDir() != null) {
+                return context.getExternalCacheDir().getPath();
+            }
         }
+        return context.getCacheDir().getPath();
     }
 
     /**
@@ -66,6 +72,21 @@ public class hl_file {
         return file.exists() && file.isFile();
     }
 
+    /**
+     * 判断文件夹是否存在
+     *
+     * @param path 文件路径
+     * @return 是否存在
+     */
+    public static boolean isFolderExist(String path) {
+        if (TextUtils.isEmpty(path)) {
+            Log.e("hl_error", "path为空");
+            return false;
+        }
+        File file = new File(path);
+        return file.exists() && file.isDirectory();
+    }
+
     public static File getParentFile(@NonNull Context context) {
         final File externalSaveDir = context.getExternalCacheDir();
         if (externalSaveDir == null) {
@@ -79,13 +100,27 @@ public class hl_file {
      * 删除文件
      *
      * @param filePath 文件路径
-     * @return
+     * @return 删除结果
      */
     public static boolean deleteFile(String filePath) {
         if (isFileExist(filePath)) {
             return deleteFile(new File(filePath));
         }
         Log.e("hl_error", "文件不存在");
+        return false;
+    }
+
+    /**
+     * 删除文件夹
+     *
+     * @param filePath 文件夹路径
+     * @return 删除结果
+     */
+    public static boolean deleteFolder(String filePath) {
+        if (isFolderExist(filePath)) {
+            return deleteFile(new File(filePath));
+        }
+        Log.e("hl_error", "文件夹不存在");
         return false;
     }
 
@@ -115,6 +150,38 @@ public class hl_file {
             return false;
         }
     }
+
+    /**
+     * 把string写入文件
+     *
+     * @param context 上下文用于获取默认缓存目录
+     * @param dstName 文件名
+     * @param text    文本内容
+     */
+    private void writeStringToFile(Context context, String dstName, String text) {
+        writeStringToFile(getAppCachePath(context), dstName, text);
+    }
+
+    /**
+     * 把string写入文件
+     *
+     * @param dstPath 文件目录
+     * @param dstName 文件名
+     * @param text    文本内容
+     */
+    public static void writeStringToFile(String dstPath, String dstName, String text) {
+        File file = hl_file.createFile(dstPath, dstName);
+        if (file != null) {
+            try {
+                FileOutputStream fos = new FileOutputStream(file, false);
+                fos.write(text.getBytes());
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 
     public static boolean writeFile(File file, InputStream stream, boolean append) {
         OutputStream o = null;
@@ -147,31 +214,60 @@ public class hl_file {
         }
     }
 
-    public static File createFile(String dirPath, String fileName) {
+
+    public static File createFile(String parentPath, String dirName) {
         try {
-            File dirFile = new File(dirPath);
+            File dirFile = new File(parentPath);
             if (!dirFile.exists()) {
                 if (!dirFile.mkdirs()) {
                     Log.e("hl_error", "创建目录失败");
                     return null;
                 }
             } else if (!dirFile.isDirectory()) {
-                boolean delete = dirFile.delete();
-                if (delete) {
-                    return createFile(dirPath, fileName);
+                if (dirFile.delete()) {
+                    return createFile(parentPath, dirName);
                 } else {
                     Log.e("hl_error", "删除旧文件失败");
                     return null;
                 }
             }
-            File file = new File(dirPath, fileName);
+            File file = new File(parentPath, dirName);
             if (!file.exists()) {
                 if (!file.createNewFile()) {
-                    Log.e("hl_error","新建文件失败");
+                    Log.e("hl_error", "新建文件失败");
                     return null;
                 }
             }
             return file;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+    public static String readStringFromFile(String filePath) {
+        if (TextUtils.isEmpty(filePath)) {
+            return null;
+        }
+        File file = new File(filePath);
+        return readStringFromFile(file);
+
+    }
+
+    public static String readStringFromFile(File file) {
+        if (!file.exists()) {
+            return null;
+        }
+        try {
+            InputStreamReader isr = new InputStreamReader(new FileInputStream(file), "UTF-8");
+            BufferedReader br = new BufferedReader(isr);
+            StringBuilder sb = new StringBuilder();
+            String mimeTypeLine;
+            while ((mimeTypeLine = br.readLine()) != null) {
+                sb.append(mimeTypeLine);
+            }
+            return sb.toString();
         } catch (Exception e) {
             e.printStackTrace();
             return null;

@@ -19,10 +19,10 @@ public class hl_steam {
         return new String(Base64.encode(os.toByteArray(), Base64.DEFAULT));
     }
 
-    public static Object streamToObject(String str) throws IOException, ClassNotFoundException {
+    public static <T> T streamToObject(String str) throws IOException, ClassNotFoundException {
         byte[] base64 = Base64.decode(str.getBytes(), Base64.DEFAULT);
         ByteArrayInputStream is = new ByteArrayInputStream(base64);
         ObjectInputStream bis = new ObjectInputStream(is);
-        return bis.readObject();
+        return (T) bis.readObject();
     }
 }

@@ -71,8 +71,6 @@ public class HHPlayerView3 extends RelativeLayout {
         this.hhPlayerBase = hhPlayerBase;
         LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         addView(view, params);
-
-
         hhPlayerBase.initView(surface);
     }
 

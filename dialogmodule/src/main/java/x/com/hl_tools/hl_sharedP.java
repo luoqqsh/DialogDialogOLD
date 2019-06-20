@@ -54,7 +54,7 @@ public class hl_sharedP {
      * @param defaultObject 默认
      * @return object数据
      */
-    public static Object getParam(Context context, String key, Object defaultObject) {
+    public static <T> T getParam(Context context, String key, T defaultObject) {
         SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
         String o = sp.getString(key, "");
         try {
