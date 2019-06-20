@@ -1,4 +1,4 @@
-package x.com.hl_map;
+package x.com.hl_map.bean;
 
 import java.io.Serializable;
 

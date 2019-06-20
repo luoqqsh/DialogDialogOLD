@@ -14,7 +14,8 @@ import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 
 import x.com.hl_map.MapController;
-import x.com.hl_map.MarkerBean;
+import x.com.hl_map.bean.LineBean;
+import x.com.hl_map.bean.MarkerBean;
 
 public class AmapController extends MapController {
     private AMap aMap;
@@ -90,6 +91,21 @@ public class AmapController extends MapController {
             }
             return m.isRemoved();
         }
+        return false;
+    }
+
+    @Override
+    public Object addLine(LineBean lineBean) {
+        return null;
+    }
+
+    @Override
+    public void setLine(Object line, LineBean lineBean) {
+
+    }
+
+    @Override
+    public boolean removeLine(Object line) {
         return false;
     }
 

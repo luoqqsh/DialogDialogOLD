@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.ViewGroup;
 
+import x.com.hl_map.bean.MarkerBean;
+
 public class HHmap {
     private MapController mapController;
     private MapType mapType;

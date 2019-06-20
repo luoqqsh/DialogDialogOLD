@@ -11,7 +11,7 @@ import com.example.xxing.amap.AmapController;
 import x.com.dialogdialog.Base.BaseActivity;
 import x.com.hl_log.ViseLog;
 import x.com.hl_map.HHmap;
-import x.com.hl_map.MarkerBean;
+import x.com.hl_map.bean.MarkerBean;
 
 public class MapActivity extends BaseActivity {
     private LinearLayout ll_mapview;
