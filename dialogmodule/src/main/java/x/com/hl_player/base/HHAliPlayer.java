@@ -1,8 +1,8 @@
 //package x.com.hl_player.base;
 //
-//
 //import android.os.Environment;
 //import android.util.Log;
+//import android.view.Surface;
 //import android.view.SurfaceHolder;
 //import android.view.SurfaceView;
 //
@@ -34,6 +34,14 @@
 //        });
 //    }
 //
+//    @Override
+//    public void initView(Surface surface) {
+//        TAG = "HH-MediaPlayer-surface";
+//        mAliyunVodPlayer = new AliyunVodPlayer(context);
+//        initListener();
+//        mAliyunVodPlayer.setSurface(surface);
+//    }
+//
 //    private void initListener() {
 //        String sdDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/test_save_cache";
 //        mAliyunVodPlayer.setPlayingCache(true, sdDir, 60 * 60 /*单个文件的最大时长, s */, 300 /*缓存目录文件的总大小，MB*/);
@@ -47,6 +55,9 @@
 //                isPrepared = true;
 //                mAliyunVodPlayer.setVolume((int) volume);
 //                mAliyunVodPlayer.setCirclePlay(isLooping);
+//                if (isPlayWhenPrepared) {
+//                    start();
+//                }
 //                if (onPreparedListener != null) {
 //                    onPreparedListener.onListen(mAliyunVodPlayer);
 //                }
@@ -96,6 +107,7 @@
 //        } else {
 //            if (mAliyunVodPlayer != null) {
 //                mAliyunVodPlayer.start();
+//                getCurrentStart();
 //            }
 //        }
 //    }

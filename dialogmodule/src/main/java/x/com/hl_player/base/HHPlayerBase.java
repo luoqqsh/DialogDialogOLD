@@ -1,5 +1,6 @@
 package x.com.hl_player.base;
 
+import android.content.Context;
 import android.view.Surface;
 import android.view.SurfaceView;
 import android.view.TextureView;
@@ -20,9 +21,11 @@ public abstract class HHPlayerBase {
     public Object mediaPath;
 
     public float volume = 1;
+    public Context context;//有的播放器需要context
     public boolean isCompletePlay = false;//是否完成播放
     public boolean isLooping = true; //是否循环播放
     public boolean isPrepared = false;//是否准备好
+    public boolean isPlayWhenPrepared = false;//准备好立即播放
     public HOnListener<Object> onPreparedListener;
     public HOnListener<Long> onProgessListener;
     public HOnListener<Object> onCompletionListener;
@@ -95,6 +98,10 @@ public abstract class HHPlayerBase {
         isLooping = looping;
     }
 
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
     public boolean isPrepared() {
         return isPrepared;
     }
@@ -117,6 +124,10 @@ public abstract class HHPlayerBase {
 
     public void setOnBufferingUpdateListener(HOnListener<Integer> OnBufferingUpdateListener) {
         this.onBufferingUpdateListener = OnBufferingUpdateListener;
+    }
+
+    public void setPlayWhenPrepared(boolean playWhenPrepared) {
+        isPlayWhenPrepared = playWhenPrepared;
     }
 
     public boolean isPlayControl() {

@@ -3,93 +3,99 @@ package x.com.hl_player;
 import android.app.Activity;
 import android.content.Context;
 import android.provider.Settings;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Surface;
 import android.view.SurfaceView;
 import android.view.TextureView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.RelativeLayout;
 
 import x.com.hl_base.HOnListener;
-import x.com.hl_log.ViseLog;
-import x.com.hl_player.base.HHMediaPlayer;
 import x.com.hl_player.base.HHPlayerBase;
 
 /**
  * 播放器控制类，也就是我们的使用类
  */
-public class HHPlayerView3 extends RelativeLayout {
+public class HHPlayer3 {
 
     private HHPlayerBase hhPlayerBase;//播放器内核
     private Context mContext;
     private boolean isChangeBrigtness = false;
+    private ViewGroup viewGroup;
 
     public enum PlayerView {
-        SURFACE,
-        TEXTURE,
-        MUSIC
+        NEWSURFACE,//新建surfaceview
+        NEWTEXTURE,//新建textureview
+        SURFACE,//外部提供的surface
+        MUSIC//音乐
     }
 
-    public HHPlayerView3(Context context, HHPlayerBase hhPlayerBase, PlayerView playerView) {
-        super(context);
+    //播放音乐
+    public HHPlayer3(Context context, HHPlayerBase hhPlayerBase) {
+        this(context, hhPlayerBase, PlayerView.MUSIC, null, null);
+    }
+
+    //使用外部的suraface
+    public HHPlayer3(Context context, HHPlayerBase hhPlayerBase, Surface surface) {
+        this(context, hhPlayerBase, PlayerView.SURFACE, null, surface);
+    }
+
+    //使用外部的viewGroup
+    public HHPlayer3(Context context, HHPlayerBase hhPlayerBase, PlayerView playerView, ViewGroup viewGroup) {
+        this(context, hhPlayerBase, playerView, viewGroup, null);
+    }
+
+    private HHPlayer3(Context context, HHPlayerBase hhPlayerBase, PlayerView playerView, ViewGroup viewGroup, Surface surface) {
         mContext = context;
-        init(hhPlayerBase, playerView);
-    }
-
-    public HHPlayerView3(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        mContext = context;
-        init(new HHMediaPlayer(), PlayerView.MUSIC);
-    }
-
-    public void init(HHPlayerBase hhPlayerBase, PlayerView playerView) {
-        if (this.hhPlayerBase != null) this.hhPlayerBase.release();
+        hhPlayerBase.setContext(mContext);
+        this.viewGroup = viewGroup;
         this.hhPlayerBase = hhPlayerBase;
         switch (playerView) {
-            case SURFACE:
+            case NEWSURFACE:
                 initSurfaceView();
                 break;
-            case TEXTURE:
+            case NEWTEXTURE:
                 initTextureView();
+                break;
+            case SURFACE:
+                initSurface(surface);
                 break;
             case MUSIC:
                 break;
         }
     }
 
-    public void init(HHPlayerBase hhPlayerBase, Surface surface) {
-        if (this.hhPlayerBase != null) this.hhPlayerBase.release();
-        this.hhPlayerBase = hhPlayerBase;
-        hhPlayerBase.initView(surface);
-    }
-
-    public void init(HHPlayerBase hhPlayerBase, Surface surface, View view) {
-        if (this.hhPlayerBase != null) this.hhPlayerBase.release();
-        this.hhPlayerBase = hhPlayerBase;
-        LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-        addView(view, params);
-        hhPlayerBase.initView(surface);
-    }
-
     private void initSurfaceView() {
-        SurfaceView mSurfaceView = new SurfaceView(getContext().getApplicationContext());
-        LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-        addView(mSurfaceView, params);
+        SurfaceView mSurfaceView = new SurfaceView(mContext.getApplicationContext());
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        viewGroup.addView(mSurfaceView, params);
         hhPlayerBase.initView(mSurfaceView);
     }
 
     private void initTextureView() {
-        TextureView mTextureView = new TextureView(getContext().getApplicationContext());
-        LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-        addView(mTextureView, params);
+        TextureView mTextureView = new TextureView(mContext.getApplicationContext());
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        viewGroup.addView(mTextureView, params);
         hhPlayerBase.initView(mTextureView);
     }
 
     private void initSurface(Surface surface) {
         hhPlayerBase.initView(surface);
+    }
+
+    public void addExtraView(View view) {
+        if (viewGroup == null) {
+            Log.e("hl_error", "必须设置viewGroup");
+        } else {
+            ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            viewGroup.addView(view, params);
+        }
+    }
+
+    public void setPlayWhenPrepared(boolean isPlayWhenPrepared) {
+        hhPlayerBase.setPlayWhenPrepared(isPlayWhenPrepared);
     }
 
     public void prepare(String path) {
@@ -176,10 +182,12 @@ public class HHPlayerView3 extends RelativeLayout {
 
     public void setVolume(float volume) {
         if (volume >= 0 && volume <= 1) {
+            hhPlayerBase.volume = volume;
             hhPlayerBase.setVolume(volume);
         } else {
+            hhPlayerBase.volume = 1;
             hhPlayerBase.setVolume(1);
-            ViseLog.e("volume超范围：" + volume);
+            Log.e("hl_error", "volume超范围：" + volume);
         }
     }
 

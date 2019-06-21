@@ -116,6 +116,7 @@ public class HHMediaPlayer extends HHPlayerBase {
         isCompletePlay = false;
         if (mediaPlayer != null) {
             mediaPlayer.start();
+            getCurrentStart();
         }
     }
 
@@ -164,7 +165,6 @@ public class HHMediaPlayer extends HHPlayerBase {
 
     @Override
     public void setVolume(float volume) {
-        this.volume = volume;
         if (mediaPlayer != null) {
             mediaPlayer.setVolume(volume, volume);
         }
@@ -189,6 +189,9 @@ public class HHMediaPlayer extends HHPlayerBase {
                     isPrepared = true;
                     mediaPlayer.setVolume(volume, volume);
                     mediaPlayer.setLooping(isLooping);
+                    if(isPlayWhenPrepared){
+                        start();
+                    }
                     if (onPreparedListener != null) {
                         onPreparedListener.onListen(mp);
                     }
@@ -198,7 +201,7 @@ public class HHMediaPlayer extends HHPlayerBase {
             mediaPlayer.setOnSeekCompleteListener(new MediaPlayer.OnSeekCompleteListener() {
                 @Override
                 public void onSeekComplete(MediaPlayer mp) {
-                    mp.start();
+                    start();
                     Log.e(TAG, "Seek Complete");
                 }
             });
