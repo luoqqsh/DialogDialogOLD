@@ -1,1 +1,1 @@
-include ':app', ':dialogmodule', ':glide4', ':ndk', ':amap'
+include ':app', ':dialogmodule', ':glide4', ':amap'
