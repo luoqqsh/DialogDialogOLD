@@ -37,6 +37,7 @@ class DialogMainActivity : BaseActivity() {
         open.setOnClickListener { startActivity(Intent(mContext, GLActivity::class.java)) }
         mapping.setOnClickListener { startActivity(Intent(mContext, MappingActivity::class.java)) }
         view.setOnClickListener { startActivity(Intent(mContext, ViewActivity::class.java)) }
+        map.setOnClickListener { startActivity(Intent(mContext, MapActivity::class.java)) }
         close.setOnClickListener {
             val orientation = hl_orientation()
             orientation.orientationEnable(this, null)

@@ -70,6 +70,12 @@
             android:layout_height="wrap_content"
             android:text="view" />
 
+        <Button
+            android:id="@+id/map"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="map" />
+
     </LinearLayout>
 
     <LinearLayout

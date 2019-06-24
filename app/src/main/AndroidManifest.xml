@@ -57,6 +57,7 @@
         <activity android:name=".HHMediaViewActivity" />
         <activity android:name=".MappingActivity" />
         <activity android:name=".Viewpager2.ViewActivity" />
+        <activity android:name=".MapActivity" />
     </application>
 
 </manifest>
