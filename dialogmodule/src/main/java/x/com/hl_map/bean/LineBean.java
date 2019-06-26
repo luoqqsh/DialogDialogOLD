@@ -10,9 +10,12 @@ public class LineBean implements Serializable {
     private double lng;
     private String img;
     private int imgSource;
-    private int color;
-    private MapController.LineType type;
-    private List<LatLngs> latlngs;
+    private int color1 = 0xff000000;//颜色，边框颜色。默认黑色
+    private int color2 = 0x50000000;//颜色，填充颜色，默认半透明黑色
+    private MapController.LineType type;//线类型
+    private List<LocationBean> latlngs;//线的坐标集
+    private int width = 10;//线的宽度，默认为10.
+    private int radius = 1000;//圆的半径，默认1000
 
     public LineBean(MapController.LineType type) {
         this.type = type;
@@ -47,23 +50,47 @@ public class LineBean implements Serializable {
         this.imgSource = imgSource;
     }
 
-    public List<LatLngs> getLatlngs() {
+    public List<LocationBean> getLatlngs() {
         return latlngs;
     }
 
-    public void setLatlngs(List<LatLngs> latlngs) {
+    public void setLatlngs(List<LocationBean> latlngs) {
         this.latlngs = latlngs;
     }
 
-    public int getColor() {
-        return color;
+    public int getColor1() {
+        return color1;
     }
 
-    public void setColor(int color) {
-        this.color = color;
+    public void setColor1(int color1) {
+        this.color1 = color1;
     }
 
     public MapController.LineType getType() {
         return type;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public void setRadius(int radius) {
+        this.radius = radius;
+    }
+
+    public int getRadius() {
+        return radius;
+    }
+
+    public int getColor2() {
+        return color2;
+    }
+
+    public void setColor2(int color2) {
+        this.color2 = color2;
     }
 }

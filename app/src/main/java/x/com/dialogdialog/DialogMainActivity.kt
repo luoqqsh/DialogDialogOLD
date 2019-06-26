@@ -70,7 +70,14 @@ class DialogMainActivity : BaseActivity() {
         //需要在activity重写onRequestPermissionsResult回调方法。不处理回调不写
         hl_permissions.applyWriteStoragePermission(mContext, object : hl_permissions.RequestPermissionCallBack {
             override fun requestPermissionSuccess() {
-                ViseLog.d("true2222")
+            }
+
+            override fun requestPermissionFail(failPermission: Map<String, Boolean>) {
+                ViseLog.d(failPermission)
+            }
+        })
+        hl_permissions.applyLocationPermission(mContext, object : hl_permissions.RequestPermissionCallBack {
+            override fun requestPermissionSuccess() {
             }
 
             override fun requestPermissionFail(failPermission: Map<String, Boolean>) {

@@ -4,20 +4,14 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.ViewGroup;
 
+import x.com.hl_map.bean.MapType;
 import x.com.hl_map.bean.MarkerBean;
+import x.com.hl_map.listener.OnCameraChangeListener;
 
 public class HHmap {
     private MapController mapController;
     private MapType mapType;
     private Context context;
-
-    public enum MapType {
-        AMAP,
-        BAIDUMAP,
-        GOOGLEMAP,
-        QQMAP
-    }
-
 
     public HHmap(Context context, MapType mapType, MapController mapController) {
         this.mapType = mapType;
@@ -27,7 +21,11 @@ public class HHmap {
     }
 
     public void addMapView(ViewGroup viewGroup, Bundle bundle) {
-        mapController.addMapView(context, viewGroup, bundle);
+        addMapView(viewGroup, bundle, null);
+    }
+
+    public void addMapView(ViewGroup viewGroup, Bundle bundle, OnCameraChangeListener onCameraChangeListener) {
+        mapController.addMapView(context, viewGroup, bundle, onCameraChangeListener);
     }
 
     public void onDestroy() {
@@ -54,8 +52,8 @@ public class HHmap {
         return mapController.addMarker(markerBean);
     }
 
-    public void setMarker(Object marker,MarkerBean markerBean) {
-        mapController.setMarker(marker,markerBean);
+    public void setMarker(Object marker, MarkerBean markerBean) {
+        mapController.setMarker(marker, markerBean);
     }
 
     public boolean removeMarker(Object marker) {

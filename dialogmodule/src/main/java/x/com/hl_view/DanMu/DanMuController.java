@@ -174,10 +174,10 @@ public class DanMuController {
 
 
         //测试了解旋转后的画布坐标
-//        mPaint.setColor(Color.RED);
+//        mPaint.setColor1(Color.RED);
 //        mPaint.setStrokeWidth(5);
 //        canvas.drawLine(0, 0, viewWidth, viewHeight, mPaint);
-//        mPaint.setColor(Color.BLUE);
+//        mPaint.setColor1(Color.BLUE);
 //        canvas.drawLine(0, viewHeight, viewWidth, 0, mPaint);
 
 

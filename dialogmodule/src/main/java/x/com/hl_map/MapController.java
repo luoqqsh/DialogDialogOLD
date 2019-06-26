@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 
 import x.com.hl_map.bean.LineBean;
 import x.com.hl_map.bean.MarkerBean;
+import x.com.hl_map.listener.OnCameraChangeListener;
 
 public abstract class MapController {
     public enum LineType {
@@ -17,7 +18,11 @@ public abstract class MapController {
 
     public abstract void initMap();
 
-    public abstract void addMapView(Context context, ViewGroup viewGroup, Bundle savedInstanceState);
+    public void addMapView(Context context, ViewGroup viewGroup, Bundle savedInstanceState) {
+        addMapView(context, viewGroup, savedInstanceState, null);
+    }
+
+    public abstract void addMapView(Context context, ViewGroup viewGroup, Bundle savedInstanceState, OnCameraChangeListener onCameraChangeListener);
 
     public abstract void onDestroy();
 
@@ -39,5 +44,5 @@ public abstract class MapController {
 
     public abstract void setLine(Object marker, LineBean markerBean);
 
-    public abstract boolean removeLine(Object marker);
+    public abstract void removeLine(Object line, MapController.LineType lineType);
 }
