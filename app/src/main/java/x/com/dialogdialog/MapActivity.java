@@ -8,13 +8,16 @@ import androidx.annotation.Nullable;
 
 import com.example.xxing.amap.AmapController;
 import com.example.xxing.amap.AmapLocation;
+import com.example.xxing.amap.AmapSearch;
 
 import x.com.dialogdialog.Base.BaseActivity;
 import x.com.dialogdialog.Base.Config;
 import x.com.hl_log.ViseLog;
 import x.com.hl_map.HHLocation;
+import x.com.hl_map.HHSearch;
 import x.com.hl_map.HHmap;
 import x.com.hl_map.bean.LocationBean;
+import x.com.hl_map.bean.LocationFrom;
 import x.com.hl_map.bean.MapType;
 import x.com.hl_map.bean.MarkerBean;
 import x.com.hl_map.listener.OnCameraChangeListener;
@@ -33,9 +36,8 @@ public class MapActivity extends BaseActivity {
         hHmap = new HHmap(this, MapType.AMAP, new AmapController());
         hHmap.addMapView(ll_mapview, savedInstanceState, new OnCameraChangeListener() {
             @Override
-            public void onCameraChange(LocationBean latLngs, boolean isFinish) {
-                if (isFinish) {
-
+            public void onCameraChange(LocationBean latLngs) {
+                if (latLngs.getFrom() == LocationFrom.MOVEMAP_FINISH) {
                 }
             }
         });
@@ -52,8 +54,51 @@ public class MapActivity extends BaseActivity {
 
             }
         });
-        hhLocation.startLocation();
+//        hhLocation.startLocation();
 
+        HHSearch hhSearch = new HHSearch(this, MapType.AMAP, new AmapSearch());
+//        hhSearch.address2Point("大同路", Config.city, new OnLocationListener() {
+//            @Override
+//            public void onCurrentLocation(LocationBean latLngs) {
+//                ViseLog.d(latLngs);
+//            }
+//
+//            @Override
+//            public void onError(int code, String errorInfo) {
+//                ViseLog.d(code);
+//
+//            }
+//        });
+//        hhSearch.point2address(Config.seaLat, Config.seaLng, 1000, LocationType.AMAP, new OnLocationListener() {
+//            @Override
+//            public void onCurrentLocation(LocationBean latLngs) {
+//                ViseLog.d(latLngs);
+//            }
+//
+//            @Override
+//            public void onError(int code, String errorInfo) {
+//                ViseLog.d(code);
+//            }
+//        });
+
+        hhSearch.showTips("火车站", Config.cityCode, true, new OnLocationListener() {
+            @Override
+            public void onCurrentLocation(LocationBean latLngs) {
+            }
+
+            @Override
+            public void onError(int code, String errorInfo) {
+            }
+        });
+        hhSearch.poiSearch("火车站", "", Config.cityCode, new OnLocationListener() {
+            @Override
+            public void onCurrentLocation(LocationBean latLngs) {
+            }
+
+            @Override
+            public void onError(int code, String errorInfo) {
+            }
+        });
     }
 
     @Override
@@ -61,6 +106,7 @@ public class MapActivity extends BaseActivity {
         super.onDestroy();
         hHmap.onDestroy();
         hhLocation.stopLocation();
+        hhLocation.releaseLocationListener();
     }
 
     @Override

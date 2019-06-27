@@ -11,4 +11,6 @@ public abstract class LocationController {
     public abstract void stopLocation();
 
     public abstract void initLocation(Context context, OnLocationListener onLocationListener);
+
+    public abstract void releaseLocationListener();
 }

@@ -1,1 +1,1 @@
-include ':app', ':dialogmodule', ':glide4', ':amap'
+include ':app', ':dialogmodule', ':glide4', ':map_amap'

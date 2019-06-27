@@ -23,8 +23,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import x.com.hl_map.MapController;
+import x.com.hl_map.bean.LatLngBean;
 import x.com.hl_map.bean.LocationBean;
 import x.com.hl_map.bean.LineBean;
+import x.com.hl_map.bean.LocationFrom;
 import x.com.hl_map.bean.MarkerBean;
 import x.com.hl_map.listener.OnCameraChangeListener;
 
@@ -48,16 +50,16 @@ public class AmapController extends MapController {
             aMap.setOnCameraChangeListener(new AMap.OnCameraChangeListener() {
                 @Override
                 public void onCameraChange(CameraPosition cameraPosition) {
-                    LocationBean latLngs = new LocationBean(cameraPosition.target.latitude, cameraPosition.target.longitude);
+                    LocationBean latLngs = new LocationBean(LocationFrom.MOVEMAP, new LatLngBean(cameraPosition.target.latitude, cameraPosition.target.longitude));
                     latLngs.setZoom(cameraPosition.zoom);
-                    onCameraChangeListener.onCameraChange(latLngs, false);
+                    onCameraChangeListener.onCameraChange(latLngs);
                 }
 
                 @Override
                 public void onCameraChangeFinish(CameraPosition cameraPosition) {
-                    LocationBean latLngs = new LocationBean(cameraPosition.target.latitude, cameraPosition.target.longitude);
+                    LocationBean latLngs = new LocationBean(LocationFrom.MOVEMAP_FINISH, new LatLngBean(cameraPosition.target.latitude, cameraPosition.target.longitude));
                     latLngs.setZoom(cameraPosition.zoom);
-                    onCameraChangeListener.onCameraChange(latLngs, true);
+                    onCameraChangeListener.onCameraChange(latLngs);
                 }
             });
         }

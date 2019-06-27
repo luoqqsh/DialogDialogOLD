@@ -59,6 +59,4 @@ public class HHmap {
     public boolean removeMarker(Object marker) {
         return mapController.removeMarker(marker);
     }
-
-
 }

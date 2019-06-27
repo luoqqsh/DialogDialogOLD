@@ -28,4 +28,8 @@ public class HHLocation {
     public void stopLocation() {
         locationController.stopLocation();
     }
+
+    public void releaseLocationListener() {
+        locationController.releaseLocationListener();
+    }
 }
