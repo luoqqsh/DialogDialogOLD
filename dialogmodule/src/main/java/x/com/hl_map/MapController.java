@@ -16,7 +16,7 @@ public abstract class MapController {
 
     public ViewGroup mapViewGroup;
 
-    public abstract void initMap();
+    public abstract void initMap(Context context);
 
     public void addMapView(Context context, ViewGroup viewGroup, Bundle savedInstanceState) {
         addMapView(context, viewGroup, savedInstanceState, null);

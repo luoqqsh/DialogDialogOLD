@@ -17,7 +17,7 @@ public class HHmap {
         this.mapType = mapType;
         this.context = context;
         this.mapController = mapController;
-        mapController.initMap();
+        mapController.initMap(context.getApplicationContext());
     }
 
     public void addMapView(ViewGroup viewGroup, Bundle bundle) {

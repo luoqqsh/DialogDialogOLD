@@ -68,6 +68,7 @@ dependencies {
     implementation project(':dialogmodule')
     implementation project(':glide4')
     implementation project(':map_amap')
+    implementation project(':map_bmap')
 
     implementation 'com.airbnb.android:lottie:3.0.7'
     implementation 'io.github.lizhangqu:retrace:1.0.2'

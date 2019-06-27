@@ -1,1 +1,2 @@
 include ':app', ':dialogmodule', ':glide4', ':map_amap'
+include ':map_bmap'

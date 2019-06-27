@@ -35,8 +35,7 @@ public class AmapController extends MapController {
     private MapView mMapView;
 
     @Override
-    public void initMap() {
-
+    public void initMap(Context context) {
     }
 
     @Override

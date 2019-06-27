@@ -9,6 +9,8 @@ import androidx.annotation.Nullable;
 import com.example.xxing.amap.AmapController;
 import com.example.xxing.amap.AmapLocation;
 import com.example.xxing.amap.AmapSearch;
+import com.example.xxing.map_bamap.BmapController;
+import com.example.xxing.map_bamap.BmapLocation;
 
 import x.com.dialogdialog.Base.BaseActivity;
 import x.com.dialogdialog.Base.Config;
@@ -33,20 +35,22 @@ public class MapActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mapview);
         LinearLayout ll_mapview = findViewById(R.id.ll_mapview);
-        hHmap = new HHmap(this, MapType.AMAP, new AmapController());
+        hHmap = new HHmap(this, MapType.BAIDUMAP, new BmapController());
         hHmap.addMapView(ll_mapview, savedInstanceState, new OnCameraChangeListener() {
             @Override
             public void onCameraChange(LocationBean latLngs) {
                 if (latLngs.getFrom() == LocationFrom.MOVEMAP_FINISH) {
+                    ViseLog.d(latLngs);
                 }
             }
         });
         hHmap.moveToPosition(Config.testLat, Config.testLng, 17);
 
-        hhLocation = new HHLocation(getApplicationContext(), MapType.AMAP, new AmapLocation());
+        hhLocation = new HHLocation(getApplicationContext(), MapType.BAIDUMAP, new BmapLocation());
         hhLocation.setOnLocationListener(new OnLocationListener() {
             @Override
             public void onCurrentLocation(LocationBean latLngs) {
+                ViseLog.d(latLngs);
             }
 
             @Override
@@ -54,7 +58,7 @@ public class MapActivity extends BaseActivity {
 
             }
         });
-//        hhLocation.startLocation();
+        hhLocation.startLocation();
 
         HHSearch hhSearch = new HHSearch(this, MapType.AMAP, new AmapSearch());
 //        hhSearch.address2Point("大同路", Config.city, new OnLocationListener() {
