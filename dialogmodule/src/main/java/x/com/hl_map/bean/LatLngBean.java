@@ -4,6 +4,7 @@ public class LatLngBean {
     private double lat;//纬度
     private double lng;//经度
     private String address;//地址
+    private String city = "厦门";//城市
 
     public LatLngBean(double lat, double lng) {
         this(lat, lng, "");
@@ -25,5 +26,13 @@ public class LatLngBean {
 
     public String getAddress() {
         return address;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 }

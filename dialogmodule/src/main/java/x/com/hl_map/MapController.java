@@ -1,18 +1,17 @@
 package x.com.hl_map;
 
 import android.content.Context;
+import android.location.LocationListener;
 import android.os.Bundle;
 import android.view.ViewGroup;
 
+import x.com.hl_map.bean.LatLngBean;
 import x.com.hl_map.bean.LineBean;
-import x.com.hl_map.bean.MarkerBean;
+import x.com.hl_map.bean.LineType;
+import x.com.hl_map.bean.RouteSearchType;
 import x.com.hl_map.listener.OnCameraChangeListener;
 
 public abstract class MapController {
-    public enum LineType {
-        LINE,
-        CIRCLE,
-    }
 
     public ViewGroup mapViewGroup;
 
@@ -32,17 +31,16 @@ public abstract class MapController {
 
     public abstract void onSaveInstanceState(Bundle outState);
 
-    public abstract void moveToPosition(double lat, double lon, float zoom);
+    public abstract void moveToPosition(LatLngBean latLngBean, float zoom);
 
-    public abstract Object addMarker(MarkerBean markerBean);
+    public abstract void moveToPosition(LatLngBean latLngBean1, LatLngBean latLngBean2, float zoom);
 
-    public abstract void setMarker(Object marker, MarkerBean markerBean);
+    public abstract Object addMarker(LineBean markerBean);
 
-    public abstract boolean removeMarker(Object marker);
+    public abstract void setMarker(Object marker, LineBean markerBean);
 
-    public abstract Object addLine(LineBean markerBean);
+    public abstract boolean removeMarker(Object line, LineType lineType);
 
-    public abstract void setLine(Object marker, LineBean markerBean);
+    public abstract void routeSearch(RouteSearchType routeSearchType, LatLngBean from, LatLngBean to, LocationListener locationListener);
 
-    public abstract void removeLine(Object line, MapController.LineType lineType);
 }

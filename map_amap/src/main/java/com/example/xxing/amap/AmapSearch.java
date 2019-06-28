@@ -22,7 +22,7 @@ import java.util.List;
 
 import x.com.hl_log.ViseLog;
 import x.com.hl_map.SearchController;
-import x.com.hl_map.bean.ErrorBean;
+import x.com.hl_map.bean.ErrorType;
 import x.com.hl_map.bean.LatLngBean;
 import x.com.hl_map.bean.LocationBean;
 import x.com.hl_map.bean.LocationFrom;
@@ -34,7 +34,7 @@ public class AmapSearch extends SearchController {
     public void address2Point(Context context, String address, String cityCode, final OnLocationListener onLocationListener) {
         if (onLocationListener == null) return;
         if (TextUtils.isEmpty(address) || TextUtils.isEmpty(cityCode)) {
-            onLocationListener.onError(ErrorBean.NULL.getCode(), ErrorBean.NULL.getValue());
+            onLocationListener.onError(ErrorType.NULL.getCode(), ErrorType.NULL.getValue());
             return;
         }
         GeocodeSearch geocodeSearch = new GeocodeSearch(context);
@@ -54,10 +54,10 @@ public class AmapSearch extends SearchController {
                         locationBean.setAddress(geocodeAddressList.get(0).getFormatAddress());
                         onLocationListener.onCurrentLocation(locationBean);
                     } else {
-                        onLocationListener.onError(ErrorBean.NODATA.getCode(), ErrorBean.NODATA.getValue());
+                        onLocationListener.onError(ErrorType.NODATA.getCode(), ErrorType.NODATA.getValue());
                     }
                 } else {
-                    onLocationListener.onError(ErrorBean.OTHER.getCode(), ErrorBean.NODATA.getValue());
+                    onLocationListener.onError(ErrorType.OTHER.getCode(), ErrorType.NODATA.getValue());
                 }
             }
         });
@@ -69,7 +69,7 @@ public class AmapSearch extends SearchController {
     public void point2address(Context context, final double lat, double lng, float scope, LocationType type, final OnLocationListener onLocationListener) {
         if (onLocationListener == null) return;
         if (lat == 0 || lng == 0) {
-            onLocationListener.onError(ErrorBean.LATLNGERROR.getCode(), ErrorBean.LATLNGERROR.getValue());
+            onLocationListener.onError(ErrorType.LATLNGERROR.getCode(), ErrorType.LATLNGERROR.getValue());
             return;
         }
         GeocodeSearch geocodeSearch = new GeocodeSearch(context);
@@ -89,10 +89,10 @@ public class AmapSearch extends SearchController {
                         locationBean.setPois(latLngBeans);
                         onLocationListener.onCurrentLocation(locationBean);
                     } else {
-                        onLocationListener.onError(ErrorBean.NODATA.getCode(), ErrorBean.NODATA.getValue());
+                        onLocationListener.onError(ErrorType.NODATA.getCode(), ErrorType.NODATA.getValue());
                     }
                 } else {
-                    onLocationListener.onError(ErrorBean.OTHER.getCode(), ErrorBean.OTHER.getValue());
+                    onLocationListener.onError(ErrorType.OTHER.getCode(), ErrorType.OTHER.getValue());
                 }
             }
 
@@ -109,7 +109,7 @@ public class AmapSearch extends SearchController {
     public void poiSearch(Context context, String keyword, String type, String cityCode, int page, int pagesize, final OnLocationListener onLocationListener) {
         if (onLocationListener == null) return;
         if (TextUtils.isEmpty(keyword) && TextUtils.isEmpty(type)) {
-            onLocationListener.onError(ErrorBean.NULL.getCode(), ErrorBean.NULL.getValue());
+            onLocationListener.onError(ErrorType.NULL.getCode(), ErrorType.NULL.getValue());
             return;
         }
         PoiSearch.Query query = new PoiSearch.Query(keyword, type, cityCode);
@@ -130,10 +130,10 @@ public class AmapSearch extends SearchController {
                         locationBean.setPois(latLngBeans);
                         onLocationListener.onCurrentLocation(locationBean);
                     } else {
-                        onLocationListener.onError(ErrorBean.NODATA.getCode(), ErrorBean.NODATA.getValue());
+                        onLocationListener.onError(ErrorType.NODATA.getCode(), ErrorType.NODATA.getValue());
                     }
                 } else {
-                    onLocationListener.onError(ErrorBean.OTHER.getCode(), ErrorBean.OTHER.getValue());
+                    onLocationListener.onError(ErrorType.OTHER.getCode(), ErrorType.OTHER.getValue());
                 }
             }
 
@@ -148,7 +148,7 @@ public class AmapSearch extends SearchController {
     public void showTips(Context context, String address, String cityCode, boolean isCityLimit, final OnLocationListener onLocationListener) {
         if (onLocationListener == null) return;
         if (TextUtils.isEmpty(address) || TextUtils.isEmpty(cityCode)) {
-            onLocationListener.onError(ErrorBean.NULL.getCode(), ErrorBean.NULL.getValue());
+            onLocationListener.onError(ErrorType.NULL.getCode(), ErrorType.NULL.getValue());
             return;
         }
         InputtipsQuery inputquery = new InputtipsQuery(address, cityCode);
@@ -166,7 +166,7 @@ public class AmapSearch extends SearchController {
                     locationBean.setPois(latLngBeans);
                     onLocationListener.onCurrentLocation(locationBean);
                 } else {
-                    onLocationListener.onError(ErrorBean.NODATA.getCode(), ErrorBean.NODATA.getValue());
+                    onLocationListener.onError(ErrorType.NODATA.getCode(), ErrorType.NODATA.getValue());
                 }
             }
         });

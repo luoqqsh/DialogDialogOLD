@@ -4,8 +4,10 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.ViewGroup;
 
+import x.com.hl_map.bean.LatLngBean;
+import x.com.hl_map.bean.LineBean;
+import x.com.hl_map.bean.LineType;
 import x.com.hl_map.bean.MapType;
-import x.com.hl_map.bean.MarkerBean;
 import x.com.hl_map.listener.OnCameraChangeListener;
 
 public class HHmap {
@@ -44,19 +46,19 @@ public class HHmap {
         mapController.onSaveInstanceState(outState);
     }
 
-    public void moveToPosition(double lat, double lng, float zoom) {
-        mapController.moveToPosition(lat, lng, zoom);
+    public void moveToPosition(LatLngBean latLngBean, float zoom) {
+        mapController.moveToPosition(latLngBean, zoom);
     }
 
-    public Object addMarker(MarkerBean markerBean) {
+    public Object addMarker(LineBean markerBean) {
         return mapController.addMarker(markerBean);
     }
 
-    public void setMarker(Object marker, MarkerBean markerBean) {
+    public void setMarker(Object marker, LineBean markerBean) {
         mapController.setMarker(marker, markerBean);
     }
 
-    public boolean removeMarker(Object marker) {
-        return mapController.removeMarker(marker);
+    public boolean removeMarker(Object marker, LineType lineType) {
+        return mapController.removeMarker(marker,lineType);
     }
 }

@@ -1,6 +1,5 @@
 package x.com.hl_map;
 
-
 import android.content.Context;
 
 import x.com.hl_map.bean.MapType;

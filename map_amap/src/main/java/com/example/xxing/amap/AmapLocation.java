@@ -8,6 +8,7 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 
+import x.com.hl_map.HHconfig;
 import x.com.hl_map.LocationController;
 import x.com.hl_map.bean.LatLngBean;
 import x.com.hl_map.bean.LocationBean;
@@ -59,26 +60,34 @@ public class AmapLocation extends LocationController {
         //设置定位回调监听
         mLocationClient.setLocationListener(mLocationListener);
         AMapLocationClientOption option = new AMapLocationClientOption();
-        //Battery_Saving 低功耗，只是用网络定位
-        //Device_Sensors 只是用设备GPS定位
-        //Hight_Accuracy 两者都用
-        option.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+        switch (HHconfig.locationMode) {
+            case Battery_Saving:
+                option.setLocationMode(AMapLocationClientOption.AMapLocationMode.Battery_Saving);
+                break;
+            case Device_Sensors:
+                option.setLocationMode(AMapLocationClientOption.AMapLocationMode.Device_Sensors);
+                break;
+            case Hight_Accuracy:
+                option.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+                break;
+        }
         //是否单次定位
-        option.setOnceLocation(false);
+        option.setOnceLocation(HHconfig.isOnceLocation);
         //定位时间间隔，默认2000ms，最低1000ms
-        option.setInterval(1000);
+        option.setInterval(HHconfig.Interval);
         //缓存机制，定位信息缓存，GPS不缓存
-        option.setLocationCacheEnable(false);
+        option.setLocationCacheEnable(HHconfig.isLocationCacheEnable);
         //单位是毫秒，默认30000毫秒，建议超时时间不要低于8000毫秒。
-        option.setHttpTimeOut(20000);
+        option.setHttpTimeOut(HHconfig.HttpTimeOut);
         //设置是否允许模拟位置,默认为true，允许模拟位置
-        option.setMockEnable(false);
+        option.setMockEnable(HHconfig.isMockEnable);
         //设置是否返回地址信息（默认返回地址信息）
-        option.setNeedAddress(true);
+        option.setNeedAddress(HHconfig.isNeedAddress);
         //设置定位场景，目前支持三种场景（签到、出行、运动，默认无场景）
-        //option.setLocationPurpose(AMapLocationClientOption.AMapLocationPurpose.Sport);
+//        option.setLocationPurpose(AMapLocationClientOption.AMapLocationPurpose.Sport);
         mLocationClient.setLocationOption(option);
     }
+
     @Override
     public void releaseLocationListener() {
         if (mLocationClient != null && mLocationListener != null) {
