@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 
 import com.example.xxing.amap.AmapController;
 import com.example.xxing.map_bamap.BmapSearch;
+import com.example.xxing.map_qmap.QmapController;
 
 import x.com.dialogdialog.Base.BaseActivity;
 import x.com.dialogdialog.Base.Config;
@@ -36,7 +37,7 @@ public class MapActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mapview);
         LinearLayout ll_mapview = findViewById(R.id.ll_mapview);
-        hHmap = new HHmap(this, MapType.BAIDUMAP, new AmapController());
+        hHmap = new HHmap(this, MapType.BAIDUMAP, new QmapController());
         hHmap.addMapView(ll_mapview, savedInstanceState, new OnCameraChangeListener() {
             @Override
             public void onCameraChange(LocationBean latLngs) {
@@ -63,7 +64,7 @@ public class MapActivity extends BaseActivity {
 
             }
         });
-//        hhLocation = new HHLocation(getApplicationContext(), MapType.BAIDUMAP, new AmapLocation());
+//        hhLocation = new HHLocation(getApplicationContext(), MapType.BAIDUMAP, new GmapLocation());
 //        hhLocation.setOnLocationListener(new OnLocationListener() {
 //            @Override
 //            public void onCurrentLocation(LocationBean latLngs) {

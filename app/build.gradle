@@ -69,6 +69,8 @@ dependencies {
     implementation project(':glide4')
     implementation project(':map_amap')
     implementation project(':map_bmap')
+    implementation project(':map_gmap')
+    implementation project(':map_qmap')
 
     implementation 'com.airbnb.android:lottie:3.0.7'
     implementation 'io.github.lizhangqu:retrace:1.0.2'
