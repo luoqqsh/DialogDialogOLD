@@ -20,7 +20,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-
+    repositories {
+        flatDir {
+            dirs 'libs','../map_gmap/libs'
+        }
+    }
 }
 
 dependencies {
@@ -32,4 +36,10 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     implementation project(':dialogmodule')
+    implementation 'com.google.android.gms:play-services-basement:17.0.0'
+    implementation 'com.google.android.gms:play-services-base:17.0.0'
+    implementation 'com.google.android.gms:play-services-gcm:17.0.0'
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
+    implementation (name:'maps-sdk-3.0.0-beta', ext:'aar')
+    implementation (name:'places-maps-sdk-3.0.0-beta', ext:'aar')
 }

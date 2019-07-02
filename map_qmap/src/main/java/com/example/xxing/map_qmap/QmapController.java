@@ -3,7 +3,6 @@ package com.example.xxing.map_qmap;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.ViewGroup;
 
 import com.tencent.tencentmap.mapsdk.maps.CameraUpdateFactory;
@@ -30,10 +29,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import x.com.hl_log.ViseLog;
 import x.com.hl_map.HHconfig;
 import x.com.hl_map.MapController;
-import x.com.hl_map.bean.ErrorType;
 import x.com.hl_map.bean.LatLngBean;
 import x.com.hl_map.bean.LineBean;
 import x.com.hl_map.bean.LineType;
@@ -42,6 +39,7 @@ import x.com.hl_map.bean.LocationFrom;
 import x.com.hl_map.bean.RouteSearchType;
 import x.com.hl_map.listener.OnCameraChangeListener;
 import x.com.hl_map.listener.OnLocationListener;
+import x.com.hl_map.listener.OnMapReadyListener;
 
 public class QmapController extends MapController {
     private TencentMap qMap;
@@ -56,11 +54,14 @@ public class QmapController extends MapController {
     }
 
     @Override
-    public void addMapView(Context context, ViewGroup viewGroup, Bundle savedInstanceState, final OnCameraChangeListener onCameraChangeListener) {
+    public void addMapView(Context context, ViewGroup viewGroup, Bundle savedInstanceState, final OnCameraChangeListener onCameraChangeListener, OnMapReadyListener onMapReadyListener) {
         mMapView = new MapView(context);
         ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         viewGroup.addView(mMapView, params);
         qMap = mMapView.getMap();
+        if (onMapReadyListener != null) {
+            onMapReadyListener.onReady();
+        }
         if (onCameraChangeListener != null) {
             qMap.setOnCameraChangeListener(new TencentMap.OnCameraChangeListener() {
                 @Override
@@ -97,12 +98,8 @@ public class QmapController extends MapController {
                     }
                 };
             }
-//            tileOverlay = qMap.addTileOverlay(new TileOverlayOptions().tileProvider(tileProvider)
-//                    .diskCacheEnabled(true)
-//                    .diskCacheDir("/storage/emulated/0/amap/cache")
-//                    .diskCacheSize(100000)
-//                    .memoryCacheEnabled(true)
-//                    .memCacheSize(100000));
+            tileOverlay = qMap.addTileOverlay(new TileOverlayOptions().tileProvider(tileProvider)
+                    .diskCacheDir("/storage/emulated/0/qmap/cache"));
         } else {
             if (tileOverlay != null) {
                 tileOverlay.remove();
@@ -135,7 +132,6 @@ public class QmapController extends MapController {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-//        mMapView.onSaveInstanceState(outState);
     }
 
     @Override
@@ -186,7 +182,7 @@ public class QmapController extends MapController {
                         bitmapDescriptor = BitmapDescriptorFactory.fromResource(markerBean.getImgSource());
                     }
                     if (bitmapDescriptor == null || !markerBean.isPosition()) return null;
-                    Marker marker = qMap.addMarker(new MarkerOptions().position(new LatLng(markerBean.getLat(), markerBean.getLng())).icon(bitmapDescriptor));
+                    Marker marker = qMap.addMarker(new MarkerOptions(new LatLng(markerBean.getLat(), markerBean.getLng())).icon(bitmapDescriptor));
                     setLineOption(marker, markerBean);
                     return marker;
             }

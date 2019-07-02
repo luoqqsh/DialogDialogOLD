@@ -8,8 +8,6 @@
         <meta-data
             android:name="TencentMapSDK"
             android:value="DYZBZ-UQFRW-WJ7RE-O6BRH-P5HFE-HJBT5" />
-        <!--定位服务-->
-        <service android:name="com.amap.api.location.APSService" />
     </application>
     <!--腾讯地图 SDK 要求的权限(开始)-->
     <!--访问网络获取地图服务-->

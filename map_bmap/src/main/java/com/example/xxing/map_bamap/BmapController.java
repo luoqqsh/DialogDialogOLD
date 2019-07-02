@@ -50,6 +50,7 @@ import x.com.hl_map.bean.LocationFrom;
 import x.com.hl_map.bean.RouteSearchType;
 import x.com.hl_map.listener.OnCameraChangeListener;
 import x.com.hl_map.listener.OnLocationListener;
+import x.com.hl_map.listener.OnMapReadyListener;
 
 public class BmapController extends MapController {
     private BaiduMap mBaiduMap;
@@ -65,12 +66,15 @@ public class BmapController extends MapController {
     }
 
     @Override
-    public void addMapView(Context context, ViewGroup viewGroup, Bundle savedInstanceState, final OnCameraChangeListener onCameraChangeListener) {
+    public void addMapView(Context context, ViewGroup viewGroup, Bundle savedInstanceState, final OnCameraChangeListener onCameraChangeListener, OnMapReadyListener onMapReadyListener) {
         mMapView = new MapView(context, getMapOption());
         mMapView.onCreate(context, savedInstanceState);
         ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         viewGroup.addView(mMapView, params);
         mBaiduMap = mMapView.getMap();
+        if (onMapReadyListener != null) {
+            onMapReadyListener.onReady();
+        }
         if (onCameraChangeListener != null) {
             mBaiduMap.setOnMapStatusChangeListener(new BaiduMap.OnMapStatusChangeListener() {
                 @Override

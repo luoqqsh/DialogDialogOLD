@@ -48,6 +48,7 @@ import x.com.hl_map.bean.LocationFrom;
 import x.com.hl_map.bean.RouteSearchType;
 import x.com.hl_map.listener.OnCameraChangeListener;
 import x.com.hl_map.listener.OnLocationListener;
+import x.com.hl_map.listener.OnMapReadyListener;
 
 public class AmapController extends MapController {
     private AMap aMap;
@@ -62,12 +63,15 @@ public class AmapController extends MapController {
     }
 
     @Override
-    public void addMapView(Context context, ViewGroup viewGroup, Bundle savedInstanceState, final OnCameraChangeListener onCameraChangeListener) {
+    public void addMapView(Context context, ViewGroup viewGroup, Bundle savedInstanceState, final OnCameraChangeListener onCameraChangeListener, OnMapReadyListener onMapReadyListener) {
         mMapView = new MapView(context);
         mMapView.onCreate(savedInstanceState);
         ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         viewGroup.addView(mMapView, params);
         aMap = mMapView.getMap();
+        if (onMapReadyListener != null) {
+            onMapReadyListener.onReady();
+        }
         if (onCameraChangeListener != null) {
             aMap.setOnCameraChangeListener(new AMap.OnCameraChangeListener() {
                 @Override

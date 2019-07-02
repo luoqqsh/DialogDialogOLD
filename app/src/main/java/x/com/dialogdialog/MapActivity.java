@@ -7,8 +7,8 @@ import android.widget.LinearLayout;
 import androidx.annotation.Nullable;
 
 import com.example.xxing.amap.AmapController;
+import com.example.xxing.amap.AmapLocation;
 import com.example.xxing.map_bamap.BmapSearch;
-import com.example.xxing.map_qmap.QmapController;
 
 import x.com.dialogdialog.Base.BaseActivity;
 import x.com.dialogdialog.Base.Config;
@@ -23,9 +23,9 @@ import x.com.hl_map.bean.LocationBean;
 import x.com.hl_map.bean.LocationFrom;
 import x.com.hl_map.bean.LocationType;
 import x.com.hl_map.bean.MapType;
-import x.com.hl_map.bean.RouteSearchType;
 import x.com.hl_map.listener.OnCameraChangeListener;
 import x.com.hl_map.listener.OnLocationListener;
+import x.com.hl_map.listener.OnMapReadyListener;
 
 public class MapActivity extends BaseActivity {
     private HHmap hHmap;
@@ -37,7 +37,7 @@ public class MapActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mapview);
         LinearLayout ll_mapview = findViewById(R.id.ll_mapview);
-        hHmap = new HHmap(this, MapType.BAIDUMAP, new QmapController());
+        hHmap = new HHmap(this, new AmapController());
         hHmap.addMapView(ll_mapview, savedInstanceState, new OnCameraChangeListener() {
             @Override
             public void onCameraChange(LocationBean latLngs) {
@@ -45,30 +45,23 @@ public class MapActivity extends BaseActivity {
                     ViseLog.d(latLngs);
                 }
             }
-        });
-        hHmap.moveToPosition(new LatLngBean(Config.testLat1, Config.testLng1), new LatLngBean(Config.testLat2, Config.testLng2), 100);
-        hHmap.addMarker(new LineBean().setMarker(new LatLngBean(Config.testLat1, Config.testLng1), R.mipmap.map_icon_p));
-        hHmap.addMarker(new LineBean().setMarker(new LatLngBean(Config.testLat2, Config.testLng2), R.mipmap.map_icon_p));
-
-        hHmap.searchRoute(RouteSearchType.CAR, new LatLngBean(Config.testLat1, Config.testLng1), new LatLngBean(Config.testLat2, Config.testLng2), Config.city, new OnLocationListener() {
+        }, new OnMapReadyListener() {
             @Override
-            public void onCurrentLocation(LocationBean latLngs) {
-                ViseLog.d(latLngs);
-                LineBean lineBean = new LineBean().setLine(latLngs.getPois(), 10);
-                lineBean.setColorList(latLngs.getColorList());
-                hHmap.addMarker(lineBean);
-            }
-
-            @Override
-            public void onError(int code, String errorInfo) {
-
+            public void onReady() {
+                hHmap.moveToPosition(new LatLngBean(Config.testLat1, Config.testLng1), new LatLngBean(Config.testLat2, Config.testLng2), 100);
+                hHmap.addMarker(new LineBean().setMarker(new LatLngBean(Config.testLat1, Config.testLng1), R.mipmap.map_icon_p));
+                hHmap.addMarker(new LineBean().setMarker(new LatLngBean(Config.testLat2, Config.testLng2), R.mipmap.map_icon_p));
             }
         });
-//        hhLocation = new HHLocation(getApplicationContext(), MapType.BAIDUMAP, new GmapLocation());
-//        hhLocation.setOnLocationListener(new OnLocationListener() {
+
+
+//        hHmap.searchRoute(RouteSearchType.CAR, new LatLngBean(Config.testLat1, Config.testLng1), new LatLngBean(Config.testLat2, Config.testLng2), Config.city, new OnLocationListener() {
 //            @Override
 //            public void onCurrentLocation(LocationBean latLngs) {
 //                ViseLog.d(latLngs);
+//                LineBean lineBean = new LineBean().setLine(latLngs.getPois(), 10);
+//                lineBean.setColorList(latLngs.getColorList());
+//                hHmap.addMarker(lineBean);
 //            }
 //
 //            @Override
@@ -76,32 +69,42 @@ public class MapActivity extends BaseActivity {
 //
 //            }
 //        });
-//        hhLocation.startLocation();
+        hhLocation = new HHLocation(getApplicationContext(), new AmapLocation());
+        hhLocation.setOnLocationListener(new OnLocationListener() {
+            @Override
+            public void onCurrentLocation(LocationBean latLngs) {
+                ViseLog.d(latLngs);
+            }
 
+            @Override
+            public void onError(int code, String errorInfo) {
+
+            }
+        });
+        hhLocation.startLocation();
         hHmap.addGoogleMap(false);
-
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         hHmap.onDestroy();
-//        hhLocation.stopLocation();
-//        hhLocation.releaseLocationListener();
+        hhLocation.stopLocation();
+        hhLocation.releaseLocationListener();
     }
 
     @Override
     public void onResume() {
         super.onResume();
         hHmap.onResume();
-//        hhLocation.startLocation();
+        hhLocation.startLocation();
     }
 
     @Override
     public void onPause() {
         super.onPause();
         hHmap.onPause();
-//        hhLocation.stopLocation();
+        hhLocation.stopLocation();
     }
 
     @Override

@@ -2,21 +2,30 @@ package com.example.xxing.map_gmap;
 
 
 import android.content.Context;
+import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.libraries.maps.LocationSource;
+
+import x.com.hl_log.ViseLog;
 import x.com.hl_map.LocationController;
-
 import x.com.hl_map.listener.OnLocationListener;
 
 public class GmapLocation extends LocationController {
     //声明AMapLocationClient类对象
-//    private AMapLocationClient mLocationClient;
-//    private AMapLocationListener mLocationListener;
+    private GmapController mLocationClient;
+    private LocationSource mLocationListener;
 
     @Override
     public void startLocation() {
-//        if (mLocationClient != null) {
-//            mLocationClient.startLocation();
-//        }
+        if (mLocationClient != null) {
+//            mLocationListener.onResume();
+        }
     }
 
     @Override
@@ -28,6 +37,30 @@ public class GmapLocation extends LocationController {
 
     @Override
     public void initLocation(Context context, final OnLocationListener onLocationListener) {
+
+        GoogleApiClient.ConnectionCallbacks callback = new GoogleApiClient.ConnectionCallbacks() {
+            @Override
+            public void onConnected(@Nullable Bundle bundle) {
+                ViseLog.d(bundle);
+            }
+
+            @Override
+            public void onConnectionSuspended(int i) {
+                ViseLog.d(i);
+            }
+        };
+        ViseLog.d("locatin");
+        new GoogleApiClient.Builder(context)
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(callback)
+                .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
+                    @Override
+                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+                        ViseLog.d(connectionResult);
+                    }
+                })
+                .build();
+
 //        mLocationListener = new AMapLocationListener() {
 //            @Override
 //            public void onLocationChanged(AMapLocation aMapLocation) {

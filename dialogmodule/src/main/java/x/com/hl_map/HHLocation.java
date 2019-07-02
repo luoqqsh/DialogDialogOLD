@@ -2,17 +2,14 @@ package x.com.hl_map;
 
 import android.content.Context;
 
-import x.com.hl_map.bean.MapType;
 import x.com.hl_map.listener.OnLocationListener;
 
 public class HHLocation {
     private Context context;
     private LocationController locationController;
-    private MapType mapType;
 
-    public HHLocation(Context context, MapType mapType, LocationController locationController) {
+    public HHLocation(Context context, LocationController locationController) {
         this.locationController = locationController;
-        this.mapType = mapType;
         this.context = context;
     }
 

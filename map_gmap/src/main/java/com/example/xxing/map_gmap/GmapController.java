@@ -3,18 +3,29 @@ package com.example.xxing.map_gmap;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.ViewGroup;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import com.google.android.libraries.maps.CameraUpdateFactory;
+import com.google.android.libraries.maps.GoogleMap;
+import com.google.android.libraries.maps.MapView;
+import com.google.android.libraries.maps.OnMapReadyCallback;
+import com.google.android.libraries.maps.UiSettings;
+import com.google.android.libraries.maps.model.BitmapDescriptor;
+import com.google.android.libraries.maps.model.BitmapDescriptorFactory;
+import com.google.android.libraries.maps.model.Circle;
+import com.google.android.libraries.maps.model.CircleOptions;
+import com.google.android.libraries.maps.model.LatLng;
+import com.google.android.libraries.maps.model.LatLngBounds;
+import com.google.android.libraries.maps.model.Marker;
+import com.google.android.libraries.maps.model.MarkerOptions;
+import com.google.android.libraries.maps.model.Polyline;
+import com.google.android.libraries.maps.model.PolylineOptions;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import x.com.hl_log.ViseLog;
 import x.com.hl_map.HHconfig;
 import x.com.hl_map.MapController;
-import x.com.hl_map.bean.ErrorType;
 import x.com.hl_map.bean.LatLngBean;
 import x.com.hl_map.bean.LineBean;
 import x.com.hl_map.bean.LineType;
@@ -23,10 +34,11 @@ import x.com.hl_map.bean.LocationFrom;
 import x.com.hl_map.bean.RouteSearchType;
 import x.com.hl_map.listener.OnCameraChangeListener;
 import x.com.hl_map.listener.OnLocationListener;
+import x.com.hl_map.listener.OnMapReadyListener;
 
 public class GmapController extends MapController {
-//    private AMap aMap;
-//    private MapView mMapView;
+    private GoogleMap gMap;
+    private MapView mMapView;
     private Context context;
 //    private TileOverlay tileOverlay;
 //    private UrlTileProvider tileProvider;
@@ -37,30 +49,39 @@ public class GmapController extends MapController {
     }
 
     @Override
-    public void addMapView(Context context, ViewGroup viewGroup, Bundle savedInstanceState, final OnCameraChangeListener onCameraChangeListener) {
-//        mMapView = new MapView(context);
-//        mMapView.onCreate(savedInstanceState);
-//        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-//        viewGroup.addView(mMapView, params);
-//        aMap = mMapView.getMap();
-//        if (onCameraChangeListener != null) {
-//            aMap.setOnCameraChangeListener(new AMap.OnCameraChangeListener() {
-//                @Override
-//                public void onCameraChange(CameraPosition cameraPosition) {
-//                    LocationBean latLngs = new LocationBean(LocationFrom.MOVEMAP, new LatLngBean(cameraPosition.target.latitude, cameraPosition.target.longitude));
-//                    latLngs.setZoom(cameraPosition.zoom);
-//                    onCameraChangeListener.onCameraChange(latLngs);
-//                }
-//
-//                @Override
-//                public void onCameraChangeFinish(CameraPosition cameraPosition) {
-//                    LocationBean latLngs = new LocationBean(LocationFrom.MOVEMAP_FINISH, new LatLngBean(cameraPosition.target.latitude, cameraPosition.target.longitude));
-//                    latLngs.setZoom(cameraPosition.zoom);
-//                    onCameraChangeListener.onCameraChange(latLngs);
-//                }
-//            });
-//        }
-//        setMapOption();
+    public void addMapView(Context context, ViewGroup viewGroup, Bundle savedInstanceState, final OnCameraChangeListener onCameraChangeListener, final OnMapReadyListener onMapReadyListener) {
+        mMapView = new MapView(context);
+        mMapView.onCreate(savedInstanceState);
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        viewGroup.addView(mMapView, params);
+        mMapView.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+                gMap = googleMap;
+                if (onMapReadyListener != null) {
+                    onMapReadyListener.onReady();
+                }
+                if (onCameraChangeListener != null) {
+                    gMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
+                        @Override
+                        public void onCameraMove() {
+                            LocationBean latLngs = new LocationBean(LocationFrom.MOVEMAP, new LatLngBean(gMap.getCameraPosition().target.latitude, gMap.getCameraPosition().target.longitude));
+                            latLngs.setZoom(gMap.getCameraPosition().zoom);
+                            onCameraChangeListener.onCameraChange(latLngs);
+                        }
+                    });
+                    gMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
+                        @Override
+                        public void onCameraIdle() {
+                            LocationBean latLngs = new LocationBean(LocationFrom.MOVEMAP_FINISH, new LatLngBean(gMap.getCameraPosition().target.latitude, gMap.getCameraPosition().target.longitude));
+                            latLngs.setZoom(gMap.getCameraPosition().zoom);
+                            onCameraChangeListener.onCameraChange(latLngs);
+                        }
+                    });
+                }
+                setMapOption();
+            }
+        });
     }
 
     @Override
@@ -94,85 +115,86 @@ public class GmapController extends MapController {
 
 
     private void setMapOption() {
-//        UiSettings mUiSettings = aMap.getUiSettings();
-//        mUiSettings.setScaleControlsEnabled(HHconfig.isScaleControlsEnabled);//显示比例尺
-//        mUiSettings.setMyLocationButtonEnabled(HHconfig.isMyLocationButtonEnabled);//不显示定位按钮
-//        mUiSettings.setZoomControlsEnabled(HHconfig.isZoomControlsEnabled);//不显示缩放控件
-//        mUiSettings.setCompassEnabled(HHconfig.isCompassEnabled);//显示指南针
+        UiSettings mUiSettings = gMap.getUiSettings();
+        mUiSettings.setMyLocationButtonEnabled(HHconfig.isMyLocationButtonEnabled);//不显示定位按钮
+        mUiSettings.setZoomControlsEnabled(HHconfig.isZoomControlsEnabled);//不显示缩放控件
+        mUiSettings.setCompassEnabled(HHconfig.isCompassEnabled);//显示指南针
     }
 
     @Override
     public void onDestroy() {
-//        mMapView.onDestroy();
+        mMapView.onStop();
+        gMap = null;
+        mMapView.onDestroy();
     }
 
     @Override
     public void onResume() {
-//        mMapView.onResume();
+        mMapView.onResume();
     }
 
     @Override
     public void onPause() {
-//        mMapView.onPause();
+        mMapView.onPause();
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-//        mMapView.onSaveInstanceState(outState);
+        mMapView.onSaveInstanceState(outState);
     }
 
     @Override
     public void moveToPosition(LatLngBean latLngBean, float zoom) {
-//        if (zoom == 0) {
-//            aMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(latLngBean.getLat(), latLngBean.getLng())));
-//        } else {
-//            aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latLngBean.getLat(), latLngBean.getLng()), zoom));
-//        }
+        if (zoom == 0) {
+            gMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(latLngBean.getLat(), latLngBean.getLng())));
+        } else {
+            gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latLngBean.getLat(), latLngBean.getLng()), zoom));
+        }
     }
 
     @Override
     public void moveToPosition(LatLngBean latLngBean1, LatLngBean latLngBean2, int padding) {
-//        LatLngBounds.Builder b = LatLngBounds.builder();
-//        b.include(new LatLng(latLngBean1.getLat(), latLngBean1.getLng()));
-//        b.include(new LatLng(latLngBean2.getLat(), latLngBean2.getLng()));
-//        aMap.animateCamera(CameraUpdateFactory.newLatLngBounds(b.build(), padding));
+        LatLngBounds.Builder b = LatLngBounds.builder();
+        b.include(new LatLng(latLngBean1.getLat(), latLngBean1.getLng()));
+        b.include(new LatLng(latLngBean2.getLat(), latLngBean2.getLng()));
+        gMap.animateCamera(CameraUpdateFactory.newLatLngBounds(b.build(), padding));
     }
 
     @Override
     public Object addMarker(LineBean markerBean) {
         if (markerBean != null) {
-//            switch (markerBean.getType()) {
-//                case LINE:
-//                    if (!markerBean.isPositionList()) return null;
-//                    List<LatLng> latLngs = new ArrayList<>();
-//                    for (int i = 0; i < markerBean.getLatlngs().size(); i++) {
-//                        latLngs.add(new LatLng(markerBean.getLatlngs().get(i).getLat(), markerBean.getLatlngs().get(i).getLng()));
-//                    }
-//                    PolylineOptions polylineOptions = new PolylineOptions().addAll(latLngs);
-//                    if (markerBean.isColorList()) {
+            switch (markerBean.getType()) {
+                case LINE:
+                    if (!markerBean.isPositionList()) return null;
+                    List<LatLng> latLngs = new ArrayList<>();
+                    for (int i = 0; i < markerBean.getLatlngs().size(); i++) {
+                        latLngs.add(new LatLng(markerBean.getLatlngs().get(i).getLat(), markerBean.getLatlngs().get(i).getLng()));
+                    }
+                    PolylineOptions polylineOptions = new PolylineOptions().addAll(latLngs);
+                    if (markerBean.isColorList()) {
 //                        polylineOptions.colorValues(markerBean.getColorList());
-//                    }
-//                    Polyline line = aMap.addPolyline(polylineOptions);
-//                    setLineOption(line, markerBean);
-//                    return line;
-//                case CIRCLE:
-//                    if (!markerBean.isRaduis() || !markerBean.isPosition()) return null;
-//                    Circle circle = aMap.addCircle(new CircleOptions().center(new LatLng(markerBean.getLat(), markerBean.getLng())).radius(markerBean.getRadius()));
-//                    setLineOption(circle, markerBean);
-//                    return circle;
-//                case MARKER:
-//                    BitmapDescriptor bitmapDescriptor = null;
-//                    if (markerBean.isImg()) {//图片路径
-//                        bitmapDescriptor = BitmapDescriptorFactory.fromPath(markerBean.getImg());
-//                    }
-//                    if (markerBean.isImgResource()) {//图片id
-//                        bitmapDescriptor = BitmapDescriptorFactory.fromResource(markerBean.getImgSource());
-//                    }
-//                    if (bitmapDescriptor == null || !markerBean.isPosition()) return null;
-//                    Marker marker = aMap.addMarker(new MarkerOptions().position(new LatLng(markerBean.getLat(), markerBean.getLng())).icon(bitmapDescriptor));
-//                    setLineOption(marker, markerBean);
-//                    return marker;
-//            }
+                    }
+                    Polyline line = gMap.addPolyline(polylineOptions);
+                    setLineOption(line, markerBean);
+                    return line;
+                case CIRCLE:
+                    if (!markerBean.isRaduis() || !markerBean.isPosition()) return null;
+                    Circle circle = gMap.addCircle(new CircleOptions().center(new LatLng(markerBean.getLat(), markerBean.getLng())).radius(markerBean.getRadius()));
+                    setLineOption(circle, markerBean);
+                    return circle;
+                case MARKER:
+                    BitmapDescriptor bitmapDescriptor = null;
+                    if (markerBean.isImg()) {//图片路径
+                        bitmapDescriptor = BitmapDescriptorFactory.fromPath(markerBean.getImg());
+                    }
+                    if (markerBean.isImgResource()) {//图片id
+                        bitmapDescriptor = BitmapDescriptorFactory.fromResource(markerBean.getImgSource());
+                    }
+                    if (bitmapDescriptor == null || !markerBean.isPosition()) return null;
+                    Marker marker = gMap.addMarker(new MarkerOptions().position(new LatLng(markerBean.getLat(), markerBean.getLng())).icon(bitmapDescriptor));
+                    setLineOption(marker, markerBean);
+                    return marker;
+            }
         }
         return null;
     }
@@ -186,22 +208,20 @@ public class GmapController extends MapController {
     @Override
     public boolean removeMarker(Object line, LineType lineType) {
         if (line != null) {
-//            switch (lineType) {
-//                case LINE:
-//                    Polyline polyline = (Polyline) line;
-//                    polyline.remove();
-//                    break;
-//                case CIRCLE:
-//                    Circle circle = (Circle) line;
-//                    circle.remove();
-//                    break;
-//                case MARKER:
-//                    Marker marker = (Marker) line;
-//                    if (!marker.isRemoved()) {
-//                        marker.remove();
-//                    }
-//                    return marker.isRemoved();
-//            }
+            switch (lineType) {
+                case LINE:
+                    Polyline polyline = (Polyline) line;
+                    polyline.remove();
+                    break;
+                case CIRCLE:
+                    Circle circle = (Circle) line;
+                    circle.remove();
+                    break;
+                case MARKER:
+                    Marker marker = (Marker) line;
+                    marker.remove();
+                    return true;
+            }
         } else {
             return false;
         }
@@ -298,47 +318,47 @@ public class GmapController extends MapController {
 
     private void setLineOption(Object line, LineBean lineBean) {
         if (line != null) {
-//            switch (lineBean.getType()) {
-//                case LINE:
-//                    Polyline l = (Polyline) line;
-//                    if (lineBean.isWidth()) {//宽度
-//                        l.setWidth(lineBean.getWidth());
-//                    }
-//                    if (lineBean.isColor1()) {//颜色
-//                        l.setColor(lineBean.getColor1());
-//                    }
-//
-//                    if (lineBean.isPositionList()) {//坐标集合
-//                        List<LatLng> latLngs = new ArrayList<>();
-//                        for (int i = 0; i < lineBean.getLatlngs().size(); i++) {
-//                            latLngs.add(new LatLng(lineBean.getLatlngs().get(i).getLat(), lineBean.getLatlngs().get(i).getLng()));
-//                        }
-//                        l.setPoints(latLngs);
-//                    }
-//
-//                    break;
-//                case CIRCLE:
-//                    Circle c = (Circle) line;
-//                    if (lineBean.isPosition()) {//圆心坐标
-//                        c.setCenter(new LatLng(lineBean.getLat(), lineBean.getLng()));
-//                    }
-//                    if (lineBean.isRaduis()) {//半径
-//                        c.setRadius(lineBean.getRadius());
-//                    }
-//                    break;
-//                case MARKER:
-//                    Marker m = (Marker) line;
-//                    if (lineBean.isPosition()) {//位置
-//                        m.setPosition(new LatLng(lineBean.getLat(), lineBean.getLng()));
-//                    }
-//                    if (lineBean.isImg()) {//图片路径
-//                        m.setIcon(BitmapDescriptorFactory.fromPath(lineBean.getImg()));
-//                    }
-//                    if (lineBean.isImgResource()) {//图片id
-//                        m.setIcon(BitmapDescriptorFactory.fromResource(lineBean.getImgSource()));
-//                    }
-//                    break;
-//            }
+            switch (lineBean.getType()) {
+                case LINE:
+                    Polyline l = (Polyline) line;
+                    if (lineBean.isWidth()) {//宽度
+                        l.setWidth(lineBean.getWidth());
+                    }
+                    if (lineBean.isColor1()) {//颜色
+                        l.setColor(lineBean.getColor1());
+                    }
+
+                    if (lineBean.isPositionList()) {//坐标集合
+                        List<LatLng> latLngs = new ArrayList<>();
+                        for (int i = 0; i < lineBean.getLatlngs().size(); i++) {
+                            latLngs.add(new LatLng(lineBean.getLatlngs().get(i).getLat(), lineBean.getLatlngs().get(i).getLng()));
+                        }
+                        l.setPoints(latLngs);
+                    }
+
+                    break;
+                case CIRCLE:
+                    Circle c = (Circle) line;
+                    if (lineBean.isPosition()) {//圆心坐标
+                        c.setCenter(new LatLng(lineBean.getLat(), lineBean.getLng()));
+                    }
+                    if (lineBean.isRaduis()) {//半径
+                        c.setRadius(lineBean.getRadius());
+                    }
+                    break;
+                case MARKER:
+                    Marker m = (Marker) line;
+                    if (lineBean.isPosition()) {//位置
+                        m.setPosition(new LatLng(lineBean.getLat(), lineBean.getLng()));
+                    }
+                    if (lineBean.isImg()) {//图片路径
+                        m.setIcon(BitmapDescriptorFactory.fromPath(lineBean.getImg()));
+                    }
+                    if (lineBean.isImgResource()) {//图片id
+                        m.setIcon(BitmapDescriptorFactory.fromResource(lineBean.getImgSource()));
+                    }
+                    break;
+            }
         }
     }
 }

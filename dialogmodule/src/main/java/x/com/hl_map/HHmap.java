@@ -7,29 +7,32 @@ import android.view.ViewGroup;
 import x.com.hl_map.bean.LatLngBean;
 import x.com.hl_map.bean.LineBean;
 import x.com.hl_map.bean.LineType;
-import x.com.hl_map.bean.MapType;
 import x.com.hl_map.bean.RouteSearchType;
 import x.com.hl_map.listener.OnCameraChangeListener;
 import x.com.hl_map.listener.OnLocationListener;
+import x.com.hl_map.listener.OnMapReadyListener;
 
 public class HHmap {
     private MapController mapController;
-    private MapType mapType;
     private Context context;
 
-    public HHmap(Context context, MapType mapType, MapController mapController) {
-        this.mapType = mapType;
+    public HHmap(Context context,MapController mapController) {
         this.context = context;
         this.mapController = mapController;
         mapController.initMap(context.getApplicationContext());
     }
 
     public void addMapView(ViewGroup viewGroup, Bundle bundle) {
-        addMapView(viewGroup, bundle, null);
+        addMapView(viewGroup, bundle, null,null);
     }
 
     public void addMapView(ViewGroup viewGroup, Bundle bundle, OnCameraChangeListener onCameraChangeListener) {
-        mapController.addMapView(context, viewGroup, bundle, onCameraChangeListener);
+        addMapView(viewGroup, bundle, onCameraChangeListener, null);
+    }
+
+    //谷歌地图需要初始化位置的，使用这个方法
+    public void addMapView(ViewGroup viewGroup, Bundle bundle, OnCameraChangeListener onCameraChangeListener, OnMapReadyListener onMapReadyListener) {
+        mapController.addMapView(context, viewGroup, bundle, onCameraChangeListener, onMapReadyListener);
     }
 
     public void addGoogleMap(boolean isOpen) {
