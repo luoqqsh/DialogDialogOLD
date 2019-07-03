@@ -8,7 +8,6 @@ import android.webkit.JavascriptInterface;
 import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -27,7 +26,7 @@ public class H5Activity extends BaseActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LinearLayout mLayout = new LinearLayout(getApplicationContext());
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         webView = new x5WebView(this);
         webView.setLayoutParams(params);
         mLayout.addView(webView);

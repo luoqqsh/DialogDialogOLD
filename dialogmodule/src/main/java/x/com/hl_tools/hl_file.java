@@ -214,6 +214,22 @@ public class hl_file {
         }
     }
 
+    public static boolean createDir(String filePath) {
+        File dirFile = new File(filePath);
+        return createDir(dirFile);
+    }
+
+    public static boolean createDir(String parentPath, String dirName) {
+        File dirFile = new File(parentPath, dirName);
+        return createDir(dirFile);
+    }
+
+    public static boolean createDir(File file) {
+        if (!(file.exists() && file.isDirectory())) {
+            return (file.mkdirs());
+        }
+        return false;
+    }
 
     public static File createFile(String parentPath, String dirName) {
         try {

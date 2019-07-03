@@ -74,8 +74,6 @@ public class FloatWindowUtil {
         } else {
             wmParams.type = WindowManager.LayoutParams.TYPE_PHONE;
         }
-
         return wmParams;
     }
-
 }

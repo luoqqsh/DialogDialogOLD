@@ -16,7 +16,7 @@ import x.com.hl_player.HHPlayer2;
 import x.com.hl_player.base.HHMediaPlayer;
 import x.com.hl_tools.hl_time;
 
-public class HHMediaActivity extends BaseActivity {
+public class HHMedia2Activity extends BaseActivity {
     //  /storage/emulated/0/Music/虫儿飞 - 郑伊健.mp3
 //  /storage/emulated/0/Music/炽热的青春 - 贾乃亮.mp3
 //  /storage/emulated/0/Music/齿轮 - 赵薇.mp3

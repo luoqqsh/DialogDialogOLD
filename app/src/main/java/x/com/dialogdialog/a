@@ -1,0 +1,3 @@
+ActivityThread 里的main方法
+App启动，ActivityThread.Main执行，Looper.prepareMainLooper(),prepare(),创建唯一主线程对象
+

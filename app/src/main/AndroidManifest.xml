@@ -52,12 +52,14 @@
         <activity android:name=".LogActivity" />
         <activity android:name=".GLActivity" />
         <activity android:name=".MediaActivity" />
-        <activity android:name=".HHMediaActivity" />
+        <activity android:name=".HHMedia2Activity" />
         <activity android:name=".DialogMainJavaActivity" />
         <activity android:name=".HHMediaViewActivity" />
         <activity android:name=".MappingActivity" />
         <activity android:name=".Viewpager2.ViewActivity" />
-        <activity android:name=".MapActivity" />
+        <activity android:name=".HHMapActivity" />
+        <activity android:name=".MediaCodecActivity" />
+        <activity android:name=".HHCameraActivity" />
     </application>
 
 </manifest>

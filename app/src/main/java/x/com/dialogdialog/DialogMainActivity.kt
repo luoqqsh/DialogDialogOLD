@@ -37,7 +37,9 @@ class DialogMainActivity : BaseActivity() {
         open.setOnClickListener { startActivity(Intent(mContext, GLActivity::class.java)) }
         mapping.setOnClickListener { startActivity(Intent(mContext, MappingActivity::class.java)) }
         view.setOnClickListener { startActivity(Intent(mContext, ViewActivity::class.java)) }
-        map.setOnClickListener { startActivity(Intent(mContext, MapActivity::class.java)) }
+        camera.setOnClickListener { startActivity(Intent(mContext, HHCameraActivity::class.java)) }
+        mediacodec.setOnClickListener { startActivity(Intent(mContext, ViewActivity::class.java)) }
+        map.setOnClickListener { startActivity(Intent(mContext, HHMapActivity::class.java)) }
         close.setOnClickListener {
             val orientation = hl_orientation()
             orientation.orientationEnable(this, null)
@@ -84,7 +86,7 @@ class DialogMainActivity : BaseActivity() {
                 ViseLog.d(failPermission)
             }
         })
-        hl_permissions.applyPermission(mContext, arrayOf(Manifest.permission.READ_PHONE_STATE), object : hl_permissions.RequestPermissionCallBack {
+        hl_permissions.applyPermission(mContext, arrayOf(Manifest.permission.CAMERA), object : hl_permissions.RequestPermissionCallBack {
             override fun requestPermissionSuccess() {
 
             }

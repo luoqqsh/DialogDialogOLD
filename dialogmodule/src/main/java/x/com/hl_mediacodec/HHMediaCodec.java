@@ -1,4 +1,4 @@
-package x.com.hl_player.tools;
+package x.com.hl_mediacodec;
 
 import android.content.Context;
 import android.media.MediaCodec;

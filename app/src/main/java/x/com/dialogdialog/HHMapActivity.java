@@ -27,7 +27,7 @@ import x.com.hl_map.listener.OnCameraChangeListener;
 import x.com.hl_map.listener.OnLocationListener;
 import x.com.hl_map.listener.OnMapReadyListener;
 
-public class MapActivity extends BaseActivity {
+public class HHMapActivity extends BaseActivity {
     private HHmap hHmap;
     private HHLocation hhLocation;
     private Object marker;

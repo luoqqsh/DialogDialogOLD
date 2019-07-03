@@ -1,9 +1,22 @@
 package x.com.hl_tools;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.text.TextUtils;
 
 public class hl_device {
+    //获取屏幕角度方向
+    public static int getRotation(Activity activity) {
+        return activity.getWindowManager().getDefaultDisplay().getRotation();
+    }
+
+    //设备是否支持相机设备
+    public static boolean isSupportCamera(Context context) {
+        return context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);
+    }
+
     /**
      * 是否是三星手机
      */

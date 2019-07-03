@@ -72,7 +72,7 @@ public class DialogMainJavaActivity extends BaseActivity {
     private void init() {
         findViewById(R.id.java).setVisibility(View.GONE);
         findViewById(R.id.tongzhi).setOnClickListener(view -> startActivity(new Intent(mContext, NotificationActivity.class)));
-        findViewById(R.id.media).setOnClickListener(view -> startActivity(new Intent(mContext, HHMediaActivity.class)));
+        findViewById(R.id.media).setOnClickListener(view -> startActivity(new Intent(mContext, HHMedia2Activity.class)));
         findViewById(R.id.x5web).setOnClickListener(v -> startActivity(new Intent(mContext, H5Activity.class)));
         findViewById(R.id.log).setOnClickListener(v -> startActivity(new Intent(mContext, LogActivity.class)));
         findViewById(R.id.open).setOnClickListener(v -> startActivity(new Intent(mContext, GLActivity.class)));
