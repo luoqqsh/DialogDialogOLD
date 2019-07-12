@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:jiujie="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="25dp"
@@ -33,6 +34,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="camera" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animation_view4"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            jiujie:lottie_autoPlay="false"
+            jiujie:lottie_fileName="shan.json"
+            jiujie:lottie_imageAssetsFolder="images/shan/images" />
+
     </LinearLayout>
 
     <LinearLayout

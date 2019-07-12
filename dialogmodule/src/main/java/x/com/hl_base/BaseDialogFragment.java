@@ -1,10 +1,18 @@
 package x.com.hl_base;
 
+import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Build;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
+import java.util.Objects;
 
 public class BaseDialogFragment extends DialogFragment {
     private OnDismissListener onDismissListener;
@@ -49,5 +57,22 @@ public class BaseDialogFragment extends DialogFragment {
 
     public void setOnDismissListener(OnDismissListener onDismissListener) {
         this.onDismissListener = onDismissListener;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void initSoftInputListener() {
+        Objects.requireNonNull(getDialog().getWindow()).getDecorView()
+                .setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View view, MotionEvent event) {
+                        InputMethodManager manager = (InputMethodManager) Objects.requireNonNull(getActivity()).getSystemService(Context.INPUT_METHOD_SERVICE);
+                        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                            if (getDialog().getCurrentFocus() != null && getDialog().getCurrentFocus().getWindowToken() != null) {
+                                manager.hideSoftInputFromWindow(getDialog().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                            }
+                        }
+                        return false;
+                    }
+                });
     }
 }
