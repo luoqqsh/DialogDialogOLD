@@ -9,7 +9,6 @@ import x.com.dialogdialog.Viewpager2.ViewActivity
 import x.com.hl_dialog.DFNDialog
 import x.com.hl_log.ViseLog
 import x.com.hl_tools.DialogTools.myObjectPool
-import x.com.hl_tools.hl_orientation
 import x.com.hl_tools.hl_permissions
 
 
@@ -25,7 +24,6 @@ class DialogMainActivity : BaseActivity() {
     }
 
     private fun test() {
-
     }
 
     private fun init() {
@@ -41,8 +39,10 @@ class DialogMainActivity : BaseActivity() {
         mediacodec.setOnClickListener { startActivity(Intent(mContext, ViewActivity::class.java)) }
         map.setOnClickListener { startActivity(Intent(mContext, HHMapActivity::class.java)) }
         close.setOnClickListener {
-            val orientation = hl_orientation()
-            orientation.orientationEnable(this, null)
+//            val orientation = hl_orientation()
+//            orientation.orientationEnable(this, null)
+            animation_view4.playAnimation()
+
         }
 
         dialog.setOnClickListener {
