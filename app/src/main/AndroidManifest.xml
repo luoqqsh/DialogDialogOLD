@@ -60,6 +60,7 @@
         <activity android:name=".HHMapActivity" />
         <activity android:name=".MediaCodecActivity" />
         <activity android:name=".HHCameraActivity" />
+        <activity android:name=".Demo.DemoActivity" />
     </application>
 
 </manifest>
