@@ -9,6 +9,8 @@ import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -16,6 +18,18 @@ import java.util.Objects;
 
 public class BaseDialogFragment extends DialogFragment {
     private OnDismissListener onDismissListener;
+
+    public void showFDialog(FragmentActivity mActivity) {
+        if (!isAdded()) {
+            show(mActivity.getSupportFragmentManager(), mActivity.getClass().getName());
+        }
+    }
+
+    public void showFDialog(Fragment fragment) {
+        if (!isAdded()) {
+            show(fragment.getChildFragmentManager(), fragment.getClass().getName());
+        }
+    }
 
     @Override
     public void onDismiss(final DialogInterface dialog) {

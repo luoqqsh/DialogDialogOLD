@@ -17,7 +17,7 @@ import x.com.hl_player.base.HHMediaPlayer;
 import x.com.hl_tools.hl_time;
 
 
-public class HHMediaViewActivity extends BaseActivity {
+public class HHMedia3Activity extends BaseActivity {
     private HHPlayer3 hhPlayer3;
     private LinearLayout hhview;
     //  /storage/emulated/0/Music/虫儿飞 - 郑伊健.mp3
@@ -41,7 +41,8 @@ public class HHMediaViewActivity extends BaseActivity {
 //  /storage/emulated/0/ClearWatermark/CWDownLoadTool/我的下载/bb327cd9d2c4d45cde8b168cb48f0e26.mp4
     private FrameLayout surface;
     private String musicpath = "/storage/emulated/0/Music/不可说 - 霍建华、赵丽颖.mp3";
-    private String videopath = "/storage/emulated/0/DCIM/Camera/19619104518845.mp4";
+//    private String videopath = "/storage/emulated/0/DCIM/Camera/19619104518845.mp4";
+    private String videopath = "http://183.56.168.47/cdn-out.iqy.sc96655.com/tslive/c204_scc_20190107_yvwl5h02_original_t10/c204_scc_20190107_yvwl5h02_original_t10.m3u8";
     //    private String videopath = "http://s.bizhijingling.com/uploadfile/userload/vedio/2019/0516/20190516065450574.mp4";
     private boolean ismute = false;
     private TextView currenttime, totaltime;
@@ -54,7 +55,7 @@ public class HHMediaViewActivity extends BaseActivity {
         setContentView(R.layout.activity_mediaview);
         initUI();
         hhview = findViewById(R.id.hhPlayerView3);
-        hhPlayer3 = new HHPlayer3(this, new HHMediaPlayer(), HHPlayer3.PlayerView.NEWTEXTURE, hhview);
+        hhPlayer3 = new HHPlayer3(this, new HHMediaPlayer(), HHPlayer3.PlayerView.NEWSURFACE, hhview);
         hhPlayer3.setLooping(false);
         hhPlayer3.setCompletionListener(new HOnListener<Object>() {
             @Override
