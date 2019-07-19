@@ -8,6 +8,8 @@ import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +17,10 @@ import java.util.Map;
 import x.com.dialogdialog.Base.BaseActivity;
 import x.com.hl_dialog.DFNDialog;
 import x.com.hl_log.ViseLog;
+import x.com.hl_player.base.TvBean;
+import x.com.hl_player.base.TvInfo;
+import x.com.hl_player.base.TvType;
+import x.com.hl_player.base.TvUrl;
 import x.com.hl_tools.hl_cachefile;
 import x.com.hl_tools.hl_drawable;
 import x.com.hl_tools.hl_img;
@@ -47,26 +53,36 @@ public class DialogMainJavaActivity extends BaseActivity {
     }
 
     private void test() {
-        List<PermissionModel> permissionModels=new ArrayList<>();
+        List<PermissionModel> permissionModels = new ArrayList<>();
         ImageView imageView = findViewById(R.id.imgv_test);
         imageView.setBackground(hl_drawable.getRoundRectDrawable(0, hl_img.getColorFromString("#5bc0de"), true, 10));
 
-        permissionModels.add(new PermissionModel("aa",false,"wwww"));
-        permissionModels.add(new PermissionModel("a12a",false,"ww"));
-        permissionModels.add(new PermissionModel("a333a",true,"dddd"));
-        permissionModels.add(new PermissionModel("aa444",false,"czczxccxc"));
+        permissionModels.add(new PermissionModel("aa", false, "wwww"));
+        permissionModels.add(new PermissionModel("a12a", false, "ww"));
+        permissionModels.add(new PermissionModel("a333a", true, "dddd"));
+        permissionModels.add(new PermissionModel("aa444", false, "czczxccxc"));
 
 
-        hl_sharedP.setParam(this,"aaaas",permissionModels);
+        hl_sharedP.setParam(this, "aaaas", permissionModels);
 
 
-        List<PermissionModel> ccc=hl_sharedP.getParam(this,"aaaas123",new ArrayList<>());
+        List<PermissionModel> ccc = hl_sharedP.getParam(this, "aaaas123", new ArrayList<>());
         ViseLog.d(ccc);
 
         hl_cachefile.instance(this).saveObject("aaa", permissionModels);
         List<PermissionModel> aaa = hl_cachefile.instance(this).readObject("aaa");
         ViseLog.d(aaa);
         hl_cachefile.instance(this).clear();
+
+        TvBean tvBean = new TvBean(TvType.中央台, "https://www.baidu.com/a.m3u8", "中央电视台", new TvInfo());
+        List<TvBean> tvBeans = new ArrayList<>();
+        tvBeans.add(tvBean);
+        tvBeans.add(tvBean);
+        tvBeans.add(tvBean);
+        TvUrl tvUrl = new TvUrl(1, "20190719", tvBeans);
+        Gson gson = new Gson();
+        String json = gson.toJson(tvUrl);
+        ViseLog.d(json);
     }
 
     private void init() {
