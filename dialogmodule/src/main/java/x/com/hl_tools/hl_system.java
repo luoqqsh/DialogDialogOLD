@@ -42,7 +42,7 @@ public class hl_system {
      * @param className 判断的服务名字
      * @return true -- 在运行 false -- 不在运行
      */
-    public boolean isServiceRunning(Context mContext, String className) {
+    public static boolean isServiceRunning(Context mContext, String className) {
         boolean isRunning = false;
         ActivityManager activityManager = (ActivityManager) mContext
                 .getSystemService(Context.ACTIVITY_SERVICE);
@@ -159,7 +159,7 @@ public class hl_system {
      * @return
      */
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private String getForegroundApp(Context context) {
+    public static String getForegroundApp(Context context) {
         /**
          * 此功能需要在设置的（允许查看使用情况的应用）里打开，在很多手机设置里没有发现这一入口。
          需要在代码里打开，注意要判断一下系统版本

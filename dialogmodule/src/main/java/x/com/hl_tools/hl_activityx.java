@@ -227,7 +227,7 @@ public class hl_activityx {
      *
      * @return
      */
-    private static String getNavBarOverride() {
+    public static String getNavBarOverride() {
         String sNavBarOverride = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             try {

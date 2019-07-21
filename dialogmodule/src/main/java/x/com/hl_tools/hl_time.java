@@ -42,7 +42,7 @@ public class hl_time {
     }
 
     //获取当前日期
-    public String getTodayData(String timetype) {
+    public static String getTodayData(String timetype) {
         Calendar calendar = Calendar.getInstance();
         Date tempDate = new Date();
         calendar.setTime(tempDate);
@@ -51,7 +51,7 @@ public class hl_time {
     }
 
     // 获得明天日期,明天为1，后天为2
-    public String getTomoData(String timetype, int amount) {
+    public static String getTomoData(String timetype, int amount) {
         Calendar calendar = Calendar.getInstance();
         Date tempDate = new Date();
         calendar.setTime(tempDate);

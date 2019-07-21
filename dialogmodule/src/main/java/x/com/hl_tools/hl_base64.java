@@ -151,7 +151,7 @@ public class hl_base64 {
     }
 
 
-    private static char[] getPaddedBytes(String source) {
+    public static char[] getPaddedBytes(String source) {
         char[] converted = source.toCharArray();
         int requiredLength = 3 * ((converted.length + 2) / 3);
         char[] result = new char[requiredLength];
@@ -160,7 +160,7 @@ public class hl_base64 {
     }
 
 
-    private static void convert3To4(char[] source, int sourceIndex, char[] target) {
+    public static void convert3To4(char[] source, int sourceIndex, char[] target) {
         target[0] = (char) (source[sourceIndex] >>> 2);
         target[1] = (char) (((source[sourceIndex] & 0x03) << 4) | (source[sourceIndex + 1] >>> 4));
         target[2] = (char) (((source[sourceIndex + 1] & 0x0f) << 2) | (source[sourceIndex + 2] >>> 6));

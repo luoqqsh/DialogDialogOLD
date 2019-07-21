@@ -1,12 +1,12 @@
 package x.com.hl_tools;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.view.Window;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ContextThemeWrapper;
+import androidx.fragment.app.FragmentActivity;
 
 public class hl_context {
     /**
@@ -15,10 +15,10 @@ public class hl_context {
      * @param context context
      * @return object of Activity or null if it is not Activity
      */
-    public static Activity scanForActivity(Context context) {
+    public static FragmentActivity scanForActivity(Context context) {
         if (context == null) return null;
-        if (context instanceof Activity) {
-            return (Activity) context;
+        if (context instanceof FragmentActivity) {
+            return (FragmentActivity) context;
         } else if (context instanceof ContextWrapper) {
             return scanForActivity(((ContextWrapper) context).getBaseContext());
         }

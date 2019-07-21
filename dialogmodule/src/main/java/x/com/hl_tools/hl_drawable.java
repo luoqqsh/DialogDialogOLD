@@ -24,7 +24,7 @@ public class hl_drawable {
     /*
      * Drawable → Bitmap
      */
-    private static Bitmap drawable2Bitmap(Drawable drawable) {
+    public static Bitmap drawable2Bitmap(Drawable drawable) {
         if (drawable == null) {
             return null;
         }
@@ -46,8 +46,7 @@ public class hl_drawable {
     /*
      * Bitmap → Drawable
      */
-    @SuppressWarnings("deprecation")
-    private static Drawable bitmap2Drawable(Bitmap bm) {
+    public static Drawable bitmap2Drawable(Bitmap bm) {
         if (bm == null) {
             return null;
         }
@@ -59,7 +58,7 @@ public class hl_drawable {
     /*
      * Bitmap → byte[]
      */
-    private static byte[] Bitmap2Bytes(Bitmap bm) {
+    public static byte[] Bitmap2Bytes(Bitmap bm) {
         if (bm == null) {
             return null;
         }
@@ -71,7 +70,7 @@ public class hl_drawable {
     /*
      * byte[] → Bitmap
      */
-    private static Bitmap Bytes2Bimap(byte[] b) {
+    public static Bitmap Bytes2Bimap(byte[] b) {
         if (b.length == 0) {
             return null;
         }

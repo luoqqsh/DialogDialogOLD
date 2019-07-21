@@ -48,7 +48,7 @@ public class hl_string {
         }
         return b;
     }
-    private static String trimSpaces(String IP) {// 去掉IP字符串前后所有的空格
+    public static String trimSpaces(String IP) {// 去掉IP字符串前后所有的空格
         while (IP.startsWith(" ")) {
             IP = IP.substring(1, IP.length()).trim();
         }
