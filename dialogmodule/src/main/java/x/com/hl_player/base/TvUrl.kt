@@ -1,5 +1,5 @@
 package x.com.hl_player.base
 
-class TvUrl(private val version: Int//版本
-            , private val date: String//日期，格式yyyyMMddHHmmss
-            , private val links: List<TvBean>)
+class TvUrl(val version: Int//版本
+            , val date: String//日期，格式yyyyMMddHHmmss
+            , val links: List<TvBean>)
