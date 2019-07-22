@@ -15,6 +15,8 @@ import java.lang.reflect.Method;
 
 import x.com.hl_tools.permissions.ApplyPermissionActivity;
 
+import static x.com.hl_tools.hl_context.getAppCompActivity;
+
 public class hl_screen {
 
     public static float dp2Px(Context context, float dp) {
@@ -100,8 +102,8 @@ public class hl_screen {
 
     @SuppressLint("RestrictedApi")
     public static void hideSupportActionBar(Context context) {
-        if (hl_context.getAppCompActivity(context) != null) {
-            ActionBar ab = hl_context.getAppCompActivity(context).getSupportActionBar();
+        if (getAppCompActivity(context) != null) {
+            ActionBar ab = getAppCompActivity(context).getSupportActionBar();
             if (ab != null) {
                 ab.setShowHideAnimationEnabled(false);
                 ab.hide();
@@ -113,8 +115,8 @@ public class hl_screen {
 
     @SuppressLint("RestrictedApi")
     public static void showSupportActionBar(Context context) {
-        if (hl_context.getAppCompActivity(context) != null) {
-            ActionBar ab = hl_context.getAppCompActivity(context).getSupportActionBar();
+        if (getAppCompActivity(context) != null) {
+            ActionBar ab = getAppCompActivity(context).getSupportActionBar();
             if (ab != null) {
                 ab.setShowHideAnimationEnabled(false);
                 ab.show();
@@ -122,8 +124,4 @@ public class hl_screen {
         }
         hl_context.getWindow(context).clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
-
-    
-
-
 }

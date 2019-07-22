@@ -19,23 +19,4 @@ public class BmapUtil {
     public static boolean isAMapDataAvailable(double lat, double lng) {
         return false;
     }
-
-    /**
-     * 其他地图转高德地图坐标
-     *
-     * @param context 上下文
-     * @param lat     纬度
-     * @param lng     经度
-     * @return 转换后的坐标
-     */
-    public static LatLngBean other2Gaode(Context context, double lat, double lng) {
-        CoordinateConverter converter = new CoordinateConverter();
-        // CoordType.GPS 待转换坐标类型
-        converter.from(CoordinateConverter.CoordType.GPS);
-        // sourceLatLng待转换坐标点 LatLng类型
-        converter.coord(new LatLng(lat, lng));
-        // 执行转换操作
-        LatLng desLatLng = converter.convert();
-        return new LatLngBean(desLatLng.latitude, desLatLng.longitude);
-    }
 }

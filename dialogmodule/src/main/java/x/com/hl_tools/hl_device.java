@@ -29,6 +29,28 @@ public class hl_device {
     }
 
     /**
+     * 是否是乐视手机
+     */
+    public static boolean isLePhone() {
+        String brand = Build.BRAND;
+        if (!TextUtils.isEmpty(brand)) {
+            return brand.toLowerCase().contains("leeco") || brand.toLowerCase().contains("letv");
+        }
+        return false;
+    }
+
+    /**
+     * 是否是360手机
+     */
+    public static boolean is360Phone() {
+        String brand = Build.BRAND;
+        if (!TextUtils.isEmpty(brand)) {
+            return brand.toLowerCase().contains("360") || brand.toLowerCase().contains("qiku");
+        }
+        return false;
+    }
+
+    /**
      * 是否是魅族手机
      */
     public static boolean isMeiZuPhone() {
@@ -54,6 +76,61 @@ public class hl_device {
         String brand = Build.BRAND;
         if (!TextUtils.isEmpty(brand)) {
             return brand.toLowerCase().contains("xiaomi");
+        }
+        return false;
+    }
+
+    /**
+     * 是否是中兴手机
+     */
+    public static boolean isZTEPhone() {
+        String brand = Build.BRAND;
+        if (!TextUtils.isEmpty(brand)) {
+            return brand.toLowerCase().contains("zte");
+        }
+        return false;
+    }
+
+    /**
+     * 是否是一加手机
+     */
+    public static boolean isOnePlusPhone() {
+        String brand = Build.BRAND;
+        if (!TextUtils.isEmpty(brand)) {
+            return brand.toLowerCase().contains("oneplus");
+        }
+        return false;
+    }
+
+    /**
+     * 是否是努比亚手机
+     */
+    public static boolean isNubiaPhone() {
+        String brand = Build.BRAND;
+        if (!TextUtils.isEmpty(brand)) {
+            return brand.toLowerCase().contains("nubia");
+        }
+        return false;
+    }
+
+    /**
+     * 是否是索尼手机
+     */
+    public static boolean isSonyPhone() {
+        String brand = Build.BRAND;
+        if (!TextUtils.isEmpty(brand)) {
+            return brand.toLowerCase().contains("sony");
+        }
+        return false;
+    }
+
+    /**
+     * 是否是谷歌手机
+     */
+    public static boolean isGooglePhone() {
+        String brand = Build.BRAND;
+        if (!TextUtils.isEmpty(brand)) {
+            return brand.toLowerCase().contains("google");
         }
         return false;
     }
