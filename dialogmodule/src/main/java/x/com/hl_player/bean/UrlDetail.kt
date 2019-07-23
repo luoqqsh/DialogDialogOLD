@@ -1,7 +1,7 @@
-package x.com.hl_player.base
+package x.com.hl_player.bean
 
 
-class TvInfo {
+class UrlDetail {
     var vWidth: Int = 0//视频宽
     var vHeight: Int = 0//视频高
     var vDuration: Int = 0//视频时长
