@@ -76,7 +76,7 @@ public class DialogMainJavaActivity extends BaseActivity {
         ViseLog.d(aaa);
         hl_cachefile.instance(this).clear();
 
-        TvDataList tvDataList = new TvDataList(TypeClass.中央台, "中央电视台", "https://www.baidu.com/a.m3u8", TypeClarity.H4k, TypeState.流畅, new UrlDetail());
+        TvDataList tvDataList = new TvDataList(TypeClass.中央台, "中央电视台", "https://www.baidu.com/a.m3u8", TypeClarity.H4k, TypeState.流畅);
         tvDataList.addUrl("www.TypeState.cccc.vvvv", TypeClarity.高清, TypeState.流畅);
         tvDataList.addUrl("www.cccc.cccc.xxx", TypeClarity.高清, TypeState.流畅);
         ViseLog.d(tvDataList.getUrls().get(1).getState());
