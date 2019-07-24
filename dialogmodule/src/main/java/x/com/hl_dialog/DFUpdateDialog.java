@@ -13,19 +13,19 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.File;
-import java.util.Map;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
+import java.io.File;
+import java.util.Map;
+
 import x.com.hl_base.BaseDialogFragment;
-import x.com.hl_tools.hl_file;
-import x.com.hl_tools.hl_permissions;
 import x.com.hl_tools.hl_app;
+import x.com.hl_tools.hl_file;
 import x.com.hl_tools.hl_interface.DownListener;
 import x.com.hl_tools.hl_net;
+import x.com.hl_tools.hl_permissions;
 import x.com.hl_tools.hl_permissionsOther;
 
 public class DFUpdateDialog extends BaseDialogFragment {
@@ -130,7 +130,7 @@ public class DFUpdateDialog extends BaseDialogFragment {
         }
         dialog_btnlayout.setVisibility(View.GONE);
         ll_progress.setVisibility(View.VISIBLE);
-        final File parentFile = hl_file.getParentFile(context);
+        final File parentFile = new File(hl_file.getAppCachePath(context));
         String downloadfile = parentFile.getPath() + "/" + 3500 + hl_app.getVersionName(context, context.getPackageName()) + ".apk";
         hl_net.downloadFile(url, downloadfile, new DownListener() {
             @Override

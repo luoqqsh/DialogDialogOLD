@@ -20,7 +20,7 @@ public class Codec {
 
     public void videos(String inputfile) {
         if (!hl_file.isFileExist(outputFile)) {
-            ViseLog.d(hl_file.createDir(outputFile));
+            ViseLog.d(hl_file.createFolder(outputFile));
         }
         exec = Executors.newCachedThreadPool();
         exec.execute(new Runnable() {

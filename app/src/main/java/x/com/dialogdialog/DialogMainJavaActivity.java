@@ -17,14 +17,14 @@ import java.util.Map;
 import x.com.dialogdialog.Base.BaseActivity;
 import x.com.hl_dialog.DFNDialog;
 import x.com.hl_log.ViseLog;
-import x.com.hl_player.bean.TypeState;
-import x.com.hl_player.bean.TypeClarity;
-import x.com.hl_player.bean.TvDataList;
-import x.com.hl_player.bean.UrlDetail;
-import x.com.hl_player.bean.TypeClass;
 import x.com.hl_player.bean.TvData;
+import x.com.hl_player.bean.TvDataList;
+import x.com.hl_player.bean.TypeClarity;
+import x.com.hl_player.bean.TypeClass;
+import x.com.hl_player.bean.TypeState;
 import x.com.hl_tools.hl_cachefile;
 import x.com.hl_tools.hl_drawable;
+import x.com.hl_tools.hl_file;
 import x.com.hl_tools.hl_img;
 import x.com.hl_tools.hl_permissions;
 import x.com.hl_tools.hl_sharedP;
@@ -69,26 +69,26 @@ public class DialogMainJavaActivity extends BaseActivity {
 
 
         List<PermissionModel> ccc = hl_sharedP.getParam(this, "aaaas123", new ArrayList<>());
-        ViseLog.d(ccc);
+//        ViseLog.d(ccc);
 
         hl_cachefile.instance(this).saveObject("Available", permissionModels);
         List<PermissionModel> aaa = hl_cachefile.instance(this).readObject("Available");
-        ViseLog.d(aaa);
+//        ViseLog.d(aaa);
         hl_cachefile.instance(this).clear();
 
         TvDataList tvDataList = new TvDataList(TypeClass.中央台, "中央电视台", "https://www.baidu.com/a.m3u8", TypeClarity.H4k, TypeState.流畅);
         tvDataList.addUrl("www.TypeState.cccc.vvvv", TypeClarity.高清, TypeState.流畅);
-        tvDataList.addUrl("www.cccc.cccc.xxx", TypeClarity.高清, TypeState.流畅);
-        ViseLog.d(tvDataList.getUrls().get(1).getState());
-        ViseLog.d(tvDataList.getUrls());
+        tvDataList.addUrl("www.cccc.cccc.xxx", TypeClarity.H8k, TypeState.卡顿);
         List<TvDataList> tvDataLists = new ArrayList<>();
-        tvDataLists.add(tvDataList);
-        tvDataLists.add(tvDataList);
         tvDataLists.add(tvDataList);
         TvData tvUrl = new TvData(1, "20190719", tvDataLists);
         Gson gson = new Gson();
         String json = gson.toJson(tvUrl);
         ViseLog.d(json);
+
+//        hl_file.writeStringToFile(hl_file.SDROOT, "aaacccddd.txt", json);
+
+        ViseLog.d(hl_file.moveFile(hl_file.SDROOT + "/abcdef.aaa", hl_file.SDROOT + "/abc/ab.daa"));
     }
 
     private void init() {
