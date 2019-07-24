@@ -32,8 +32,6 @@ public class hl_file {
 //    getExternalFilesDir(null) = /mnt/sdcard/Android/data/com.my.app/files
 //    getFilesDir()	= /data/data/com.my.app/files
 
-    //安卓Q沙盒目录Context.getExternalFilesDir() =
-    //安卓Q沙盒图片Context.getExternalFilesDir(Environment.DIRECTORY_PICTURES) =
     public static final String SDROOT = Environment.getExternalStorageDirectory().getPath();
     public static final String DIALOG = Environment.getExternalStorageDirectory().getPath() + File.separator + "dialog" + File.separator;
     public static final String DCIM = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) + File.separator;
@@ -43,6 +41,21 @@ public class hl_file {
     public static final String ALARMS = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_ALARMS) + File.separator;
     public static final String RINGTONES = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_RINGTONES) + File.separator;
     public static final String DOWNLOADS = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator;
+
+
+    /**
+     * 安卓Q获取沙盒目录
+     *
+     * @param context 上下文
+     * @return 文件夹
+     */
+    public static File getQdir(Context context) {
+        return context.getExternalCacheDir();
+    }
+
+    public static File getQdir(Context context, String environment) {
+        return context.getExternalFilesDir(environment);
+    }
 
     /**
      * 获取APP缓存路径
@@ -59,7 +72,6 @@ public class hl_file {
         }
         return context.getCacheDir().getPath();
     }
-
     ////////////////存在判断////////////
 
     /**
@@ -222,7 +234,6 @@ public class hl_file {
         }
         if (file.isDirectory()) {
             File[] fileList = file.listFiles();
-            ViseLog.d(fileList);
             if (fileList != null) {
                 for (File f : fileList) {
                     if (!deleteFile(f)) {
@@ -254,6 +265,10 @@ public class hl_file {
 
     public static boolean moveFile(String sourceFilePath, String resultFilePath) {
         try {
+            if (!isFileExist(sourceFilePath)) {
+                Log.e("hl_error", "源文件不存在");
+                return false;
+            }
             if (writeFile(new File(resultFilePath), new FileInputStream(sourceFilePath), false)) {
                 File file = new File(sourceFilePath);
                 return file.delete();
@@ -264,6 +279,38 @@ public class hl_file {
             return false;
         }
     }
+
+    public static boolean writeFile(File file, InputStream stream, boolean append) {
+        OutputStream o = null;
+        try {
+            if (!file.exists()) {
+                createFile(file.getParent(), file.getName(), true);
+            }
+            o = new FileOutputStream(file, append);
+            byte data[] = new byte[1024];
+            int length;
+            while ((length = stream.read(data)) != -1) {
+                o.write(data, 0, length);
+            }
+            o.flush();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                if (o != null) {
+                    o.close();
+                }
+                if (stream != null) {
+                    stream.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    //////////////////////string读取写入//////////////////////////////
 
     /**
      * 把string写入文件
@@ -296,39 +343,12 @@ public class hl_file {
         }
     }
 
-
-    public static boolean writeFile(File file, InputStream stream, boolean append) {
-        OutputStream o = null;
-        try {
-            if (!file.exists()) {
-                createFile(file.getParent(), file.getName(), true);
-            }
-            o = new FileOutputStream(file, append);
-            byte data[] = new byte[1024];
-            int length;
-            while ((length = stream.read(data)) != -1) {
-                o.write(data, 0, length);
-            }
-            o.flush();
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        } finally {
-            try {
-                if (o != null) {
-                    o.close();
-                }
-                if (stream != null) {
-                    stream.close();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-
+    /**
+     * 从文件读取string
+     *
+     * @param filePath 文件路径
+     * @return string
+     */
     public static String readStringFromFile(String filePath) {
         if (TextUtils.isEmpty(filePath)) {
             Log.e("hl_error", "路径不可为空");
@@ -339,6 +359,12 @@ public class hl_file {
 
     }
 
+    /**
+     * 从文件读取string
+     *
+     * @param file 文件
+     * @return string
+     */
     public static String readStringFromFile(File file) {
         if (!file.exists()) {
             Log.e("hl_error", file.getAbsolutePath() + "读取的文件不存在");
@@ -358,5 +384,29 @@ public class hl_file {
             return null;
         }
     }
-}
 
+    /**
+     * 重命名文件
+     *
+     * @param path    地址
+     * @param newName 文件名
+     * @return 结果
+     */
+    public static boolean renameFile(String path, String newName) {
+        if (!isFileExist(path)) {
+            Log.e("hl_error", "文件不存在");
+            return false;
+        }
+        File newFile = new File(path);
+        return renameFile(newFile, newName);
+    }
+
+    public static boolean renameFile(File file, String newName) {
+        if (!file.exists()) {
+            Log.e("hl_error", "文件不存在");
+            return false;
+        }
+        File newFile = new File(file.getParent(), newName);
+        return file.renameTo(newFile);
+    }
+}
