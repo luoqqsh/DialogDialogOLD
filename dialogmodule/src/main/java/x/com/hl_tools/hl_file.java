@@ -355,10 +355,10 @@ public class hl_file {
                 for (File f : listFiles) {
                     if (f.isFile()) {
                         //文件
-                        copyFile(f.getPath(), outputFilePath + "/" + f.getName(), isReplace); //调用文件拷贝的方法
+                        copyFile(f.getPath(), outputFilePath + File.separator + f.getName(), isReplace); //调用文件拷贝的方法
                     } else if (f.isDirectory()) {
                         //文件夹
-                        copyFolder(f.getPath(), outputFilePath + "/" + f.getName(), isReplace);//继续调用复制方法      递归的地方,自己调用自己的方法,就可以复制文件夹的文件夹了
+                        copyFolder(f.getPath(), outputFilePath + File.separator + f.getName(), isReplace);//继续调用复制方法      递归的地方,自己调用自己的方法,就可以复制文件夹的文件夹了
                     }
                 }
             }
