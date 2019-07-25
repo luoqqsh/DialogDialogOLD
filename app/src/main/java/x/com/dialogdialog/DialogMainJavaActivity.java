@@ -28,6 +28,7 @@ import x.com.hl_tools.hl_file;
 import x.com.hl_tools.hl_img;
 import x.com.hl_tools.hl_permissions;
 import x.com.hl_tools.hl_sharedP;
+import x.com.hl_tools.hl_vm;
 import x.com.hl_tools.model.PermissionModel;
 
 public class DialogMainJavaActivity extends BaseActivity {
@@ -91,7 +92,11 @@ public class DialogMainJavaActivity extends BaseActivity {
         Gson g = new Gson();
         TvData data = g.fromJson(a, TvData.class);
         ViseLog.d(data);
-        ViseLog.d(hl_file.getFileMD5(hl_file.SDROOT + "/default2"));
+
+       ViseLog.d(hl_vm.getIsArtInUse());
+       ViseLog.d(hl_vm.is64bit());
+       ViseLog.d(hl_vm.is64bit60());
+       ViseLog.d(hl_vm.isART64(this));
     }
 
     private void init() {

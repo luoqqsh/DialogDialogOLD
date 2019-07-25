@@ -2,18 +2,14 @@ package x.com.hl_tools;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.media.projection.MediaProjectionManager;
+import android.graphics.Point;
+import android.os.Build;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.WindowManager;
 
 import androidx.appcompat.app.ActionBar;
-
-import java.lang.reflect.Method;
-
-import x.com.hl_tools.permissions.ApplyPermissionActivity;
 
 import static x.com.hl_tools.hl_context.getAppCompActivity;
 
@@ -73,7 +69,36 @@ public class hl_screen {
     }
 
     /**
-     * 获取导航栏高度
+     * 获取 屏幕 宽度
+     */
+    public static int getDeviceWidth(Context context) {
+        WindowManager manager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display display = manager.getDefaultDisplay();
+        Point sizePoint = new Point();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            display.getRealSize(sizePoint);
+        } else {
+            display.getSize(sizePoint);
+        }
+        return sizePoint.x;
+    }
+
+    /**
+     * 获取 屏幕 高度
+     */
+    public static int getDeviceHeight(Context context) {
+        WindowManager manager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display display = manager.getDefaultDisplay();
+        Point sizePoint = new Point();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            display.getRealSize(sizePoint);
+        } else {
+            display.getSize(sizePoint);
+        }
+        return sizePoint.y;
+    }
+    /**
+     * 获取导航栏高度(下面虚拟按键)
      *
      * @param context 上下文
      * @return 导航栏高度px

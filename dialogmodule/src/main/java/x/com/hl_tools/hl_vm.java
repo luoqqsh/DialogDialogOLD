@@ -73,11 +73,6 @@ public class hl_vm {
         return false;
     }
 
-    public static boolean is64() {
-        String arch = System.getProperty("os.arch");
-        return arch != null && arch.contains("64");
-    }
-
     /**
      * 检测系统使用的是art还是dalvik
      *

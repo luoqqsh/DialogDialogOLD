@@ -14,7 +14,7 @@ public class hl_device {
 
     //设备是否支持相机设备
     public static boolean isSupportCamera(Context context) {
-        return context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);
+        return context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY);
     }
 
     /**

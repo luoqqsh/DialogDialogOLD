@@ -31,6 +31,26 @@ public class hl_math {
     }
 
     /**
+     * 生成随机的num位的字符串(数字+字母)
+     */
+    public static String getRandomStr(int num) {
+        StringBuilder builder = new StringBuilder();
+        char[] chars = {
+                '1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
+                'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
+                'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
+                'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D',
+                'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
+                'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
+                'Y', 'Z'};
+//        int[] cha = new int[num];
+        for (int i = 0; i < num; i++) {
+            int j = (int) (Math.random() * 62);
+            builder.append(chars[j]);
+        }
+        return builder.toString();
+    }
+    /**
      * 限制2位小数
      */
     public static void setEditText2D(final EditText etChangeAmt) {

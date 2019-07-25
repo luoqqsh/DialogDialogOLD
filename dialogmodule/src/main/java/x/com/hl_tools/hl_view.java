@@ -95,6 +95,7 @@ public class hl_view {
 
     /**
      * scrollview嵌套listview 计算高度
+     * listView嵌套listView,设置子listView的高度,子listView的item必须是LinearLayout,因为其他的没重写onMeasure()方法
      */
     public static void setListViewHeightBasedOnChildren(ListView listView) {
         // 获取ListView对应的Adapter

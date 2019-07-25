@@ -85,7 +85,6 @@ public class hl_img {
             }
             // 最后通知图库更新
             context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + headPath)));
-
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

@@ -9,17 +9,28 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.text.TextUtils;
 import android.view.ViewConfiguration;
-
-import java.lang.reflect.Method;
-import java.util.List;
-import java.util.Stack;
+import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import java.lang.reflect.Method;
+import java.util.List;
+import java.util.Stack;
+
 public class hl_activityx {
     private static Stack<Activity> mActivityStack;
+
+    public static int getActivityWidth(Activity mActivity) {
+        ViewGroup rootView = (ViewGroup) mActivity.getWindow().getDecorView();
+        return rootView.getWidth();
+    }
+
+    public static int getActivityHeight(Activity mActivity) {
+        ViewGroup rootView = (ViewGroup) mActivity.getWindow().getDecorView();
+        return rootView.getHeight();
+    }
 
     /**
      * 添加一个Activity到堆栈中
