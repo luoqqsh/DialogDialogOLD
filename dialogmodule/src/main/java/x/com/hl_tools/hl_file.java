@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.math.BigInteger;
+import java.security.MessageDigest;
 
 import x.com.hl_log.ViseLog;
 
@@ -250,66 +252,123 @@ public class hl_file {
     }
 
     ////////////////复制移动/////////////////
-    public static boolean copyFile(String sourceFilePath, String resultFilePath) {
+
+    /**
+     * 文件复制
+     *
+     * @param inputFilePath  源文件
+     * @param outputFilePath 输出文件
+     * @param isReplace      若存在是否替换
+     * @return 结果
+     */
+    public static boolean copyFile(String inputFilePath, String outputFilePath, boolean isReplace) {
         try {
-            if (!isFileExist(sourceFilePath)) {
-                Log.e("hl_error", "源文件不存在");
+            if (!isFileExist(inputFilePath)) {
+                Log.e("hl_error", inputFilePath + "源文件不存在");
                 return false;
             }
-            return writeFile(new File(resultFilePath), new FileInputStream(sourceFilePath), false);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    public static boolean moveFile(String sourceFilePath, String resultFilePath) {
-        try {
-            if (!isFileExist(sourceFilePath)) {
-                Log.e("hl_error", "源文件不存在");
-                return false;
-            }
-            if (writeFile(new File(resultFilePath), new FileInputStream(sourceFilePath), false)) {
-                File file = new File(sourceFilePath);
-                return file.delete();
-            }
-            return false;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    public static boolean writeFile(File file, InputStream stream, boolean append) {
-        OutputStream o = null;
-        try {
+            File file = new File(outputFilePath);
             if (!file.exists()) {
-                createFile(file.getParent(), file.getName(), true);
+                createFile(file.getParent(), file.getName(), isReplace);
+            } else {
+                if (isReplace) {
+                    if (file.delete()) {
+                        createFile(file.getParent(), file.getName(), true);
+                    } else {
+                        Log.e("hl_error", "文件删除失败");
+                        return false;
+                    }
+                } else {
+                    Log.e("hl_error", "目标文件已存在，请使用强制复制");
+                    return false;
+                }
             }
-            o = new FileOutputStream(file, append);
-            byte data[] = new byte[1024];
-            int length;
-            while ((length = stream.read(data)) != -1) {
-                o.write(data, 0, length);
-            }
-            o.flush();
-            return true;
+            return copyFile(new FileInputStream(inputFilePath), new FileOutputStream(outputFilePath));
         } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static boolean moveFile(String inputFilePath, String outputFilePath, boolean isReplace) {
+        if (copyFile(inputFilePath, outputFilePath, isReplace)) {
+            File file = new File(inputFilePath);
+            return deleteFile(file);
+        }
+        return false;
+    }
+
+    public static boolean copyFile(InputStream inputStream, OutputStream outputStream) {
+        try {
+            byte[] data = new byte[1024];
+            int length;
+            while ((length = inputStream.read(data)) != -1) {
+                outputStream.write(data, 0, length);
+            }
+            outputStream.flush();
+        } catch (IOException e) {
             e.printStackTrace();
             return false;
         } finally {
             try {
-                if (o != null) {
-                    o.close();
+                if (outputStream != null) {
+                    outputStream.close();
                 }
-                if (stream != null) {
-                    stream.close();
+                if (inputStream != null) {
+                    inputStream.close();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+        return true;
     }
+
+    public static boolean moveFolder(String inputFilePath, String outputFilePath) {
+        if (copyFolder(inputFilePath, outputFilePath)) {
+            return deleteFolder(inputFilePath);
+        }
+        return false;
+    }
+
+    public static boolean copyFolder(String inputFilePath, String outputFilePath) {
+        File in = new File(inputFilePath);
+        createFolder(outputFilePath, in.getName());
+        File file = new File(outputFilePath, in.getName());
+        return copyFolder(inputFilePath, file.getAbsolutePath(), true);
+    }
+
+    private static boolean copyFolder(String inputFilePath, String outputFilePath, boolean isReplace) {
+        try {
+            if (!isFolderExist(inputFilePath)) {
+                Log.e("hl_error", inputFilePath + "源文件夹不存在");
+                return false;
+            }
+            File in = new File(inputFilePath);
+            File[] listFiles = in.listFiles();
+            ViseLog.d(listFiles);
+            File out = new File(outputFilePath);
+            if (!out.exists()) {
+                out.mkdirs();
+            }
+            if (listFiles != null) {
+                for (File f : listFiles) {
+                    if (f.isFile()) {
+                        //文件
+                        copyFile(f.getPath(), outputFilePath + "/" + f.getName(), isReplace); //调用文件拷贝的方法
+                    } else if (f.isDirectory()) {
+                        //文件夹
+                        copyFolder(f.getPath(), outputFilePath + "/" + f.getName(), isReplace);//继续调用复制方法      递归的地方,自己调用自己的方法,就可以复制文件夹的文件夹了
+                    }
+                }
+            }
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     //////////////////////string读取写入//////////////////////////////
 
     /**
@@ -408,5 +467,38 @@ public class hl_file {
         }
         File newFile = new File(file.getParent(), newName);
         return file.renameTo(newFile);
+    }
+
+    /**
+     * 获取文件MD5值
+     *
+     * @param path 路径
+     * @return md5
+     */
+    public static String getFileMD5(String path) {
+        return getFileMD5(new File(path));
+    }
+
+    public static String getFileMD5(File file) {
+        if (!file.exists() || !file.isFile()) {
+            return "ERROR,文件不存在";
+        }
+        MessageDigest digest;
+        FileInputStream in;
+        byte[] buffer = new byte[1024];
+        int len;
+        try {
+            digest = MessageDigest.getInstance("MD5");
+            in = new FileInputStream(file);
+            while ((len = in.read(buffer, 0, 1024)) != -1) {
+                digest.update(buffer, 0, len);
+            }
+            in.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        BigInteger bigInt = new BigInteger(1, digest.digest());
+        return bigInt.toString(16);
     }
 }

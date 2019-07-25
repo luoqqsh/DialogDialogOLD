@@ -3,7 +3,6 @@ package x.com.dialogdialog;
 import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -87,12 +86,12 @@ public class DialogMainJavaActivity extends BaseActivity {
         String json = gson.toJson(tvUrl);
         ViseLog.d(json);
 
-        hl_file.writeStringToFile(hl_file.SDROOT, "aaacccddd.txt", json);
-
+        hl_file.writeStringToFile(hl_file.SDROOT, "/aaacccddd.txt", json);
         String a = hl_file.readStringFromFile(hl_file.SDROOT + "/aaacccddd.txt");
         Gson g = new Gson();
         TvData data = g.fromJson(a, TvData.class);
         ViseLog.d(data);
+        ViseLog.d(hl_file.getFileMD5(hl_file.SDROOT + "/default2"));
     }
 
     private void init() {
