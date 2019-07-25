@@ -97,6 +97,8 @@ public class DialogMainJavaActivity extends BaseActivity {
        ViseLog.d(hl_vm.is64bit());
        ViseLog.d(hl_vm.is64bit60());
        ViseLog.d(hl_vm.isART64(this));
+
+        new TvDataList(TypeClass.中央台, "");
     }
 
     private void init() {
