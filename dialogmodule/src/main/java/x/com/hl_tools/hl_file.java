@@ -36,6 +36,7 @@ public class hl_file {
 
     public static final String SDROOT = Environment.getExternalStorageDirectory().getPath();
     public static final String DIALOG = Environment.getExternalStorageDirectory().getPath() + File.separator + "dialog" + File.separator;
+    public static final String QQFILE = Environment.getExternalStorageDirectory().getPath() + File.separator + "Tencent" + File.separator + "QQfile_recv" + File.separator;
     public static final String DCIM = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) + File.separator;
     public static final String CAMERA = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) + File.separator + "Camera" + File.separator;
     public static final String MUSIC = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC) + File.separator;
