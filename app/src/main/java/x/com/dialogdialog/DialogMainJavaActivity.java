@@ -28,7 +28,6 @@ import x.com.hl_tools.hl_file;
 import x.com.hl_tools.hl_img;
 import x.com.hl_tools.hl_permissions;
 import x.com.hl_tools.hl_sharedP;
-import x.com.hl_tools.hl_vm;
 import x.com.hl_tools.model.PermissionModel;
 
 public class DialogMainJavaActivity extends BaseActivity {
@@ -93,11 +92,9 @@ public class DialogMainJavaActivity extends BaseActivity {
         TvData data = g.fromJson(a, TvData.class);
         ViseLog.d(data);
 
-       ViseLog.d(hl_vm.getIsArtInUse());
-       ViseLog.d(hl_vm.is64bit());
-       ViseLog.d(hl_vm.is64bit60());
-       ViseLog.d(hl_vm.isART64(this));
+        ViseLog.d(hl_file.readStringFromFile(hl_file.SDROOT + "/fjiptv.m3u"));
 
+        ViseLog.d(hl_file.getEncode(hl_file.SDROOT + "/fjiptv.m3u"));
         new TvDataList(TypeClass.中央台, "");
     }
 

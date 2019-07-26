@@ -17,6 +17,7 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 
 import x.com.hl_log.ViseLog;
+import x.com.hl_tools.DialogTools.EncodingDetect;
 
 public class hl_file {
 //  data目录        Environment.getDataDirectory() = /data
@@ -410,13 +411,16 @@ public class hl_file {
      * @return string
      */
     public static String readStringFromFile(String filePath) {
+        return readStringFromFile(filePath, "UTF-8");
+    }
+
+    public static String readStringFromFile(String filePath, String code) {
         if (TextUtils.isEmpty(filePath)) {
             Log.e("hl_error", "路径不可为空");
             return null;
         }
         File file = new File(filePath);
-        return readStringFromFile(file);
-
+        return readStringFromFile(file, code);
     }
 
     /**
@@ -426,12 +430,16 @@ public class hl_file {
      * @return string
      */
     public static String readStringFromFile(File file) {
+        return readStringFromFile(file, "UTF-8");
+    }
+
+    public static String readStringFromFile(File file, String code) {
         if (!file.exists()) {
             Log.e("hl_error", file.getAbsolutePath() + "读取的文件不存在");
             return null;
         }
         try {
-            InputStreamReader isr = new InputStreamReader(new FileInputStream(file), "UTF-8");
+            InputStreamReader isr = new InputStreamReader(new FileInputStream(file), code);
             BufferedReader br = new BufferedReader(isr);
             StringBuilder sb = new StringBuilder();
             String mimeTypeLine;
@@ -501,5 +509,9 @@ public class hl_file {
         }
         BigInteger bigInt = new BigInteger(1, digest.digest());
         return bigInt.toString(16);
+    }
+
+    public static String getEncode(String path) {
+        return EncodingDetect.getJavaEncode(path);
     }
 }
