@@ -25,6 +25,7 @@ public class NDialog {
     public static final int nDialog_Share = R.layout.ndialog_share;
     public static final int nDialog_Photo = R.layout.ndialog_photo;
     public static final int nDialog_Update = R.layout.ndialog_update;
+    public static final int nDialog_ListFile = R.layout.ndialog_listfile;
     public static final int nDialog_Normal = R.layout.ndialog_layout;
     public static final int ndialog_Trans = R.layout.ndialog_trans;
     /**

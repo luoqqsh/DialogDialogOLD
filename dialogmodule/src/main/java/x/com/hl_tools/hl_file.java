@@ -511,6 +511,12 @@ public class hl_file {
         return bigInt.toString(16);
     }
 
+    /**
+     * 获取文件编码类型
+     *
+     * @param path 路径
+     * @return 编码类型，UTF-8，GBK，ANSI。。。
+     */
     public static String getEncode(String path) {
         return EncodingDetect.getJavaEncode(path);
     }

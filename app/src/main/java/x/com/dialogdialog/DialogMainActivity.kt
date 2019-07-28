@@ -6,10 +6,14 @@ import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_main.*
 import x.com.dialogdialog.Base.BaseActivity
 import x.com.dialogdialog.Viewpager2.ViewActivity
+import x.com.hl_base.HOnListener
+import x.com.hl_dialog.DFListFileDialog
 import x.com.hl_dialog.DFNDialog
 import x.com.hl_log.ViseLog
 import x.com.hl_tools.DialogTools.myObjectPool
+import x.com.hl_tools.hl_file
 import x.com.hl_tools.hl_permissions
+import java.io.File
 
 
 class DialogMainActivity : BaseActivity() {
@@ -39,18 +43,20 @@ class DialogMainActivity : BaseActivity() {
         mediacodec.setOnClickListener { startActivity(Intent(mContext, ViewActivity::class.java)) }
         map.setOnClickListener { startActivity(Intent(mContext, HHMapActivity::class.java)) }
         close.setOnClickListener {
-//            val orientation = hl_orientation()
+            //            val orientation = hl_orientation()
 //            orientation.orientationEnable(this, null)
             animation_view4.playAnimation()
 
         }
 
         dialog.setOnClickListener {
-            val b = DFNDialog.newInstance()
-            b.setMessage("dddddddddd", 4)
-            if (!b.isAdded) {
-                b.show(supportFragmentManager, "normalDialog")
-            }
+//            val b = DFNDialog.newInstance()
+//            b.setMessage("dddddddddd", 4)
+//            b.showFDialog(mContext)
+
+            val df = DFListFileDialog.newInstance(hl_file.QQFILE)
+            df.setOnSelectFileListener { file -> ViseLog.d(file.absolutePath) }
+            df.showFDialog(mContext)
         }
     }
 

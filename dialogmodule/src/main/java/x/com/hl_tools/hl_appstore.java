@@ -66,11 +66,11 @@ public class hl_appstore {
      * @return 跳转到应用商店的 Intent
      */
     public static Intent getAppStoreIntent(Context context, String packageName, boolean isIncludeGooglePlayStore) {
-        if (hl_device.isSamSungPhone()) {// 三星单独处理跳转三星市场
+        if (hl_device.INSTANCE.isSamSungPhone()) {// 三星单独处理跳转三星市场
             Intent samsungAppStoreIntent = getSamsungAppStoreIntent(context, packageName);
             if (samsungAppStoreIntent != null) return samsungAppStoreIntent;
         }
-        if (hl_device.isLePhone()) {// 乐视单独处理跳转乐视市场
+        if (hl_device.INSTANCE.isLePhone()) {// 乐视单独处理跳转乐视市场
             Intent leecoAppStoreIntent = getLeecoAppStoreIntent(context, packageName);
             if (leecoAppStoreIntent != null) return leecoAppStoreIntent;
         }

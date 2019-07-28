@@ -2,20 +2,28 @@ package x.com.dialogdialog;
 
 import android.Manifest;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
 import com.google.gson.Gson;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import x.com.dialogdialog.Base.BaseActivity;
+import x.com.hl_base.HOnListener;
+import x.com.hl_dialog.DFListFileDialog;
 import x.com.hl_dialog.DFNDialog;
+import x.com.hl_fileselect.DefaultFileIconCreator;
+import x.com.hl_fileselect.FileSelectorView;
 import x.com.hl_log.ViseLog;
 import x.com.hl_player.bean.TvData;
 import x.com.hl_player.bean.TvDataList;
@@ -33,6 +41,7 @@ import x.com.hl_tools.model.PermissionModel;
 public class DialogMainJavaActivity extends BaseActivity {
     private DFNDialog b;
     private String aa;
+    private FileSelectorView fileSelectorView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,47 +64,18 @@ public class DialogMainJavaActivity extends BaseActivity {
     }
 
     private void test() {
-        List<PermissionModel> permissionModels = new ArrayList<>();
         ImageView imageView = findViewById(R.id.imgv_test);
         imageView.setBackground(hl_drawable.getRoundRectDrawable(0, hl_img.getColorFromString("#5bc0de"), true, 10));
-
-        permissionModels.add(new PermissionModel("aa", false, "wwww"));
-        permissionModels.add(new PermissionModel("a12a", false, "ww"));
-        permissionModels.add(new PermissionModel("a333a", true, "dddd"));
-        permissionModels.add(new PermissionModel("aa444", false, "czczxccxc"));
-
-
-        hl_sharedP.setParam(this, "aaaas", permissionModels);
-
-
-        List<PermissionModel> ccc = hl_sharedP.getParam(this, "aaaas123", new ArrayList<>());
-//        ViseLog.d(ccc);
-
-        hl_cachefile.instance(this).saveObject("Available", permissionModels);
-        List<PermissionModel> aaa = hl_cachefile.instance(this).readObject("Available");
-//        ViseLog.d(aaa);
-        hl_cachefile.instance(this).clear();
 
         TvDataList tvDataList = new TvDataList(TypeClass.中央台, "中央电视台", "https://www.baidu.com/a.m3u8", TypeClarity.H4k, TypeState.流畅);
         tvDataList.addUrl("www.TypeState.cccc.vvvv", TypeClarity.高清, TypeState.流畅);
         tvDataList.addUrl("www.cccc.cccc.xxx", TypeClarity.H8k, TypeState.卡顿);
         List<TvDataList> tvDataLists = new ArrayList<>();
         tvDataLists.add(tvDataList);
-        TvData tvUrl = new TvData(1, "20190719", tvDataLists);
+        TvData tvUrl = new TvData(1, "20190719", "itv", tvDataLists);
         Gson gson = new Gson();
         String json = gson.toJson(tvUrl);
         ViseLog.d(json);
-
-        hl_file.writeStringToFile(hl_file.SDROOT, "/aaacccddd.txt", json);
-        String a = hl_file.readStringFromFile(hl_file.SDROOT + "/aaacccddd.txt");
-        Gson g = new Gson();
-        TvData data = g.fromJson(a, TvData.class);
-        ViseLog.d(data);
-
-        ViseLog.d(hl_file.readStringFromFile(hl_file.SDROOT + "/fjiptv.m3u"));
-
-        ViseLog.d(hl_file.getEncode(hl_file.SDROOT + "/fjiptv.m3u"));
-        new TvDataList(TypeClass.中央台, "");
     }
 
     private void init() {
@@ -115,11 +95,20 @@ public class DialogMainJavaActivity extends BaseActivity {
         findViewById(R.id.dialog).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                b = DFNDialog.newInstance();
-                b.setMessage("dddddddddd", 4);
-                if (!b.isAdded()) {
-                    b.show(getSupportFragmentManager(), "normalDialog");
-                }
+//                b = DFNDialog.newInstance();
+//                b.setMessage("dddddddddd", 4);
+//                if (!b.isAdded()) {
+//                    b.show(getSupportFragmentManager(), "normalDialog");
+//                }
+
+                DFListFileDialog df = DFListFileDialog.newInstance(hl_file.QQFILE);
+                df.setOnSelectFileListener(new HOnListener<File>() {
+                    @Override
+                    public void onListen(File file) {
+                        ViseLog.d(file.getAbsolutePath());
+                    }
+                });
+                df.showFDialog(mContext);
             }
         });
     }

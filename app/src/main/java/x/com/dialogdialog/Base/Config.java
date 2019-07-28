@@ -16,5 +16,7 @@ public class Config {
     public static final String cityCode = "0592";
     public static final String city = "厦门市";
 
-
+    //QQ分享、登录
+    public static final String QQAPPID = "101739880";
+    public static final String QQAPPKEY = "64d355ccf5f9766117638ca9e061b1ea";
 }

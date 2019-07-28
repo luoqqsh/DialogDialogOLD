@@ -19,7 +19,6 @@
     </style>
     <!-- 对话框创建时需要加载的样式(不显示阴影) -->
     <style name="DialogDim" parent="@android:style/Theme.Dialog">
-
         <!-- 去除标题 -->
         <item name="android:windowNoTitle">true</item>
         <!-- 去除背景 -->

@@ -121,7 +121,7 @@ public class Camera1 {
     }
 
     public static boolean isSupportCamera(Context context) {
-        return hl_device.isSupportCamera(context);
+        return hl_device.INSTANCE.isSupportCamera(context);
     }
 
     public synchronized void switchCamera() {

@@ -64,7 +64,7 @@ public class hl_leak {
     public static void fixInput(Context context) {
         method(context, "mServedView");
         method(context, "mNextServedView");
-        if (hl_device.isHuaWeiPhone()) {
+        if (hl_device.INSTANCE.isHuaWeiPhone()) {
             fixInputMethodManagerLeak(context);
         }
     }
