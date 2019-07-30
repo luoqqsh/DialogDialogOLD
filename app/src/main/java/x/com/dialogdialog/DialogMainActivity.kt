@@ -6,15 +6,11 @@ import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_main.*
 import x.com.dialogdialog.Base.BaseActivity
 import x.com.dialogdialog.Viewpager2.ViewActivity
-import x.com.hl_base.HOnListener
 import x.com.hl_dialog.DFListFileDialog
-import x.com.hl_dialog.DFNDialog
 import x.com.hl_log.ViseLog
 import x.com.hl_tools.DialogTools.myObjectPool
 import x.com.hl_tools.hl_file
 import x.com.hl_tools.hl_permissions
-import java.io.File
-
 
 class DialogMainActivity : BaseActivity() {
 
@@ -41,6 +37,7 @@ class DialogMainActivity : BaseActivity() {
         view.setOnClickListener { startActivity(Intent(mContext, ViewActivity::class.java)) }
         camera.setOnClickListener { startActivity(Intent(mContext, HHCameraActivity::class.java)) }
         mediacodec.setOnClickListener { startActivity(Intent(mContext, ViewActivity::class.java)) }
+        vchart.setOnClickListener { startActivity(Intent(mContext, vchartActivity::class.java)) }
         map.setOnClickListener { startActivity(Intent(mContext, HHMapActivity::class.java)) }
         close.setOnClickListener {
             //            val orientation = hl_orientation()
@@ -50,7 +47,7 @@ class DialogMainActivity : BaseActivity() {
         }
 
         dialog.setOnClickListener {
-//            val b = DFNDialog.newInstance()
+            //            val b = DFNDialog.newInstance()
 //            b.setMessage("dddddddddd", 4)
 //            b.showFDialog(mContext)
 

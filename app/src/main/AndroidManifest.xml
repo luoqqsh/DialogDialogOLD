@@ -61,6 +61,7 @@
         <activity android:name=".MediaCodecActivity" />
         <activity android:name=".HHCameraActivity" />
         <activity android:name=".Demo.DemoActivity" />
+        <activity android:name=".vchartActivity" />
     </application>
 
 </manifest>

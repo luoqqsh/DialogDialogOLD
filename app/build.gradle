@@ -52,7 +52,7 @@ android {
     }
     repositories {
         flatDir {
-            dirs 'libs','../map_gmap/libs'
+            dirs 'libs', '../map_gmap/libs'
         }
     }
 }
@@ -75,13 +75,12 @@ dependencies {
 //    implementation project(':map_gmap')
     implementation project(':map_qmap')
 
-    implementation ('com.airbnb.android:lottie:3.0.7') {
+    implementation('com.airbnb.android:lottie:3.0.7') {
         exclude group: 'com.google.guava', module: 'listenablefuture'
     }
     implementation 'io.github.lizhangqu:retrace:1.0.2'
     implementation 'androidx.viewpager2:viewpager2:1.0.0-beta02'
-
-
+    implementation 'com.vinctor:vcharts:1.0.0'
 
 
 }
