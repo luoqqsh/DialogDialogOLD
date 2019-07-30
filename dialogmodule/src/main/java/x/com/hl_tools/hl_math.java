@@ -6,6 +6,7 @@ import android.widget.EditText;
 
 import java.text.DecimalFormat;
 import java.util.Random;
+import java.util.regex.Pattern;
 
 public class hl_math {
     //保留n位小数
@@ -50,6 +51,7 @@ public class hl_math {
         }
         return builder.toString();
     }
+
     /**
      * 限制2位小数
      */
@@ -78,4 +80,14 @@ public class hl_math {
         });
     }
 
+    /**
+     * 判断string是否是数字
+     *
+     * @param str 文本
+     * @return 结果
+     */
+    public static boolean isNumeric(String str) {
+        Pattern pattern = Pattern.compile("[0-9]*");
+        return pattern.matcher(str).matches();
+    }
 }
