@@ -6,19 +6,19 @@ class TvDataList {
     var channelName: String = ""//频道名称
     var channelClass: Int = -1//频道分类
     var channelThumb: String? = null//封面图片
-    var channelUrls = ArrayList<UrlData>()//频道播放地址
+    var channelURLs = ArrayList<UrlData>()//频道播放地址
 
-    var channelUrl: String? = null//主要播放地址
-    var channelClarity: Int = TypeClarity.未知.value//清晰度：-1未知，0标清，1高清，2 4k ，3 8k
-    var channelState: Int = TypeState.未知.value//-1未知，0流畅，1卡顿，2延迟，3有问题(有视频没声音，视频不正常，花屏等)，4不可用
+//    var channelURL: String? = null//主要播放地址
+//    var channelClarity: Int = TypeClarity.未知.value//清晰度：-1未知，0标清，1高清，2 4k ，3 8k
+//    var channelState: Int = TypeState.未知.value//-1未知，0流畅，1卡顿，2延迟，3有问题(有视频没声音，视频不正常，花屏等)，4不可用
 
 
     constructor(typeClass: TypeClass, channelName: String, channelUrl: String, clarity: TypeClarity, state: TypeState) {
         val url = UrlData(channelUrl, clarity, state)
-        this.channelUrls.add(url)
-        this.channelUrl = channelUrls[0].channelUrl
-        this.channelClarity = channelUrls[0].urlClarity
-        this.channelState = channelUrls[0].urlState
+        this.channelURLs.add(url)
+//        this.channelURL = channelURLs[0].channelURL
+//        this.channelClarity = channelURLs[0].channelClarity
+//        this.channelState = channelURLs[0].channelState
         this.channelName = channelName
         this.channelClass = typeClass.value
     }
@@ -29,7 +29,7 @@ class TvDataList {
     }
 
     fun addUrl(channelUrl: String, clarity: TypeClarity, state: TypeState) {
-        channelUrls.add(UrlData(channelUrl, clarity, state))
+        channelURLs.add(UrlData(channelUrl, clarity, state))
     }
 
     fun getClassific(): TypeClass {
