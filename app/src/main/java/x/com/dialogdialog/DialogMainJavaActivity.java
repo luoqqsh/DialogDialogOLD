@@ -67,11 +67,13 @@ public class DialogMainJavaActivity extends BaseActivity {
         ImageView imageView = findViewById(R.id.imgv_test);
         imageView.setBackground(hl_drawable.getRoundRectDrawable(0, hl_img.getColorFromString("#5bc0de"), true, 10));
 
-        TvDataList tvDataList = new TvDataList(TypeClass.中央台, "中央电视台", "https://www.baidu.com/a.m3u8", TypeClarity.H4k, TypeState.流畅);
-        tvDataList.addUrl("www.TypeState.cccc.vvvv", TypeClarity.高清, TypeState.流畅);
-        tvDataList.addUrl("www.cccc.cccc.xxx", TypeClarity.H8k, TypeState.卡顿);
+        TvDataList tvDataList = new TvDataList(TypeClass.中央台, "中央电视台", "rtsp://27.148.240.138/PLTV/88888888/224/3221227012/10000100000000060000000001740935_0.smil", TypeClarity.H4k, TypeState.流畅);
+        TvDataList tvDataList2 = new TvDataList(TypeClass.中央台, "美国电视台", "http://183.56.168.47/cdn-out.iqy.sc96655.com/tslive/c204_scc_20190107_yvwl5h02_original_t10/c204_scc_20190107_yvwl5h02_original_t103.m3u8", TypeClarity.标清, TypeState.流畅);
+        tvDataList.addUrl("http://183.56.168.47/cdn-out.iqy.sc96655.com/tslive/c204_scc_20190107_yvwl5h02_original_t10/c204_scc_20190107_yvwl5h02_original_t10.m3u8", TypeClarity.高清, TypeState.流畅);
+        tvDataList.addUrl("rtsp://27.148.240.138/PLTV/88888888/224/3221226716/10000100000000060000000001664269_0.smil", TypeClarity.H8k, TypeState.卡顿);
         List<TvDataList> tvDataLists = new ArrayList<>();
         tvDataLists.add(tvDataList);
+        tvDataLists.add(tvDataList2);
         TvData tvUrl = new TvData(1, "20190719", "itv", tvDataLists);
         Gson gson = new Gson();
         String json = gson.toJson(tvUrl);
