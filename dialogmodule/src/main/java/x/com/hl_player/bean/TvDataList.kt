@@ -8,17 +8,9 @@ class TvDataList {
     var channelThumb: String? = null//封面图片
     var channelURLs = ArrayList<UrlData>()//频道播放地址
 
-//    var channelURL: String? = null//主要播放地址
-//    var channelClarity: Int = TypeClarity.未知.value//清晰度：-1未知，0标清，1高清，2 4k ，3 8k
-//    var channelState: Int = TypeState.未知.value//-1未知，0流畅，1卡顿，2延迟，3有问题(有视频没声音，视频不正常，花屏等)，4不可用
-
-
     constructor(typeClass: TypeClass, channelName: String, channelUrl: String, clarity: TypeClarity, state: TypeState) {
         val url = UrlData(channelUrl, clarity, state)
         this.channelURLs.add(url)
-//        this.channelURL = channelURLs[0].channelURL
-//        this.channelClarity = channelURLs[0].channelClarity
-//        this.channelState = channelURLs[0].channelState
         this.channelName = channelName
         this.channelClass = typeClass.value
     }
