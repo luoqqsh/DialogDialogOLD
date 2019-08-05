@@ -13,6 +13,8 @@ import android.view.TextureView;
 import java.lang.reflect.Method;
 import java.util.Map;
 
+import x.com.hl_log.ViseLog;
+
 /**
  * MediaPlayer具体实现
  */
@@ -80,7 +82,104 @@ public class HHMediaPlayer extends HHPlayerBase {
         initListener();
         mediaPlayer.setSurface(surface);
     }
+    private void initListener() {
+        if (mediaPlayer != null) {
+            mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+                    playerPrePareState = PlayerPrePareState.PREPARED;
+                    mPlayerState = PlayerState.PREPARED;
+                    isPrepared = true;
+                    mediaPlayer.setVolume(volume, volume);
+                    mediaPlayer.setLooping(isLooping);
+                    if (isPlayWhenPrepared) {
+                        start();
+                    }
+                    if (onPreparedListener != null) {
+                        onPreparedListener.onListen(mp);
+                    }
+                    Log.d(TAG, "Prepared OK");
+                }
+            });
+            mediaPlayer.setOnSeekCompleteListener(new MediaPlayer.OnSeekCompleteListener() {
+                @Override
+                public void onSeekComplete(MediaPlayer mp) {
+                    start();
+                    Log.d(TAG, "Seek Complete");
+                }
+            });
+            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    isCompletePlay = true;
+                    if (onCompletionListener != null) {
+                        onCompletionListener.onListen(mp);
+                    }
+                }
+            });
+            mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+                @Override
+                public boolean onError(MediaPlayer mp, int what, int extra) {
+                    Log.e(ETAG, "监听到错误。  " + mPlayerState);
+                    mPlayerState = PlayerState.ERROR;
+                    playerPrePareState = PlayerPrePareState.ERROR;
+                    Log.e(ETAG, what + "  " + extra + "\n" + "播放出错：" + mediaPath);
+                    return false;
+                }
+            });
+            mediaPlayer.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
+                @Override
+                public void onBufferingUpdate(MediaPlayer mp, int percent) {
+                    if (onBufferingUpdateListener != null) {
+                        onBufferingUpdateListener.onListen(percent);
+                    }
+                }
+            });
+            mediaPlayer.setOnInfoListener(new MediaPlayer.OnInfoListener() {
+                @Override
+                public boolean onInfo(MediaPlayer mediaPlayer, int i, int i1) {
+                    ViseLog.d(i);
+                    ViseLog.d(i1);
+                    return false;
+                }
+            });
+        }
+    }
 
+    private void doPrepare(Object mediaPath, boolean isFirst) {
+        if (mediaPath == null) {
+            Log.e(ETAG, "地址为空或找不到！");
+            return;
+        }
+        this.mediaPath = mediaPath;
+        stop();
+        reset();
+        if (mediaPlayer == null) {
+            mediaPlayer = new MediaPlayer();
+            initListener();
+        }
+        mPlayerState = PlayerState.IDLE;
+        try {
+            playerPrePareState = PlayerPrePareState.PREPARING;
+            if (mediaPath instanceof AssetFileDescriptor) {//Android assets file
+                AssetFileDescriptor fd = (AssetFileDescriptor) mediaPath;
+                mediaPlayer.setDataSource(fd.getFileDescriptor(), fd.getStartOffset(), fd.getLength());
+            } else if (getHeaders() != null) {//url with headers
+                Class<MediaPlayer> clazz = MediaPlayer.class;
+                Method method = clazz.getDeclaredMethod("setDataSource", String.class, Map.class);
+                method.invoke(mediaPlayer, mediaPath.toString(), getHeaders());
+            } else {//本地、网络地址
+                mediaPlayer.setDataSource(mediaPath.toString());
+            }
+            mediaPlayer.prepareAsync();//异步
+        } catch (Exception e) {
+            e.printStackTrace();
+            mPlayerState = PlayerState.ERROR;
+            playerPrePareState = PlayerPrePareState.ERROR;
+            Log.e(ETAG, "Prepare失败。  " + this.mediaPath);
+            if (isFirst) dealError();
+        }
+    }
     @Override
     public long getCurrentPosition() {
         if (mediaPlayer != null) {
@@ -138,8 +237,8 @@ public class HHMediaPlayer extends HHPlayerBase {
 
     @Override
     public void stop() {
-        //调用stop方法之后要调用prepare方法，不然无法播放
-        if (mediaPlayer != null) {
+        //调用stop方法之后要重新调用prepare方法，不然无法播放
+        if (mediaPlayer != null && isPlayControl()) {
             mediaPlayer.stop();
             isPrepared = false;
             mPlayerState = HHPlayerBase.PlayerState.IDLE;
@@ -177,92 +276,7 @@ public class HHMediaPlayer extends HHPlayerBase {
         }
     }
 
-    private void initListener() {
-        if (mediaPlayer != null) {
-            mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                @Override
-                public void onPrepared(MediaPlayer mp) {
-                    playerPrePareState = PlayerPrePareState.PREPARED;
-                    mPlayerState = PlayerState.PREPARED;
-                    isPrepared = true;
-                    mediaPlayer.setVolume(volume, volume);
-                    mediaPlayer.setLooping(isLooping);
-                    if (isPlayWhenPrepared) {
-                        start();
-                    }
-                    if (onPreparedListener != null) {
-                        onPreparedListener.onListen(mp);
-                    }
-                    Log.e(TAG, "Prepared OK");
-                }
-            });
-            mediaPlayer.setOnSeekCompleteListener(new MediaPlayer.OnSeekCompleteListener() {
-                @Override
-                public void onSeekComplete(MediaPlayer mp) {
-                    start();
-                    Log.e(TAG, "Seek Complete");
-                }
-            });
-            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                    isCompletePlay = true;
-                    if (onCompletionListener != null) {
-                        onCompletionListener.onListen(mp);
-                    }
-                }
-            });
-            mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
-                @Override
-                public boolean onError(MediaPlayer mp, int what, int extra) {
-                    Log.e(TAG, "监听到错误。  " + mPlayerState);
-                    mPlayerState = PlayerState.ERROR;
-                    playerPrePareState = PlayerPrePareState.ERROR;
-                    Log.e(TAG, what + "  " + extra + "\n" + "播放出错：" + mediaPath);
-                    return false;
-                }
-            });
-            mediaPlayer.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
-                @Override
-                public void onBufferingUpdate(MediaPlayer mp, int percent) {
-                    if (onBufferingUpdateListener != null) {
-                        onBufferingUpdateListener.onListen(percent);
-                    }
-                }
-            });
-        }
-    }
 
-    private void doPrepare(Object mediaPath, boolean isFirst) {
-        this.mediaPath = mediaPath;
-        if (mediaPlayer != null) {
-            mediaPlayer.reset();
-        } else {
-            mediaPlayer = new MediaPlayer();
-            initListener();
-        }
-        mPlayerState = PlayerState.IDLE;
-        try {
-            playerPrePareState = PlayerPrePareState.PREPARING;
-            if (mediaPath instanceof AssetFileDescriptor) {//Android assets file
-                AssetFileDescriptor fd = (AssetFileDescriptor) mediaPath;
-                mediaPlayer.setDataSource(fd.getFileDescriptor(), fd.getStartOffset(), fd.getLength());
-            } else if (mediaPath != null && getHeaders() != null) {//url with headers
-                Class<MediaPlayer> clazz = MediaPlayer.class;
-                Method method = clazz.getDeclaredMethod("setDataSource", String.class, Map.class);
-                method.invoke(mediaPlayer, mediaPath.toString(), getHeaders());
-            } else if (mediaPath != null) {
-                mediaPlayer.setDataSource(mediaPath.toString());
-            }
-            mediaPlayer.prepareAsync();//异步
-        } catch (Exception e) {
-            e.printStackTrace();
-            mPlayerState = PlayerState.ERROR;
-            playerPrePareState = PlayerPrePareState.ERROR;
-            Log.e(TAG, "Prepare失败。  " + this.mediaPath);
-            if (isFirst) dealError();
-        }
-    }
 
     private void dealError() {
         doPrepare(mediaPath, false);

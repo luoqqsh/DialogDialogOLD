@@ -75,7 +75,7 @@ public class HHPlayer2 {
     public void pause() {
         if (hhPlayerBase.isPlayControl() && hhPlayerBase.isPlaying()) {
             hhPlayerBase.pause();
-            hhPlayerBase.mPlayerState = HHPlayerBase.PlayerState.PAUSED;
+            hhPlayerBase.mPlayerState = HHPlayerBase.PlayerState.PAUSE;
             Log.e(hhPlayerBase.TAG, "doPause");
         }
     }

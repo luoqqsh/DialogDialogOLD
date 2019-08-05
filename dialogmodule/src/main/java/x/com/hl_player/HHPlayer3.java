@@ -47,6 +47,7 @@ public class HHPlayer3 {
         this(context, hhPlayerBase, playerView, viewGroup, null);
     }
 
+    //使用NEWSURFACE、NEWTEXTURE必须传viewGroup
     private HHPlayer3(Context context, HHPlayerBase hhPlayerBase, PlayerView playerView, ViewGroup viewGroup, Surface surface) {
         mContext = context;
         hhPlayerBase.setContext(mContext);
@@ -87,7 +88,7 @@ public class HHPlayer3 {
 
     public void addExtraView(View view) {
         if (viewGroup == null) {
-            Log.e("hl_error", "必须设置viewGroup");
+            Log.e(hhPlayerBase.TAG, "必须设置viewGroup");
         } else {
             ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             viewGroup.addView(view, params);
@@ -114,7 +115,7 @@ public class HHPlayer3 {
     public void pause() {
         if (hhPlayerBase.isPlayControl() && hhPlayerBase.isPlaying()) {
             hhPlayerBase.pause();
-            hhPlayerBase.mPlayerState = HHPlayerBase.PlayerState.PAUSED;
+            hhPlayerBase.mPlayerState = HHPlayerBase.PlayerState.PAUSE;
             Log.e(hhPlayerBase.TAG, "doPause");
         }
     }
@@ -187,7 +188,7 @@ public class HHPlayer3 {
         } else {
             hhPlayerBase.volume = 1;
             hhPlayerBase.setVolume(1);
-            Log.e("hl_error", "volume超范围：" + volume);
+            Log.e(hhPlayerBase.ETAG, "volume超范围：" + volume);
         }
     }
 
@@ -204,8 +205,8 @@ public class HHPlayer3 {
     }
 
     public void release() {
-        hhPlayerBase.release();
         stop();
+        hhPlayerBase.release();
         hhPlayerBase.getCurrentStop();
         hhPlayerBase.mPlayerState = HHPlayerBase.PlayerState.NONE;
         hhPlayerBase.isPrepared = false;
@@ -252,6 +253,10 @@ public class HHPlayer3 {
         });
     }
 
+    public void setOnErrorListener(HOnListener<Object> errorListener) {
+        hhPlayerBase.setOnErrorListener(errorListener);
+    }
+
     public void setProgessListener(HOnListener<Long> progessListener) {
         hhPlayerBase.setProgessListener(progessListener);
     }
@@ -265,7 +270,10 @@ public class HHPlayer3 {
     }
 
     public void fullScreen() {
-
+        if (viewGroup == null) {
+            Log.e(hhPlayerBase.ETAG, "必须要有viewGroup才能执行此操作");
+            return;
+        }
     }
 
 

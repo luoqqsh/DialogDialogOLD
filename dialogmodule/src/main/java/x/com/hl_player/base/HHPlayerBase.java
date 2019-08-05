@@ -17,6 +17,7 @@ public abstract class HHPlayerBase {
     public PlayerState mPlayerState = PlayerState.IDLE;
     public PlayerPrePareState playerPrePareState = PlayerPrePareState.NONE;
     public String TAG = "HHPlayerBase";
+    public String ETAG = "hh_error";
 
     public Object mediaPath;
 
@@ -29,6 +30,7 @@ public abstract class HHPlayerBase {
     public HOnListener<Object> onPreparedListener;
     public HOnListener<Long> onProgessListener;
     public HOnListener<Object> onCompletionListener;
+    public HOnListener<Object> onErrorListener;
     public HOnListener<Integer> onBufferingUpdateListener;
     private TaskDelayManager a;
     private Map<String, String> mHeaders;
@@ -38,7 +40,7 @@ public abstract class HHPlayerBase {
         IDLE,//闲置，初始化
         PLAYING,//播放中
         PREPARED,//准备就绪,准备好未播放的状态，判断准备状态以PlayerPrePareState为准
-        PAUSED,//暂停中
+        PAUSE,//暂停中
         PHONE,//通话中
         PLAYBACK_COMPLETED,//播放完成
         NONE//结束，需要重新new
@@ -118,6 +120,10 @@ public abstract class HHPlayerBase {
         this.onProgessListener = progessListener;
     }
 
+    public void setOnErrorListener(HOnListener<Object> onErrorListener) {
+        this.onErrorListener = onErrorListener;
+    }
+
     public void setCompletionListener(HOnListener<Object> completionListener) {
         this.onCompletionListener = completionListener;
     }
@@ -130,8 +136,9 @@ public abstract class HHPlayerBase {
         isPlayWhenPrepared = playWhenPrepared;
     }
 
+    //是否可以进行播放暂停等控制操作
     public boolean isPlayControl() {
-        return mPlayerState == PlayerState.PLAYING || mPlayerState == PlayerState.PAUSED || mPlayerState == PlayerState.PHONE
+        return mPlayerState == PlayerState.PLAYING || mPlayerState == PlayerState.PAUSE || mPlayerState == PlayerState.PHONE
                 || mPlayerState == PlayerState.PREPARED || mPlayerState == PlayerState.PLAYBACK_COMPLETED
                 && playerPrePareState == PlayerPrePareState.PREPARED;
     }

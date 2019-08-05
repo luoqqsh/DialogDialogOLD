@@ -18,17 +18,18 @@ import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
 public class HHijkPlayer extends HHPlayerBase {
     private IjkMediaPlayer mediaPlayer;
+    private Surface surface;
 
     @Override
     public void initView(SurfaceView surfaceView) {
-        TAG = "HH-MediaPlayer-surface";
+        TAG = "HH-IJKPlayer-surface";
         mediaPlayer = new IjkMediaPlayer();
         initListener();
         surfaceView.setKeepScreenOn(true);
         surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
-                mediaPlayer.setDisplay(holder);
+                surface = holder.getSurface();
             }
 
             @Override
@@ -45,13 +46,13 @@ public class HHijkPlayer extends HHPlayerBase {
 
     @Override
     public void initView(TextureView textureView) {
-        TAG = "HH-MediaPlayer-texture";
+        TAG = "HH-IJKPlayer-texture";
         mediaPlayer = new IjkMediaPlayer();
         initListener();
         textureView.setSurfaceTextureListener(new TextureView.SurfaceTextureListener() {
             @Override
             public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int width, int height) {
-                mediaPlayer.setSurface(new Surface(surfaceTexture));
+                surface = new Surface(surfaceTexture);
             }
 
             @Override
@@ -75,102 +76,10 @@ public class HHijkPlayer extends HHPlayerBase {
 
     @Override
     public void initView(Surface surface) {
-        TAG = "HH-MediaPlayer-surface";
+        TAG = "HH-IJKPlayer-surface";
+        this.surface = surface;
         mediaPlayer = new IjkMediaPlayer();
         initListener();
-        mediaPlayer.setSurface(surface);
-    }
-
-    @Override
-    public long getCurrentPosition() {
-        if (mediaPlayer != null) {
-            if (mediaPlayer.getCurrentPosition() > getMediaDuration()) {
-                return getMediaDuration();
-            }
-            return mediaPlayer.getCurrentPosition();
-        }
-        return 0;
-    }
-
-    @Override
-    public long getMediaDuration() {
-        if (mediaPlayer != null) {
-            return mediaPlayer.getDuration();
-        }
-        return 0;
-    }
-
-    @Override
-    public void prepare(Object mediaPath) {
-        if ("HHPlayerBase".equals(TAG)) {
-            TAG = "HH-MediaPlayer-Music";
-        }
-        this.mediaPath = mediaPath;
-        doPrepare(mediaPath, true);
-    }
-
-    @Override
-    public void start() {
-        isCompletePlay = false;
-        if (mediaPlayer != null) {
-            mediaPlayer.start();
-            getCurrentStart();
-        }
-    }
-
-    @Override
-    public void pause() {
-        if (mediaPlayer != null) {
-            mediaPlayer.pause();
-        }
-    }
-
-    @Override
-    public void seekTo(long position) {
-        if (mediaPlayer != null) {
-            mediaPlayer.seekTo((int) position);
-        }
-    }
-
-    @Override
-    public void stop() {
-        //调用stop方法之后要调用prepare方法，不然无法播放
-        if (mediaPlayer != null) {
-            mediaPlayer.stop();
-            isPrepared = false;
-            mPlayerState = HHPlayerBase.PlayerState.IDLE;
-        }
-    }
-
-    @Override
-    public void reset() {
-        if (mediaPlayer != null) {
-            mediaPlayer.reset();
-        }
-    }
-
-    @Override
-    public void release() {
-        if (mediaPlayer != null) {
-            mediaPlayer.release();
-            mediaPlayer = null;
-        }
-    }
-
-    @Override
-    public void setVolume(float volume) {
-        if (mediaPlayer != null) {
-            mediaPlayer.setVolume(volume, volume);
-        }
-    }
-
-    @Override
-    public void setSpeed(float speed) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//            if (mediaPlayer != null) {
-//                mediaPlayer.setPlaybackParams(mediaPlayer.getPlaybackParams().setSpeed(speed));
-//            }
-        }
     }
 
     private void initListener() {
@@ -189,14 +98,14 @@ public class HHijkPlayer extends HHPlayerBase {
                     if (onPreparedListener != null) {
                         onPreparedListener.onListen(mp);
                     }
-                    Log.e(TAG, "Prepared OK");
+                    Log.d(TAG, "Prepared OK");
                 }
             });
             mediaPlayer.setOnSeekCompleteListener(new IjkMediaPlayer.OnSeekCompleteListener() {
                 @Override
                 public void onSeekComplete(IMediaPlayer mp) {
                     start();
-                    Log.e(TAG, "Seek Complete");
+                    Log.d(TAG, "Seek Complete");
                 }
             });
             mediaPlayer.setOnCompletionListener(new IjkMediaPlayer.OnCompletionListener() {
@@ -231,11 +140,13 @@ public class HHijkPlayer extends HHPlayerBase {
 
     private void doPrepare(Object mediaPath, boolean isFirst) {
         this.mediaPath = mediaPath;
-        if (mediaPlayer != null) {
-            mediaPlayer.reset();
-        } else {
+        if (mediaPlayer == null) {
             mediaPlayer = new IjkMediaPlayer();
             initListener();
+        } else {
+            stop();
+            reset();//ijkplayer调用reset会连画布一起重置，画布不会销毁
+            mediaPlayer.setSurface(surface);
         }
         mPlayerState = PlayerState.IDLE;
         try {
@@ -259,6 +170,99 @@ public class HHijkPlayer extends HHPlayerBase {
             if (isFirst) dealError();
         }
     }
+
+    @Override
+    public long getCurrentPosition() {
+        if (mediaPlayer != null) {
+            if (mediaPlayer.getCurrentPosition() > getMediaDuration()) {
+                return getMediaDuration();
+            }
+            return mediaPlayer.getCurrentPosition();
+        }
+        return 0;
+    }
+
+    @Override
+    public long getMediaDuration() {
+        if (mediaPlayer != null) {
+            return mediaPlayer.getDuration();
+        }
+        return 0;
+    }
+
+    @Override
+    public void prepare(Object mediaPath) {
+        if ("HHPlayerBase".equals(TAG)) {
+            TAG = "HH-IJKPlayer-Music";
+        }
+        this.mediaPath = mediaPath;
+        doPrepare(mediaPath, true);
+    }
+
+    @Override
+    public void start() {
+        isCompletePlay = false;
+        if (mediaPlayer != null) {
+            mediaPlayer.start();
+            getCurrentStart();
+        }
+    }
+
+    @Override
+    public void pause() {
+        if (mediaPlayer != null) {
+            mediaPlayer.pause();
+        }
+    }
+
+    @Override
+    public void seekTo(long position) {
+        if (mediaPlayer != null) {
+            mediaPlayer.seekTo((int) position);
+        }
+    }
+
+    @Override
+    public void stop() {
+        //调用stop方法之后要调用prepare方法，不然无法播放
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+            isPrepared = false;
+            mPlayerState = PlayerState.IDLE;
+        }
+    }
+
+    @Override
+    public void reset() {
+        if (mediaPlayer != null) {
+            mediaPlayer.reset();
+        }
+    }
+
+    @Override
+    public void release() {
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+    }
+
+    @Override
+    public void setVolume(float volume) {
+        if (mediaPlayer != null) {
+            mediaPlayer.setVolume(volume, volume);
+        }
+    }
+
+    @Override
+    public void setSpeed(float speed) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            if (mediaPlayer != null) {
+//                mediaPlayer.setPlaybackParams(mediaPlayer.getPlaybackParams().setSpeed(speed));
+//            }
+        }
+    }
+
 
     private void dealError() {
         doPrepare(mediaPath, false);
