@@ -82,6 +82,7 @@ public class HHMediaPlayer extends HHPlayerBase {
         initListener();
         mediaPlayer.setSurface(surface);
     }
+
     private void initListener() {
         if (mediaPlayer != null) {
             mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -98,7 +99,11 @@ public class HHMediaPlayer extends HHPlayerBase {
                     if (onPreparedListener != null) {
                         onPreparedListener.onListen(mp);
                     }
-                    Log.d(TAG, "Prepared OK");
+                    StringBuilder videoInfoLog = new StringBuilder("Prepared OK\n");
+                    videoInfoLog.append("width: ").append(mediaPlayer.getVideoWidth()).append("\n");
+                    videoInfoLog.append("height: ").append(mediaPlayer.getVideoHeight()).append("\n");
+                    videoInfoLog.append("duration: ").append(mediaPlayer.getDuration());
+                    ViseLog.d(videoInfoLog);
                 }
             });
             mediaPlayer.setOnSeekCompleteListener(new MediaPlayer.OnSeekCompleteListener() {
@@ -180,6 +185,7 @@ public class HHMediaPlayer extends HHPlayerBase {
             if (isFirst) dealError();
         }
     }
+
     @Override
     public long getCurrentPosition() {
         if (mediaPlayer != null) {
@@ -275,7 +281,6 @@ public class HHMediaPlayer extends HHPlayerBase {
             }
         }
     }
-
 
 
     private void dealError() {

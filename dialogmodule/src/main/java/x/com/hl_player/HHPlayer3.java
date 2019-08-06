@@ -19,7 +19,6 @@ import x.com.hl_player.base.HHPlayerBase;
  * 播放器控制类，也就是我们的使用类
  */
 public class HHPlayer3 {
-
     private HHPlayerBase hhPlayerBase;//播放器内核
     private Context mContext;
     private boolean isChangeBrigtness = false;
@@ -42,7 +41,7 @@ public class HHPlayer3 {
         this(context, hhPlayerBase, PlayerView.SURFACE, null, surface);
     }
 
-    //使用外部的viewGroup
+    //使用外部的viewGroup，需要选择NEWSURFACE、NEWTEXTURE
     public HHPlayer3(Context context, HHPlayerBase hhPlayerBase, PlayerView playerView, ViewGroup viewGroup) {
         this(context, hhPlayerBase, playerView, viewGroup, null);
     }
@@ -143,6 +142,7 @@ public class HHPlayer3 {
         }
     }
 
+    //设置屏幕亮度
     public void setScreenBrigtness(int brightness) {
         Window localWindow = ((Activity) mContext).getWindow();
         WindowManager.LayoutParams localLayoutParams = localWindow.getAttributes();
@@ -151,6 +151,7 @@ public class HHPlayer3 {
         isChangeBrigtness = true;
     }
 
+    //获取系统屏幕亮度
     private int getSystemScreenBrightness() {
         try {
             int brightNess = Settings.System.getInt(mContext.getContentResolver(), "screen_brightness");
@@ -160,6 +161,7 @@ public class HHPlayer3 {
         }
     }
 
+    //获取屏幕亮度
     public int getScreenBrightness() {
         if (this.mContext instanceof Activity) {
             Window localWindow = ((Activity) this.mContext).getWindow();
@@ -173,14 +175,17 @@ public class HHPlayer3 {
         return getSystemScreenBrightness();
     }
 
+    //设置是否循环播放
     public void setLooping(boolean looping) {
         hhPlayerBase.setLooping(looping);
     }
 
+    //设置静音
     public void setMute(boolean mute) {
         setVolume(mute ? 0 : 1);
     }
 
+    //设置音量，范围0-1
     public void setVolume(float volume) {
         if (volume >= 0 && volume <= 1) {
             hhPlayerBase.volume = volume;
@@ -192,11 +197,12 @@ public class HHPlayer3 {
         }
     }
 
+    //获取当前音量
     public float getVolume() {
         return hhPlayerBase.volume;
     }
 
-    //0为暂停，1为正常。。。
+    //设置播放速度，快放慢放。0就停了，1为正常速度。。。
     public void setSpeed(float speed) {
         if (hhPlayerBase.isPlayControl()) {
             hhPlayerBase.setSpeed(speed);
@@ -213,6 +219,7 @@ public class HHPlayer3 {
         Log.d(hhPlayerBase.TAG, "doRelease");
     }
 
+
     public Object getMediaPath() {
         return hhPlayerBase.getMediaPath();
     }
@@ -221,6 +228,7 @@ public class HHPlayer3 {
         return hhPlayerBase.isMediaPlaying();
     }
 
+    //获取当前播放进度，-1为获取失败
     public long getCurrentPosition() {
         if (hhPlayerBase.isPlayControl()) {
             return hhPlayerBase.getCurrentPosition();
@@ -228,6 +236,7 @@ public class HHPlayer3 {
         return -1;
     }
 
+    //获取媒体总时长，-1为获取失败
     public long getMediaDuration() {
         if (hhPlayerBase.isPlayControl()) {
             return hhPlayerBase.getMediaDuration();
@@ -239,6 +248,7 @@ public class HHPlayer3 {
         hhPlayerBase.setPreparedListener(preparedListener);
     }
 
+    //播放器播放完成监听
     public void setCompletionListener(final HOnListener<Object> completionListener) {
         hhPlayerBase.setCompletionListener(new HOnListener<Object>() {
             @Override
@@ -253,18 +263,22 @@ public class HHPlayer3 {
         });
     }
 
+    //播放器错误监听
     public void setOnErrorListener(HOnListener<Object> errorListener) {
         hhPlayerBase.setOnErrorListener(errorListener);
     }
 
+    //播放器播放进度监听
     public void setProgessListener(HOnListener<Long> progessListener) {
         hhPlayerBase.setProgessListener(progessListener);
     }
 
+    //播放器缓存进度监听
     public void setOnBufferingUpdateListener(HOnListener<Integer> onBufferingUpdateListener) {
         hhPlayerBase.setOnBufferingUpdateListener(onBufferingUpdateListener);
     }
 
+    //获取当前播放器状态
     public HHPlayerBase.PlayerState getPlayerState() {
         return hhPlayerBase.mPlayerState;
     }

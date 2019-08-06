@@ -132,6 +132,7 @@ public abstract class HHPlayerBase {
         this.onBufferingUpdateListener = OnBufferingUpdateListener;
     }
 
+    //是遏制是否准备好立即播放
     public void setPlayWhenPrepared(boolean playWhenPrepared) {
         isPlayWhenPrepared = playWhenPrepared;
     }
@@ -143,10 +144,12 @@ public abstract class HHPlayerBase {
                 && playerPrePareState == PlayerPrePareState.PREPARED;
     }
 
+    //是否正在播放
     public boolean isMediaPlaying() {
         return mPlayerState == PlayerState.PLAYING && isPlaying();
     }
 
+    //读取播放进度线程开启
     public void getCurrentStart() {
         if (a == null) {
             a = new TaskDelayManager() {
@@ -161,6 +164,7 @@ public abstract class HHPlayerBase {
         }
     }
 
+    //读取播放进度线程停止
     public void getCurrentStop() {
         if (a != null) {
             a.cancel();

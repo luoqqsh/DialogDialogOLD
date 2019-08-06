@@ -15,6 +15,7 @@ import java.util.Map;
 
 import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
+import x.com.hl_log.ViseLog;
 
 public class HHijkPlayer extends HHPlayerBase {
     private IjkMediaPlayer mediaPlayer;
@@ -98,7 +99,11 @@ public class HHijkPlayer extends HHPlayerBase {
                     if (onPreparedListener != null) {
                         onPreparedListener.onListen(mp);
                     }
-                    Log.d(TAG, "Prepared OK");
+                    StringBuilder videoInfoLog = new StringBuilder("Prepared OK\n");
+                    videoInfoLog.append("width: ").append(mediaPlayer.getVideoWidth()).append("\n");
+                    videoInfoLog.append("height: ").append(mediaPlayer.getVideoHeight()).append("\n");
+                    videoInfoLog.append("duration: ").append(mediaPlayer.getDuration());
+                    ViseLog.d(videoInfoLog);
                 }
             });
             mediaPlayer.setOnSeekCompleteListener(new IjkMediaPlayer.OnSeekCompleteListener() {
