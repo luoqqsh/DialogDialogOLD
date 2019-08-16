@@ -55,7 +55,7 @@ public class HHMedia3Activity extends BaseActivity {
         initUI();
         hhview = findViewById(R.id.hhPlayerView);
         hhPlayer3 = new HHPlayer3(this, new HHijkPlayer(), HHPlayer3.PlayerView.NEWTEXTURE, hhview);
-        hhPlayer3.setPlayWhenPrepared(true);
+//        hhPlayer3.setPlayWhenPrepared(true);
         hhPlayer3.setCompletionListener(new HOnListener<Object>() {
             @Override
             public void onListen(Object o) {
@@ -65,6 +65,7 @@ public class HHMedia3Activity extends BaseActivity {
         hhPlayer3.setPreparedListener(new HOnListener<Object>() {
             @Override
             public void onListen(Object o) {
+                hhPlayer3.start();
                 seekbar_volume.setProgress((int) (hhPlayer3.getVolume() * 10));
                 totaltime.setText(" / " + hl_time.formatTime(hhPlayer3.getMediaDuration()));
                 seekBar.setMax((int) (hhPlayer3.getMediaDuration() / 1000));

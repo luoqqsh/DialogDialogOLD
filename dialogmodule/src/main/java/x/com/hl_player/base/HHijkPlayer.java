@@ -31,6 +31,7 @@ public class HHijkPlayer extends HHPlayerBase {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
                 surface = holder.getSurface();
+                mediaPlayer.setSurface(surface);
             }
 
             @Override
@@ -54,6 +55,7 @@ public class HHijkPlayer extends HHPlayerBase {
             @Override
             public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int width, int height) {
                 surface = new Surface(surfaceTexture);
+                mediaPlayer.setSurface(surface);
             }
 
             @Override
@@ -150,9 +152,11 @@ public class HHijkPlayer extends HHPlayerBase {
             mediaPlayer = new IjkMediaPlayer();
             initListener();
         } else {
-            stop();
-            reset();//ijkplayer调用reset会连画布一起重置，画布不会销毁
-            mediaPlayer.setSurface(surface);
+            if (surface != null) {
+                stop();
+                reset();//ijkplayer调用reset会连画布一起重置，画布不会销毁
+                mediaPlayer.setSurface(surface);
+            }
         }
         mPlayerState = PlayerState.IDLE;
         try {
@@ -247,6 +251,7 @@ public class HHijkPlayer extends HHPlayerBase {
 
     @Override
     public void release() {
+        surface = null;
         if (mediaPlayer != null) {
             mediaPlayer.release();
             mediaPlayer = null;
