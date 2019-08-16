@@ -47,7 +47,7 @@ public class HHPlayer3 {
     }
 
     //使用NEWSURFACE、NEWTEXTURE必须传viewGroup
-    private HHPlayer3(Context context, HHPlayerBase hhPlayerBase, PlayerView playerView, ViewGroup viewGroup, Surface surface) {
+    public HHPlayer3(Context context, HHPlayerBase hhPlayerBase, PlayerView playerView, ViewGroup viewGroup, Surface surface) {
         mContext = context;
         hhPlayerBase.setContext(mContext);
         this.viewGroup = viewGroup;

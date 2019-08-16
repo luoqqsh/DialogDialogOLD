@@ -3,7 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion 29
-    buildToolsVersion "29.0.1"
+    buildToolsVersion "29.0.2"
     defaultConfig {
         applicationId "x.com.dialogdialog"
         minSdkVersion 16
@@ -79,9 +79,9 @@ dependencies {
         exclude group: 'com.google.guava', module: 'listenablefuture'
     }
     implementation 'io.github.lizhangqu:retrace:1.0.2'
-    implementation 'androidx.viewpager2:viewpager2:1.0.0-beta02'
+    implementation 'androidx.viewpager2:viewpager2:1.0.0-beta03'
     implementation 'com.vinctor:vcharts:1.0.0'
-
+    implementation 'tv.danmaku.ijk.media:ijkplayer-armv7a:0.8.8'
 
 }
 
