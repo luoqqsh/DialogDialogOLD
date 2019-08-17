@@ -12,7 +12,7 @@ import x.com.dialogdialog.Base.BaseActivity;
 import x.com.hl_base.HOnListener;
 import x.com.hl_log.ViseLog;
 import x.com.hl_player.HHPlayer3;
-import x.com.hl_player.base.HHijkPlayer;
+import x.com.hl_player.base.HHMediaPlayer;
 import x.com.hl_tools.hl_time;
 
 
@@ -54,7 +54,7 @@ public class HHMedia3Activity extends BaseActivity {
         setContentView(R.layout.activity_mediaview);
         initUI();
         hhview = findViewById(R.id.hhPlayerView);
-        hhPlayer3 = new HHPlayer3(this, new HHijkPlayer(), HHPlayer3.PlayerView.NEWTEXTURE, hhview);
+        hhPlayer3 = new HHPlayer3(this, new HHMediaPlayer(), HHPlayer3.PlayerView.HHSURFACE, hhview);
 //        hhPlayer3.setPlayWhenPrepared(true);
         hhPlayer3.setCompletionListener(new HOnListener<Object>() {
             @Override
@@ -73,9 +73,15 @@ public class HHMedia3Activity extends BaseActivity {
         });
         hhPlayer3.setProgessListener(new HOnListener<Long>() {
             @Override
-            public void onListen(Long o) {
-                currenttime.setText(hl_time.formatTime(o));
-                seekBar.setProgress((int) (o / 1000));
+            public void onListen(Long o) {//当前是timer线程
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        currenttime.setText(hl_time.formatTime(o));
+                        seekBar.setProgress((int) (o / 1000));
+                    }
+                });
+                
             }
         });
         hhPlayer3.setOnBufferingUpdateListener(new HOnListener<Integer>() {

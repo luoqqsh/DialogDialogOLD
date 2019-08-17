@@ -8,7 +8,7 @@
 //
 //import x.com.hl_log.ViseLog;
 //
-//public class HHAliPlayer extends HHPlayerBase {
+//public class HHAliPlayer extends HHPlayerCore {
 //    private AliyunVodPlayer mAliyunVodPlayer;
 //
 //    @Override
@@ -87,7 +87,7 @@
 //
 //    @Override
 //    public void prepare(Object mediaPath) {
-//        if ("HHPlayerBase".equals(TAG)) {
+//        if ("HHPlayerCore".equals(TAG)) {
 //            TAG = "HH-AliPlayer-Music";
 //        }
 //        this.mediaPath = mediaPath;

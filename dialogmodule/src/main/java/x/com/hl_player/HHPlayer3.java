@@ -2,9 +2,11 @@ package x.com.hl_player;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.SurfaceTexture;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.Surface;
+import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.TextureView;
 import android.view.View;
@@ -13,13 +15,16 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import x.com.hl_base.HOnListener;
-import x.com.hl_player.base.HHPlayerBase;
+import x.com.hl_player.View.HHPlayerView;
+import x.com.hl_player.View.HHSurfaceStateListener;
+import x.com.hl_player.base.HHPlayerCore;
 
 /**
  * 播放器控制类，也就是我们的使用类
  */
 public class HHPlayer3 {
-    private HHPlayerBase hhPlayerBase;//播放器内核
+    private HHPlayerCore hhPlayerCore;//播放器内
+    private HHPlayerView hhPlayerView;
     private Context mContext;
     private boolean isChangeBrigtness = false;
     private ViewGroup viewGroup;
@@ -28,30 +33,31 @@ public class HHPlayer3 {
         NEWSURFACE,//新建surfaceview
         NEWTEXTURE,//新建textureview
         SURFACE,//外部提供的surface
-        MUSIC//音乐
+        MUSIC,//音乐
+        HHSURFACE
     }
 
     //播放音乐
-    public HHPlayer3(Context context, HHPlayerBase hhPlayerBase) {
-        this(context, hhPlayerBase, PlayerView.MUSIC, null, null);
+    public HHPlayer3(Context context, HHPlayerCore hhPlayerCore) {
+        this(context, hhPlayerCore, PlayerView.MUSIC, null, null);
     }
 
     //使用外部的suraface
-    public HHPlayer3(Context context, HHPlayerBase hhPlayerBase, Surface surface) {
-        this(context, hhPlayerBase, PlayerView.SURFACE, null, surface);
+    public HHPlayer3(Context context, HHPlayerCore hhPlayerCore, Surface surface) {
+        this(context, hhPlayerCore, PlayerView.SURFACE, null, surface);
     }
 
     //使用外部的viewGroup，需要选择NEWSURFACE、NEWTEXTURE
-    public HHPlayer3(Context context, HHPlayerBase hhPlayerBase, PlayerView playerView, ViewGroup viewGroup) {
-        this(context, hhPlayerBase, playerView, viewGroup, null);
+    public HHPlayer3(Context context, HHPlayerCore hhPlayerCore, PlayerView playerView, ViewGroup viewGroup) {
+        this(context, hhPlayerCore, playerView, viewGroup, null);
     }
 
     //使用NEWSURFACE、NEWTEXTURE必须传viewGroup
-    public HHPlayer3(Context context, HHPlayerBase hhPlayerBase, PlayerView playerView, ViewGroup viewGroup, Surface surface) {
+    public HHPlayer3(Context context, HHPlayerCore hhPlayerCore, PlayerView playerView, ViewGroup viewGroup, Surface surface) {
         mContext = context;
-        hhPlayerBase.setContext(mContext);
+        hhPlayerCore.setContext(mContext);
         this.viewGroup = viewGroup;
-        this.hhPlayerBase = hhPlayerBase;
+        this.hhPlayerCore = hhPlayerCore;
         switch (playerView) {
             case NEWSURFACE:
                 initSurfaceView();
@@ -60,7 +66,14 @@ public class HHPlayer3 {
                 initTextureView();
                 break;
             case SURFACE:
-                initSurface(surface);
+                if (surface != null) {
+                    initSurface(surface);
+                } else {
+                    Log.e(hhPlayerCore.ETAG, "surface为空");
+                }
+                break;
+            case HHSURFACE:
+                initHHSurfaceView();
                 break;
             case MUSIC:
                 break;
@@ -69,25 +82,92 @@ public class HHPlayer3 {
 
     private void initSurfaceView() {
         SurfaceView mSurfaceView = new SurfaceView(mContext.getApplicationContext());
+        mSurfaceView.setKeepScreenOn(true);
+        mSurfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
+            @Override
+            public void surfaceCreated(SurfaceHolder holder) {
+                hhPlayerCore.initView(holder.getSurface());
+            }
+
+            @Override
+            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+            }
+
+            @Override
+            public void surfaceDestroyed(SurfaceHolder holder) {
+                holder.removeCallback(this);
+                release();
+            }
+        });
         ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         viewGroup.addView(mSurfaceView, params);
-        hhPlayerBase.initView(mSurfaceView);
     }
 
     private void initTextureView() {
         TextureView mTextureView = new TextureView(mContext.getApplicationContext());
+        mTextureView.setSurfaceTextureListener(new TextureView.SurfaceTextureListener() {
+            @Override
+            public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int width, int height) {
+                hhPlayerCore.initView(new Surface(surfaceTexture));
+            }
+
+            @Override
+            public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
+                if (surface != null) {
+                    surface.release();
+                }
+                release();
+                return true;
+            }
+
+            @Override
+            public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
+            }
+
+            @Override
+            public void onSurfaceTextureUpdated(SurfaceTexture surface) {
+            }
+        });
         ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         viewGroup.addView(mTextureView, params);
-        hhPlayerBase.initView(mTextureView);
+    }
+
+    private void initHHSurfaceView() {
+        hhPlayerView = new HHPlayerView();
+        hhPlayerView.addView(mContext, viewGroup, 0, new HHSurfaceStateListener() {
+            @Override
+            public void onSurfaceAvailable(Surface surface) {
+                hhPlayerCore.initView(surface);
+            }
+
+            @Override
+            public void onSurfaceSizeChanged(Surface surface, int width, int height) {
+
+            }
+
+            @Override
+            public boolean onSurfaceDestroyed(Surface surface) {
+                return false;
+            }
+
+            @Override
+            public void onSurfaceUpdated(Surface surface) {
+
+            }
+        });
     }
 
     private void initSurface(Surface surface) {
-        hhPlayerBase.initView(surface);
+        hhPlayerCore.initView(surface);
+    }
+
+    private void initSurfaceHolder(SurfaceHolder surfaceHolder) {
+        hhPlayerCore.initView(surfaceHolder);
     }
 
     public void addExtraView(View view) {
         if (viewGroup == null) {
-            Log.e(hhPlayerBase.TAG, "必须设置viewGroup");
+            Log.e(hhPlayerCore.TAG, "必须设置viewGroup");
         } else {
             ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             viewGroup.addView(view, params);
@@ -95,50 +175,50 @@ public class HHPlayer3 {
     }
 
     public void setPlayWhenPrepared(boolean isPlayWhenPrepared) {
-        hhPlayerBase.setPlayWhenPrepared(isPlayWhenPrepared);
+        hhPlayerCore.setPlayWhenPrepared(isPlayWhenPrepared);
     }
 
     public void prepare(String path) {
-        hhPlayerBase.prepare(path);
+        hhPlayerCore.prepare(path);
     }
 
     public void start() {
-        if (hhPlayerBase.isPrepared && hhPlayerBase.isPlayControl()) {
-            hhPlayerBase.start();
-            hhPlayerBase.getCurrentStart();
-            hhPlayerBase.mPlayerState = HHPlayerBase.PlayerState.PLAYING;
-            Log.e(hhPlayerBase.TAG, "doStart");
+        if (hhPlayerCore.isPrepared && hhPlayerCore.isPlayControl()) {
+            hhPlayerCore.start();
+            hhPlayerCore.getCurrentStart();
+            hhPlayerCore.mPlayerState = HHPlayerCore.PlayerState.PLAYING;
+            Log.e(hhPlayerCore.TAG, "doStart");
         }
     }
 
     public void pause() {
-        if (hhPlayerBase.isPlayControl() && hhPlayerBase.isPlaying()) {
-            hhPlayerBase.pause();
-            hhPlayerBase.mPlayerState = HHPlayerBase.PlayerState.PAUSE;
-            Log.e(hhPlayerBase.TAG, "doPause");
+        if (hhPlayerCore.isPlayControl() && hhPlayerCore.isPlaying()) {
+            hhPlayerCore.pause();
+            hhPlayerCore.mPlayerState = HHPlayerCore.PlayerState.PAUSE;
+            Log.e(hhPlayerCore.TAG, "doPause");
         }
     }
 
     public void reset() {
-        hhPlayerBase.reset();
-        hhPlayerBase.getCurrentStop();
-        hhPlayerBase.mPlayerState = HHPlayerBase.PlayerState.IDLE;
+        hhPlayerCore.reset();
+        hhPlayerCore.getCurrentStop();
+        hhPlayerCore.mPlayerState = HHPlayerCore.PlayerState.IDLE;
     }
 
     public void stop() {
-        if (hhPlayerBase.isPlayControl()) {
-            hhPlayerBase.stop();
-            hhPlayerBase.getCurrentStop();
-            Log.d(hhPlayerBase.TAG, "doStop");
+        if (hhPlayerCore.isPlayControl()) {
+            hhPlayerCore.stop();
+            hhPlayerCore.getCurrentStop();
+            Log.d(hhPlayerCore.TAG, "doStop");
         }
     }
 
     //单位毫秒
     public void seekTo(long position) {
-        if (hhPlayerBase.isPlayControl()) {
-            hhPlayerBase.playerPrePareState = HHPlayerBase.PlayerPrePareState.PREPARING;
-            hhPlayerBase.seekTo(position);
-            Log.d(hhPlayerBase.TAG, "seekTo");
+        if (hhPlayerCore.isPlayControl()) {
+            hhPlayerCore.playerPrePareState = HHPlayerCore.PlayerPrePareState.PREPARING;
+            hhPlayerCore.seekTo(position);
+            Log.d(hhPlayerCore.TAG, "seekTo");
         }
     }
 
@@ -177,7 +257,7 @@ public class HHPlayer3 {
 
     //设置是否循环播放
     public void setLooping(boolean looping) {
-        hhPlayerBase.setLooping(looping);
+        hhPlayerCore.setLooping(looping);
     }
 
     //设置静音
@@ -188,73 +268,73 @@ public class HHPlayer3 {
     //设置音量，范围0-1
     public void setVolume(float volume) {
         if (volume >= 0 && volume <= 1) {
-            hhPlayerBase.volume = volume;
-            hhPlayerBase.setVolume(volume);
+            hhPlayerCore.volume = volume;
+            hhPlayerCore.setVolume(volume);
         } else {
-            hhPlayerBase.volume = 1;
-            hhPlayerBase.setVolume(1);
-            Log.e(hhPlayerBase.ETAG, "volume超范围：" + volume);
+            hhPlayerCore.volume = 1;
+            hhPlayerCore.setVolume(1);
+            Log.e(hhPlayerCore.ETAG, "volume超范围：" + volume);
         }
     }
 
     //获取当前音量
     public float getVolume() {
-        return hhPlayerBase.volume;
+        return hhPlayerCore.volume;
     }
 
     //设置播放速度，快放慢放。0就停了，1为正常速度。。。
     public void setSpeed(float speed) {
-        if (hhPlayerBase.isPlayControl()) {
-            hhPlayerBase.setSpeed(speed);
-            Log.d(hhPlayerBase.TAG, "setSpeed");
+        if (hhPlayerCore.isPlayControl()) {
+            hhPlayerCore.setSpeed(speed);
+            Log.d(hhPlayerCore.TAG, "setSpeed");
         }
     }
 
     public void release() {
         stop();
-        hhPlayerBase.release();
-        hhPlayerBase.getCurrentStop();
-        hhPlayerBase.mPlayerState = HHPlayerBase.PlayerState.NONE;
-        hhPlayerBase.isPrepared = false;
-        Log.d(hhPlayerBase.TAG, "doRelease");
+        hhPlayerCore.release();
+        hhPlayerCore.getCurrentStop();
+        hhPlayerCore.mPlayerState = HHPlayerCore.PlayerState.NONE;
+        hhPlayerCore.isPrepared = false;
+        Log.d(hhPlayerCore.TAG, "doRelease");
     }
 
 
     public Object getMediaPath() {
-        return hhPlayerBase.getMediaPath();
+        return hhPlayerCore.getMediaPath();
     }
 
     public boolean isPlaying() {
-        return hhPlayerBase.isMediaPlaying();
+        return hhPlayerCore.isMediaPlaying();
     }
 
     //获取当前播放进度，-1为获取失败
     public long getCurrentPosition() {
-        if (hhPlayerBase.isPlayControl()) {
-            return hhPlayerBase.getCurrentPosition();
+        if (hhPlayerCore.isPlayControl()) {
+            return hhPlayerCore.getCurrentPosition();
         }
         return -1;
     }
 
     //获取媒体总时长，-1为获取失败
     public long getMediaDuration() {
-        if (hhPlayerBase.isPlayControl()) {
-            return hhPlayerBase.getMediaDuration();
+        if (hhPlayerCore.isPlayControl()) {
+            return hhPlayerCore.getMediaDuration();
         }
         return -1;
     }
 
     public void setPreparedListener(HOnListener<Object> preparedListener) {
-        hhPlayerBase.setPreparedListener(preparedListener);
+        hhPlayerCore.setPreparedListener(preparedListener);
     }
 
     //播放器播放完成监听
     public void setCompletionListener(final HOnListener<Object> completionListener) {
-        hhPlayerBase.setCompletionListener(new HOnListener<Object>() {
+        hhPlayerCore.setCompletionListener(new HOnListener<Object>() {
             @Override
             public void onListen(Object o) {
-                Log.e(hhPlayerBase.TAG, "play Completion");
-                hhPlayerBase.mPlayerState = HHPlayerBase.PlayerState.PLAYBACK_COMPLETED;
+                Log.e(hhPlayerCore.TAG, "play Completion");
+                hhPlayerCore.mPlayerState = HHPlayerCore.PlayerState.PLAYBACK_COMPLETED;
                 if (isChangeBrigtness) {//播放完恢复原来的亮度，没设置亮度则不启用
                     setScreenBrigtness(getSystemScreenBrightness());
                 }
@@ -265,27 +345,27 @@ public class HHPlayer3 {
 
     //播放器错误监听
     public void setOnErrorListener(HOnListener<Object> errorListener) {
-        hhPlayerBase.setOnErrorListener(errorListener);
+        hhPlayerCore.setOnErrorListener(errorListener);
     }
 
-    //播放器播放进度监听
+    //播放器播放进度监听//当前是timer线程
     public void setProgessListener(HOnListener<Long> progessListener) {
-        hhPlayerBase.setProgessListener(progessListener);
+        hhPlayerCore.setProgessListener(progessListener);
     }
 
     //播放器缓存进度监听
     public void setOnBufferingUpdateListener(HOnListener<Integer> onBufferingUpdateListener) {
-        hhPlayerBase.setOnBufferingUpdateListener(onBufferingUpdateListener);
+        hhPlayerCore.setOnBufferingUpdateListener(onBufferingUpdateListener);
     }
 
     //获取当前播放器状态
-    public HHPlayerBase.PlayerState getPlayerState() {
-        return hhPlayerBase.mPlayerState;
+    public HHPlayerCore.PlayerState getPlayerState() {
+        return hhPlayerCore.mPlayerState;
     }
 
     public void fullScreen() {
         if (viewGroup == null) {
-            Log.e(hhPlayerBase.ETAG, "必须要有viewGroup才能执行此操作");
+            Log.e(hhPlayerCore.ETAG, "必须要有viewGroup才能执行此操作");
             return;
         }
     }

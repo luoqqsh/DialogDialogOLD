@@ -1,14 +1,10 @@
 package x.com.hl_player.base;
 
 import android.content.res.AssetFileDescriptor;
-import android.graphics.SurfaceTexture;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.util.Log;
 import android.view.Surface;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
-import android.view.TextureView;
 
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -17,66 +13,10 @@ import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 import x.com.hl_log.ViseLog;
 
-public class HHijkPlayer extends HHPlayerBase {
+public class HHijkPlayer extends HHPlayerCore {
     private IjkMediaPlayer mediaPlayer;
     private Surface surface;
-
-    @Override
-    public void initView(SurfaceView surfaceView) {
-        TAG = "HH-IJKPlayer-surface";
-        mediaPlayer = new IjkMediaPlayer();
-        initListener();
-        surfaceView.setKeepScreenOn(true);
-        surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
-            @Override
-            public void surfaceCreated(SurfaceHolder holder) {
-                surface = holder.getSurface();
-                mediaPlayer.setSurface(surface);
-            }
-
-            @Override
-            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-            }
-
-            @Override
-            public void surfaceDestroyed(SurfaceHolder holder) {
-                holder.removeCallback(this);
-                release();
-            }
-        });
-    }
-
-    @Override
-    public void initView(TextureView textureView) {
-        TAG = "HH-IJKPlayer-texture";
-        mediaPlayer = new IjkMediaPlayer();
-        initListener();
-        textureView.setSurfaceTextureListener(new TextureView.SurfaceTextureListener() {
-            @Override
-            public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int width, int height) {
-                surface = new Surface(surfaceTexture);
-                mediaPlayer.setSurface(surface);
-            }
-
-            @Override
-            public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
-                if (surface != null) {
-                    surface.release();
-                }
-                release();
-                return true;
-            }
-
-            @Override
-            public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
-            }
-
-            @Override
-            public void onSurfaceTextureUpdated(SurfaceTexture surface) {
-            }
-        });
-    }
-
+    
     @Override
     public void initView(Surface surface) {
         TAG = "HH-IJKPlayer-surface";
@@ -148,6 +88,7 @@ public class HHijkPlayer extends HHPlayerBase {
 
     private void doPrepare(Object mediaPath, boolean isFirst) {
         this.mediaPath = mediaPath;
+        ViseLog.d(surface);
         if (mediaPlayer == null) {
             mediaPlayer = new IjkMediaPlayer();
             initListener();
@@ -202,7 +143,7 @@ public class HHijkPlayer extends HHPlayerBase {
 
     @Override
     public void prepare(Object mediaPath) {
-        if ("HHPlayerBase".equals(TAG)) {
+        if ("HHPlayerCore".equals(TAG)) {
             TAG = "HH-IJKPlayer-Music";
         }
         this.mediaPath = mediaPath;

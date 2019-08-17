@@ -9,41 +9,41 @@ import android.view.View;
 
 import x.com.hl_base.HOnListener;
 import x.com.hl_log.ViseLog;
-import x.com.hl_player.base.HHPlayerBase;
+import x.com.hl_player.base.HHPlayerCore;
 
 /**
  * 播放器控制类，也就是我们的使用类
  */
 public class HHPlayer2 {
 
-    private HHPlayerBase hhPlayerBase;//播放器内核
+    private HHPlayerCore hhPlayerCore;//播放器内核
     private View mContainer;
 
-    public HHPlayer2(HHPlayerBase hhPlayerBase) {
-        this.hhPlayerBase = hhPlayerBase;
+    public HHPlayer2(HHPlayerCore hhPlayerCore) {
+        this.hhPlayerCore = hhPlayerCore;
     }
 
-    public HHPlayer2(HHPlayerBase hhPlayerBase, SurfaceView surface) {
-        this.hhPlayerBase = hhPlayerBase;
-        hhPlayerBase.initView(surface);
+    public HHPlayer2(HHPlayerCore hhPlayerCore, SurfaceView surface) {
+        this.hhPlayerCore = hhPlayerCore;
+//        hhPlayerCore.initView(surface);
     }
 
-    public HHPlayer2(HHPlayerBase hhPlayerBase, TextureView texture) {
-        this.hhPlayerBase = hhPlayerBase;
-        hhPlayerBase.initView(texture);
+    public HHPlayer2(HHPlayerCore hhPlayerCore, TextureView texture) {
+        this.hhPlayerCore = hhPlayerCore;
+//        hhPlayerCore.initView(texture);
     }
 
-    public HHPlayer2(HHPlayerBase hhPlayerBase, Surface surface) {
-        this.hhPlayerBase = hhPlayerBase;
-        hhPlayerBase.initView(surface);
+    public HHPlayer2(HHPlayerCore hhPlayerCore, Surface surface) {
+        this.hhPlayerCore = hhPlayerCore;
+        hhPlayerCore.initView(surface);
     }
 
     public void prepare(String path) {
-        hhPlayerBase.prepare(path);
+        hhPlayerCore.prepare(path);
     }
 
     public void setLooping(boolean looping) {
-        hhPlayerBase.setLooping(looping);
+        hhPlayerCore.setLooping(looping);
     }
 
     public void setMute(boolean mute) {
@@ -52,123 +52,123 @@ public class HHPlayer2 {
 
     public void setVolume(float volume) {
         if (volume >= 0 && volume <= 1) {
-            hhPlayerBase.setVolume(volume);
+            hhPlayerCore.setVolume(volume);
         } else {
-            hhPlayerBase.setVolume(1);
+            hhPlayerCore.setVolume(1);
             ViseLog.e("volume超范围：" + volume);
         }
     }
 
     public float getVolume() {
-        return hhPlayerBase.volume;
+        return hhPlayerCore.volume;
     }
 
     public void start() {
-        if (hhPlayerBase.isPrepared && hhPlayerBase.isPlayControl()) {
-            hhPlayerBase.start();
-            hhPlayerBase.getCurrentStart();
-            hhPlayerBase.mPlayerState = HHPlayerBase.PlayerState.PLAYING;
-            Log.e(hhPlayerBase.TAG, "doStart");
+        if (hhPlayerCore.isPrepared && hhPlayerCore.isPlayControl()) {
+            hhPlayerCore.start();
+            hhPlayerCore.getCurrentStart();
+            hhPlayerCore.mPlayerState = HHPlayerCore.PlayerState.PLAYING;
+            Log.e(hhPlayerCore.TAG, "doStart");
         }
     }
 
     public void pause() {
-        if (hhPlayerBase.isPlayControl() && hhPlayerBase.isPlaying()) {
-            hhPlayerBase.pause();
-            hhPlayerBase.mPlayerState = HHPlayerBase.PlayerState.PAUSE;
-            Log.e(hhPlayerBase.TAG, "doPause");
+        if (hhPlayerCore.isPlayControl() && hhPlayerCore.isPlaying()) {
+            hhPlayerCore.pause();
+            hhPlayerCore.mPlayerState = HHPlayerCore.PlayerState.PAUSE;
+            Log.e(hhPlayerCore.TAG, "doPause");
         }
     }
 
     public void reset() {
-        hhPlayerBase.reset();
-        hhPlayerBase.getCurrentStop();
-        hhPlayerBase.mPlayerState = HHPlayerBase.PlayerState.IDLE;
+        hhPlayerCore.reset();
+        hhPlayerCore.getCurrentStop();
+        hhPlayerCore.mPlayerState = HHPlayerCore.PlayerState.IDLE;
     }
 
     public void stop() {
-        if (hhPlayerBase.isPlayControl()) {
-            hhPlayerBase.stop();
-            hhPlayerBase.isPrepared = false;
-            hhPlayerBase.mPlayerState = HHPlayerBase.PlayerState.IDLE;
-            hhPlayerBase.getCurrentStop();
-            Log.d(hhPlayerBase.TAG, "doStop");
+        if (hhPlayerCore.isPlayControl()) {
+            hhPlayerCore.stop();
+            hhPlayerCore.isPrepared = false;
+            hhPlayerCore.mPlayerState = HHPlayerCore.PlayerState.IDLE;
+            hhPlayerCore.getCurrentStop();
+            Log.d(hhPlayerCore.TAG, "doStop");
         }
     }
 
     //单位毫秒
     public void seekTo(long position) {
-        if (hhPlayerBase.isPlayControl()) {
-            hhPlayerBase.playerPrePareState = HHPlayerBase.PlayerPrePareState.PREPARING;
-            hhPlayerBase.seekTo(position);
-            Log.d(hhPlayerBase.TAG, "seekTo");
+        if (hhPlayerCore.isPlayControl()) {
+            hhPlayerCore.playerPrePareState = HHPlayerCore.PlayerPrePareState.PREPARING;
+            hhPlayerCore.seekTo(position);
+            Log.d(hhPlayerCore.TAG, "seekTo");
         }
     }
 
     //0为暂停，1为正常。。。
     public void setSpeed(float speed) {
-        if (hhPlayerBase.isPlayControl()) {
-            hhPlayerBase.setSpeed(speed);
-            Log.d(hhPlayerBase.TAG, "setSpeed");
+        if (hhPlayerCore.isPlayControl()) {
+            hhPlayerCore.setSpeed(speed);
+            Log.d(hhPlayerCore.TAG, "setSpeed");
         }
     }
 
     public void release() {
-        hhPlayerBase.release();
+        hhPlayerCore.release();
         stop();
-        hhPlayerBase.getCurrentStop();
-        hhPlayerBase.mPlayerState = HHPlayerBase.PlayerState.NONE;
-        hhPlayerBase.isPrepared = false;
-        Log.d(hhPlayerBase.TAG, "doRelease");
+        hhPlayerCore.getCurrentStop();
+        hhPlayerCore.mPlayerState = HHPlayerCore.PlayerState.NONE;
+        hhPlayerCore.isPrepared = false;
+        Log.d(hhPlayerCore.TAG, "doRelease");
     }
 
     public Object getMediaPath() {
-        return hhPlayerBase.getMediaPath();
+        return hhPlayerCore.getMediaPath();
     }
 
     public boolean isPlaying() {
-        return hhPlayerBase.isMediaPlaying();
+        return hhPlayerCore.isMediaPlaying();
     }
 
     public long getCurrentPosition() {
-        if (hhPlayerBase.isPlayControl()) {
-            return hhPlayerBase.getCurrentPosition();
+        if (hhPlayerCore.isPlayControl()) {
+            return hhPlayerCore.getCurrentPosition();
         }
         return -1;
     }
 
     public long getMediaDuration() {
-        if (hhPlayerBase.isPlayControl()) {
-            return hhPlayerBase.getMediaDuration();
+        if (hhPlayerCore.isPlayControl()) {
+            return hhPlayerCore.getMediaDuration();
         }
         return -1;
     }
 
     public void setPreparedListener(HOnListener<Object> preparedListener) {
-        hhPlayerBase.setPreparedListener(preparedListener);
+        hhPlayerCore.setPreparedListener(preparedListener);
     }
 
     public void setCompletionListener(final HOnListener<Object> completionListener) {
-        hhPlayerBase.setCompletionListener(new HOnListener<Object>() {
+        hhPlayerCore.setCompletionListener(new HOnListener<Object>() {
             @Override
             public void onListen(Object o) {
-                Log.e(hhPlayerBase.TAG, "play Completion");
-                hhPlayerBase.mPlayerState = HHPlayerBase.PlayerState.PLAYBACK_COMPLETED;
+                Log.e(hhPlayerCore.TAG, "play Completion");
+                hhPlayerCore.mPlayerState = HHPlayerCore.PlayerState.PLAYBACK_COMPLETED;
                 completionListener.onListen(o);
             }
         });
     }
 
     public void setProgessListener(HOnListener<Long> progessListener) {
-        hhPlayerBase.setProgessListener(progessListener);
+        hhPlayerCore.setProgessListener(progessListener);
     }
 
     public void setOnBufferingUpdateListener(HOnListener<Integer> onBufferingUpdateListener) {
-        hhPlayerBase.setOnBufferingUpdateListener(onBufferingUpdateListener);
+        hhPlayerCore.setOnBufferingUpdateListener(onBufferingUpdateListener);
     }
 
-    public HHPlayerBase.PlayerState getPlayerState() {
-        return hhPlayerBase.mPlayerState;
+    public HHPlayerCore.PlayerState getPlayerState() {
+        return hhPlayerCore.mPlayerState;
     }
 
     public void fullScreen() {

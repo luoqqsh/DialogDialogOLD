@@ -1,14 +1,11 @@
 package x.com.hl_player.base;
 
 import android.content.res.AssetFileDescriptor;
-import android.graphics.SurfaceTexture;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.util.Log;
 import android.view.Surface;
 import android.view.SurfaceHolder;
-import android.view.SurfaceView;
-import android.view.TextureView;
 
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -18,66 +15,18 @@ import x.com.hl_log.ViseLog;
 /**
  * MediaPlayer具体实现
  */
-public class HHMediaPlayer extends HHPlayerBase {
+public class HHMediaPlayer extends HHPlayerCore {
     private MediaPlayer mediaPlayer;
 
     @Override
-    public void initView(SurfaceView surfaceView) {
-        TAG = "HH-MediaPlayer-surface";
+    public void initView(SurfaceHolder surfaceHolder) {
         mediaPlayer = new MediaPlayer();
         initListener();
-        surfaceView.setKeepScreenOn(true);
-        surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
-            @Override
-            public void surfaceCreated(SurfaceHolder holder) {
-                mediaPlayer.setDisplay(holder);
-            }
-
-            @Override
-            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-            }
-
-            @Override
-            public void surfaceDestroyed(SurfaceHolder holder) {
-                holder.removeCallback(this);
-                release();
-            }
-        });
-    }
-
-    @Override
-    public void initView(TextureView textureView) {
-        TAG = "HH-MediaPlayer-texture";
-        mediaPlayer = new MediaPlayer();
-        initListener();
-        textureView.setSurfaceTextureListener(new TextureView.SurfaceTextureListener() {
-            @Override
-            public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int width, int height) {
-                mediaPlayer.setSurface(new Surface(surfaceTexture));
-            }
-
-            @Override
-            public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
-                if (surface != null) {
-                    surface.release();
-                }
-                release();
-                return true;
-            }
-
-            @Override
-            public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
-            }
-
-            @Override
-            public void onSurfaceTextureUpdated(SurfaceTexture surface) {
-            }
-        });
+        mediaPlayer.setDisplay(surfaceHolder);
     }
 
     @Override
     public void initView(Surface surface) {
-        TAG = "HH-MediaPlayer-surface";
         mediaPlayer = new MediaPlayer();
         initListener();
         mediaPlayer.setSurface(surface);
@@ -143,8 +92,6 @@ public class HHMediaPlayer extends HHPlayerBase {
             mediaPlayer.setOnInfoListener(new MediaPlayer.OnInfoListener() {
                 @Override
                 public boolean onInfo(MediaPlayer mediaPlayer, int i, int i1) {
-                    ViseLog.d(i);
-                    ViseLog.d(i1);
                     return false;
                 }
             });
@@ -207,7 +154,7 @@ public class HHMediaPlayer extends HHPlayerBase {
 
     @Override
     public void prepare(Object mediaPath) {
-        if ("HHPlayerBase".equals(TAG)) {
+        if ("HHPlayerCore".equals(TAG)) {
             TAG = "HH-MediaPlayer-Music";
         }
         this.mediaPath = mediaPath;
@@ -247,7 +194,7 @@ public class HHMediaPlayer extends HHPlayerBase {
         if (mediaPlayer != null && isPlayControl()) {
             mediaPlayer.stop();
             isPrepared = false;
-            mPlayerState = HHPlayerBase.PlayerState.IDLE;
+            mPlayerState = HHPlayerCore.PlayerState.IDLE;
         }
     }
 
@@ -281,7 +228,6 @@ public class HHMediaPlayer extends HHPlayerBase {
             }
         }
     }
-
 
     private void dealError() {
         doPrepare(mediaPath, false);

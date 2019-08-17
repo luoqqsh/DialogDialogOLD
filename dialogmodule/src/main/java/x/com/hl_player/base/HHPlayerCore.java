@@ -2,10 +2,11 @@ package x.com.hl_player.base;
 
 import android.content.Context;
 import android.view.Surface;
-import android.view.SurfaceView;
-import android.view.TextureView;
+import android.view.SurfaceHolder;
 
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import x.com.hl_base.HOnListener;
 import x.com.hl_rx.TaskDelayManager;
@@ -13,10 +14,10 @@ import x.com.hl_rx.TaskDelayManager;
 /**
  * 播放器基础类
  */
-public abstract class HHPlayerBase {
+public abstract class HHPlayerCore {
     public PlayerState mPlayerState = PlayerState.IDLE;
     public PlayerPrePareState playerPrePareState = PlayerPrePareState.NONE;
-    public String TAG = "HHPlayerBase";
+    public String TAG = "HHPlayerCore";
     public String ETAG = "hh_error";
 
     public Object mediaPath;
@@ -34,6 +35,7 @@ public abstract class HHPlayerBase {
     public HOnListener<Integer> onBufferingUpdateListener;
     private TaskDelayManager a;
     private Map<String, String> mHeaders;
+    private Timer timer;
 
     public enum PlayerState {
         ERROR,//出错
@@ -83,17 +85,10 @@ public abstract class HHPlayerBase {
 
     public abstract boolean isPlaying();
 
-
-    public void initView(SurfaceView surface) {
-
-    }
-
-    public void initView(TextureView texture) {
-
-    }
-
     public void initView(Surface surface) {
+    }
 
+    public void initView(SurfaceHolder surfaceHolder) {
     }
 
     public void setLooping(boolean looping) {
@@ -151,21 +146,37 @@ public abstract class HHPlayerBase {
 
     //读取播放进度线程开启
     public void getCurrentStart() {
-        if (a == null) {
-            a = new TaskDelayManager() {
+        if (timer == null) {
+            timer = new Timer();
+            timer.schedule(new TimerTask() {
                 @Override
-                public void onListen(Long index) {
+                public void run() {
                     if (onProgessListener != null) {
                         onProgessListener.onListen(getCurrentPosition());
                     }
                 }
-            };
-            a.loop(1000);
+            }, 0,1000);//delay延迟时间，period间隔时间
         }
+
+//        if (a == null) {
+//            a = new TaskDelayManager() {
+//                @Override
+//                public void onListen(Long index) {
+//                    if (onProgessListener != null) {
+//                        onProgessListener.onListen(getCurrentPosition());
+//                    }
+//                }
+//            };
+//            a.loop(1000);
+//        }
     }
 
     //读取播放进度线程停止
     public void getCurrentStop() {
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
         if (a != null) {
             a.cancel();
             a = null;

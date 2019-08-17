@@ -51,9 +51,10 @@ class DialogMainActivity : BaseActivity() {
 //            b.setMessage("dddddddddd", 4)
 //            b.showFDialog(mContext)
 
-            val df = DFListFileDialog.newInstance(hl_file.QQFILE)
-            df.setOnSelectFileListener { file -> ViseLog.d(file.absolutePath) }
-            df.showFDialog(mContext)
+//            val df = DFListFileDialog.newInstance(hl_file.QQFILE)
+//            df.setOnSelectFileListener { file -> ViseLog.d(file.absolutePath) }
+//            df.showFDialog(mContext)
+            startActivity(Intent(mContext, DialogActivity::class.java))
         }
     }
 
