@@ -27,7 +27,6 @@ public abstract class HHPlayerCore {
     public boolean isCompletePlay = false;//是否完成播放
     public boolean isLooping = true; //是否循环播放
     public boolean isPrepared = false;//是否准备好
-    public boolean isPlayWhenPrepared = false;//准备好立即播放
     public HOnListener<Object> onPreparedListener;
     public HOnListener<Long> onProgessListener;
     public HOnListener<Object> onCompletionListener;
@@ -125,11 +124,6 @@ public abstract class HHPlayerCore {
 
     public void setOnBufferingUpdateListener(HOnListener<Integer> OnBufferingUpdateListener) {
         this.onBufferingUpdateListener = OnBufferingUpdateListener;
-    }
-
-    //是遏制是否准备好立即播放
-    public void setPlayWhenPrepared(boolean playWhenPrepared) {
-        isPlayWhenPrepared = playWhenPrepared;
     }
 
     //是否可以进行播放暂停等控制操作

@@ -9,22 +9,18 @@ import android.view.View;
 
 public interface HHRenderView {
 
-    HHSurfaceStateListener getIGSYSurfaceListener();
+    //Surface变化监听，必须
+    void setHHSurfaceStateListener(HHSurfaceStateListener surfaceListener);
 
     /**
-     * Surface变化监听，必须
-     */
-    void setIGSYSurfaceListener(HHSurfaceStateListener surfaceListener);
-
-    /**
-     * 当前view高度，必须
-     */
-    int getSizeH();
-
-    /**
-     * 当前view宽度，必须
+     * 当前view宽高，必须
      */
     int getSizeW();
+
+    int getSizeH();
+
+    //方向
+    float getRotation();
 
     /**
      * 实现该接口的view，必须

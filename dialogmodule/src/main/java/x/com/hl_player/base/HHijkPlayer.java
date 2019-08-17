@@ -35,9 +35,6 @@ public class HHijkPlayer extends HHPlayerCore {
                     isPrepared = true;
                     mediaPlayer.setVolume(volume, volume);
                     mediaPlayer.setLooping(isLooping);
-                    if (isPlayWhenPrepared) {
-                        start();
-                    }
                     if (onPreparedListener != null) {
                         onPreparedListener.onListen(mp);
                     }
@@ -88,7 +85,6 @@ public class HHijkPlayer extends HHPlayerCore {
 
     private void doPrepare(Object mediaPath, boolean isFirst) {
         this.mediaPath = mediaPath;
-        ViseLog.d(surface);
         if (mediaPlayer == null) {
             mediaPlayer = new IjkMediaPlayer();
             initListener();
@@ -99,7 +95,6 @@ public class HHijkPlayer extends HHPlayerCore {
                 mediaPlayer.setSurface(surface);
             }
         }
-        mPlayerState = PlayerState.IDLE;
         try {
             playerPrePareState = PlayerPrePareState.PREPARING;
             if (mediaPath instanceof AssetFileDescriptor) {//Android assets file

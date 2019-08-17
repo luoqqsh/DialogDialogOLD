@@ -15,9 +15,11 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import x.com.hl_base.HOnListener;
+import x.com.hl_log.ViseLog;
 import x.com.hl_player.View.HHPlayerView;
 import x.com.hl_player.View.HHSurfaceStateListener;
 import x.com.hl_player.base.HHPlayerCore;
+import x.com.hl_player.bean.TypeView;
 
 /**
  * 播放器控制类，也就是我们的使用类
@@ -28,32 +30,25 @@ public class HHPlayer3 {
     private Context mContext;
     private boolean isChangeBrigtness = false;
     private ViewGroup viewGroup;
-
-    public enum PlayerView {
-        NEWSURFACE,//新建surfaceview
-        NEWTEXTURE,//新建textureview
-        SURFACE,//外部提供的surface
-        MUSIC,//音乐
-        HHSURFACE
-    }
+    private boolean isPlayWhenPrepared = false;//准备好立即播放
 
     //播放音乐
     public HHPlayer3(Context context, HHPlayerCore hhPlayerCore) {
-        this(context, hhPlayerCore, PlayerView.MUSIC, null, null);
+        this(context, hhPlayerCore, TypeView.MUSIC, null, null);
     }
 
     //使用外部的suraface
     public HHPlayer3(Context context, HHPlayerCore hhPlayerCore, Surface surface) {
-        this(context, hhPlayerCore, PlayerView.SURFACE, null, surface);
+        this(context, hhPlayerCore, TypeView.SURFACE, null, surface);
     }
 
     //使用外部的viewGroup，需要选择NEWSURFACE、NEWTEXTURE
-    public HHPlayer3(Context context, HHPlayerCore hhPlayerCore, PlayerView playerView, ViewGroup viewGroup) {
+    public HHPlayer3(Context context, HHPlayerCore hhPlayerCore, TypeView playerView, ViewGroup viewGroup) {
         this(context, hhPlayerCore, playerView, viewGroup, null);
     }
 
     //使用NEWSURFACE、NEWTEXTURE必须传viewGroup
-    public HHPlayer3(Context context, HHPlayerCore hhPlayerCore, PlayerView playerView, ViewGroup viewGroup, Surface surface) {
+    public HHPlayer3(Context context, HHPlayerCore hhPlayerCore, TypeView playerView, ViewGroup viewGroup, Surface surface) {
         mContext = context;
         hhPlayerCore.setContext(mContext);
         this.viewGroup = viewGroup;
@@ -74,6 +69,9 @@ public class HHPlayer3 {
                 break;
             case HHSURFACE:
                 initHHSurfaceView();
+                break;
+            case HHTEXTURE:
+                initHHTextureView();
                 break;
             case MUSIC:
                 break;
@@ -134,7 +132,32 @@ public class HHPlayer3 {
 
     private void initHHSurfaceView() {
         hhPlayerView = new HHPlayerView();
-        hhPlayerView.addView(mContext, viewGroup, 0, new HHSurfaceStateListener() {
+        hhPlayerView.addView(mContext, viewGroup, 0, TypeView.HHSURFACE, new HHSurfaceStateListener() {
+            @Override
+            public void onSurfaceAvailable(Surface surface) {
+                hhPlayerCore.initView(surface);
+            }
+
+            @Override
+            public void onSurfaceSizeChanged(Surface surface, int width, int height) {
+
+            }
+
+            @Override
+            public boolean onSurfaceDestroyed(Surface surface) {
+                return false;
+            }
+
+            @Override
+            public void onSurfaceUpdated(Surface surface) {
+
+            }
+        });
+    }
+
+    private void initHHTextureView() {
+        hhPlayerView = new HHPlayerView();
+        hhPlayerView.addView(mContext, viewGroup, 0, TypeView.HHTEXTURE, new HHSurfaceStateListener() {
             @Override
             public void onSurfaceAvailable(Surface surface) {
                 hhPlayerCore.initView(surface);
@@ -175,10 +198,11 @@ public class HHPlayer3 {
     }
 
     public void setPlayWhenPrepared(boolean isPlayWhenPrepared) {
-        hhPlayerCore.setPlayWhenPrepared(isPlayWhenPrepared);
+        this.isPlayWhenPrepared = isPlayWhenPrepared;
     }
 
     public void prepare(String path) {
+        hhPlayerCore.mPlayerState = HHPlayerCore.PlayerState.IDLE;
         hhPlayerCore.prepare(path);
     }
 
@@ -189,6 +213,9 @@ public class HHPlayer3 {
             hhPlayerCore.mPlayerState = HHPlayerCore.PlayerState.PLAYING;
             Log.e(hhPlayerCore.TAG, "doStart");
         }
+        ViseLog.d(hhPlayerView.getWidth());
+        ViseLog.d(hhPlayerView.getHeight());
+        ViseLog.d(hhPlayerView.getRotation());
     }
 
     public void pause() {
@@ -324,8 +351,17 @@ public class HHPlayer3 {
         return -1;
     }
 
-    public void setPreparedListener(HOnListener<Object> preparedListener) {
-        hhPlayerCore.setPreparedListener(preparedListener);
+    public void setPreparedListener(final HOnListener<Object> preparedListener) {
+        hhPlayerCore.setPreparedListener(new HOnListener<Object>() {
+            @Override
+            public void onListen(Object o) {
+                if (isPlayWhenPrepared) {
+                    start();
+                }
+                preparedListener.onListen(o);
+            }
+        });
+
     }
 
     //播放器播放完成监听

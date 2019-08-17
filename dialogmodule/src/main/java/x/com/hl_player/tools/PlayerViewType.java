@@ -21,31 +21,13 @@ public class PlayerViewType {
 
     //全屏拉伸显示，使用这个属性时，surface_container建议使用FrameLayout
     public final static int SCREEN_MATCH_FULL = -4;
-
-    /**
-     * GLSurfaceView 主要用于OpenGL渲染的
-     */
-    public final static int GLSURFACE = 2;
-
-    /**
-     * SurfaceView，与动画全屏的效果不是很兼容
-     */
-    public final static int SUFRACE = 1;
-
-    /**
-     * TextureView,默认
-     */
-    public final static int TEXTURE = 0;
-
+    
 
     //显示比例类型
     private static int TYPE = SCREEN_TYPE_DEFAULT;
 
     //硬解码标志
     private static boolean MEDIA_CODEC_FLAG = false;
-
-    //渲染类型
-    private static int sRenderType = SUFRACE;
 
     //是否使用硬解码优化
     private static boolean sTextureMediaPlay = false;
@@ -104,18 +86,5 @@ public class PlayerViewType {
         TYPE = type;
     }
 
-
-    public static int getRenderType() {
-        return sRenderType;
-    }
-
-    /**
-     * 渲染控件
-     *
-     * @param renderType
-     */
-    public static void setRenderType(int renderType) {
-        sRenderType = renderType;
-    }
 
 }

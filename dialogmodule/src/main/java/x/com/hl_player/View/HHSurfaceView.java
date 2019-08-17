@@ -7,7 +7,6 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 
-import x.com.hl_log.ViseLog;
 import x.com.hl_player.tools.ViewUtil;
 
 public class HHSurfaceView extends SurfaceView implements SurfaceHolder.Callback2, HHRenderView {
@@ -15,17 +14,14 @@ public class HHSurfaceView extends SurfaceView implements SurfaceHolder.Callback
 
     public HHSurfaceView(Context context) {
         super(context);
-        init(context);
     }
 
     public HHSurfaceView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(context);
     }
 
     public HHSurfaceView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context);
     }
 
     public static HHRenderView addSurfaceView(Context context, ViewGroup textureViewContainer, int rotate, HHSurfaceStateListener stateListener) {
@@ -33,36 +29,26 @@ public class HHSurfaceView extends SurfaceView implements SurfaceHolder.Callback
             textureViewContainer.removeAllViews();
         }
         HHSurfaceView showSurfaceView = new HHSurfaceView(context);
-        showSurfaceView.setIGSYSurfaceListener(stateListener);
-//        showSurfaceView.setVideoParamsListener(videoParamsListener);
+        showSurfaceView.setHHSurfaceStateListener(stateListener);
         showSurfaceView.setRotation(rotate);
         ViewUtil.addToParent(textureViewContainer, showSurfaceView);
         return showSurfaceView;
     }
 
-    private void init(Context context) {
+    @Override
+    public void setHHSurfaceStateListener(HHSurfaceStateListener surfaceListener) {
         getHolder().addCallback(this);
-    }
-
-
-    @Override
-    public HHSurfaceStateListener getIGSYSurfaceListener() {
-        return surfaceListener;
-    }
-
-    @Override
-    public void setIGSYSurfaceListener(HHSurfaceStateListener surfaceListener) {
         this.surfaceListener = surfaceListener;
     }
 
     @Override
     public int getSizeH() {
-        return getSizeH();
+        return getHeight();
     }
 
     @Override
     public int getSizeW() {
-        return getSizeW();
+        return getWidth();
     }
 
     @Override
@@ -83,7 +69,7 @@ public class HHSurfaceView extends SurfaceView implements SurfaceHolder.Callback
     }
 
     @Override
-    public void surfaceChanged(SurfaceHolder surfaceHolder, int width, int height, int i2) {
+    public void surfaceChanged(SurfaceHolder surfaceHolder, int format, int width, int height) {
         if (surfaceListener != null) {
             surfaceListener.onSurfaceSizeChanged(surfaceHolder.getSurface(), width, height);
         }

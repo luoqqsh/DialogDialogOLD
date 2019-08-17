@@ -42,9 +42,6 @@ public class HHMediaPlayer extends HHPlayerCore {
                     isPrepared = true;
                     mediaPlayer.setVolume(volume, volume);
                     mediaPlayer.setLooping(isLooping);
-                    if (isPlayWhenPrepared) {
-                        start();
-                    }
                     if (onPreparedListener != null) {
                         onPreparedListener.onListen(mp);
                     }
@@ -110,7 +107,6 @@ public class HHMediaPlayer extends HHPlayerCore {
             mediaPlayer = new MediaPlayer();
             initListener();
         }
-        mPlayerState = PlayerState.IDLE;
         try {
             playerPrePareState = PlayerPrePareState.PREPARING;
             if (mediaPath instanceof AssetFileDescriptor) {//Android assets file

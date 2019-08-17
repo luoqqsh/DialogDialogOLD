@@ -3,58 +3,42 @@ package x.com.hl_player.View;
 import android.content.Context;
 import android.view.ViewGroup;
 
-import x.com.hl_player.tools.PlayerViewType;
+import x.com.hl_player.bean.TypeView;
 
 public class HHPlayerView {
-    public HHRenderView hhRenderView;
-
-    public float getRotation() {
-        return hhRenderView.getRenderView().getRotation();
-    }
-
-    public void setRotation(float rotation) {
-        if (hhRenderView != null)
-            hhRenderView.getRenderView().setRotation(rotation);
-    }
-
-    public int getWidth() {
-        return (hhRenderView != null) ? hhRenderView.getRenderView().getWidth() : 0;
-    }
-
-    public int getHeight() {
-        return (hhRenderView != null) ? hhRenderView.getRenderView().getHeight() : 0;
-    }
+    private HHRenderView hhRenderView;
 
     /**
      * 添加播放的view
      */
-    public void addView(final Context context, final ViewGroup textureViewContainer, final int rotate,
-                        final HHSurfaceStateListener gsySurfaceListener
+    public void addView(final Context context, final ViewGroup textureViewContainer, final int rotate, TypeView typeView,
+                        final HHSurfaceStateListener surfaceStateListener
 //                        final MeasureHelper.MeasureFormVideoParamsListener videoParamsListener,
 //                        final GSYVideoGLView.ShaderInterface effect, final float[] transform,
 //                        final GSYVideoGLViewBaseRender customRender, int mode
     ) {
-        switch (PlayerViewType.getRenderType()) {
-            case PlayerViewType.SUFRACE:
-                hhRenderView = HHSurfaceView.addSurfaceView(context, textureViewContainer, rotate,gsySurfaceListener);
+        switch (typeView) {
+            case HHSURFACE:
+                hhRenderView = HHSurfaceView.addSurfaceView(context, textureViewContainer, rotate, surfaceStateListener);
                 break;
-            case PlayerViewType.TEXTURE:
-//                hhRenderView = HHSurfaceView.addSurfaceView(context, textureViewContainer, rotate);
+            case HHTEXTURE:
+                hhRenderView = HHTextureView.addTextureView(context, textureViewContainer, rotate, surfaceStateListener);
                 break;
-            case PlayerViewType.GLSURFACE:
+            case HHGLSURFACE:
 //                hhRenderView = HHSurfaceView.addSurfaceView(context, textureViewContainer, rotate);
                 break;
         }
-//        if (PlayerViewType.getRenderType() == PlayerViewType.SUFRACE) {
-//            hhRenderView = HHSurfaceView.addSurfaceView(context, textureViewContainer, rotate, gsySurfaceListener, videoParamsListener);
-//        } else if (PlayerViewType.getRenderType() == PlayerViewType.GLSURFACE) {
-//            hhRenderView = GSYVideoGLView.addGLView(context, textureViewContainer, rotate, gsySurfaceListener, videoParamsListener, effect, transform, customRender, mode);
-//        } else {
-//            hhRenderView = GSYTextureView.addTextureView(context, textureViewContainer, rotate, gsySurfaceListener, videoParamsListener);
-//        }
     }
 
-    public HHRenderView getHhRenderView() {
-        return hhRenderView;
+    public float getRotation() {
+        return (hhRenderView != null) ? hhRenderView.getRotation() : 0;
+    }
+
+    public int getWidth() {
+        return (hhRenderView != null) ? hhRenderView.getSizeW() : 0;
+    }
+
+    public int getHeight() {
+        return (hhRenderView != null) ? hhRenderView.getSizeH() : 0;
     }
 }
