@@ -17,7 +17,6 @@ import androidx.annotation.Nullable;
 import java.util.Timer;
 
 import x.com.hl_dialog.R;
-import x.com.hl_log.ViseLog;
 
 public class HHControlView extends FrameLayout {
     //播放按键
