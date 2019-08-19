@@ -1,4 +1,4 @@
-package x.com.hl_player.bean
+package x.com.hl_player.TvListBean
 
 import java.util.*
 

@@ -11,6 +11,8 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 import x.com.hl_log.ViseLog;
+import x.com.hl_player.TypeBean.PlayerPrePareStateType;
+import x.com.hl_player.TypeBean.PlayerStateType;
 
 /**
  * MediaPlayer具体实现
@@ -37,8 +39,8 @@ public class HHMediaPlayer extends HHPlayerCore {
             mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mp) {
-                    playerPrePareState = PlayerPrePareState.PREPARED;
-                    mPlayerState = PlayerState.PREPARED;
+                    playerPrePareState = PlayerPrePareStateType.PREPARED;
+                    mPlayerState = PlayerStateType.PREPARED;
                     isPrepared = true;
                     mediaPlayer.setVolume(volume, volume);
                     mediaPlayer.setLooping(isLooping);
@@ -72,8 +74,8 @@ public class HHMediaPlayer extends HHPlayerCore {
                 @Override
                 public boolean onError(MediaPlayer mp, int what, int extra) {
                     Log.e(ETAG, "监听到错误。  " + mPlayerState);
-                    mPlayerState = PlayerState.ERROR;
-                    playerPrePareState = PlayerPrePareState.ERROR;
+                    mPlayerState = PlayerStateType.ERROR;
+                    playerPrePareState = PlayerPrePareStateType.ERROR;
                     Log.e(ETAG, what + "  " + extra + "\n" + "播放出错：" + mediaPath);
                     return false;
                 }
@@ -108,7 +110,7 @@ public class HHMediaPlayer extends HHPlayerCore {
             initListener();
         }
         try {
-            playerPrePareState = PlayerPrePareState.PREPARING;
+            playerPrePareState = PlayerPrePareStateType.PREPARING;
             if (mediaPath instanceof AssetFileDescriptor) {//Android assets file
                 AssetFileDescriptor fd = (AssetFileDescriptor) mediaPath;
                 mediaPlayer.setDataSource(fd.getFileDescriptor(), fd.getStartOffset(), fd.getLength());
@@ -122,8 +124,8 @@ public class HHMediaPlayer extends HHPlayerCore {
             mediaPlayer.prepareAsync();//异步
         } catch (Exception e) {
             e.printStackTrace();
-            mPlayerState = PlayerState.ERROR;
-            playerPrePareState = PlayerPrePareState.ERROR;
+            mPlayerState = PlayerStateType.ERROR;
+            playerPrePareState = PlayerPrePareStateType.ERROR;
             Log.e(ETAG, "Prepare失败。  " + this.mediaPath);
             if (isFirst) dealError();
         }
@@ -190,7 +192,7 @@ public class HHMediaPlayer extends HHPlayerCore {
         if (mediaPlayer != null && isPlayControl()) {
             mediaPlayer.stop();
             isPrepared = false;
-            mPlayerState = HHPlayerCore.PlayerState.IDLE;
+            mPlayerState = PlayerStateType.IDLE;
         }
     }
 

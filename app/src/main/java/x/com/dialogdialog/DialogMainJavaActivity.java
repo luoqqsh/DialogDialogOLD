@@ -2,12 +2,9 @@ package x.com.dialogdialog;
 
 import android.Manifest;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -22,21 +19,17 @@ import x.com.dialogdialog.Base.BaseActivity;
 import x.com.hl_base.HOnListener;
 import x.com.hl_dialog.DFListFileDialog;
 import x.com.hl_dialog.DFNDialog;
-import x.com.hl_fileselect.DefaultFileIconCreator;
 import x.com.hl_fileselect.FileSelectorView;
 import x.com.hl_log.ViseLog;
-import x.com.hl_player.bean.TvData;
-import x.com.hl_player.bean.TvDataList;
-import x.com.hl_player.bean.TypeClarity;
-import x.com.hl_player.bean.TypeClass;
-import x.com.hl_player.bean.TypeState;
-import x.com.hl_tools.hl_cachefile;
+import x.com.hl_player.TvListBean.TvData;
+import x.com.hl_player.TvListBean.TvDataList;
+import x.com.hl_player.TvListBean.TypeClarity;
+import x.com.hl_player.TvListBean.TypeClass;
+import x.com.hl_player.TvListBean.TypeState;
 import x.com.hl_tools.hl_drawable;
 import x.com.hl_tools.hl_file;
 import x.com.hl_tools.hl_img;
 import x.com.hl_tools.hl_permissions;
-import x.com.hl_tools.hl_sharedP;
-import x.com.hl_tools.model.PermissionModel;
 
 public class DialogMainJavaActivity extends BaseActivity {
     private DFNDialog b;

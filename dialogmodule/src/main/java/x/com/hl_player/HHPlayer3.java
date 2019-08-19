@@ -16,10 +16,13 @@ import android.view.WindowManager;
 
 import x.com.hl_base.HOnListener;
 import x.com.hl_log.ViseLog;
+import x.com.hl_player.TvListBean.TypeView;
+import x.com.hl_player.TypeBean.PlayerPrePareStateType;
+import x.com.hl_player.TypeBean.PlayerStateType;
+import x.com.hl_player.View.HHControlView;
 import x.com.hl_player.View.HHPlayerView;
 import x.com.hl_player.View.HHSurfaceStateListener;
 import x.com.hl_player.base.HHPlayerCore;
-import x.com.hl_player.bean.TypeView;
 
 /**
  * 播放器控制类，也就是我们的使用类
@@ -188,6 +191,10 @@ public class HHPlayer3 {
         hhPlayerCore.initView(surfaceHolder);
     }
 
+    public void addControlView() {
+        addExtraView(new HHControlView(mContext, this));
+    }
+
     public void addExtraView(View view) {
         if (viewGroup == null) {
             Log.e(hhPlayerCore.TAG, "必须设置viewGroup");
@@ -202,7 +209,11 @@ public class HHPlayer3 {
     }
 
     public void prepare(String path) {
-        hhPlayerCore.mPlayerState = HHPlayerCore.PlayerState.IDLE;
+        prepare(path, "");
+    }
+
+    public void prepare(String path, String title) {
+        hhPlayerCore.mPlayerState = PlayerStateType.IDLE;
         hhPlayerCore.prepare(path);
     }
 
@@ -210,7 +221,7 @@ public class HHPlayer3 {
         if (hhPlayerCore.isPrepared && hhPlayerCore.isPlayControl()) {
             hhPlayerCore.start();
             hhPlayerCore.getCurrentStart();
-            hhPlayerCore.mPlayerState = HHPlayerCore.PlayerState.PLAYING;
+            hhPlayerCore.mPlayerState = PlayerStateType.PLAYING;
             Log.e(hhPlayerCore.TAG, "doStart");
         }
         ViseLog.d(hhPlayerView.getWidth());
@@ -221,7 +232,7 @@ public class HHPlayer3 {
     public void pause() {
         if (hhPlayerCore.isPlayControl() && hhPlayerCore.isPlaying()) {
             hhPlayerCore.pause();
-            hhPlayerCore.mPlayerState = HHPlayerCore.PlayerState.PAUSE;
+            hhPlayerCore.mPlayerState = PlayerStateType.PAUSE;
             Log.e(hhPlayerCore.TAG, "doPause");
         }
     }
@@ -229,7 +240,7 @@ public class HHPlayer3 {
     public void reset() {
         hhPlayerCore.reset();
         hhPlayerCore.getCurrentStop();
-        hhPlayerCore.mPlayerState = HHPlayerCore.PlayerState.IDLE;
+        hhPlayerCore.mPlayerState = PlayerStateType.IDLE;
     }
 
     public void stop() {
@@ -243,7 +254,7 @@ public class HHPlayer3 {
     //单位毫秒
     public void seekTo(long position) {
         if (hhPlayerCore.isPlayControl()) {
-            hhPlayerCore.playerPrePareState = HHPlayerCore.PlayerPrePareState.PREPARING;
+            hhPlayerCore.playerPrePareState = PlayerPrePareStateType.PREPARING;
             hhPlayerCore.seekTo(position);
             Log.d(hhPlayerCore.TAG, "seekTo");
         }
@@ -321,7 +332,7 @@ public class HHPlayer3 {
         stop();
         hhPlayerCore.release();
         hhPlayerCore.getCurrentStop();
-        hhPlayerCore.mPlayerState = HHPlayerCore.PlayerState.NONE;
+        hhPlayerCore.mPlayerState = PlayerStateType.NONE;
         hhPlayerCore.isPrepared = false;
         Log.d(hhPlayerCore.TAG, "doRelease");
     }
@@ -370,7 +381,7 @@ public class HHPlayer3 {
             @Override
             public void onListen(Object o) {
                 Log.e(hhPlayerCore.TAG, "play Completion");
-                hhPlayerCore.mPlayerState = HHPlayerCore.PlayerState.PLAYBACK_COMPLETED;
+                hhPlayerCore.mPlayerState = PlayerStateType.PLAYBACK_COMPLETED;
                 if (isChangeBrigtness) {//播放完恢复原来的亮度，没设置亮度则不启用
                     setScreenBrigtness(getSystemScreenBrightness());
                 }
@@ -395,7 +406,7 @@ public class HHPlayer3 {
     }
 
     //获取当前播放器状态
-    public HHPlayerCore.PlayerState getPlayerState() {
+    public PlayerStateType getPlayerState() {
         return hhPlayerCore.mPlayerState;
     }
 

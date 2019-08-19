@@ -4,6 +4,8 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.TextureView;
 
+import x.com.hl_player.TypeBean.ScaleType;
+
 /**
  * 用于显示video的，做了横屏与竖屏的匹配，还有需要rotation需求的
  */

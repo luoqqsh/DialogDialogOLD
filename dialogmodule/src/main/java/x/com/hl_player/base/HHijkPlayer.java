@@ -12,6 +12,8 @@ import java.util.Map;
 import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 import x.com.hl_log.ViseLog;
+import x.com.hl_player.TypeBean.PlayerPrePareStateType;
+import x.com.hl_player.TypeBean.PlayerStateType;
 
 public class HHijkPlayer extends HHPlayerCore {
     private IjkMediaPlayer mediaPlayer;
@@ -30,8 +32,8 @@ public class HHijkPlayer extends HHPlayerCore {
             mediaPlayer.setOnPreparedListener(new IjkMediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(IMediaPlayer mp) {
-                    playerPrePareState = PlayerPrePareState.PREPARED;
-                    mPlayerState = PlayerState.PREPARED;
+                    playerPrePareState = PlayerPrePareStateType.PREPARED;
+                    mPlayerState = PlayerStateType.PREPARED;
                     isPrepared = true;
                     mediaPlayer.setVolume(volume, volume);
                     mediaPlayer.setLooping(isLooping);
@@ -65,8 +67,8 @@ public class HHijkPlayer extends HHPlayerCore {
                 @Override
                 public boolean onError(IMediaPlayer mp, int what, int extra) {
                     Log.e(TAG, "监听到错误。  " + mPlayerState);
-                    mPlayerState = PlayerState.ERROR;
-                    playerPrePareState = PlayerPrePareState.ERROR;
+                    mPlayerState = PlayerStateType.ERROR;
+                    playerPrePareState = PlayerPrePareStateType.ERROR;
                     Log.e(TAG, what + "  " + extra + "\n" + "播放出错：" + mediaPath);
                     return false;
                 }
@@ -96,7 +98,7 @@ public class HHijkPlayer extends HHPlayerCore {
             }
         }
         try {
-            playerPrePareState = PlayerPrePareState.PREPARING;
+            playerPrePareState = PlayerPrePareStateType.PREPARING;
             if (mediaPath instanceof AssetFileDescriptor) {//Android assets file
 //                AssetFileDescriptor fd = (AssetFileDescriptor) mediaPath;
 //                mediaPlayer.setDataSource(fd.getFileDescriptor(), fd.getStartOffset(), fd.getLength());
@@ -110,8 +112,8 @@ public class HHijkPlayer extends HHPlayerCore {
             mediaPlayer.prepareAsync();//异步
         } catch (Exception e) {
             e.printStackTrace();
-            mPlayerState = PlayerState.ERROR;
-            playerPrePareState = PlayerPrePareState.ERROR;
+            mPlayerState = PlayerStateType.ERROR;
+            playerPrePareState = PlayerPrePareStateType.ERROR;
             Log.e(TAG, "Prepare失败。  " + this.mediaPath);
             if (isFirst) dealError();
         }
@@ -174,7 +176,7 @@ public class HHijkPlayer extends HHPlayerCore {
         if (mediaPlayer != null) {
             mediaPlayer.stop();
             isPrepared = false;
-            mPlayerState = PlayerState.IDLE;
+            mPlayerState = PlayerStateType.IDLE;
         }
     }
 

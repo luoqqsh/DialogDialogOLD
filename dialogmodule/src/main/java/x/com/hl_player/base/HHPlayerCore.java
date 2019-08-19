@@ -9,14 +9,16 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import x.com.hl_base.HOnListener;
+import x.com.hl_player.TypeBean.PlayerPrePareStateType;
+import x.com.hl_player.TypeBean.PlayerStateType;
 import x.com.hl_rx.TaskDelayManager;
 
 /**
  * 播放器基础类
  */
 public abstract class HHPlayerCore {
-    public PlayerState mPlayerState = PlayerState.IDLE;
-    public PlayerPrePareState playerPrePareState = PlayerPrePareState.NONE;
+    public PlayerStateType mPlayerState = PlayerStateType.IDLE;
+    public PlayerPrePareStateType playerPrePareState = PlayerPrePareStateType.NONE;
     public String TAG = "HHPlayerCore";
     public String ETAG = "hh_error";
 
@@ -35,30 +37,6 @@ public abstract class HHPlayerCore {
     private TaskDelayManager a;
     private Map<String, String> mHeaders;
     private Timer timer;
-
-    public enum PlayerState {
-        ERROR,//出错
-        IDLE,//闲置，初始化
-        PLAYING,//播放中
-        PREPARED,//准备就绪,准备好未播放的状态，判断准备状态以PlayerPrePareState为准
-        PAUSE,//暂停中
-        PHONE,//通话中
-        PLAYBACK_COMPLETED,//播放完成
-        NONE//结束，需要重新new
-    }
-
-    public enum PlayerPrePareState {
-        PREPARED,
-        PREPARING,
-        NONE,
-        ERROR
-    }
-
-    public enum PlayerMode {
-        MODE_FULL_SCREEN,
-        MODE_NORMAL,
-        MODE_TINY_WINDOW
-    }
 
     public abstract void prepare(Object mediaPath);
 
@@ -128,14 +106,14 @@ public abstract class HHPlayerCore {
 
     //是否可以进行播放暂停等控制操作
     public boolean isPlayControl() {
-        return mPlayerState == PlayerState.PLAYING || mPlayerState == PlayerState.PAUSE || mPlayerState == PlayerState.PHONE
-                || mPlayerState == PlayerState.PREPARED || mPlayerState == PlayerState.PLAYBACK_COMPLETED
-                && playerPrePareState == PlayerPrePareState.PREPARED;
+        return mPlayerState == PlayerStateType.PLAYING || mPlayerState == PlayerStateType.PAUSE || mPlayerState == PlayerStateType.PHONE
+                || mPlayerState == PlayerStateType.PREPARED || mPlayerState == PlayerStateType.PLAYBACK_COMPLETED
+                && playerPrePareState == PlayerPrePareStateType.PREPARED;
     }
 
     //是否正在播放
     public boolean isMediaPlaying() {
-        return mPlayerState == PlayerState.PLAYING && isPlaying();
+        return mPlayerState == PlayerStateType.PLAYING && isPlaying();
     }
 
     //读取播放进度线程开启

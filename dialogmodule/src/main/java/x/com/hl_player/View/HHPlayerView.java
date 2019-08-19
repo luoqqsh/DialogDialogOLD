@@ -3,7 +3,7 @@ package x.com.hl_player.View;
 import android.content.Context;
 import android.view.ViewGroup;
 
-import x.com.hl_player.bean.TypeView;
+import x.com.hl_player.TvListBean.TypeView;
 
 public class HHPlayerView {
     private HHRenderView hhRenderView;

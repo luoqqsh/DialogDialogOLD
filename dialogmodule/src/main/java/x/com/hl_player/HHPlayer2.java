@@ -9,6 +9,8 @@ import android.view.View;
 
 import x.com.hl_base.HOnListener;
 import x.com.hl_log.ViseLog;
+import x.com.hl_player.TypeBean.PlayerPrePareStateType;
+import x.com.hl_player.TypeBean.PlayerStateType;
 import x.com.hl_player.base.HHPlayerCore;
 
 /**
@@ -67,7 +69,7 @@ public class HHPlayer2 {
         if (hhPlayerCore.isPrepared && hhPlayerCore.isPlayControl()) {
             hhPlayerCore.start();
             hhPlayerCore.getCurrentStart();
-            hhPlayerCore.mPlayerState = HHPlayerCore.PlayerState.PLAYING;
+            hhPlayerCore.mPlayerState = PlayerStateType.PLAYING;
             Log.e(hhPlayerCore.TAG, "doStart");
         }
     }
@@ -75,7 +77,7 @@ public class HHPlayer2 {
     public void pause() {
         if (hhPlayerCore.isPlayControl() && hhPlayerCore.isPlaying()) {
             hhPlayerCore.pause();
-            hhPlayerCore.mPlayerState = HHPlayerCore.PlayerState.PAUSE;
+            hhPlayerCore.mPlayerState = PlayerStateType.PAUSE;
             Log.e(hhPlayerCore.TAG, "doPause");
         }
     }
@@ -83,14 +85,14 @@ public class HHPlayer2 {
     public void reset() {
         hhPlayerCore.reset();
         hhPlayerCore.getCurrentStop();
-        hhPlayerCore.mPlayerState = HHPlayerCore.PlayerState.IDLE;
+        hhPlayerCore.mPlayerState = PlayerStateType.IDLE;
     }
 
     public void stop() {
         if (hhPlayerCore.isPlayControl()) {
             hhPlayerCore.stop();
             hhPlayerCore.isPrepared = false;
-            hhPlayerCore.mPlayerState = HHPlayerCore.PlayerState.IDLE;
+            hhPlayerCore.mPlayerState = PlayerStateType.IDLE;
             hhPlayerCore.getCurrentStop();
             Log.d(hhPlayerCore.TAG, "doStop");
         }
@@ -99,7 +101,7 @@ public class HHPlayer2 {
     //单位毫秒
     public void seekTo(long position) {
         if (hhPlayerCore.isPlayControl()) {
-            hhPlayerCore.playerPrePareState = HHPlayerCore.PlayerPrePareState.PREPARING;
+            hhPlayerCore.playerPrePareState = PlayerPrePareStateType.PREPARING;
             hhPlayerCore.seekTo(position);
             Log.d(hhPlayerCore.TAG, "seekTo");
         }
@@ -117,7 +119,7 @@ public class HHPlayer2 {
         hhPlayerCore.release();
         stop();
         hhPlayerCore.getCurrentStop();
-        hhPlayerCore.mPlayerState = HHPlayerCore.PlayerState.NONE;
+        hhPlayerCore.mPlayerState = PlayerStateType.NONE;
         hhPlayerCore.isPrepared = false;
         Log.d(hhPlayerCore.TAG, "doRelease");
     }
@@ -153,7 +155,7 @@ public class HHPlayer2 {
             @Override
             public void onListen(Object o) {
                 Log.e(hhPlayerCore.TAG, "play Completion");
-                hhPlayerCore.mPlayerState = HHPlayerCore.PlayerState.PLAYBACK_COMPLETED;
+                hhPlayerCore.mPlayerState = PlayerStateType.PLAYBACK_COMPLETED;
                 completionListener.onListen(o);
             }
         });
@@ -167,7 +169,7 @@ public class HHPlayer2 {
         hhPlayerCore.setOnBufferingUpdateListener(onBufferingUpdateListener);
     }
 
-    public HHPlayerCore.PlayerState getPlayerState() {
+    public PlayerStateType getPlayerState() {
         return hhPlayerCore.mPlayerState;
     }
 

@@ -1,4 +1,4 @@
-package x.com.hl_player.tools;
+package x.com.hl_player.TypeBean;
 
 /**
  * video的一些默认配置

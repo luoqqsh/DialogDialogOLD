@@ -15,8 +15,10 @@ import androidx.annotation.NonNull;
 import java.util.Timer;
 
 import x.com.hl_dialog.R;
+import x.com.hl_player.HHPlayer3;
 
-public class HHControlView extends FrameLayout {
+public class HHControlView extends FrameLayout implements View.OnClickListener {
+    private HHPlayer3 hhPlayer3;
     //播放按键
     protected View mStartButton;
 
@@ -58,9 +60,13 @@ public class HHControlView extends FrameLayout {
 
     //触摸显示消失定时
     protected Timer mDismissControlViewTimer;
+    private TextView play;
+    private View contentPanel;
+    private boolean isPanelShow = false;
 
-    public HHControlView(@NonNull Context context) {
+    public HHControlView(@NonNull Context context, HHPlayer3 hhPlayer3) {
         super(context);
+        this.hhPlayer3 = hhPlayer3;
         initView(context);
     }
 
@@ -72,14 +78,40 @@ public class HHControlView extends FrameLayout {
         mProgressBar = findViewById(R.id.progress);
         mCurrentTimeTextView = findViewById(R.id.current);
         mTotalTimeTextView = findViewById(R.id.total);
-        mBottomContainer = findViewById(R.id.layout_bottom);
         mTopContainer = findViewById(R.id.layout_top);
         mBottomProgressBar = findViewById(R.id.bottom_progressbar);
         mThumbImageViewLayout = findViewById(R.id.thumb);
         mLockScreen = findViewById(R.id.lock_screen);
+
+        //底部按键
+        mBottomContainer = findViewById(R.id.layout_bottom);
+        play = findViewById(R.id.play);
+        contentPanel = findViewById(R.id.contentPanel);
+
+        play.setOnClickListener(this);
+        contentPanel.setOnClickListener(this);
+
+
     }
 
     private int getLayoutId() {
         return 0;
+    }
+
+    @Override
+    public void onClick(View view) {
+        int id = view.getId();
+        if (id == R.id.play) {
+            if (hhPlayer3.isPlaying()) {
+                hhPlayer3.pause();
+            } else {
+                hhPlayer3.start();
+            }
+        } else if (id == R.id.contentPanel) {
+            mBottomContainer.setVisibility(isPanelShow ? VISIBLE : INVISIBLE);
+            mTopContainer.setVisibility(isPanelShow ? VISIBLE : GONE);
+            mLockScreen.setVisibility(isPanelShow ? VISIBLE : GONE);
+            isPanelShow = !isPanelShow;
+        }
     }
 }

@@ -14,7 +14,7 @@ import x.com.hl_log.ViseLog;
 import x.com.hl_player.HHPlayer3;
 import x.com.hl_player.View.HHControlView;
 import x.com.hl_player.base.HHijkPlayer;
-import x.com.hl_player.bean.TypeView;
+import x.com.hl_player.TvListBean.TypeView;
 import x.com.hl_tools.hl_time;
 
 
@@ -42,7 +42,7 @@ public class HHMedia3Activity extends BaseActivity {
 //  /storage/emulated/0/ClearWatermark/CWDownLoadTool/我的下载/bb327cd9d2c4d45cde8b168cb48f0e26.mp4
     private FrameLayout surface;
     private String musicpath = "/storage/emulated/0/Music/不可说 - 霍建华、赵丽颖.mp3";
-//        private String videopath = "/storage/emulated/0/DCIM/Camera/19619104518845.mp4";
+    //        private String videopath = "/storage/emulated/0/DCIM/Camera/19619104518845.mp4";
 //    private String videopath = "http://183.56.168.47/cdn-out.iqy.sc96655.com/tslive/c204_scc_20190107_yvwl5h02_original_t10/c204_scc_20190107_yvwl5h02_original_t10.m3u8";
     private String videopath = "http://s.bizhijingling.com/uploadfile/userload/vedio/2019/0516/20190516065450574.mp4";
     private boolean ismute = false;
@@ -57,7 +57,7 @@ public class HHMedia3Activity extends BaseActivity {
         initUI();
         hhview = findViewById(R.id.hhPlayerView);
         hhPlayer3 = new HHPlayer3(this, new HHijkPlayer(), TypeView.HHTEXTURE, hhview);
-        hhPlayer3.addExtraView(new HHControlView(this));
+        hhPlayer3.addExtraView(new HHControlView(this, hhPlayer3));
 //        hhPlayer3.setPlayWhenPrepared(true);
         hhPlayer3.setCompletionListener(new HOnListener<Object>() {
             @Override
@@ -84,7 +84,7 @@ public class HHMedia3Activity extends BaseActivity {
                         seekBar.setProgress((int) (time / 1000));
                     }
                 });
-                
+
             }
         });
         hhPlayer3.setOnBufferingUpdateListener(new HOnListener<Integer>() {

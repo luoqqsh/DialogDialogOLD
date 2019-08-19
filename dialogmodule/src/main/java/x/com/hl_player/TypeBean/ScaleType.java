@@ -1,4 +1,4 @@
-package x.com.hl_player.tools;
+package x.com.hl_player.TypeBean;
 
 /**
  * Created by Mai on 2018/8/9

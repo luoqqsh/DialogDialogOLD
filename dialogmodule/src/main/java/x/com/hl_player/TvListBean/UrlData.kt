@@ -1,4 +1,4 @@
-package x.com.hl_player.bean
+package x.com.hl_player.TvListBean
 
 class UrlData(var channelURL: String, urlClarity: TypeClarity, urlState: TypeState) {
     var channelClarity: Int = TypeClarity.未知.value//清晰度：-1未知，0标清，1高清，2 4k ，3 8k
