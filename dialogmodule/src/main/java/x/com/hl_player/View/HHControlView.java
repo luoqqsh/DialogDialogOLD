@@ -1,7 +1,6 @@
 package x.com.hl_player.View;
 
 import android.content.Context;
-import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -12,7 +11,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import java.util.Timer;
 
@@ -63,16 +61,6 @@ public class HHControlView extends FrameLayout {
 
     public HHControlView(@NonNull Context context) {
         super(context);
-        initView(context);
-    }
-
-    public HHControlView(@NonNull Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-        initView(context);
-    }
-
-    public HHControlView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
         initView(context);
     }
 
