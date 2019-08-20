@@ -62,11 +62,9 @@ public abstract class HHPlayerCore {
 
     public abstract boolean isPlaying();
 
-    public void initView(Surface surface) {
-    }
+    public abstract void initView(Surface surface);
 
-    public void initView(SurfaceHolder surfaceHolder) {
-    }
+    public abstract void initView(SurfaceHolder surfaceHolder);
 
     public void setLooping(boolean looping) {
         isLooping = looping;
@@ -127,7 +125,7 @@ public abstract class HHPlayerCore {
                         onProgessListener.onListen(getCurrentPosition());
                     }
                 }
-            }, 0,1000);//delay延迟时间，period间隔时间
+            }, 0, 1000);//delay延迟时间，period间隔时间
         }
 
 //        if (a == null) {

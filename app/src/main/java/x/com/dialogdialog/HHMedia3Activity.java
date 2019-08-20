@@ -12,9 +12,8 @@ import x.com.dialogdialog.Base.BaseActivity;
 import x.com.hl_base.HOnListener;
 import x.com.hl_log.ViseLog;
 import x.com.hl_player.HHPlayer3;
-import x.com.hl_player.View.HHControlView;
-import x.com.hl_player.base.HHijkPlayer;
 import x.com.hl_player.TvListBean.TypeView;
+import x.com.hl_player.base.HHijkPlayer;
 import x.com.hl_tools.hl_time;
 
 
@@ -57,7 +56,7 @@ public class HHMedia3Activity extends BaseActivity {
         initUI();
         hhview = findViewById(R.id.hhPlayerView);
         hhPlayer3 = new HHPlayer3(this, new HHijkPlayer(), TypeView.HHTEXTURE, hhview);
-        hhPlayer3.addExtraView(new HHControlView(this, hhPlayer3));
+        hhPlayer3.addControlView();
 //        hhPlayer3.setPlayWhenPrepared(true);
         hhPlayer3.setCompletionListener(new HOnListener<Object>() {
             @Override
@@ -105,7 +104,7 @@ public class HHMedia3Activity extends BaseActivity {
         seekBar.setMax(100);
         seekbar_volume.setMax(10);
 
-        findViewById(R.id.select).setOnClickListener(v -> hhPlayer3.prepare(videopath));
+        findViewById(R.id.select).setOnClickListener(v -> hhPlayer3.prepare(videopath,""));
         findViewById(R.id.play).setOnClickListener(v -> hhPlayer3.start());
         findViewById(R.id.pause).setOnClickListener(v -> hhPlayer3.pause());
         findViewById(R.id.stop).setOnClickListener(v -> hhPlayer3.stop());

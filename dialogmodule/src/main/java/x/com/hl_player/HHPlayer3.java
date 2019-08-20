@@ -22,6 +22,7 @@ import x.com.hl_player.TypeBean.PlayerStateType;
 import x.com.hl_player.View.HHControlView;
 import x.com.hl_player.View.HHPlayerView;
 import x.com.hl_player.View.HHSurfaceStateListener;
+import x.com.hl_player.base.ControlViewInterface;
 import x.com.hl_player.base.HHPlayerCore;
 
 /**
@@ -34,6 +35,12 @@ public class HHPlayer3 {
     private boolean isChangeBrigtness = false;
     private ViewGroup viewGroup;
     private boolean isPlayWhenPrepared = false;//准备好立即播放
+    private ControlViewInterface cvInterface;
+    private String title;
+
+    public String getTitle() {
+        return title;
+    }
 
     //播放音乐
     public HHPlayer3(Context context, HHPlayerCore hhPlayerCore) {
@@ -213,6 +220,7 @@ public class HHPlayer3 {
     }
 
     public void prepare(String path, String title) {
+        this.title = title;
         hhPlayerCore.mPlayerState = PlayerStateType.IDLE;
         hhPlayerCore.prepare(path);
     }
@@ -369,10 +377,14 @@ public class HHPlayer3 {
                 if (isPlayWhenPrepared) {
                     start();
                 }
-                preparedListener.onListen(o);
+                if (preparedListener != null) {
+                    preparedListener.onListen(o);
+                }
+                if (cvInterface != null) {
+                    cvInterface.prepared();
+                }
             }
         });
-
     }
 
     //播放器播放完成监听
@@ -396,8 +408,18 @@ public class HHPlayer3 {
     }
 
     //播放器播放进度监听//当前是timer线程
-    public void setProgessListener(HOnListener<Long> progessListener) {
-        hhPlayerCore.setProgessListener(progessListener);
+    public void setProgessListener(final HOnListener<Long> progessListener) {
+        hhPlayerCore.setProgessListener(new HOnListener<Long>() {
+            @Override
+            public void onListen(Long aLong) {
+                if (progessListener != null) {
+                    progessListener.onListen(aLong);
+                }
+                if (cvInterface != null) {
+                    cvInterface.changeProgress(aLong);
+                }
+            }
+        });
     }
 
     //播放器缓存进度监听
@@ -415,6 +437,10 @@ public class HHPlayer3 {
             Log.e(hhPlayerCore.ETAG, "必须要有viewGroup才能执行此操作");
             return;
         }
+    }
+
+    public void setCvInterface(ControlViewInterface cvInterface) {
+        this.cvInterface = cvInterface;
     }
 
 

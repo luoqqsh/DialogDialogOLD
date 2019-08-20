@@ -5,6 +5,7 @@ import android.media.MediaPlayer;
 import android.os.Build;
 import android.util.Log;
 import android.view.Surface;
+import android.view.SurfaceHolder;
 
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -18,11 +19,19 @@ import x.com.hl_player.TypeBean.PlayerStateType;
 public class HHijkPlayer extends HHPlayerCore {
     private IjkMediaPlayer mediaPlayer;
     private Surface surface;
-    
+
     @Override
     public void initView(Surface surface) {
         TAG = "HH-IJKPlayer-surface";
         this.surface = surface;
+        mediaPlayer = new IjkMediaPlayer();
+        initListener();
+    }
+
+    @Override
+    public void initView(SurfaceHolder surfaceHolder) {
+        TAG = "HH-IJKPlayer-surface";
+        this.surface = surfaceHolder.getSurface();
         mediaPlayer = new IjkMediaPlayer();
         initListener();
     }

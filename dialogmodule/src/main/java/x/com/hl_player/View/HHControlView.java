@@ -1,6 +1,7 @@
 package x.com.hl_player.View;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -14,10 +15,13 @@ import androidx.annotation.NonNull;
 
 import java.util.Timer;
 
+import x.com.hl_base.HOnListener;
 import x.com.hl_dialog.R;
 import x.com.hl_player.HHPlayer3;
+import x.com.hl_player.base.ControlViewInterface;
+import x.com.hl_tools.hl_time;
 
-public class HHControlView extends FrameLayout implements View.OnClickListener {
+public class HHControlView extends FrameLayout implements View.OnClickListener, ControlViewInterface {
     private HHPlayer3 hhPlayer3;
     //播放按键
     protected View mStartButton;
@@ -67,6 +71,7 @@ public class HHControlView extends FrameLayout implements View.OnClickListener {
     public HHControlView(@NonNull Context context, HHPlayer3 hhPlayer3) {
         super(context);
         this.hhPlayer3 = hhPlayer3;
+        hhPlayer3.setCvInterface(this);
         initView(context);
     }
 
@@ -91,7 +96,12 @@ public class HHControlView extends FrameLayout implements View.OnClickListener {
         play.setOnClickListener(this);
         contentPanel.setOnClickListener(this);
 
-
+        hhPlayer3.setPreparedListener(new HOnListener<Object>() {
+            @Override
+            public void onListen(Object o) {
+                mTotalTimeTextView.setText(String.valueOf(hhPlayer3.getMediaDuration()));
+            }
+        });
     }
 
     private int getLayoutId() {
@@ -113,5 +123,32 @@ public class HHControlView extends FrameLayout implements View.OnClickListener {
             mLockScreen.setVisibility(isPanelShow ? VISIBLE : GONE);
             isPanelShow = !isPanelShow;
         }
+    }
+
+    @Override
+    public void getState() {
+
+    }
+
+    @Override
+    public void changeProgress(final long time) {
+        mProgressBar.post(new Runnable() {
+            @Override
+            public void run() {
+                mCurrentTimeTextView.setText(hl_time.formatTime(time));
+                mProgressBar.setProgress((int) (time / 1000));
+            }
+        });
+    }
+
+    @Override
+    public void prepared() {
+        if (TextUtils.isEmpty(hhPlayer3.getTitle())) {
+            mTitleTextView.setText(hhPlayer3.getMediaPath().toString());
+        } else {
+            mTitleTextView.setText(hhPlayer3.getTitle());
+        }
+        mTotalTimeTextView.setText(hl_time.formatTime(hhPlayer3.getMediaDuration()));
+        mProgressBar.setMax((int) (hhPlayer3.getMediaDuration() / 1000));
     }
 }
