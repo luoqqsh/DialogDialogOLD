@@ -14,12 +14,18 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
+import java.util.List;
+
 import x.com.hl_base.HOnListener;
 import x.com.hl_log.ViseLog;
+import x.com.hl_player.TvListBean.TvDataList;
 import x.com.hl_player.TvListBean.TypeView;
+import x.com.hl_player.TvListBean.UrlData;
 import x.com.hl_player.TypeBean.PlayerPrePareStateType;
 import x.com.hl_player.TypeBean.PlayerStateType;
-import x.com.hl_player.View.HHControlView;
+import x.com.hl_player.View.HHLiveView;
+import x.com.hl_player.View.HHLoadingView;
+import x.com.hl_player.View.HHNoLiveView;
 import x.com.hl_player.View.HHPlayerView;
 import x.com.hl_player.View.HHSurfaceStateListener;
 import x.com.hl_player.base.ControlViewInterface;
@@ -37,6 +43,8 @@ public class HHPlayer3 {
     private boolean isPlayWhenPrepared = false;//准备好立即播放
     private ControlViewInterface cvInterface;
     private String title;
+    private boolean isAddControlView = false;
+    private List<TvDataList> tvLists;
 
     public String getTitle() {
         return title;
@@ -199,7 +207,26 @@ public class HHPlayer3 {
     }
 
     public void addControlView() {
-        addExtraView(new HHControlView(mContext, this));
+        isAddControlView = true;
+    }
+
+    private void updateControlView() {
+        if (viewGroup != null) {
+            if (viewGroup.getChildCount() > 1) {
+                viewGroup.removeViewAt(viewGroup.getChildCount() - 1);
+            }
+            if (hhPlayerCore.getMediaDuration() == 0) {
+                addExtraView(new HHLiveView(mContext, HHPlayer3.this));
+                hhPlayerCore.isLive = true;
+            } else {
+                addExtraView(new HHNoLiveView(mContext, HHPlayer3.this));
+                hhPlayerCore.isLive = false;
+            }
+        }
+    }
+
+    public void addLoadingView() {
+        addExtraView(new HHLoadingView(mContext, this));
     }
 
     public void addExtraView(View view) {
@@ -219,9 +246,21 @@ public class HHPlayer3 {
         prepare(path, "");
     }
 
+    public void prepare(List<TvDataList> tvLists) {
+        if (tvLists != null && tvLists.size() > 0) {
+            this.tvLists = tvLists;
+            prepare(tvLists.get(0).getChannelURLs().get(0).getChannelURL(), tvLists.get(0).getChannelName());
+        } else {
+            Log.e(hhPlayerCore.ETAG, "播放列表为空");
+        }
+    }
+
     public void prepare(String path, String title) {
         this.title = title;
         hhPlayerCore.mPlayerState = PlayerStateType.IDLE;
+        if (cvInterface != null) {
+            cvInterface.getPrePareState(PlayerPrePareStateType.PREPARING);
+        }
         hhPlayerCore.prepare(path);
     }
 
@@ -374,14 +413,17 @@ public class HHPlayer3 {
         hhPlayerCore.setPreparedListener(new HOnListener<Object>() {
             @Override
             public void onListen(Object o) {
+                if (isAddControlView) {
+                    updateControlView();
+                }
+                if (cvInterface != null) {
+                    cvInterface.getPrePareState(PlayerPrePareStateType.PREPARED);
+                }
                 if (isPlayWhenPrepared) {
                     start();
                 }
                 if (preparedListener != null) {
                     preparedListener.onListen(o);
-                }
-                if (cvInterface != null) {
-                    cvInterface.prepared();
                 }
             }
         });
@@ -441,6 +483,10 @@ public class HHPlayer3 {
 
     public void setCvInterface(ControlViewInterface cvInterface) {
         this.cvInterface = cvInterface;
+    }
+
+    public List<UrlData> getUrlDataList(int position) {
+        return tvLists.get(position).getChannelURLs();
     }
 
 

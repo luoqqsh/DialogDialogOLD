@@ -37,6 +37,8 @@ public abstract class HHPlayerCore {
     private TaskDelayManager a;
     private Map<String, String> mHeaders;
     private Timer timer;
+    public boolean isLive = false;//是否实时直播
+    private long times = 0;
 
     public abstract void prepare(Object mediaPath);
 
@@ -121,8 +123,13 @@ public abstract class HHPlayerCore {
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
+                    times += 1000;
                     if (onProgessListener != null) {
-                        onProgessListener.onListen(getCurrentPosition());
+                        if (isLive) {
+                            onProgessListener.onListen(times);
+                        } else {
+                            onProgessListener.onListen(getCurrentPosition());
+                        }
                     }
                 }
             }, 0, 1000);//delay延迟时间，period间隔时间

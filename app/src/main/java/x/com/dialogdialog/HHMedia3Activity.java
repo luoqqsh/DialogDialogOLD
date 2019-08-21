@@ -42,8 +42,9 @@ public class HHMedia3Activity extends BaseActivity {
     private FrameLayout surface;
     private String musicpath = "/storage/emulated/0/Music/不可说 - 霍建华、赵丽颖.mp3";
     //        private String videopath = "/storage/emulated/0/DCIM/Camera/19619104518845.mp4";
-//    private String videopath = "http://183.56.168.47/cdn-out.iqy.sc96655.com/tslive/c204_scc_20190107_yvwl5h02_original_t10/c204_scc_20190107_yvwl5h02_original_t10.m3u8";
-    private String videopath = "http://s.bizhijingling.com/uploadfile/userload/vedio/2019/0516/20190516065450574.mp4";
+    private String videopath = "http://183.56.168.47/cdn-out.iqy.sc96655.com/tslive/c204_scc_20190107_yvwl5h02_original_t10/c204_scc_20190107_yvwl5h02_original_t10.m3u8";
+//    private String videopath = "http://s.bizhijingling.com/uploadfile/userload/vedio/2019/0516/20190516065450574.mp4";
+//    private String videopath = "rtsp://27.148.219.129:554/live/ch15102621311662932570.sdp";
     private boolean ismute = false;
     private TextView currenttime, totaltime;
     private AppCompatSeekBar seekBar, seekbar_volume;
