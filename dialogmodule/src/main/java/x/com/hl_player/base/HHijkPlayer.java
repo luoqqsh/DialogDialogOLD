@@ -20,20 +20,27 @@ public class HHijkPlayer extends HHPlayerCore {
     private IjkMediaPlayer mediaPlayer;
     private Surface surface;
 
-    @Override
-    public void initView(Surface surface) {
-        TAG = "HH-IJKPlayer-surface";
-        this.surface = surface;
+    public HHijkPlayer() {
         mediaPlayer = new IjkMediaPlayer();
         initListener();
     }
 
     @Override
+    public void initView(Surface surface) {
+        TAG = "HH-IJKPlayer-surface";
+        if (surface.isValid() && mediaPlayer != null) {
+            this.surface = surface;
+            mediaPlayer.setSurface(surface);
+        }
+    }
+
+    @Override
     public void initView(SurfaceHolder surfaceHolder) {
         TAG = "HH-IJKPlayer-surface";
-        this.surface = surfaceHolder.getSurface();
-        mediaPlayer = new IjkMediaPlayer();
-        initListener();
+        if (mediaPlayer != null) {
+            this.surface = surfaceHolder.getSurface();
+            mediaPlayer.setSurface(surface);
+        }
     }
 
     private void initListener() {
@@ -44,6 +51,8 @@ public class HHijkPlayer extends HHPlayerCore {
                     playerPrePareState = PlayerPrePareStateType.PREPARED;
                     mPlayerState = PlayerStateType.PREPARED;
                     isPrepared = true;
+                    videoWidth = mediaPlayer.getVideoWidth();
+                    videoHeight = mediaPlayer.getVideoHeight();
                     mediaPlayer.setVolume(volume, volume);
                     mediaPlayer.setLooping(isLooping);
                     if (onPreparedListener != null) {
@@ -66,7 +75,6 @@ public class HHijkPlayer extends HHPlayerCore {
             mediaPlayer.setOnCompletionListener(new IjkMediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(IMediaPlayer mp) {
-                    isCompletePlay = true;
                     if (onCompletionListener != null) {
                         onCompletionListener.onListen(mp);
                     }
@@ -96,15 +104,10 @@ public class HHijkPlayer extends HHPlayerCore {
 
     private void doPrepare(Object mediaPath, boolean isFirst) {
         this.mediaPath = mediaPath;
-        if (mediaPlayer == null) {
-            mediaPlayer = new IjkMediaPlayer();
-            initListener();
-        } else {
-            if (surface != null) {
-                stop();
-                reset();//ijkplayer调用reset会连画布一起重置，画布不会销毁
-                mediaPlayer.setSurface(surface);
-            }
+        if (surface != null) {
+            stop();
+            reset();//ijkplayer调用reset会连画布一起重置，画布不会销毁
+            mediaPlayer.setSurface(surface);
         }
         try {
             playerPrePareState = PlayerPrePareStateType.PREPARING;
@@ -158,7 +161,6 @@ public class HHijkPlayer extends HHPlayerCore {
 
     @Override
     public void start() {
-        isCompletePlay = false;
         if (mediaPlayer != null) {
             mediaPlayer.start();
             getCurrentStart();

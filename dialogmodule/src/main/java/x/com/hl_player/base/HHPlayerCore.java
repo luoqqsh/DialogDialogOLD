@@ -23,10 +23,11 @@ public abstract class HHPlayerCore {
     public String ETAG = "hh_error";
 
     public Object mediaPath;
+    public int videoWidth;
+    public int videoHeight;
 
     public float volume = 1;
     public Context context;//有的播放器需要context
-    public boolean isCompletePlay = false;//是否完成播放
     public boolean isLooping = true; //是否循环播放
     public boolean isPrepared = false;//是否准备好
     public HOnListener<Object> onPreparedListener;

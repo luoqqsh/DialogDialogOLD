@@ -20,18 +20,23 @@ import x.com.hl_player.TypeBean.PlayerStateType;
 public class HHMediaPlayer extends HHPlayerCore {
     private MediaPlayer mediaPlayer;
 
-    @Override
-    public void initView(SurfaceHolder surfaceHolder) {
+    public HHMediaPlayer() {
         mediaPlayer = new MediaPlayer();
         initListener();
-        mediaPlayer.setDisplay(surfaceHolder);
+    }
+
+    @Override
+    public void initView(SurfaceHolder surfaceHolder) {
+        if (mediaPlayer != null) {
+            mediaPlayer.setDisplay(surfaceHolder);
+        }
     }
 
     @Override
     public void initView(Surface surface) {
-        mediaPlayer = new MediaPlayer();
-        initListener();
-        mediaPlayer.setSurface(surface);
+        if (mediaPlayer != null && surface.isValid()) {
+            mediaPlayer.setSurface(surface);
+        }
     }
 
     private void initListener() {
@@ -42,6 +47,8 @@ public class HHMediaPlayer extends HHPlayerCore {
                     playerPrePareState = PlayerPrePareStateType.PREPARED;
                     mPlayerState = PlayerStateType.PREPARED;
                     isPrepared = true;
+                    videoWidth = mediaPlayer.getVideoWidth();
+                    videoHeight = mediaPlayer.getVideoHeight();
                     mediaPlayer.setVolume(volume, volume);
                     mediaPlayer.setLooping(isLooping);
                     if (onPreparedListener != null) {
@@ -64,7 +71,6 @@ public class HHMediaPlayer extends HHPlayerCore {
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
-                    isCompletePlay = true;
                     if (onCompletionListener != null) {
                         onCompletionListener.onListen(mp);
                     }
@@ -105,10 +111,6 @@ public class HHMediaPlayer extends HHPlayerCore {
         this.mediaPath = mediaPath;
         stop();
         reset();
-        if (mediaPlayer == null) {
-            mediaPlayer = new MediaPlayer();
-            initListener();
-        }
         try {
             playerPrePareState = PlayerPrePareStateType.PREPARING;
             if (mediaPath instanceof AssetFileDescriptor) {//Android assets file
@@ -161,7 +163,6 @@ public class HHMediaPlayer extends HHPlayerCore {
 
     @Override
     public void start() {
-        isCompletePlay = false;
         if (mediaPlayer != null) {
             mediaPlayer.start();
             getCurrentStart();
