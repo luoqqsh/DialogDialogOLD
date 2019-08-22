@@ -3,7 +3,9 @@ package x.com.hl_player.View;
 import android.content.Context;
 import android.view.ViewGroup;
 
+import x.com.hl_log.ViseLog;
 import x.com.hl_player.TvListBean.TypeView;
+import x.com.hl_player.TypeBean.ScaleType;
 
 public class HHPlayerView {
     private HHRenderView hhRenderView;
@@ -40,5 +42,17 @@ public class HHPlayerView {
 
     public int getHeight() {
         return (hhRenderView != null) ? hhRenderView.getSizeH() : 0;
+    }
+
+    public void setVideoSize(int width, int height) {
+        ViseLog.d(width + "  " + height);
+
+    }
+
+    public void setVideoScaleType(ScaleType scaleType) {
+        if (hhRenderView != null) {
+            hhRenderView.setScaleType(scaleType);
+            hhRenderView.changeTextureViewShowType();
+        }
     }
 }

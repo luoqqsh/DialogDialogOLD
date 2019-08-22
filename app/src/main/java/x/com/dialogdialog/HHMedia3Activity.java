@@ -1,21 +1,31 @@
 package x.com.dialogdialog;
 
 import android.os.Bundle;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatSeekBar;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import x.com.dialogdialog.Base.BaseActivity;
 import x.com.hl_base.HOnListener;
 import x.com.hl_log.ViseLog;
 import x.com.hl_player.HHPlayer3;
+import x.com.hl_player.TvListBean.TvData;
+import x.com.hl_player.TvListBean.TvDataList;
+import x.com.hl_player.TvListBean.TypeClarity;
+import x.com.hl_player.TvListBean.TypeClass;
+import x.com.hl_player.TvListBean.TypeState;
 import x.com.hl_player.TvListBean.TypeView;
 import x.com.hl_player.base.HHijkPlayer;
 import x.com.hl_tools.hl_time;
-
 
 public class HHMedia3Activity extends BaseActivity {
     private HHPlayer3 hhPlayer3;
@@ -49,14 +59,16 @@ public class HHMedia3Activity extends BaseActivity {
     private TextView currenttime, totaltime;
     private AppCompatSeekBar seekBar, seekbar_volume;
     private TextView tvback5;
+    private TvData tvUrl;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mediaview);
+        initList();
         initUI();
         hhview = findViewById(R.id.hhPlayerView);
-        hhPlayer3 = new HHPlayer3(this, new HHijkPlayer(), TypeView.HHTEXTURE, hhview);
+        hhPlayer3 = new HHPlayer3(this, new HHijkPlayer(), TypeView.HHSURFACE, hhview);
         hhPlayer3.addControlView();
 //        hhPlayer3.setPlayWhenPrepared(true);
         hhPlayer3.setCompletionListener(new HOnListener<Object>() {
@@ -84,7 +96,6 @@ public class HHMedia3Activity extends BaseActivity {
                         seekBar.setProgress((int) (time / 1000));
                     }
                 });
-
             }
         });
         hhPlayer3.setOnBufferingUpdateListener(new HOnListener<Integer>() {
@@ -93,8 +104,27 @@ public class HHMedia3Activity extends BaseActivity {
                 seekBar.setSecondaryProgress(integer);
             }
         });
+    }
 
-
+    private void initList() {
+        TvDataList tvDataList = new TvDataList(TypeClass.中央台, "中央电视台", "rtsp://27.148.240.138/PLTV/88888888/224/3221227012/10000100000000060000000001740935_0.smil", TypeClarity.H4k, TypeState.流畅);
+        TvDataList tvDataList2 = new TvDataList(TypeClass.中央台, "福建综合", "rtsp://27.148.240.138/PLTV/88888888/224/3221226716/10000100000000060000000001664269_0.smil", TypeClarity.标清, TypeState.流畅);
+        TvDataList tvDataList3 = new TvDataList(TypeClass.中央台, "福建综合", "http://183.56.168.47/cdn-out.iqy.sc96655.com/tslive/c204_scc_20190107_yvwl5h02_original_t10/c204_scc_20190107_yvwl5h02_original_t10.m3u8", TypeClarity.标清, TypeState.流畅);
+        TvDataList tvDataList4 = new TvDataList(TypeClass.中央台, "福建新闻", "rtsp://27.148.240.138/PLTV/88888888/224/3221225681/10000100000000060000000000417445_0.smil", TypeClarity.标清, TypeState.流畅);
+        TvDataList tvDataList5 = new TvDataList(TypeClass.中央台, "cctv", "rtsp://27.148.245.116:554/PLTV/88888888/224/3221227004/10000100000000060000000001740930_0.smil", TypeClarity.标清, TypeState.流畅);
+        tvDataList.addUrl("http://183.56.168.47/cdn-out.iqy.sc96655.com/tslive/c204_scc_20190107_yvwl5h02_original_t10/c204_scc_20190107_yvwl5h02_original_t10.m3u8", TypeClarity.高清, TypeState.流畅);
+        tvDataList.addUrl("rtsp://27.148.240.138/PLTV/88888888/224/3221226716/10000100000000060000000001664269_0.smil", TypeClarity.H8k, TypeState.卡顿);
+        List<TvDataList> tvDataLists = new ArrayList<>();
+        tvDataLists.add(tvDataList3);
+        tvDataLists.add(tvDataList2);
+        tvDataLists.add(tvDataList);
+        tvDataLists.add(tvDataList);
+        tvDataLists.add(tvDataList);
+        tvDataLists.add(tvDataList);
+        tvDataLists.add(tvDataList);
+        tvDataLists.add(tvDataList4);
+        tvDataLists.add(tvDataList5);
+        tvUrl = new TvData(1, "20190719", "itv", tvDataLists);
     }
 
     private void initUI() {
@@ -105,7 +135,9 @@ public class HHMedia3Activity extends BaseActivity {
         seekBar.setMax(100);
         seekbar_volume.setMax(10);
 
-        findViewById(R.id.select).setOnClickListener(v -> hhPlayer3.prepare(videopath,""));
+        findViewById(R.id.select).setOnClickListener(v ->
+//                hhPlayer3.prepare(videopath,""));
+                hhPlayer3.prepare(tvUrl.getLinks()));
         findViewById(R.id.play).setOnClickListener(v -> hhPlayer3.start());
         findViewById(R.id.pause).setOnClickListener(v -> hhPlayer3.pause());
         findViewById(R.id.stop).setOnClickListener(v -> hhPlayer3.stop());
@@ -128,14 +160,6 @@ public class HHMedia3Activity extends BaseActivity {
         });
         findViewById(R.id.slow).setOnClickListener(v -> hhPlayer3.setSpeed(0.5f));
         findViewById(R.id.get).setOnClickListener(v -> {
-            ViseLog.d(hhPlayer3.getCurrentPosition());
-            ViseLog.d(hhPlayer3.getMediaDuration());
-            ViseLog.d(hhPlayer3.getMediaPath());
-            ViseLog.d(hhPlayer3.getPlayerState());
-            ViseLog.d(hhPlayer3.isPlaying());
-            ViseLog.d(hhPlayer3.getScreenBrightness());
-            hhPlayer3.setScreenBrigtness(80);
-            ViseLog.d(hhPlayer3.getScreenBrightness());
         });
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override

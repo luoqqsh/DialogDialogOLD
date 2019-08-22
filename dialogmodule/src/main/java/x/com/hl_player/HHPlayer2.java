@@ -75,7 +75,7 @@ public class HHPlayer2 {
     }
 
     public void pause() {
-        if (hhPlayerCore.isPlayControl() && hhPlayerCore.isPlaying()) {
+        if (hhPlayerCore.isPlayControl() && hhPlayerCore.isMediaPlaying()) {
             hhPlayerCore.pause();
             hhPlayerCore.mPlayerState = PlayerStateType.PAUSE;
             Log.e(hhPlayerCore.TAG, "doPause");

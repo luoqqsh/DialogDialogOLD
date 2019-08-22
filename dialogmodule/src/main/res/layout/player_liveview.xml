@@ -38,6 +38,13 @@
             android:textSize="18sp" />
     </LinearLayout>
 
+    <FrameLayout
+        android:id="@+id/layout_list"
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="40dp" />
+
     <LinearLayout
         android:id="@+id/layout_bottom"
         android:layout_width="match_parent"
@@ -57,11 +64,51 @@
 
         <TextView
             android:id="@+id/current"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="16dp"
+            android:text="00:00"
+            android:textColor="#ffffff" />
+
+        <LinearLayout
+            android:id="@+id/seekbarlayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:layout_weight="1"
-            android:text="00:00"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <SeekBar
+                android:id="@+id/seek"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:background="@null"
+                android:max="100"
+                android:maxHeight="4dp"
+                android:minHeight="4dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:progressDrawable="@drawable/video_seek_progress"
+                android:thumb="@drawable/video_seek_thumb" />
+
+            <TextView
+                android:id="@+id/total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00:00"
+                android:textColor="#ffffff" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/scaleView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
+            android:text="比例"
             android:textColor="#ffffff" />
 
         <TextView
@@ -70,7 +117,8 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="16dp"
             android:text="列表"
-            android:textColor="#ffffff" />
+            android:textColor="#ffffff"
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/fullscreen"
@@ -87,7 +135,8 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginLeft="30dp"
-        android:src="@mipmap/unlock" />
+        android:src="@mipmap/unlock"
+        android:visibility="gone" />
 
     <include layout="@layout/player_include_loading" />
 </RelativeLayout>

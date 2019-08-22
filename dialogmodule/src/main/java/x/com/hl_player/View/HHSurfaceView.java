@@ -7,10 +7,15 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 
+import x.com.hl_log.ViseLog;
+import x.com.hl_player.TypeBean.ScaleType;
+import x.com.hl_player.tools.MeasureHelper;
 import x.com.hl_player.tools.ViewUtil;
 
-public class HHSurfaceView extends SurfaceView implements SurfaceHolder.Callback2, HHRenderView {
+public class HHSurfaceView extends SurfaceView implements SurfaceHolder.Callback2, HHRenderView, MeasureHelper.MeasureFormVideoParamsListener {
     private HHSurfaceStateListener surfaceListener;
+    private MeasureHelper measureHelper;
+    private ScaleType scaleType = ScaleType.DEFAULT;
 
     public HHSurfaceView(Context context) {
         super(context);
@@ -39,6 +44,38 @@ public class HHSurfaceView extends SurfaceView implements SurfaceHolder.Callback
     public void setHHSurfaceStateListener(HHSurfaceStateListener surfaceListener) {
         getHolder().addCallback(this);
         this.surfaceListener = surfaceListener;
+        measureHelper = new MeasureHelper(this, this);
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        measureHelper.prepareMeasure(widthMeasureSpec, heightMeasureSpec, (int) getRotation());
+        setMeasuredDimension(measureHelper.getMeasuredWidth(), measureHelper.getMeasuredHeight());
+    }
+
+    /**
+     * 获取布局参数
+     *
+     * @return
+     */
+    protected int getTextureParams() {
+        boolean typeChanged = (scaleType != ScaleType.DEFAULT);
+        return (typeChanged) ? ViewGroup.LayoutParams.WRAP_CONTENT : ViewGroup.LayoutParams.MATCH_PARENT;
+    }
+
+    /**
+     * 调整TextureView去适应比例变化
+     */
+    @Override
+    public void changeTextureViewShowType() {
+        int params = getTextureParams();
+        ViewGroup.LayoutParams layoutParams = getLayoutParams();
+        layoutParams.width = params;
+        layoutParams.height = params;
+        ViseLog.d(layoutParams.width);
+        ViseLog.d(layoutParams.height);
+        setLayoutParams(layoutParams);
+        requestLayout();
     }
 
     @Override
@@ -58,7 +95,6 @@ public class HHSurfaceView extends SurfaceView implements SurfaceHolder.Callback
 
     @Override
     public void surfaceRedrawNeeded(SurfaceHolder surfaceHolder) {
-
     }
 
     @Override
@@ -80,5 +116,30 @@ public class HHSurfaceView extends SurfaceView implements SurfaceHolder.Callback
         if (surfaceListener != null) {
             surfaceListener.onSurfaceDestroyed(surfaceHolder.getSurface());
         }
+    }
+
+    @Override
+    public int getCurrentVideoWidth() {
+     return getWidth();
+    }
+
+    @Override
+    public int getCurrentVideoHeight() {
+        return getHeight();
+    }
+
+    @Override
+    public int getVideoSarNum() {
+        return getSizeW();
+    }
+
+    @Override
+    public int getVideoSarDen() {
+        return getSizeH();
+    }
+
+    @Override
+    public void setScaleType(ScaleType scaleType) {
+        this.scaleType = scaleType;
     }
 }

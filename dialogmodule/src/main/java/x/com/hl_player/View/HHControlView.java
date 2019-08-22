@@ -3,6 +3,7 @@ package x.com.hl_player.View;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -20,47 +21,44 @@ import x.com.hl_base.OnDoubleClickListener;
 import x.com.hl_dialog.R;
 import x.com.hl_player.HHPlayer3;
 import x.com.hl_player.TypeBean.PlayerPrePareStateType;
+import x.com.hl_player.TypeBean.ScaleType;
 import x.com.hl_player.base.ControlViewInterface;
 import x.com.hl_tools.hl_time;
 
-public class HHNoLiveView extends FrameLayout implements View.OnClickListener, ControlViewInterface {
-    private HHPlayer3 hhPlayer3;
-    //播放按键
-    protected View mStartButton;
-    //进度条
-    protected SeekBar mProgressBar;
-    //全屏按键
-    protected ImageView mFullscreenButton;
-    //返回按键
-    protected ImageView mBackButton;
-    //锁定图标
-    protected ImageView mLockScreen;
-    //时间显示
-    protected TextView mCurrentTimeTextView, mTotalTimeTextView;
-    //title
-    protected TextView mTitleTextView;
-    //顶部和底部区域
-    protected ViewGroup mTopContainer, mBottomContainer;
-    //触摸显示消失定时
-    protected Timer mDismissControlViewTimer;
-    private TextView play;
+public class HHControlView extends FrameLayout implements View.OnClickListener, ControlViewInterface {
+    private ViewGroup mTopContainer, mBottomContainer, loading_layout, layout_list, seekbarlayout;
     private View contentPanel;
+    private HHPlayer3 hhPlayer3;
+    private View mStartButton;
+    private ImageView mFullscreenButton;
+    private ImageView mBackButton;
+    private ImageView mLockScreen;
+    private TextView mCurrentTimeTextView, mTotalTimeTextView;
+    private TextView mTitleTextView;
+    protected SeekBar mProgressBar;
     private boolean isPanelShow = true;
     private RotateImageView loading;
-    private ViewGroup loading_layout;
+    private Context context;
+    private TextView playlist;
+    private boolean isShowList = false;
+    private boolean isShowSeekBar = false;
 
-    public HHNoLiveView(@NonNull Context context, HHPlayer3 hhPlayer3) {
+    private Timer mDismissControlViewTimer;
+    private HHListView hhListView;
+
+    public HHControlView(@NonNull Context context, HHPlayer3 hhPlayer3) {
         super(context);
         this.hhPlayer3 = hhPlayer3;
+        this.context = context;
         hhPlayer3.setCvInterface(this);
         initView(context);
     }
 
-    public HHNoLiveView(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public HHControlView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public HHNoLiveView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public HHControlView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
@@ -72,20 +70,25 @@ public class HHNoLiveView extends FrameLayout implements View.OnClickListener, C
         mBackButton = findViewById(R.id.back);
 
         //bottom
+        seekbarlayout = findViewById(R.id.seekbarlayout);
         mBottomContainer = findViewById(R.id.layout_bottom);
         mFullscreenButton = findViewById(R.id.fullscreen);
         mCurrentTimeTextView = findViewById(R.id.current);
-        mTotalTimeTextView = findViewById(R.id.total);
-        play = findViewById(R.id.play);
         contentPanel = findViewById(R.id.contentPanel);
-        mProgressBar = findViewById(R.id.progress);
+        mTotalTimeTextView = findViewById(R.id.total);
+        mProgressBar = findViewById(R.id.seek);
 
+        findViewById(R.id.play).setOnClickListener(this);
+        findViewById(R.id.scaleView).setOnClickListener(this);
+        //list
+        layout_list = findViewById(R.id.layout_list);
         //mid
         loading_layout = findViewById(R.id.loading_layout);
         mLockScreen = findViewById(R.id.lock_screen);
         loading = findViewById(R.id.loading);
         mStartButton = findViewById(R.id.play_pause);
-        play.setOnClickListener(this);
+        playlist = findViewById(R.id.playlist);
+        playlist.setOnClickListener(this);
         mStartButton.setOnClickListener(this);
         contentPanel.setOnTouchListener(new OnDoubleClickListener(new OnDoubleClickListener.DoubleClickCallback() {
             @Override
@@ -95,14 +98,20 @@ public class HHNoLiveView extends FrameLayout implements View.OnClickListener, C
 
             @Override
             public void onOneClick() {
+                if (isShowList) {
+                    isShowList = false;
+                    layout_list.setVisibility(GONE);
+                    return;
+                }
                 isPanelShow = !isPanelShow;
                 showPlayControl(isPanelShow);
             }
         }));
+
     }
 
     private int getLayoutId() {
-        return R.layout.player_noliveview;
+        return R.layout.player_liveview;
     }
 
     @Override
@@ -110,6 +119,19 @@ public class HHNoLiveView extends FrameLayout implements View.OnClickListener, C
         int id = view.getId();
         if (id == R.id.play || id == R.id.play_pause) {
             playControl();
+        }
+        if (id == R.id.scaleView) {
+            hhPlayer3.setVideoScaleType(ScaleType.SCALE_4_3);
+        }
+        if (id == R.id.playlist) {
+            isShowList = !isShowList;
+            if (isShowList) {
+                cancelDismissTimer();
+                layout_list.setVisibility(VISIBLE);
+            } else {
+                startDismissTimer();
+                layout_list.setVisibility(GONE);
+            }
         }
     }
 
@@ -129,7 +151,7 @@ public class HHNoLiveView extends FrameLayout implements View.OnClickListener, C
         }
         mBottomContainer.setVisibility(isPanelShow ? VISIBLE : INVISIBLE);
         mTopContainer.setVisibility(isPanelShow ? VISIBLE : GONE);
-        mLockScreen.setVisibility(isPanelShow ? VISIBLE : GONE);
+//        mLockScreen.setVisibility(isPanelShow ? VISIBLE : GONE);
     }
 
     private void playControl() {
@@ -158,24 +180,43 @@ public class HHNoLiveView extends FrameLayout implements View.OnClickListener, C
                 } else {
                     mTitleTextView.setText(hhPlayer3.getTitle());
                 }
-                mTotalTimeTextView.setText(hl_time.formatTime(hhPlayer3.getMediaDuration()));
-                mProgressBar.setMax((int) (hhPlayer3.getMediaDuration() / 1000));
                 startDismissTimer();
                 //隐藏加载转圈
                 loading.setVisibility(GONE);
                 loading_layout.setVisibility(GONE);
                 loading.stop();
+                if (hhPlayer3.getMediaDuration() != 0) {
+                    isShowSeekBar = true;
+                    seekbarlayout.setVisibility(VISIBLE);
+                    mProgressBar.setMax((int) (hhPlayer3.getMediaDuration() / 1000));
+                    mTotalTimeTextView.setText(hl_time.formatTime(hhPlayer3.getMediaDuration()));
+                } else {
+                    isShowSeekBar = false;
+                    seekbarlayout.setVisibility(INVISIBLE);
+                }
+                if (hhPlayer3.getUrlDataList() != null && hhListView == null) {
+                    FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                    params.gravity = Gravity.RIGHT;
+                    hhListView = new HHListView(context, hhPlayer3.getUrlDataList(), hhPlayer3);
+                    layout_list.addView(hhListView, params);
+                    hhListView.refreshList(hhPlayer3.getUrlDataList());
+                    playlist.setVisibility(VISIBLE);
+                    layout_list.setVisibility(GONE);
+                }
+
                 break;
         }
     }
 
     @Override
     public void changeProgress(final long time) {
-        mProgressBar.post(new Runnable() {
+        mCurrentTimeTextView.post(new Runnable() {
             @Override
             public void run() {
                 mCurrentTimeTextView.setText(hl_time.formatTime(time));
-                mProgressBar.setProgress((int) (time / 1000));
+                if (isShowSeekBar) {
+                    mProgressBar.setProgress((int) (time / 1000));
+                }
             }
         });
     }

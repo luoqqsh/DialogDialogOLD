@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 
 import java.util.List;
 
@@ -20,16 +21,16 @@ import x.com.hl_base.HOnListener;
 import x.com.hl_log.ViseLog;
 import x.com.hl_player.TvListBean.TvDataList;
 import x.com.hl_player.TvListBean.TypeView;
-import x.com.hl_player.TvListBean.UrlData;
 import x.com.hl_player.TypeBean.PlayerPrePareStateType;
 import x.com.hl_player.TypeBean.PlayerStateType;
-import x.com.hl_player.View.HHLiveView;
+import x.com.hl_player.TypeBean.ScaleType;
+import x.com.hl_player.View.HHControlView;
 import x.com.hl_player.View.HHLoadingView;
-import x.com.hl_player.View.HHNoLiveView;
 import x.com.hl_player.View.HHPlayerView;
 import x.com.hl_player.View.HHSurfaceStateListener;
 import x.com.hl_player.base.ControlViewInterface;
 import x.com.hl_player.base.HHPlayerCore;
+import x.com.hl_tools.hl_screen;
 
 /**
  * 播放器控制类，也就是我们的使用类
@@ -43,7 +44,6 @@ public class HHPlayer3 {
     private boolean isPlayWhenPrepared = false;//准备好立即播放
     private ControlViewInterface cvInterface;
     private String title;
-    private boolean isAddControlView = false;
     private List<TvDataList> tvLists;
 
     public String getTitle() {
@@ -70,6 +70,12 @@ public class HHPlayer3 {
         mContext = context;
         hhPlayerCore.setContext(mContext);
         this.viewGroup = viewGroup;
+        if (viewGroup != null) {
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            layoutParams.width = hl_screen.getWidthFromScreenW(context);
+            layoutParams.height = hl_screen.getHeightFromWidth(context);
+            viewGroup.setLayoutParams(layoutParams);
+        }
         this.hhPlayerCore = hhPlayerCore;
         switch (playerView) {
             case NEWSURFACE:
@@ -93,6 +99,271 @@ public class HHPlayer3 {
                 break;
             case MUSIC:
                 break;
+        }
+    }
+
+    public void addControlView() {
+        addExtraView(new HHControlView(mContext, HHPlayer3.this));
+    }
+
+    public void addLoadingView() {
+        addExtraView(new HHLoadingView(mContext, this));
+    }
+
+    public void addExtraView(View view) {
+        if (viewGroup == null) {
+            Log.e(hhPlayerCore.TAG, "必须设置viewGroup");
+        } else {
+            ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            viewGroup.addView(view, params);
+        }
+    }
+
+    public void setPreparedListener(final HOnListener<Object> preparedListener) {
+        hhPlayerCore.setPreparedListener(new HOnListener<Object>() {
+            @Override
+            public void onListen(Object o) {
+                if (cvInterface != null) {
+                    cvInterface.getPrePareState(PlayerPrePareStateType.PREPARED);
+                }
+                if (isPlayWhenPrepared) {
+                    start();
+                }
+                hhPlayerCore.isLive = hhPlayerCore.getMediaDuration() == 0;
+                if (preparedListener != null) {
+                    preparedListener.onListen(o);
+                }
+            }
+        });
+    }
+
+    //播放器播放完成监听
+    public void setCompletionListener(final HOnListener<Object> completionListener) {
+        hhPlayerCore.setCompletionListener(new HOnListener<Object>() {
+            @Override
+            public void onListen(Object o) {
+                Log.e(hhPlayerCore.TAG, "play Completion");
+                hhPlayerCore.mPlayerState = PlayerStateType.PLAYBACK_COMPLETED;
+                if (isChangeBrigtness) {//播放完恢复原来的亮度，没设置亮度则不启用
+                    setScreenBrigtness(getSystemScreenBrightness());
+                }
+                completionListener.onListen(o);
+            }
+        });
+    }
+
+    //播放器错误监听
+    public void setOnErrorListener(HOnListener<Object> errorListener) {
+        hhPlayerCore.setOnErrorListener(errorListener);
+    }
+
+    //播放器播放进度监听//当前是timer线程
+    public void setProgessListener(final HOnListener<Long> progessListener) {
+        hhPlayerCore.setProgessListener(new HOnListener<Long>() {
+            @Override
+            public void onListen(Long aLong) {
+                if (progessListener != null) {
+                    progessListener.onListen(aLong);
+                }
+                if (cvInterface != null) {
+                    cvInterface.changeProgress(aLong);
+                }
+            }
+        });
+    }
+
+    //播放器缓存进度监听
+    public void setOnBufferingUpdateListener(HOnListener<Integer> onBufferingUpdateListener) {
+        hhPlayerCore.setOnBufferingUpdateListener(onBufferingUpdateListener);
+    }
+
+    public void setPlayWhenPrepared(boolean isPlayWhenPrepared) {
+        this.isPlayWhenPrepared = isPlayWhenPrepared;
+    }
+
+    public void prepare(String path) {
+        prepare(path, "");
+    }
+
+    public void prepare(List<TvDataList> tvLists) {
+        if (tvLists != null && tvLists.size() > 0) {
+            this.tvLists = tvLists;
+            prepare(tvLists.get(0).getChannelURLs().get(0).getChannelURL(), tvLists.get(0).getChannelName());
+        } else {
+            Log.e(hhPlayerCore.ETAG, "播放列表为空");
+        }
+    }
+
+    public void prepare(String path, String title) {
+        this.title = title;
+        hhPlayerCore.mPlayerState = PlayerStateType.IDLE;
+        if (cvInterface != null) {
+            cvInterface.getPrePareState(PlayerPrePareStateType.PREPARING);
+        }
+        hhPlayerCore.prepare(path);
+    }
+
+    public void start() {
+        if (hhPlayerCore.isPrepared && hhPlayerCore.isPlayControl()) {
+            hhPlayerCore.start();
+            hhPlayerCore.getCurrentStart();
+            hhPlayerCore.mPlayerState = PlayerStateType.PLAYING;
+            Log.e(hhPlayerCore.TAG, "doStart");
+        }
+        ViseLog.d(hhPlayerView.getWidth());
+        ViseLog.d(hhPlayerView.getHeight());
+        ViseLog.d(hhPlayerView.getRotation());
+    }
+
+    public void pause() {
+        if (hhPlayerCore.isPlayControl() && hhPlayerCore.isMediaPlaying()) {
+            hhPlayerCore.pause();
+            hhPlayerCore.mPlayerState = PlayerStateType.PAUSE;
+            Log.e(hhPlayerCore.TAG, "doPause");
+        }
+    }
+
+    public void reset() {
+        hhPlayerCore.reset();
+        hhPlayerCore.getCurrentStop();
+        hhPlayerCore.mPlayerState = PlayerStateType.IDLE;
+    }
+
+    public void stop() {
+        if (hhPlayerCore.isPlayControl()) {
+            hhPlayerCore.stop();
+            hhPlayerCore.getCurrentStop();
+            Log.d(hhPlayerCore.TAG, "doStop");
+        }
+    }
+
+    //单位毫秒
+    public void seekTo(long position) {
+        if (hhPlayerCore.isPlayControl()) {
+            hhPlayerCore.playerPrePareState = PlayerPrePareStateType.PREPARING;
+            hhPlayerCore.seekTo(position);
+            Log.d(hhPlayerCore.TAG, "seekTo");
+        }
+    }
+
+    //设置屏幕亮度
+    public void setScreenBrigtness(int brightness) {
+        Window localWindow = ((Activity) mContext).getWindow();
+        WindowManager.LayoutParams localLayoutParams = localWindow.getAttributes();
+        localLayoutParams.screenBrightness = (float) brightness / 100.0F;
+        localWindow.setAttributes(localLayoutParams);
+        isChangeBrigtness = true;
+    }
+
+    //获取系统屏幕亮度
+    private int getSystemScreenBrightness() {
+        try {
+            int brightNess = Settings.System.getInt(mContext.getContentResolver(), "screen_brightness");
+            return (int) ((float) (brightNess * 100) / 255.0F);
+        } catch (Settings.SettingNotFoundException var4) {
+            return -1;
+        }
+    }
+
+    //获取屏幕亮度
+    public int getScreenBrightness() {
+        if (this.mContext instanceof Activity) {
+            Window localWindow = ((Activity) this.mContext).getWindow();
+            WindowManager.LayoutParams localLayoutParams = localWindow.getAttributes();
+            float screenBrightness = localLayoutParams.screenBrightness;
+            if (screenBrightness > 1.0F || screenBrightness < 0.1) {
+                return getSystemScreenBrightness();
+            }
+            return (int) (screenBrightness * 100.0F);
+        }
+        return getSystemScreenBrightness();
+    }
+
+    //设置是否循环播放
+    public void setLooping(boolean looping) {
+        hhPlayerCore.setLooping(looping);
+    }
+
+    //设置静音
+    public void setMute(boolean mute) {
+        setVolume(mute ? 0 : 1);
+    }
+
+    //设置音量，范围0-1
+    public void setVolume(float volume) {
+        if (volume >= 0 && volume <= 1) {
+            hhPlayerCore.volume = volume;
+            hhPlayerCore.setVolume(volume);
+        } else {
+            hhPlayerCore.volume = 1;
+            hhPlayerCore.setVolume(1);
+            Log.e(hhPlayerCore.ETAG, "volume超范围：" + volume);
+        }
+    }
+
+    //获取当前音量
+    public float getVolume() {
+        return hhPlayerCore.volume;
+    }
+
+    //设置播放速度，快放慢放。0就停了，1为正常速度。。。
+    public void setSpeed(float speed) {
+        if (hhPlayerCore.isPlayControl()) {
+            hhPlayerCore.setSpeed(speed);
+            Log.d(hhPlayerCore.TAG, "setSpeed");
+        }
+    }
+
+
+    public Object getMediaPath() {
+        return hhPlayerCore.getMediaPath();
+    }
+
+    public boolean isPlaying() {
+        return hhPlayerCore.isMediaPlaying();
+    }
+
+    //获取当前播放进度，-1为获取失败
+    public long getCurrentPosition() {
+        if (hhPlayerCore.isPlayControl()) {
+            return hhPlayerCore.getCurrentPosition();
+        }
+        return -1;
+    }
+
+    //获取媒体总时长，-1为获取失败
+    public long getMediaDuration() {
+        if (hhPlayerCore.isPlayControl()) {
+            return hhPlayerCore.getMediaDuration();
+        }
+        return -1;
+    }
+
+    //获取当前播放器状态
+    public PlayerStateType getPlayerState() {
+        return hhPlayerCore.mPlayerState;
+    }
+
+    public void setCvInterface(ControlViewInterface cvInterface) {
+        this.cvInterface = cvInterface;
+    }
+
+    public List<TvDataList> getUrlDataList() {
+        return tvLists;
+    }
+
+    public void setVideoScaleType(ScaleType scaleType) {
+        hhPlayerView.setVideoScaleType(scaleType);
+    }
+
+    public void setVideoSize(int width, int height) {
+        hhPlayerView.setVideoSize(width, height);
+    }
+
+    public void fullScreen() {
+        if (viewGroup == null) {
+            Log.e(hhPlayerCore.ETAG, "必须要有viewGroup才能执行此操作");
+            return;
         }
     }
 
@@ -206,175 +477,6 @@ public class HHPlayer3 {
         hhPlayerCore.initView(surfaceHolder);
     }
 
-    public void addControlView() {
-        isAddControlView = true;
-    }
-
-    private void updateControlView() {
-        if (viewGroup != null) {
-            if (viewGroup.getChildCount() > 1) {
-                viewGroup.removeViewAt(viewGroup.getChildCount() - 1);
-            }
-            if (hhPlayerCore.getMediaDuration() == 0) {
-                addExtraView(new HHLiveView(mContext, HHPlayer3.this));
-                hhPlayerCore.isLive = true;
-            } else {
-                addExtraView(new HHNoLiveView(mContext, HHPlayer3.this));
-                hhPlayerCore.isLive = false;
-            }
-        }
-    }
-
-    public void addLoadingView() {
-        addExtraView(new HHLoadingView(mContext, this));
-    }
-
-    public void addExtraView(View view) {
-        if (viewGroup == null) {
-            Log.e(hhPlayerCore.TAG, "必须设置viewGroup");
-        } else {
-            ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            viewGroup.addView(view, params);
-        }
-    }
-
-    public void setPlayWhenPrepared(boolean isPlayWhenPrepared) {
-        this.isPlayWhenPrepared = isPlayWhenPrepared;
-    }
-
-    public void prepare(String path) {
-        prepare(path, "");
-    }
-
-    public void prepare(List<TvDataList> tvLists) {
-        if (tvLists != null && tvLists.size() > 0) {
-            this.tvLists = tvLists;
-            prepare(tvLists.get(0).getChannelURLs().get(0).getChannelURL(), tvLists.get(0).getChannelName());
-        } else {
-            Log.e(hhPlayerCore.ETAG, "播放列表为空");
-        }
-    }
-
-    public void prepare(String path, String title) {
-        this.title = title;
-        hhPlayerCore.mPlayerState = PlayerStateType.IDLE;
-        if (cvInterface != null) {
-            cvInterface.getPrePareState(PlayerPrePareStateType.PREPARING);
-        }
-        hhPlayerCore.prepare(path);
-    }
-
-    public void start() {
-        if (hhPlayerCore.isPrepared && hhPlayerCore.isPlayControl()) {
-            hhPlayerCore.start();
-            hhPlayerCore.getCurrentStart();
-            hhPlayerCore.mPlayerState = PlayerStateType.PLAYING;
-            Log.e(hhPlayerCore.TAG, "doStart");
-        }
-        ViseLog.d(hhPlayerView.getWidth());
-        ViseLog.d(hhPlayerView.getHeight());
-        ViseLog.d(hhPlayerView.getRotation());
-    }
-
-    public void pause() {
-        if (hhPlayerCore.isPlayControl() && hhPlayerCore.isPlaying()) {
-            hhPlayerCore.pause();
-            hhPlayerCore.mPlayerState = PlayerStateType.PAUSE;
-            Log.e(hhPlayerCore.TAG, "doPause");
-        }
-    }
-
-    public void reset() {
-        hhPlayerCore.reset();
-        hhPlayerCore.getCurrentStop();
-        hhPlayerCore.mPlayerState = PlayerStateType.IDLE;
-    }
-
-    public void stop() {
-        if (hhPlayerCore.isPlayControl()) {
-            hhPlayerCore.stop();
-            hhPlayerCore.getCurrentStop();
-            Log.d(hhPlayerCore.TAG, "doStop");
-        }
-    }
-
-    //单位毫秒
-    public void seekTo(long position) {
-        if (hhPlayerCore.isPlayControl()) {
-            hhPlayerCore.playerPrePareState = PlayerPrePareStateType.PREPARING;
-            hhPlayerCore.seekTo(position);
-            Log.d(hhPlayerCore.TAG, "seekTo");
-        }
-    }
-
-    //设置屏幕亮度
-    public void setScreenBrigtness(int brightness) {
-        Window localWindow = ((Activity) mContext).getWindow();
-        WindowManager.LayoutParams localLayoutParams = localWindow.getAttributes();
-        localLayoutParams.screenBrightness = (float) brightness / 100.0F;
-        localWindow.setAttributes(localLayoutParams);
-        isChangeBrigtness = true;
-    }
-
-    //获取系统屏幕亮度
-    private int getSystemScreenBrightness() {
-        try {
-            int brightNess = Settings.System.getInt(mContext.getContentResolver(), "screen_brightness");
-            return (int) ((float) (brightNess * 100) / 255.0F);
-        } catch (Settings.SettingNotFoundException var4) {
-            return -1;
-        }
-    }
-
-    //获取屏幕亮度
-    public int getScreenBrightness() {
-        if (this.mContext instanceof Activity) {
-            Window localWindow = ((Activity) this.mContext).getWindow();
-            WindowManager.LayoutParams localLayoutParams = localWindow.getAttributes();
-            float screenBrightness = localLayoutParams.screenBrightness;
-            if (screenBrightness > 1.0F || screenBrightness < 0.1) {
-                return getSystemScreenBrightness();
-            }
-            return (int) (screenBrightness * 100.0F);
-        }
-        return getSystemScreenBrightness();
-    }
-
-    //设置是否循环播放
-    public void setLooping(boolean looping) {
-        hhPlayerCore.setLooping(looping);
-    }
-
-    //设置静音
-    public void setMute(boolean mute) {
-        setVolume(mute ? 0 : 1);
-    }
-
-    //设置音量，范围0-1
-    public void setVolume(float volume) {
-        if (volume >= 0 && volume <= 1) {
-            hhPlayerCore.volume = volume;
-            hhPlayerCore.setVolume(volume);
-        } else {
-            hhPlayerCore.volume = 1;
-            hhPlayerCore.setVolume(1);
-            Log.e(hhPlayerCore.ETAG, "volume超范围：" + volume);
-        }
-    }
-
-    //获取当前音量
-    public float getVolume() {
-        return hhPlayerCore.volume;
-    }
-
-    //设置播放速度，快放慢放。0就停了，1为正常速度。。。
-    public void setSpeed(float speed) {
-        if (hhPlayerCore.isPlayControl()) {
-            hhPlayerCore.setSpeed(speed);
-            Log.d(hhPlayerCore.TAG, "setSpeed");
-        }
-    }
-
     public void release() {
         stop();
         hhPlayerCore.release();
@@ -383,112 +485,6 @@ public class HHPlayer3 {
         hhPlayerCore.isPrepared = false;
         Log.d(hhPlayerCore.TAG, "doRelease");
     }
-
-
-    public Object getMediaPath() {
-        return hhPlayerCore.getMediaPath();
-    }
-
-    public boolean isPlaying() {
-        return hhPlayerCore.isMediaPlaying();
-    }
-
-    //获取当前播放进度，-1为获取失败
-    public long getCurrentPosition() {
-        if (hhPlayerCore.isPlayControl()) {
-            return hhPlayerCore.getCurrentPosition();
-        }
-        return -1;
-    }
-
-    //获取媒体总时长，-1为获取失败
-    public long getMediaDuration() {
-        if (hhPlayerCore.isPlayControl()) {
-            return hhPlayerCore.getMediaDuration();
-        }
-        return -1;
-    }
-
-    public void setPreparedListener(final HOnListener<Object> preparedListener) {
-        hhPlayerCore.setPreparedListener(new HOnListener<Object>() {
-            @Override
-            public void onListen(Object o) {
-                if (isAddControlView) {
-                    updateControlView();
-                }
-                if (cvInterface != null) {
-                    cvInterface.getPrePareState(PlayerPrePareStateType.PREPARED);
-                }
-                if (isPlayWhenPrepared) {
-                    start();
-                }
-                if (preparedListener != null) {
-                    preparedListener.onListen(o);
-                }
-            }
-        });
-    }
-
-    //播放器播放完成监听
-    public void setCompletionListener(final HOnListener<Object> completionListener) {
-        hhPlayerCore.setCompletionListener(new HOnListener<Object>() {
-            @Override
-            public void onListen(Object o) {
-                Log.e(hhPlayerCore.TAG, "play Completion");
-                hhPlayerCore.mPlayerState = PlayerStateType.PLAYBACK_COMPLETED;
-                if (isChangeBrigtness) {//播放完恢复原来的亮度，没设置亮度则不启用
-                    setScreenBrigtness(getSystemScreenBrightness());
-                }
-                completionListener.onListen(o);
-            }
-        });
-    }
-
-    //播放器错误监听
-    public void setOnErrorListener(HOnListener<Object> errorListener) {
-        hhPlayerCore.setOnErrorListener(errorListener);
-    }
-
-    //播放器播放进度监听//当前是timer线程
-    public void setProgessListener(final HOnListener<Long> progessListener) {
-        hhPlayerCore.setProgessListener(new HOnListener<Long>() {
-            @Override
-            public void onListen(Long aLong) {
-                if (progessListener != null) {
-                    progessListener.onListen(aLong);
-                }
-                if (cvInterface != null) {
-                    cvInterface.changeProgress(aLong);
-                }
-            }
-        });
-    }
-
-    //播放器缓存进度监听
-    public void setOnBufferingUpdateListener(HOnListener<Integer> onBufferingUpdateListener) {
-        hhPlayerCore.setOnBufferingUpdateListener(onBufferingUpdateListener);
-    }
-
-    //获取当前播放器状态
-    public PlayerStateType getPlayerState() {
-        return hhPlayerCore.mPlayerState;
-    }
-
-    public void fullScreen() {
-        if (viewGroup == null) {
-            Log.e(hhPlayerCore.ETAG, "必须要有viewGroup才能执行此操作");
-            return;
-        }
-    }
-
-    public void setCvInterface(ControlViewInterface cvInterface) {
-        this.cvInterface = cvInterface;
-    }
-
-    public List<UrlData> getUrlDataList(int position) {
-        return tvLists.get(position).getChannelURLs();
-    }
-
 
 
 /*

@@ -123,10 +123,12 @@ public abstract class HHPlayerCore {
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    times += 1000;
                     if (onProgessListener != null) {
                         if (isLive) {
-                            onProgessListener.onListen(times);
+                            if (isMediaPlaying()) {
+                                times += 1000;
+                                onProgessListener.onListen(times);
+                            }
                         } else {
                             onProgessListener.onListen(getCurrentPosition());
                         }

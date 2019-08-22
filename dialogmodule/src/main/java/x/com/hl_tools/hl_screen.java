@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Point;
 import android.os.Build;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.WindowManager;
@@ -69,34 +70,41 @@ public class hl_screen {
     }
 
     /**
-     * 获取 屏幕 宽度
+     * 获取设备宽度
      */
     public static int getDeviceWidth(Context context) {
         WindowManager manager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        Display display = manager.getDefaultDisplay();
-        Point sizePoint = new Point();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            display.getRealSize(sizePoint);
-        } else {
-            display.getSize(sizePoint);
+        if (manager != null) {
+            Display display = manager.getDefaultDisplay();
+            Point sizePoint = new Point();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                display.getRealSize(sizePoint);
+            } else {
+                display.getSize(sizePoint);
+            }
+            return sizePoint.x;
         }
-        return sizePoint.x;
+        return 0;
     }
 
     /**
-     * 获取 屏幕 高度
+     * 获取设备高度
      */
     public static int getDeviceHeight(Context context) {
         WindowManager manager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        Display display = manager.getDefaultDisplay();
-        Point sizePoint = new Point();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            display.getRealSize(sizePoint);
-        } else {
-            display.getSize(sizePoint);
+        if (manager != null) {
+            Display display = manager.getDefaultDisplay();
+            Point sizePoint = new Point();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                display.getRealSize(sizePoint);
+            } else {
+                display.getSize(sizePoint);
+            }
+            return sizePoint.y;
         }
-        return sizePoint.y;
+        return 0;
     }
+
     /**
      * 获取导航栏高度(下面虚拟按键)
      *
@@ -113,16 +121,18 @@ public class hl_screen {
             return 0;
     }
 
-    /**
-     * 获取状态栏高度
-     *
-     * @param context 上下文
-     * @return 状态栏高度px
-     */
+    // 获得状态栏高度
     public static int getStatusBarHeight(Context context) {
-        // 获得状态栏高度
         int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
         return context.getResources().getDimensionPixelSize(resourceId);
+    }
+
+    //获取屏幕密度dpi
+    public static int getDensity(Context context) {
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+        Log.d("TAG", "Density is " + displayMetrics.density + " densityDpi is " + displayMetrics.densityDpi + " height: " + displayMetrics.heightPixels +
+                " width: " + displayMetrics.widthPixels);
+        return displayMetrics.densityDpi;
     }
 
     @SuppressLint("RestrictedApi")
@@ -148,5 +158,14 @@ public class hl_screen {
             }
         }
         hl_context.getWindow(context).clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    }
+
+    //屏幕旋转，保持比例不变
+    public static int getWidthFromScreenW(Context context) {
+        return hl_screen.getScreenWidth(context);
+    }
+
+    public static int getHeightFromWidth(Context context) {
+        return (int) (hl_screen.getScreenWidth(context) * 0.5625);
     }
 }

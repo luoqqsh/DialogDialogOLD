@@ -6,4 +6,5 @@ public interface ControlViewInterface {
     void getPrePareState(PlayerPrePareStateType playerPrePareStateType);
 
     void changeProgress(long time);
+
 }

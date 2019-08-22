@@ -7,9 +7,10 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 public class ViewUtil {
+
     public static void addToParent(ViewGroup textureViewContainer, View render) {
 //        int params = getTextureParams();
-        int params = ViewGroup.LayoutParams.MATCH_PARENT;
+        int params = ViewGroup.LayoutParams.WRAP_CONTENT;
         if (textureViewContainer instanceof RelativeLayout) {
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(params, params);
             layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
@@ -20,5 +21,6 @@ public class ViewUtil {
             textureViewContainer.addView(render, layoutParams);
         }
     }
+
 
 }
