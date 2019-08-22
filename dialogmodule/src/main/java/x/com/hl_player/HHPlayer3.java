@@ -18,7 +18,6 @@ import android.widget.LinearLayout;
 import java.util.List;
 
 import x.com.hl_base.HOnListener;
-import x.com.hl_log.ViseLog;
 import x.com.hl_player.TvListBean.TvDataList;
 import x.com.hl_player.TvListBean.TypeView;
 import x.com.hl_player.TypeBean.PlayerPrePareStateType;
@@ -210,9 +209,6 @@ public class HHPlayer3 {
             hhPlayerCore.mPlayerState = PlayerStateType.PLAYING;
             Log.e(hhPlayerCore.TAG, "doStart");
         }
-        ViseLog.d(hhPlayerView.getWidth());
-        ViseLog.d(hhPlayerView.getHeight());
-        ViseLog.d(hhPlayerView.getRotation());
     }
 
     public void pause() {
@@ -353,11 +349,15 @@ public class HHPlayer3 {
     }
 
     public void setVideoScaleType(ScaleType scaleType) {
-        hhPlayerView.setVideoScaleType(scaleType);
+        if (hhPlayerView != null) {
+            hhPlayerView.setVideoScaleType(scaleType);
+        }
     }
 
     public void setVideoSize(int width, int height) {
-        hhPlayerView.setVideoSize(width, height);
+        if (hhPlayerView != null) {
+            hhPlayerView.setVideoSize(width, height);
+        }
     }
 
     public void fullScreen() {
