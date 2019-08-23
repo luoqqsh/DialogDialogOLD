@@ -37,6 +37,7 @@ public class HHSurfaceView extends SurfaceView implements SurfaceHolder.Callback
         showSurfaceView.setHHSurfaceStateListener(stateListener);
         showSurfaceView.setRotation(rotate);
         ViewUtil.addToParent(textureViewContainer, showSurfaceView);
+
         return showSurfaceView;
     }
 
@@ -49,6 +50,7 @@ public class HHSurfaceView extends SurfaceView implements SurfaceHolder.Callback
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        ViseLog.d(widthMeasureSpec + "  " + heightMeasureSpec);
         measureHelper.prepareMeasure(widthMeasureSpec, heightMeasureSpec, (int) getRotation());
         setMeasuredDimension(measureHelper.getMeasuredWidth(), measureHelper.getMeasuredHeight());
     }
@@ -120,7 +122,7 @@ public class HHSurfaceView extends SurfaceView implements SurfaceHolder.Callback
 
     @Override
     public int getCurrentVideoWidth() {
-     return getWidth();
+        return getWidth();
     }
 
     @Override

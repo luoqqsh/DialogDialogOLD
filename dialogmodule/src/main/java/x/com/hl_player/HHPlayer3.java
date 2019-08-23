@@ -71,8 +71,8 @@ public class HHPlayer3 {
         hhPlayerCore.setContext(mContext);
         this.viewGroup = viewGroup;
         if (viewGroup != null) {
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            layoutParams.width = hl_screen.getWidthFromScreenW(context);
+            //给viewGroup设置宽高
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             layoutParams.height = hl_screen.getHeightFromWidth(context);
             viewGroup.setLayoutParams(layoutParams);
         }
