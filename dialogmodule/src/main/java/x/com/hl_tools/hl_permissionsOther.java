@@ -3,13 +3,16 @@ package x.com.hl_tools;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AppOpsManager;
 import android.app.Dialog;
+import android.app.NotificationManager;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
@@ -19,12 +22,11 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.RequiresApi;
-import androidx.core.app.NotificationManagerCompat;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
-import java.util.Set;
 
 import x.com.hl_dialog.NDialog;
 import x.com.hl_log.ViseLog;
@@ -116,8 +118,30 @@ public class hl_permissionsOther {
      * @return 结果
      */
     public static boolean checkNotification(Context context) {
-        Set<String> packageNames = NotificationManagerCompat.getEnabledListenerPackages(context);
-        return packageNames.contains(context.getPackageName());
+        return checkNotification(context, (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE));
+    }
+
+    public static boolean checkNotification(Context context, NotificationManager mNotificationManager) {
+        if (Build.VERSION.SDK_INT >= 24) {
+            return mNotificationManager.areNotificationsEnabled();
+        } else if (Build.VERSION.SDK_INT >= 19) {
+            AppOpsManager appOps = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
+            ApplicationInfo appInfo = context.getApplicationInfo();
+            String pkg = context.getApplicationContext().getPackageName();
+            int uid = appInfo.uid;
+            try {
+                Class<?> appOpsClass = Class.forName(AppOpsManager.class.getName());
+                Method checkOpNoThrowMethod = appOpsClass.getMethod("checkOpNoThrow", Integer.TYPE, Integer.TYPE, String.class);
+                Field opPostNotificationValue = appOpsClass.getDeclaredField("OP_POST_NOTIFICATION");
+                int value = (int) opPostNotificationValue.get(Integer.class);
+                return ((int) checkOpNoThrowMethod.invoke(appOps, value, uid, pkg) == AppOpsManager.MODE_ALLOWED);
+            } catch (ClassNotFoundException | NoSuchMethodException | NoSuchFieldException
+                    | InvocationTargetException | IllegalAccessException | RuntimeException e) {
+                return true;
+            }
+        } else {
+            return true;
+        }
     }
 
     /**
@@ -184,7 +208,7 @@ public class hl_permissionsOther {
     }
 
     /**
-     * 去设置通知
+     * 去设置通知使用权，绑定通知服务的，不是消息通知的开关
      *
      * @param context 上下文
      * @return 是否成功
@@ -266,11 +290,9 @@ public class hl_permissionsOther {
      */
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private static boolean isNoOption(Context context) {
-        PackageManager packageManager = context.getApplicationContext()
-                .getPackageManager();
+        PackageManager packageManager = context.getApplicationContext().getPackageManager();
         Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
-        List<ResolveInfo> list = packageManager.queryIntentActivities(intent,
-                PackageManager.MATCH_DEFAULT_ONLY);
+        List<ResolveInfo> list = packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
         return list.size() > 0;
     }
 

@@ -9,7 +9,11 @@ import java.util.Locale;
 
 public class hl_time {
     /**
-     * long类型时间格式化
+     * 时间戳格式化成指定格式
+     *
+     * @param time     时间戳
+     * @param timetype 要得到的时间格式
+     * @return 转换后的时间
      */
     public static String convertToTime(long time, String timetype) {
         SimpleDateFormat df = new SimpleDateFormat(timetype, Locale.CHINA);
@@ -17,11 +21,20 @@ public class hl_time {
         return df.format(date);
     }
 
+    /**
+     * 时间格式转换，如20190101 转成 2019-01-01
+     *
+     * @param time      时间
+     * @param timetype1 需要转换的时间格式
+     * @param timetype2 要得到的时间格式
+     * @return 转换后的时间
+     * @throws ParseException 异常
+     */
     public static String convertToTime(String time, String timetype1, String timetype2) throws ParseException {
         SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat(timetype1, Locale.CHINA);
         SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat(timetype2, Locale.CHINA);
         Date dt = simpleDateFormat1.parse(time);
-        return simpleDateFormat2.format(dt);
+        return simpleDateFormat2.format(dt != null ? dt : "");
     }
 
     public static String convertToTime(Date time, String timetype) {
@@ -59,6 +72,7 @@ public class hl_time {
         SimpleDateFormat sdf = new SimpleDateFormat(timetype, Locale.CHINA);
         return sdf.format(calendar.getTime());
     }
+
     /**
      * 将毫秒数格式化为"##:##"的时间
      *

@@ -30,6 +30,7 @@ import x.com.hl_tools.hl_drawable;
 import x.com.hl_tools.hl_file;
 import x.com.hl_tools.hl_img;
 import x.com.hl_tools.hl_permissions;
+import x.com.hl_tools.hl_permissionsOther;
 
 public class DialogMainJavaActivity extends BaseActivity {
     private DFNDialog b;
@@ -42,6 +43,7 @@ public class DialogMainJavaActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         getWindow().setBackgroundDrawableResource(R.color.brown);
         init();
+        initTvList();
         test();
         hl_permissions.applyPermission(mContext, new String[]{Manifest.permission.READ_PHONE_STATE}, new hl_permissions.RequestPermissionCallBack() {
             @Override
@@ -57,6 +59,10 @@ public class DialogMainJavaActivity extends BaseActivity {
     }
 
     private void test() {
+        ViseLog.d(hl_permissionsOther.checkNotification(this));
+    }
+
+    private void initTvList() {
         ImageView imageView = findViewById(R.id.imgv_test);
         imageView.setBackground(hl_drawable.getRoundRectDrawable(0, hl_img.getColorFromString("#5bc0de"), true, 10));
 

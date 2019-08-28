@@ -1,7 +1,9 @@
 package x.com.hl_tools;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Point;
 import android.os.Build;
 import android.util.DisplayMetrics;
@@ -11,6 +13,8 @@ import android.view.Display;
 import android.view.WindowManager;
 
 import androidx.appcompat.app.ActionBar;
+
+import java.lang.reflect.Method;
 
 import static x.com.hl_tools.hl_context.getAppCompActivity;
 
@@ -165,7 +169,51 @@ public class hl_screen {
         return hl_screen.getScreenWidth(context);
     }
 
+    //获取屏幕角度方向
+    public static int getRotation(Activity activity) {
+        return activity.getWindowManager().getDefaultDisplay().getRotation();
+    }
+
     public static int getHeightFromWidth(Context context) {
         return (int) (hl_screen.getScreenWidth(context) * 0.5625);
+    }
+
+    //获取是否存在NavigationBar
+    public static boolean checkDeviceHasNavigationBar2(Context context) {
+        return hl_screen.getDeviceHeight(context) - hl_screen.getScreenHeight(context) > 0;
+    }
+
+    public static boolean checkDeviceHasNavigationBar(Context context) {
+        boolean hasNavigationBar = false;
+        Resources rs = context.getResources();
+        int id = rs.getIdentifier("config_showNavigationBar", "bool", "android");
+        if (id > 0) {
+            hasNavigationBar = rs.getBoolean(id);
+        }
+        try {
+            Class systemPropertiesClass = Class.forName("android.os.SystemProperties");
+            Method m = systemPropertiesClass.getMethod("get", String.class);
+            String navBarOverride = (String) m.invoke(systemPropertiesClass, "qemu.hw.mainkeys");
+            if ("1".equals(navBarOverride)) {
+                hasNavigationBar = false;
+            } else if ("0".equals(navBarOverride)) {
+                hasNavigationBar = true;
+            }
+        } catch (Exception e) {
+        }
+        return hasNavigationBar;
+    }
+
+    /**
+     * 获取屏幕相关数据
+     *
+     * @param context 上下文
+     * @return 屏幕参数
+     */
+    public static String getScreenInfo(Context context) {
+        return "屏幕(不含导航栏):" + hl_screen.getScreenWidth(context) + "," + hl_screen.getScreenHeight(context) + "\n" +
+                "设备(物理分辨率):" + hl_screen.getDeviceWidth(context) + "," + hl_screen.getDeviceHeight(context) + "\n" +
+                "导航栏(下方):" + hl_screen.getDaoHangHeight(context) + "," + (checkDeviceHasNavigationBar(context) ? "显示导航栏" : "不存在(隐藏)导航栏") + "\n" +
+                "状态栏(上方):" + hl_screen.getStatusBarHeight(context) + "\n";
     }
 }

@@ -1,10 +1,10 @@
 package x.com.hl_tools
 
-import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.text.TextUtils
+import java.util.*
 
 object hl_device {
 
@@ -148,13 +148,64 @@ object hl_device {
     val isOppoR15Phone: Boolean
         get() = Build.MODEL == "PACM00"
 
-    //获取屏幕角度方向
-    fun getRotation(activity: Activity): Int {
-        return activity.windowManager.defaultDisplay.rotation
+    //设备是否支持相机设备,需要系统大于4.2版本
+    fun isSupportCamera(context: Context): Boolean {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            context.packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)
+        } else {
+            false
+        }
     }
 
-    //设备是否支持相机设备
-    fun isSupportCamera(context: Context): Boolean {
-        return context.packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)
+    fun getSystemLanguage(): String {
+        return Locale.getDefault().language
+    }
+
+
+    fun getSystemVersion(): String {
+        return android.os.Build.VERSION.RELEASE
+    }
+
+    fun getsupportedAbis(): String {
+        var abis = ""
+        for (i in if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Build.SUPPORTED_ABIS
+        } else {
+            return ""
+        }) {
+            abis += "$i "
+        }
+        return abis
+    }
+
+    fun getDeviceInfo(context: Context): String {
+        return "BRAND-品牌:" + Build.BRAND + "\n" +
+                "MANUFACTURER-制造商:" + Build.MANUFACTURER + "\n" +
+                "MODEL-型号:" + Build.MODEL + "\n" +
+                "当前语言:" + getSystemLanguage() + "\n" +
+                "Android系统版本:" + getSystemVersion() + "\n" +
+                "Android系统SDK:" + Build.VERSION.SDK_INT + "\n" +
+                "支持的CPU架构:" + getsupportedAbis() + "\n"
+    }
+
+    fun getDeviceInfoDetail(context: Context): String {
+        return "BRAND-厂商:" + android.os.Build.BRAND + "\n" +
+                "BOOTLOADER:" + android.os.Build.BOOTLOADER + "\n" +
+                "BOARD:" + android.os.Build.BOARD + "\n" +
+                "DEVICE-设备参数:" + android.os.Build.DEVICE + "\n" +
+                "DISPLAY-版本显示:" + android.os.Build.DISPLAY + "\n" +
+                "FINGERPRINT:" + android.os.Build.FINGERPRINT + "\n" +
+                "HARDWARE-硬件类型:" + android.os.Build.HARDWARE + "\n" +
+                "HOST-主机:" + android.os.Build.HOST + "\n" +
+                "ID-生产ID:" + android.os.Build.ID + "\n" +
+                "MANUFACTURER-制造商:" + android.os.Build.MANUFACTURER + "\n" +
+                "MODEL-型号:" + android.os.Build.MODEL + "\n" +
+                "PRODUCT:" + android.os.Build.PRODUCT + "\n" +
+                "TAGS:" + android.os.Build.TAGS + "\n" +
+                "USER:" + android.os.Build.USER + "\n" +
+                "TIME-手机时间:" + android.os.Build.TIME + "\n" +
+                "UNKNOWN:" + android.os.Build.UNKNOWN + "\n" +
+                "TYPE:" + android.os.Build.TYPE + "\n"
+
     }
 }

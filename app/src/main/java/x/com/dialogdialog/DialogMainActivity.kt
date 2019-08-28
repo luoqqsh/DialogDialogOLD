@@ -8,8 +8,8 @@ import x.com.dialogdialog.Base.BaseActivity
 import x.com.dialogdialog.Viewpager2.ViewActivity
 import x.com.hl_log.ViseLog
 import x.com.hl_tools.DialogTools.myObjectPool
+import x.com.hl_tools.hl_app
 import x.com.hl_tools.hl_permissions
-import x.com.hl_tools.hl_screen
 
 class DialogMainActivity : BaseActivity() {
 
@@ -23,12 +23,7 @@ class DialogMainActivity : BaseActivity() {
     }
 
     private fun test() {
-        var requestlog = StringBuilder()
-        requestlog.append("屏幕:").append(hl_screen.getScreenWidth(this)).append(",").append(hl_screen.getScreenHeight(this)).append("\n")
-        requestlog.append("设备:").append(hl_screen.getDeviceWidth(this)).append(",").append(hl_screen.getDeviceHeight(this)).append("\n")
-        requestlog.append("导航:").append(hl_screen.getDaoHangHeight(this)).append("\n")
-        requestlog.append("状态:").append(hl_screen.getStatusBarHeight(this)).append("\n")
-        ViseLog.d(requestlog)
+        hl_app.init(applicationContext)
     }
 
     private fun init() {
