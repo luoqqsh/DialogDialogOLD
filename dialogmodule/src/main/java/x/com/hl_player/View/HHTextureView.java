@@ -8,14 +8,10 @@ import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 
-import x.com.hl_player.TypeBean.ScaleType;
-import x.com.hl_player.tools.ViewUtil;
-
 public class HHTextureView extends TextureView implements TextureView.SurfaceTextureListener, HHRenderView {
     private HHSurfaceStateListener surfaceListener;
     private Surface mSurface;
     private SurfaceTexture mSaveTexture;
-    private ScaleType scaleType;
 
     public HHTextureView(Context context) {
         super(context);
@@ -36,7 +32,7 @@ public class HHTextureView extends TextureView implements TextureView.SurfaceTex
         HHTextureView showTextureView = new HHTextureView(context);
         showTextureView.setHHSurfaceStateListener(stateListener);
         showTextureView.setRotation(rotate);
-        ViewUtil.addToParent(textureViewContainer, showTextureView);
+        HHPlayerView.addToParent(textureViewContainer, showTextureView);
         return showTextureView;
     }
 
@@ -59,31 +55,6 @@ public class HHTextureView extends TextureView implements TextureView.SurfaceTex
     @Override
     public View getRenderView() {
         return this;
-    }
-
-    /**
-     * 获取布局参数
-     *
-     * @return
-     */
-    protected int getTextureParams() {
-        boolean typeChanged = (scaleType != ScaleType.DEFAULT);
-        return (typeChanged) ? ViewGroup.LayoutParams.WRAP_CONTENT : ViewGroup.LayoutParams.MATCH_PARENT;
-    }
-
-    @Override
-    public void changeTextureViewShowType() {
-        int params = getTextureParams();
-        ViewGroup.LayoutParams layoutParams = getLayoutParams();
-        layoutParams.width = params;
-        layoutParams.height = params;
-        setLayoutParams(layoutParams);
-        requestLayout();
-    }
-
-    @Override
-    public void setScaleType(ScaleType scaleType) {
-        this.scaleType = scaleType;
     }
 
     @Override

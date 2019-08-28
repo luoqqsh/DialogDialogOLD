@@ -23,7 +23,6 @@ import x.com.hl_player.TvListBean.TvDataList;
 import x.com.hl_player.TvListBean.TypeView;
 import x.com.hl_player.TypeBean.PlayerPrePareStateType;
 import x.com.hl_player.TypeBean.PlayerStateType;
-import x.com.hl_player.TypeBean.ScaleType;
 import x.com.hl_player.View.HHControlView;
 import x.com.hl_player.View.HHLoadingView;
 import x.com.hl_player.View.HHPlayerView;
@@ -185,15 +184,6 @@ public class HHPlayer3 {
         prepare(path, "");
     }
 
-    public void prepare(List<TvDataList> tvLists) {
-        if (tvLists != null && tvLists.size() > 0) {
-            this.tvLists = tvLists;
-            prepare(tvLists.get(0).getChannelURLs().get(0).getChannelURL(), tvLists.get(0).getChannelName());
-        } else {
-            Log.e(hhPlayerCore.ETAG, "播放列表为空");
-        }
-    }
-
     public void prepare(String path, String title) {
         this.title = title;
         hhPlayerCore.mPlayerState = PlayerStateType.IDLE;
@@ -201,6 +191,15 @@ public class HHPlayer3 {
             cvInterface.getPrePareState(PlayerPrePareStateType.PREPARING);
         }
         hhPlayerCore.prepare(path);
+    }
+
+    public void prepare(List<TvDataList> tvLists) {
+        if (tvLists != null && tvLists.size() > 0) {
+            this.tvLists = tvLists;
+            prepare(tvLists.get(0).getChannelURLs().get(0).getChannelURL(), tvLists.get(0).getChannelName());
+        } else {
+            Log.e(hhPlayerCore.ETAG, "播放列表为空");
+        }
     }
 
     public void start() {
@@ -349,7 +348,7 @@ public class HHPlayer3 {
         return tvLists;
     }
 
-    public void setVideoScaleType(ScaleType scaleType) {
+    public void setVideoScaleType(int scaleType) {
         if (hhPlayerView != null) {
             hhPlayerView.setVideoScaleType(scaleType);
         }
@@ -482,8 +481,8 @@ public class HHPlayer3 {
 
     public void release() {
         stop();
-        hhPlayerCore.release();
         hhPlayerCore.getCurrentStop();
+        hhPlayerCore.release();
         hhPlayerCore.mPlayerState = PlayerStateType.NONE;
         hhPlayerCore.isPrepared = false;
         Log.d(hhPlayerCore.TAG, "doRelease");

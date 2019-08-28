@@ -3,8 +3,6 @@ package x.com.hl_player.View;
 
 import android.view.View;
 
-import x.com.hl_player.TypeBean.ScaleType;
-
 /**
  * Created by guoshuyu on 2018/1/29.
  */
@@ -28,9 +26,6 @@ public interface HHRenderView {
      */
     View getRenderView();
 
-    void changeTextureViewShowType();
-
-    void setScaleType(ScaleType scaleType);
     /**
      * 渲染view通过MeasureFormVideoParamsListener获取视频的相关参数，必须
      */

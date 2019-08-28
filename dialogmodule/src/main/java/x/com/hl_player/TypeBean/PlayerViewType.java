@@ -21,7 +21,6 @@ public class PlayerViewType {
 
     //全屏拉伸显示，使用这个属性时，surface_container建议使用FrameLayout
     public final static int SCREEN_MATCH_FULL = -4;
-    
 
     //显示比例类型
     private static int TYPE = SCREEN_TYPE_DEFAULT;

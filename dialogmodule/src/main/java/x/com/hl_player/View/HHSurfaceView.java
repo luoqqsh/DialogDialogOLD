@@ -7,15 +7,11 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 
-import x.com.hl_log.ViseLog;
-import x.com.hl_player.TypeBean.ScaleType;
 import x.com.hl_player.tools.MeasureHelper;
-import x.com.hl_player.tools.ViewUtil;
 
 public class HHSurfaceView extends SurfaceView implements SurfaceHolder.Callback2, HHRenderView, MeasureHelper.MeasureFormVideoParamsListener {
     private HHSurfaceStateListener surfaceListener;
     private MeasureHelper measureHelper;
-    private ScaleType scaleType = ScaleType.DEFAULT;
 
     public HHSurfaceView(Context context) {
         super(context);
@@ -36,8 +32,7 @@ public class HHSurfaceView extends SurfaceView implements SurfaceHolder.Callback
         HHSurfaceView showSurfaceView = new HHSurfaceView(context);
         showSurfaceView.setHHSurfaceStateListener(stateListener);
         showSurfaceView.setRotation(rotate);
-        ViewUtil.addToParent(textureViewContainer, showSurfaceView);
-
+        HHPlayerView.addToParent(textureViewContainer, showSurfaceView);
         return showSurfaceView;
     }
 
@@ -50,34 +45,8 @@ public class HHSurfaceView extends SurfaceView implements SurfaceHolder.Callback
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        ViseLog.d(widthMeasureSpec + "  " + heightMeasureSpec);
         measureHelper.prepareMeasure(widthMeasureSpec, heightMeasureSpec, (int) getRotation());
         setMeasuredDimension(measureHelper.getMeasuredWidth(), measureHelper.getMeasuredHeight());
-    }
-
-    /**
-     * 获取布局参数
-     *
-     * @return
-     */
-    protected int getTextureParams() {
-        boolean typeChanged = (scaleType != ScaleType.DEFAULT);
-        return (typeChanged) ? ViewGroup.LayoutParams.WRAP_CONTENT : ViewGroup.LayoutParams.MATCH_PARENT;
-    }
-
-    /**
-     * 调整TextureView去适应比例变化
-     */
-    @Override
-    public void changeTextureViewShowType() {
-        int params = getTextureParams();
-        ViewGroup.LayoutParams layoutParams = getLayoutParams();
-        layoutParams.width = params;
-        layoutParams.height = params;
-        ViseLog.d(layoutParams.width);
-        ViseLog.d(layoutParams.height);
-        setLayoutParams(layoutParams);
-        requestLayout();
     }
 
     @Override
@@ -140,8 +109,4 @@ public class HHSurfaceView extends SurfaceView implements SurfaceHolder.Callback
         return getSizeH();
     }
 
-    @Override
-    public void setScaleType(ScaleType scaleType) {
-        this.scaleType = scaleType;
-    }
 }

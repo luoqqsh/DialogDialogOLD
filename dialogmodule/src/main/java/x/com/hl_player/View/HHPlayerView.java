@@ -1,11 +1,15 @@
 package x.com.hl_player.View;
 
 import android.content.Context;
+import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import x.com.hl_log.ViseLog;
 import x.com.hl_player.TvListBean.TypeView;
-import x.com.hl_player.TypeBean.ScaleType;
+import x.com.hl_player.TypeBean.PlayerViewType;
 
 public class HHPlayerView {
     private HHRenderView hhRenderView;
@@ -49,10 +53,41 @@ public class HHPlayerView {
 
     }
 
-    public void setVideoScaleType(ScaleType scaleType) {
+    public void setVideoScaleType(int scaleType) {
         if (hhRenderView != null) {
-            hhRenderView.setScaleType(scaleType);
-            hhRenderView.changeTextureViewShowType();
+            PlayerViewType.setShowType(scaleType);
+            changeTextureViewShowType();
+        }
+    }
+
+    /**
+     * 调整显示比例
+     */
+    private void changeTextureViewShowType() {
+        if (hhRenderView.getRenderView() != null) {
+            int params = getTextureParams();
+            ViewGroup.LayoutParams layoutParams = hhRenderView.getRenderView().getLayoutParams();
+            layoutParams.width = params;
+            layoutParams.height = params;
+            hhRenderView.getRenderView().setLayoutParams(layoutParams);
+        }
+    }
+
+    private static int getTextureParams() {
+        boolean typeChanged = (PlayerViewType.getShowType() != PlayerViewType.SCREEN_TYPE_DEFAULT);
+        return (typeChanged) ? ViewGroup.LayoutParams.WRAP_CONTENT : ViewGroup.LayoutParams.MATCH_PARENT;
+    }
+
+    static void addToParent(ViewGroup textureViewContainer, View render) {
+        int params = getTextureParams();
+        if (textureViewContainer instanceof RelativeLayout) {
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(params, params);
+            layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+            textureViewContainer.addView(render, layoutParams);
+        } else if (textureViewContainer instanceof FrameLayout) {
+            FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(params, params);
+            layoutParams.gravity = Gravity.CENTER;
+            textureViewContainer.addView(render, layoutParams);
         }
     }
 }

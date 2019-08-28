@@ -21,7 +21,7 @@ import x.com.hl_base.OnDoubleClickListener;
 import x.com.hl_dialog.R;
 import x.com.hl_player.HHPlayer3;
 import x.com.hl_player.TypeBean.PlayerPrePareStateType;
-import x.com.hl_player.TypeBean.ScaleType;
+import x.com.hl_player.TypeBean.PlayerViewType;
 import x.com.hl_player.base.ControlViewInterface;
 import x.com.hl_tools.hl_time;
 
@@ -121,7 +121,7 @@ public class HHControlView extends FrameLayout implements View.OnClickListener, 
             playControl();
         }
         if (id == R.id.scaleView) {
-            hhPlayer3.setVideoScaleType(ScaleType.SCALE_4_3);
+            hhPlayer3.setVideoScaleType(PlayerViewType.SCREEN_TYPE_4_3);
         }
         if (id == R.id.playlist) {
             isShowList = !isShowList;

@@ -13,7 +13,6 @@ import java.util.List;
 
 import x.com.dialogdialog.Base.BaseActivity;
 import x.com.hl_base.HOnListener;
-import x.com.hl_log.ViseLog;
 import x.com.hl_player.HHPlayer3;
 import x.com.hl_player.TvListBean.TvData;
 import x.com.hl_player.TvListBean.TvDataList;
@@ -41,17 +40,9 @@ public class HHMedia3Activity extends BaseActivity {
 //  /storage/emulated/0/Music/不念 - 张靓颖.mp3
 //  /storage/emulated/0/Music/不可说 - 霍建华、赵丽颖.mp3
     //----------------------------------------------------------
-//  /storage/emulated/0/DCIM/wallpaperFairy/videoWallpaper/69a2ff59895cdf8a7ccaf2d73046f638.mp4
-//  /storage/emulated/0/DCIM/wallpaperFairy/videoWallpaper/98bd9003e6e4bfddbfd02f45fc7f11dd.mp4
-//  /storage/emulated/0/DCIM/wallpaperFairy/videoWallpaper/c4e3963e691763968b16b20fcf607067.mp4
-//  /storage/emulated/0/DCIM/wallpaperFairy/videoWallpaper/c0197187ca9868c646f734310cd23eee.mp4
-//  /storage/emulated/0/ClearWatermark/CWDownLoadTool/我的下载/bb327cd9d2c4d45cde8b168cb48f0e26.mp4
-    private FrameLayout surface;
     private String musicpath = "/storage/emulated/0/Music/不可说 - 霍建华、赵丽颖.mp3";
-    //        private String videopath = "/storage/emulated/0/DCIM/Camera/19619104518845.mp4";
-//    private String videopath = "http://183.56.168.47/cdn-out.iqy.sc96655.com/tslive/c204_scc_20190107_yvwl5h02_original_t10/c204_scc_20190107_yvwl5h02_original_t10.m3u8";
+//    private String videopath = "/storage/emulated/0/DCIM/Camera/19619104518845.mp4";
     private String videopath = "http://s.bizhijingling.com/uploadfile/userload/vedio/2019/0516/20190516065450574.mp4";
-//    private String videopath = "rtsp://27.148.219.129:554/live/ch15102621311662932570.sdp";
     private boolean ismute = false;
     private TextView currenttime, totaltime;
     private AppCompatSeekBar seekBar, seekbar_volume;
@@ -67,13 +58,6 @@ public class HHMedia3Activity extends BaseActivity {
         hhview = findViewById(R.id.hhPlayerView);
         hhPlayer3 = new HHPlayer3(this, new HHijkPlayer(), TypeView.HHSURFACE, hhview);
         hhPlayer3.addControlView();
-//        hhPlayer3.setPlayWhenPrepared(true);
-        hhPlayer3.setCompletionListener(new HOnListener<Object>() {
-            @Override
-            public void onListen(Object o) {
-                ViseLog.d("finishaaa");
-            }
-        });
         hhPlayer3.setPreparedListener(new HOnListener<Object>() {
             @Override
             public void onListen(Object o) {
@@ -102,27 +86,23 @@ public class HHMedia3Activity extends BaseActivity {
             }
         });
 
-        hhPlayer3.prepare(videopath);
+        hhPlayer3.prepare(tvUrl.getLinks());
     }
 
     private void initList() {
-        TvDataList tvDataList = new TvDataList(TypeClass.中央台, "中央电视台", "rtsp://27.148.240.138/PLTV/88888888/224/3221227012/10000100000000060000000001740935_0.smil", TypeClarity.H4k, TypeState.流畅);
-        TvDataList tvDataList2 = new TvDataList(TypeClass.中央台, "福建综合", "rtsp://27.148.240.138/PLTV/88888888/224/3221226716/10000100000000060000000001664269_0.smil", TypeClarity.标清, TypeState.流畅);
-        TvDataList tvDataList3 = new TvDataList(TypeClass.中央台, "福建综合", "http://183.56.168.47/cdn-out.iqy.sc96655.com/tslive/c204_scc_20190107_yvwl5h02_original_t10/c204_scc_20190107_yvwl5h02_original_t10.m3u8", TypeClarity.标清, TypeState.流畅);
-        TvDataList tvDataList4 = new TvDataList(TypeClass.中央台, "福建新闻", "rtsp://27.148.240.138/PLTV/88888888/224/3221225681/10000100000000060000000000417445_0.smil", TypeClarity.标清, TypeState.流畅);
-        TvDataList tvDataList5 = new TvDataList(TypeClass.中央台, "cctv", "rtsp://27.148.245.116:554/PLTV/88888888/224/3221227004/10000100000000060000000001740930_0.smil", TypeClarity.标清, TypeState.流畅);
-        tvDataList.addUrl("http://183.56.168.47/cdn-out.iqy.sc96655.com/tslive/c204_scc_20190107_yvwl5h02_original_t10/c204_scc_20190107_yvwl5h02_original_t10.m3u8", TypeClarity.高清, TypeState.流畅);
-        tvDataList.addUrl("rtsp://27.148.240.138/PLTV/88888888/224/3221226716/10000100000000060000000001664269_0.smil", TypeClarity.H8k, TypeState.卡顿);
+        TvDataList tvDataList = new TvDataList(TypeClass.中央台, "中央电视台rtsp-smil", "rtsp://27.148.245.116:554/PLTV/88888888/224/3221227004/10000100000000060000000001740930_0.smil", TypeClarity.H4k, TypeState.流畅);
+        TvDataList tvDataList2 = new TvDataList(TypeClass.中央台, "mp4", "http://s.bizhijingling.com/uploadfile/userload/vedio/2019/0516/20190516065450574.mp4", TypeClarity.标清, TypeState.流畅);
+        TvDataList tvDataList3 = new TvDataList(TypeClass.中央台, "福建综合rtsp", "rtsp://27.148.219.129:554/live/ch15102621311662932570.sdp?playtype=1&boid=001&backupagent=27.148.219.129:554&clienttype=1&time=20190312204601+08&life=172800&ifpricereqsnd=1&vcdnid=001&userid=5922751618830&mediaid=ch15102621311662932570&ctype=2&TSTVTimeLife=7200&contname=&authid=0&terminalflag=1&UserLiveType=0&stbid=AC10049900703340000090D8F3A8EC17&nodelevel=3&bitrate=2000", TypeClarity.标清, TypeState.流畅);
+        TvDataList tvDataList4 = new TvDataList(TypeClass.中央台, "湖南卫视rtsp", "rtsp://27.148.219.129:554/live/ch15102717162145789452.sdp?playtype=1&boid=001&backupagent=27.148.219.129:554&clienttype=1&time=20190312204601+08&life=172800&ifpricereqsnd=1&vcdnid=001&userid=5922751618830&mediaid=ch15102717162145789452&ctype=2&TSTVTimeLife=7200&contname=&authid=0&terminalflag=1&UserLiveType=0&stbid=AC10049900703340000090D8F3A8EC17&nodelevel=3&bitrate=2000", TypeClarity.标清, TypeState.流畅);
+        TvDataList tvDataList5 = new TvDataList(TypeClass.中央台, "江苏卫视m3u8", "http://27.148.224.161/PLTV/88888888/224/3221226752/index.m3u8", TypeClarity.标清, TypeState.流畅);
+        TvDataList tvDataList6 = new TvDataList(TypeClass.中央台, "cctv-4k", "http://183.56.168.47/cdn-out.iqy.sc96655.com/tslive/c204_scc_20190107_yvwl5h02_original_t10/c204_scc_20190107_yvwl5h02_original_t10.m3u8", TypeClarity.标清, TypeState.流畅);
         List<TvDataList> tvDataLists = new ArrayList<>();
-        tvDataLists.add(tvDataList3);
+//        tvDataLists.add(tvDataList);
         tvDataLists.add(tvDataList2);
-        tvDataLists.add(tvDataList);
-        tvDataLists.add(tvDataList);
-        tvDataLists.add(tvDataList);
-        tvDataLists.add(tvDataList);
-        tvDataLists.add(tvDataList);
+        tvDataLists.add(tvDataList3);
         tvDataLists.add(tvDataList4);
         tvDataLists.add(tvDataList5);
+        tvDataLists.add(tvDataList6);
         tvUrl = new TvData(1, "20190719", "itv", tvDataLists);
     }
 
@@ -135,7 +115,7 @@ public class HHMedia3Activity extends BaseActivity {
         seekbar_volume.setMax(10);
 
         findViewById(R.id.select).setOnClickListener(v ->
-                hhPlayer3.prepare(videopath,""));
+                hhPlayer3.prepare(videopath, ""));
 //                hhPlayer3.prepare(tvUrl.getLinks()));
         findViewById(R.id.play).setOnClickListener(v -> hhPlayer3.start());
         findViewById(R.id.pause).setOnClickListener(v -> hhPlayer3.pause());
