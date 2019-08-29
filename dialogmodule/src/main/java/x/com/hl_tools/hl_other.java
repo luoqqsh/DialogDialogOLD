@@ -26,11 +26,15 @@ public class hl_other {
 
     //判断是否是json数据
     public static boolean isJson(String str) {
-        try {
-            Gson g = new Gson();
-            g.fromJson(str, Object.class);
-            return true;
-        } catch (Exception e) {
+        if (str.startsWith("{") && str.endsWith("}")) {
+            try {
+                Gson g = new Gson();
+                g.fromJson(str, Object.class);
+                return true;
+            } catch (Exception e) {
+                return false;
+            }
+        } else {
             return false;
         }
     }
@@ -39,12 +43,16 @@ public class hl_other {
      * 判断是否是json结构
      */
     public static boolean isJson2(String value) {
-        try {
-            new JSONObject(value);
-        } catch (JSONException e) {
+        if (value.startsWith("{") || value.endsWith("}")) {
+            try {
+                new JSONObject(value);
+            } catch (JSONException e) {
+                return false;
+            }
+            return true;
+        } else {
             return false;
         }
-        return true;
     }
 
     public static void joinQQ(Context context, String qqCode) {

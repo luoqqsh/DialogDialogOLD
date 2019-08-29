@@ -42,6 +42,7 @@ public class HHMedia3Activity extends BaseActivity {
     private String musicpath = "/storage/emulated/0/Music/不可说 - 霍建华、赵丽颖.mp3";
 //    private String videopath = "/storage/emulated/0/DCIM/Camera/19619104518845.mp4";
     private String videopath = "http://s.bizhijingling.com/uploadfile/userload/vedio/2019/0516/20190516065450574.mp4";
+//    private String videopath = "http://cstv.live.wscdns.com/live/xiamen1/playlist.m3u8";
     private boolean ismute = false;
     private TextView currenttime, totaltime;
     private AppCompatSeekBar seekBar, seekbar_volume;

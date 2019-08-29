@@ -83,6 +83,10 @@ public class HHMediaPlayer extends HHPlayerCore {
                     mPlayerState = PlayerStateType.ERROR;
                     playerPrePareState = PlayerPrePareStateType.ERROR;
                     Log.e(ETAG, what + "  " + extra + "\n" + "播放出错：" + mediaPath);
+                    if (onErrorListener != null) {
+                        String err = "mediaplayer播放出错：" + what + " " + extra + " " + mPlayerState;
+                        onErrorListener.onListen(err);
+                    }
                     return false;
                 }
             });

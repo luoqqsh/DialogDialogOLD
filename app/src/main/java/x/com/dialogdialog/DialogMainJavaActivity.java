@@ -58,8 +58,8 @@ public class DialogMainJavaActivity extends BaseActivity {
     }
 
     private void test() {
-        ViseLog.d(hl_other.isJson("{}}"));
-        ViseLog.d(hl_other.isJson2("{\"date\":\"20190719\",\"links\":[{\"channelClass\":1,\"channelName\":\"中央电视台\",\"channelURLs\":[{\"channelClarity\":2,\"channelState\":0,\"channelURL\":\"rtsp://27.148.240.138/PLTV/88888888/224/3221227012/10000100000000060000000001740935_0.smil\"},{\"channelClarity\":1,\"channelState\":0,\"channelURL\":\"http://183.56.168.47/cdn-out.iqy.sc96655.com/tslive/c204_scc_20190107_yvwl5h02_original_t10/c204_scc_20190107_yvwl5h02_original_t10.m3u8\"},{\"channelClarity\":3,\"channelState\":1,\"channelURL\":\"rtsp://27.148.240.138/PLTV/88888888/224/3221226716/10000100000000060000000001664269_0.smil\"}]},{\"channelClass\":1,\"channelName\":\"美国电视台\",\"channelURLs\":[{\"channelClarity\":0,\"channelState\":0,\"channelURL\":\"http://183.56.168.47/cdn-out.iqy.sc96655.com/tslive/c204_scc_20190107_yvwl5h02_original_t10/c204_scc_20190107_yvwl5h02_original_t103.m3u8\"}]}],\"name\":\"itv\",\"version\":1}"));
+        ViseLog.d(hl_other.isJson("454yg355"));
+        ViseLog.d(hl_other.isJson("{w\"date\":\"20190719\",\"links\":[{\"channelClass\":1,\"channelName\":\"中央电视台\",\"channelURLs\":[{\"channelClarity\":2,\"channelState\":0,\"channelURL\":\"rtsp://27.148.240.138/PLTV/88888888/224/3221227012/10000100000000060000000001740935_0.smil\"},{\"channelClarity\":1,\"channelState\":0,\"channelURL\":\"http://183.56.168.47/cdn-out.iqy.sc96655.com/tslive/c204_scc_20190107_yvwl5h02_original_t10/c204_scc_20190107_yvwl5h02_original_t10.m3u8\"},{\"channelClarity\":3,\"channelState\":1,\"channelURL\":\"rtsp://27.148.240.138/PLTV/88888888/224/3221226716/10000100000000060000000001664269_0.smil\"}]},{\"channelClass\":1,\"channelName\":\"美国电视台\",\"channelURLs\":[{\"channelClarity\":0,\"channelState\":0,\"channelURL\":\"http://183.56.168.47/cdn-out.iqy.sc96655.com/tslive/c204_scc_20190107_yvwl5h02_original_t10/c204_scc_20190107_yvwl5h02_original_t103.m3u8\"}]}],\"name\":\"itv\",\"version\":1}"));
     }
 
     private void initTvList() {

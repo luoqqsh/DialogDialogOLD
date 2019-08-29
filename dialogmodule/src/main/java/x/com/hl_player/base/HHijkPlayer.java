@@ -87,6 +87,10 @@ public class HHijkPlayer extends HHPlayerCore {
                     mPlayerState = PlayerStateType.ERROR;
                     playerPrePareState = PlayerPrePareStateType.ERROR;
                     Log.e(TAG, what + "  " + extra + "\n" + "播放出错：" + mediaPath);
+                    if (onErrorListener != null) {
+                        String err = "ijk播放出错：" + what + " " + extra + " " + mPlayerState;
+                        onErrorListener.onListen(err);
+                    }
                     return false;
                 }
             });
