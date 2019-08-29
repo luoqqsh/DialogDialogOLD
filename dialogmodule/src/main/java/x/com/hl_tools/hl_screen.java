@@ -16,6 +16,8 @@ import androidx.appcompat.app.ActionBar;
 
 import java.lang.reflect.Method;
 
+import x.com.hl_dialog.R;
+
 import static x.com.hl_tools.hl_context.getAppCompActivity;
 
 public class hl_screen {
@@ -214,6 +216,7 @@ public class hl_screen {
         return "屏幕(不含导航栏):" + hl_screen.getScreenWidth(context) + "," + hl_screen.getScreenHeight(context) + "\n" +
                 "设备(物理分辨率):" + hl_screen.getDeviceWidth(context) + "," + hl_screen.getDeviceHeight(context) + "\n" +
                 "导航栏(下方):" + hl_screen.getDaoHangHeight(context) + "," + (checkDeviceHasNavigationBar(context) ? "显示导航栏" : "不存在(隐藏)导航栏") + "\n" +
-                "状态栏(上方):" + hl_screen.getStatusBarHeight(context) + "\n";
+                "状态栏(上方):" + hl_screen.getStatusBarHeight(context) + "\n" +
+                "res分辨率:" + context.getResources().getString(R.string.fenbianlv) + "\n";
     }
 }

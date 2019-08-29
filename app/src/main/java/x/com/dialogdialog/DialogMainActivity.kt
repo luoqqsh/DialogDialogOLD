@@ -23,7 +23,7 @@ class DialogMainActivity : BaseActivity() {
     }
 
     private fun test() {
-        hl_app.init(applicationContext)
+        hl_app.printInformation(applicationContext)
     }
 
     private fun init() {
