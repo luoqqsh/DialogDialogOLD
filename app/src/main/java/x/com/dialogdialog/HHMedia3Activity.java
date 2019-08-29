@@ -9,7 +9,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatSeekBar;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import x.com.dialogdialog.Base.BaseActivity;
 import x.com.hl_base.HOnListener;
@@ -95,7 +94,7 @@ public class HHMedia3Activity extends BaseActivity {
         TvDataList tvDataList4 = new TvDataList(TypeClass.中央台, "湖南卫视rtsp", "rtsp://27.148.219.129:554/live/ch15102717162145789452.sdp?playtype=1&boid=001&backupagent=27.148.219.129:554&clienttype=1&time=20190312204601+08&life=172800&ifpricereqsnd=1&vcdnid=001&userid=5922751618830&mediaid=ch15102717162145789452&ctype=2&TSTVTimeLife=7200&contname=&authid=0&terminalflag=1&UserLiveType=0&stbid=AC10049900703340000090D8F3A8EC17&nodelevel=3&bitrate=2000", TypeClarity.标清, TypeState.流畅);
         TvDataList tvDataList5 = new TvDataList(TypeClass.中央台, "江苏卫视m3u8", "http://27.148.224.161/PLTV/88888888/224/3221226752/index.m3u8", TypeClarity.标清, TypeState.流畅);
         TvDataList tvDataList6 = new TvDataList(TypeClass.中央台, "cctv-4k", "http://183.56.168.47/cdn-out.iqy.sc96655.com/tslive/c204_scc_20190107_yvwl5h02_original_t10/c204_scc_20190107_yvwl5h02_original_t10.m3u8", TypeClarity.标清, TypeState.流畅);
-        List<TvDataList> tvDataLists = new ArrayList<>();
+        ArrayList<TvDataList> tvDataLists = new ArrayList<>();
 //        tvDataLists.add(tvDataList);
         tvDataLists.add(tvDataList2);
         tvDataLists.add(tvDataList3);
