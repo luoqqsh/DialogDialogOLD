@@ -9,6 +9,9 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class hl_other {
     //key为渠道名的key，对应友盟的 UMENG_CHANNEL
     public static String getChannel(Context context, String key) {
@@ -32,11 +35,23 @@ public class hl_other {
         }
     }
 
+    /**
+     * 判断是否是json结构
+     */
+    public static boolean isJson2(String value) {
+        try {
+            new JSONObject(value);
+        } catch (JSONException e) {
+            return false;
+        }
+        return true;
+    }
+
     public static void joinQQ(Context context, String qqCode) {
         String url11 = "mqqwpa://im/chat?chat_type=wpa&uin=" + qqCode + "&version=1";
         context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url11)));
     }
-    
+
     public static boolean joinQQGroup(Context context, String key) {
         Intent intent = new Intent();
         intent.setData(Uri.parse("mqqopensdkapi://bizAgent/qm/qr?url=http%3A%2F%2Fqm.qq.com%2Fcgi-bin%2Fqm%2Fqr%3Ffrom%3Dapp%26p%3Dandroid%26k%3D" + key));

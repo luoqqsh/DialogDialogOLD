@@ -220,7 +220,5 @@ public class LoggingInterceptor implements Interceptor {
         }
         return true;
     }
-
-
 }
 

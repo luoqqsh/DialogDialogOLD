@@ -193,12 +193,12 @@ public class HHPlayer3 {
         hhPlayerCore.prepare(path);
     }
 
-    public void prepare(List<TvDataList> tvLists) {
-        if (tvLists != null && tvLists.size() > 0) {
+    public void prepare(List<TvDataList> tvLists, int position) {
+        if (tvLists != null && tvLists.size() > 0 && tvLists.size() > position) {
             this.tvLists = tvLists;
-            prepare(tvLists.get(0).getChannelURLs().get(0).getChannelURL(), tvLists.get(0).getChannelName());
+            prepare(tvLists.get(position).getChannelURLs().get(0).getChannelURL(), tvLists.get(position).getChannelName());
         } else {
-            Log.e(hhPlayerCore.ETAG, "播放列表为空");
+            Log.e(hhPlayerCore.ETAG, "播放列表为空，或不存在");
         }
     }
 
