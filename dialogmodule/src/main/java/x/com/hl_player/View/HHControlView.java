@@ -45,6 +45,7 @@ public class HHControlView extends FrameLayout implements View.OnClickListener, 
 
     private Timer mDismissControlViewTimer;
     private HHListView hhListView;
+    private TextView scaleView;
 
     public HHControlView(@NonNull Context context, HHPlayer3 hhPlayer3) {
         super(context);
@@ -79,7 +80,7 @@ public class HHControlView extends FrameLayout implements View.OnClickListener, 
         mProgressBar = findViewById(R.id.seek);
 
         findViewById(R.id.play).setOnClickListener(this);
-        findViewById(R.id.scaleView).setOnClickListener(this);
+        scaleView= findViewById(R.id.scaleView);scaleView.setOnClickListener(this);
         //list
         layout_list = findViewById(R.id.layout_list);
         //mid
@@ -114,6 +115,8 @@ public class HHControlView extends FrameLayout implements View.OnClickListener, 
         return R.layout.player_liveview;
     }
 
+    private int mType = 0;
+
     @Override
     public void onClick(View view) {
         int id = view.getId();
@@ -121,7 +124,27 @@ public class HHControlView extends FrameLayout implements View.OnClickListener, 
             playControl();
         }
         if (id == R.id.scaleView) {
-            hhPlayer3.setVideoScaleType(PlayerViewType.SCREEN_TYPE_4_3);
+            if (mType == 0) {
+                mType = 1;
+                scaleView.setText("16:9");
+                hhPlayer3.setVideoScaleType(PlayerViewType.SCREEN_TYPE_16_9);
+            } else if (mType == 1) {
+                mType = 2;
+                scaleView.setText("4:3");
+                hhPlayer3.setVideoScaleType(PlayerViewType.SCREEN_TYPE_4_3);
+            } else if (mType == 2) {
+                mType = 3;
+                scaleView.setText("全屏");
+                hhPlayer3.setVideoScaleType(PlayerViewType.SCREEN_TYPE_FULL);
+            } else if (mType == 3) {
+                mType = 4;
+                scaleView.setText("拉伸全屏");
+                hhPlayer3.setVideoScaleType(PlayerViewType.SCREEN_MATCH_FULL);
+            } else if (mType == 4) {
+                mType = 0;
+                scaleView.setText("默认比例");
+                hhPlayer3.setVideoScaleType(PlayerViewType.SCREEN_TYPE_DEFAULT);
+            }
         }
         if (id == R.id.playlist) {
             isShowList = !isShowList;
@@ -203,7 +226,6 @@ public class HHControlView extends FrameLayout implements View.OnClickListener, 
                     playlist.setVisibility(VISIBLE);
                     layout_list.setVisibility(GONE);
                 }
-
                 break;
         }
     }
