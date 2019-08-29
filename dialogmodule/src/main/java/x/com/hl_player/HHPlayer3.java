@@ -18,7 +18,6 @@ import android.widget.LinearLayout;
 import java.util.List;
 
 import x.com.hl_base.HOnListener;
-import x.com.hl_log.ViseLog;
 import x.com.hl_player.TvListBean.TvDataList;
 import x.com.hl_player.TvListBean.TypeView;
 import x.com.hl_player.TypeBean.PlayerPrePareStateType;
@@ -425,13 +424,10 @@ public class HHPlayer3 {
             @Override
             public void onSurfaceAvailable(Surface surface) {
                 hhPlayerCore.initView(surface);
-                ViseLog.d("ok");
-
             }
 
             @Override
             public void onSurfaceSizeChanged(Surface surface, int width, int height) {
-
             }
 
             @Override
@@ -441,7 +437,6 @@ public class HHPlayer3 {
 
             @Override
             public void onSurfaceUpdated(Surface surface) {
-
             }
         });
     }
@@ -466,10 +461,10 @@ public class HHPlayer3 {
 
             @Override
             public void onSurfaceUpdated(Surface surface) {
-
+ 
             }
         });
-    }
+   }
 
     private void initSurface(Surface surface) {
         hhPlayerCore.initView(surface);

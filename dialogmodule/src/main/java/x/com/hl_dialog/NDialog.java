@@ -21,6 +21,7 @@ public class NDialog {
      * 对话框模版样式
      */
     public static final int nDialog_Iphone = R.layout.ndialog_iphone;
+    public static final int nDialog_Iphone_Scroll = R.layout.ndialog_iphone_scroll;
     public static final int nDialog_Sex = R.layout.ndialog_sex;
     public static final int nDialog_Share = R.layout.ndialog_share;
     public static final int nDialog_Photo = R.layout.ndialog_photo;
