@@ -3,19 +3,15 @@ package x.com.hl_tools;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.text.TextUtils;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.FileNameMap;
 import java.net.URLConnection;
 import java.util.Formatter;
 import java.util.Locale;
-
-import x.com.hl_log.ViseLog;
 
 public class hl_media {
     /**
@@ -62,7 +58,7 @@ public class hl_media {
      * @param filePath 文件路径
      * @return 是否视频
      */
-    public static boolean isVedioFile(String filePath) {
+    public static boolean isVideoFile(String filePath) {
         File file = new File(filePath);
         String fileName = file.getName();
         FileNameMap fileNameMap = URLConnection.getFileNameMap();
@@ -83,16 +79,6 @@ public class hl_media {
         if (options.outWidth == -1) {
             return false;
         }
-        return true;
-    }
-
-    /**
-     * 是否音频文件
-     *
-     * @param filePath 文件路径
-     * @return 是否视频
-     */
-    public static boolean isAudioFile(String filePath) {
         return true;
     }
 

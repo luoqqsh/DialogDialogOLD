@@ -17,23 +17,19 @@ import java.util.Map;
 import x.com.dialogdialog.Base.BaseActivity;
 import x.com.hl_base.HOnListener;
 import x.com.hl_dialog.DFListFileDialog;
-import x.com.hl_dialog.DFNDialog;
-import x.com.hl_fileselect.FileSelectorView;
 import x.com.hl_log.ViseLog;
 import x.com.hl_player.TvListBean.TvData;
 import x.com.hl_player.TvListBean.TvDataList;
 import x.com.hl_player.TvListBean.TypeClarity;
 import x.com.hl_player.TvListBean.TypeClass;
 import x.com.hl_player.TvListBean.TypeState;
+import x.com.hl_tools.hl_medialist;
 import x.com.hl_tools.hl_drawable;
 import x.com.hl_tools.hl_file;
 import x.com.hl_tools.hl_img;
 import x.com.hl_tools.hl_permissions;
 
 public class DialogMainJavaActivity extends BaseActivity {
-    private DFNDialog b;
-    private String aa;
-    private FileSelectorView fileSelectorView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,7 +53,7 @@ public class DialogMainJavaActivity extends BaseActivity {
     }
 
     private void test() {
-        
+        ViseLog.d(hl_medialist.getImageFolders(this));
     }
 
     private void initTvList() {
@@ -88,7 +84,6 @@ public class DialogMainJavaActivity extends BaseActivity {
         findViewById(R.id.close).setOnClickListener(v -> {
 //            hl_orientation orientation = new hl_orientation();
 //            orientation.orientationEnable(this, null);
-            b.dismiss();
         });
 
         findViewById(R.id.dialog).setOnClickListener(new View.OnClickListener() {

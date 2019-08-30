@@ -7,7 +7,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import x.com.dialogdialog.Base.BaseActivity
 import x.com.dialogdialog.Viewpager2.ViewActivity
 import x.com.hl_log.ViseLog
-import x.com.hl_tools.DialogTools.myObjectPool
+import x.com.hl_tools.DialogTest.myObjectPool
 import x.com.hl_tools.hl_app
 import x.com.hl_tools.hl_permissions
 

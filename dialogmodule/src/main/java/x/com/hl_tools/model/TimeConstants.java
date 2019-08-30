@@ -1,19 +1,10 @@
 package x.com.hl_tools.model;
 
-
 import androidx.annotation.IntDef;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-/**
- * <pre>
- *     author: Blankj
- *     blog  : http://blankj.com
- *     time  : 2017/03/13
- *     desc  : constants of time
- * </pre>
- */
 public final class TimeConstants {
 
     public static final int MSEC = 1;

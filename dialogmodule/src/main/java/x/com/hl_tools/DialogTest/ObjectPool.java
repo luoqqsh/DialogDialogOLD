@@ -1,4 +1,4 @@
-package x.com.hl_tools.DialogTools;
+package x.com.hl_tools.DialogTest;
 
 import android.util.SparseArray;
 

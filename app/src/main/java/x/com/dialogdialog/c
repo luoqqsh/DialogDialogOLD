@@ -1,0 +1,17 @@
+applicationinfo:
+
+dataDir:/data/user/0/com.xunrui.h5game
+enabled:true
+minSdkVersion:16
+processName:com.xunrui.h5game
+targetSdkVersion:28
+uid:10681
+versionCode:304
+name:com.xunrui.h5game.application.Applications
+
+
+firstInstallTime:1552898467654
+lastUpdateTime:1564132846585
+packageName:com.xunrui.h5game
+versionCode:304
+versionName:"3.0.5"

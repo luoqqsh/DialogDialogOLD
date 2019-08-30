@@ -85,7 +85,6 @@ public class HHMedia3Activity extends BaseActivity {
                 seekBar.setSecondaryProgress(integer);
             }
         });
-        hhPlayer3.prepare(tvUrl.getLinks(),0);
     }
 
     private void initList() {

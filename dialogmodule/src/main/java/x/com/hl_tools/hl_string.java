@@ -21,14 +21,16 @@ public class hl_string {
         Matcher matcher = regex.matcher(str);
         return matcher.matches();
     }
+
     /**
      * 隐藏手机号码中间4位
      */
     public static String getMobile(String str) {
-            String top = str.substring(0, 3);
-            String bottom = str.substring(7, str.length());
-            return top + "****" + bottom;
+        String top = str.substring(0, 3);
+        String bottom = str.substring(7, str.length());
+        return top + "****" + bottom;
     }
+
     /**
      * 判断是否是一个IP
      *
@@ -48,6 +50,7 @@ public class hl_string {
         }
         return b;
     }
+
     public static String trimSpaces(String IP) {// 去掉IP字符串前后所有的空格
         while (IP.startsWith(" ")) {
             IP = IP.substring(1, IP.length()).trim();
@@ -57,6 +60,7 @@ public class hl_string {
         }
         return IP;
     }
+
     /**
      * 点击输入法中“下一个”将焦点与光标跳转到下一输入框中
      *
@@ -76,5 +80,15 @@ public class hl_string {
                 return false;
             }
         });
+    }
+
+    public static boolean isHanZi(char c) {
+        Pattern pattern = Pattern.compile("[\\u4e00-\\u9fa5]+");
+        Matcher matcher = pattern.matcher(String.valueOf(c));
+        return matcher.matches();
+    }
+
+    public static boolean isEnglish(char c) {
+        return String.valueOf(c).matches("^[a-zA-Z]*");
     }
 }

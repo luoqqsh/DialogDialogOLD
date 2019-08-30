@@ -1,4 +1,4 @@
-package x.com.hl_tools.DialogTools;
+package x.com.hl_tools.DialogTest;
 
 public class myObjectPool extends ObjectPool {
     public myObjectPool(int initialCapacity, int maxCapacity) {
