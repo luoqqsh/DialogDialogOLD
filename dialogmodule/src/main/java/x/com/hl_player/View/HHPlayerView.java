@@ -7,12 +7,14 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
-import x.com.hl_log.ViseLog;
 import x.com.hl_player.TvListBean.TypeView;
 import x.com.hl_player.TypeBean.PlayerViewType;
+import x.com.hl_player.tools.MeasureHelper;
 
-public class HHPlayerView {
+public class HHPlayerView implements MeasureHelper.MeasureFormVideoParamsListener {
     private HHRenderView hhRenderView;
+    private int videoWidth;
+    private int videoHeight;
 
     /**
      * 添加播放的view
@@ -25,13 +27,13 @@ public class HHPlayerView {
     ) {
         switch (typeView) {
             case HHSURFACE:
-                hhRenderView = HHSurfaceView.addSurfaceView(context, textureViewContainer, rotate, surfaceStateListener);
+                hhRenderView = HHSurfaceView.addSurfaceView(context, textureViewContainer, rotate, surfaceStateListener, this);
                 break;
             case HHTEXTURE:
-                hhRenderView = HHTextureView.addTextureView(context, textureViewContainer, rotate, surfaceStateListener);
+                hhRenderView = HHTextureView.addTextureView(context, textureViewContainer, rotate, surfaceStateListener, this);
                 break;
             case HHGLSURFACE:
-//                hhRenderView = HHSurfaceView.addSurfaceView(context, textureViewContainer, rotate);
+                hhRenderView = HHGLSurfaceView.addGLSurfaceView(context, textureViewContainer, rotate, surfaceStateListener, this);
                 break;
         }
     }
@@ -49,8 +51,9 @@ public class HHPlayerView {
     }
 
     public void setVideoSize(int width, int height) {
-        ViseLog.d(width + "  " + height);
-
+        videoWidth = width;
+        videoHeight = height;
+        changeTextureViewShowType();
     }
 
     public void setVideoScaleType(int scaleType) {
@@ -89,5 +92,25 @@ public class HHPlayerView {
             layoutParams.gravity = Gravity.CENTER;
             textureViewContainer.addView(render, layoutParams);
         }
+    }
+
+    @Override
+    public int getCurrentVideoWidth() {
+        return videoWidth;
+    }
+
+    @Override
+    public int getCurrentVideoHeight() {
+        return videoHeight;
+    }
+
+    @Override
+    public int getVideoSarNum() {
+        return getWidth();
+    }
+
+    @Override
+    public int getVideoSarDen() {
+        return getHeight();
     }
 }

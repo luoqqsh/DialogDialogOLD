@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 import x.com.hl_player.tools.MeasureHelper;
 
-public class HHSurfaceView extends SurfaceView implements SurfaceHolder.Callback2, HHRenderView, MeasureHelper.MeasureFormVideoParamsListener {
+public class HHSurfaceView extends SurfaceView implements SurfaceHolder.Callback2, HHRenderView {
     private HHSurfaceStateListener surfaceListener;
     private MeasureHelper measureHelper;
 
@@ -25,22 +25,22 @@ public class HHSurfaceView extends SurfaceView implements SurfaceHolder.Callback
         super(context, attrs, defStyleAttr);
     }
 
-    public static HHRenderView addSurfaceView(Context context, ViewGroup textureViewContainer, int rotate, HHSurfaceStateListener stateListener) {
+    public static HHRenderView addSurfaceView(Context context, ViewGroup textureViewContainer, int rotate, HHSurfaceStateListener stateListener, MeasureHelper.MeasureFormVideoParamsListener listener) {
         if (textureViewContainer.getChildCount() > 0) {
             textureViewContainer.removeAllViews();
         }
         HHSurfaceView showSurfaceView = new HHSurfaceView(context);
-        showSurfaceView.setHHSurfaceStateListener(stateListener);
+        showSurfaceView.setHHSurfaceStateListener(stateListener, listener);
         showSurfaceView.setRotation(rotate);
         HHPlayerView.addToParent(textureViewContainer, showSurfaceView);
         return showSurfaceView;
     }
 
     @Override
-    public void setHHSurfaceStateListener(HHSurfaceStateListener surfaceListener) {
+    public void setHHSurfaceStateListener(HHSurfaceStateListener surfaceListener, MeasureHelper.MeasureFormVideoParamsListener listener) {
         getHolder().addCallback(this);
         this.surfaceListener = surfaceListener;
-        measureHelper = new MeasureHelper(this, this);
+        measureHelper = new MeasureHelper(this, listener);
     }
 
     @Override
@@ -88,25 +88,4 @@ public class HHSurfaceView extends SurfaceView implements SurfaceHolder.Callback
             surfaceListener.onSurfaceDestroyed(surfaceHolder.getSurface());
         }
     }
-
-    @Override
-    public int getCurrentVideoWidth() {
-        return getWidth();
-    }
-
-    @Override
-    public int getCurrentVideoHeight() {
-        return getHeight();
-    }
-
-    @Override
-    public int getVideoSarNum() {
-        return getSizeW();
-    }
-
-    @Override
-    public int getVideoSarDen() {
-        return getSizeH();
-    }
-
 }

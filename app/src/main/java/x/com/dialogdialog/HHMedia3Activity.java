@@ -40,9 +40,9 @@ public class HHMedia3Activity extends BaseActivity {
 //  /storage/emulated/0/Music/不可说 - 霍建华、赵丽颖.mp3
     //----------------------------------------------------------
     private String musicpath = "/storage/emulated/0/Music/不可说 - 霍建华、赵丽颖.mp3";
-//    private String videopath = "/storage/emulated/0/DCIM/Camera/19619104518845.mp4";
+    //    private String videopath = "/storage/emulated/0/DCIM/Camera/19619104518845.mp4";
     private String videopath = "http://s.bizhijingling.com/uploadfile/userload/vedio/2019/0516/20190516065450574.mp4";
-//    private String videopath = "http://cstv.live.wscdns.com/live/xiamen1/playlist.m3u8";
+    //    private String videopath = "http://cstv.live.wscdns.com/live/xiamen1/playlist.m3u8";
     private boolean ismute = false;
     private TextView currenttime, totaltime;
     private AppCompatSeekBar seekBar, seekbar_volume;
@@ -56,8 +56,8 @@ public class HHMedia3Activity extends BaseActivity {
         initList();
         initUI();
         hhview = findViewById(R.id.hhPlayerView);
-        hhPlayer3 = new HHPlayer3(this, new HHijkPlayer(), TypeView.HHSURFACE, hhview);
-        hhPlayer3.addControlView();
+        hhPlayer3 = new HHPlayer3(this, new HHijkPlayer(), TypeView.HHTEXTURE, hhview);
+        hhPlayer3.addLoadingView();
         hhPlayer3.setPreparedListener(new HOnListener<Object>() {
             @Override
             public void onListen(Object o) {
@@ -113,8 +113,8 @@ public class HHMedia3Activity extends BaseActivity {
         seekbar_volume.setMax(10);
 
         findViewById(R.id.select).setOnClickListener(v ->
-                hhPlayer3.prepare(videopath, ""));
-//                hhPlayer3.prepare(tvUrl.getLinks()));
+//                hhPlayer3.prepare(videopath, ""));
+                hhPlayer3.prepare(tvUrl.getLinks(), 0));
         findViewById(R.id.play).setOnClickListener(v -> hhPlayer3.start());
         findViewById(R.id.pause).setOnClickListener(v -> hhPlayer3.pause());
         findViewById(R.id.stop).setOnClickListener(v -> hhPlayer3.stop());

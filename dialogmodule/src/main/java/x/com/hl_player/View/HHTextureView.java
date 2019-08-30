@@ -8,10 +8,13 @@ import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 
+import x.com.hl_player.tools.MeasureHelper;
+
 public class HHTextureView extends TextureView implements TextureView.SurfaceTextureListener, HHRenderView {
     private HHSurfaceStateListener surfaceListener;
     private Surface mSurface;
     private SurfaceTexture mSaveTexture;
+    private MeasureHelper measureHelper;
 
     public HHTextureView(Context context) {
         super(context);
@@ -25,27 +28,33 @@ public class HHTextureView extends TextureView implements TextureView.SurfaceTex
         super(context, attrs, defStyleAttr);
     }
 
-    public static HHRenderView addTextureView(Context context, ViewGroup textureViewContainer, int rotate, HHSurfaceStateListener stateListener) {
+    public static HHRenderView addTextureView(Context context, ViewGroup textureViewContainer, int rotate, HHSurfaceStateListener stateListener, MeasureHelper.MeasureFormVideoParamsListener listener) {
         if (textureViewContainer.getChildCount() > 0) {
             textureViewContainer.removeAllViews();
         }
         HHTextureView showTextureView = new HHTextureView(context);
-        showTextureView.setHHSurfaceStateListener(stateListener);
+        showTextureView.setHHSurfaceStateListener(stateListener,listener);
         showTextureView.setRotation(rotate);
         HHPlayerView.addToParent(textureViewContainer, showTextureView);
         return showTextureView;
     }
 
     @Override
-    public void setHHSurfaceStateListener(HHSurfaceStateListener surfaceListener) {
+    public void setHHSurfaceStateListener(HHSurfaceStateListener surfaceListener, MeasureHelper.MeasureFormVideoParamsListener listener) {
         setSurfaceTextureListener(this);
         this.surfaceListener = surfaceListener;
+        measureHelper = new MeasureHelper(this, listener);
     }
-
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        measureHelper.prepareMeasure(widthMeasureSpec, heightMeasureSpec, (int) getRotation());
+        setMeasuredDimension(measureHelper.getMeasuredWidth(), measureHelper.getMeasuredHeight());
+    }
     @Override
     public int getSizeH() {
         return getHeight();
     }
+
 
     @Override
     public int getSizeW() {

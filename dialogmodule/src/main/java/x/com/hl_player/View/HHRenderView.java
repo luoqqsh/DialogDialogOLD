@@ -3,13 +3,15 @@ package x.com.hl_player.View;
 
 import android.view.View;
 
+import x.com.hl_player.tools.MeasureHelper;
+
 /**
  * Created by guoshuyu on 2018/1/29.
  */
 
 public interface HHRenderView {
     //Surface变化监听，必须
-    void setHHSurfaceStateListener(HHSurfaceStateListener surfaceListener);
+    void setHHSurfaceStateListener(HHSurfaceStateListener surfaceListener, MeasureHelper.MeasureFormVideoParamsListener listener);
 
     /**
      * 当前view宽高，必须
@@ -26,10 +28,6 @@ public interface HHRenderView {
      */
     View getRenderView();
 
-    /**
-     * 渲染view通过MeasureFormVideoParamsListener获取视频的相关参数，必须
-     */
-//    void setVideoParamsListener(MeasureHelper.MeasureFormVideoParamsListener listener);
 
     /**
      * 截图

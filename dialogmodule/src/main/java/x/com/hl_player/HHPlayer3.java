@@ -95,6 +95,9 @@ public class HHPlayer3 {
             case HHTEXTURE:
                 initHHTextureView();
                 break;
+            case HHGLSURFACE:
+                initHHGLSurfaceView();
+                break;
             case MUSIC:
                 break;
         }
@@ -128,6 +131,7 @@ public class HHPlayer3 {
                     start();
                 }
                 hhPlayerCore.isLive = hhPlayerCore.getMediaDuration() == 0;
+                setVideoSize(hhPlayerCore.videoWidth, hhPlayerCore.videoHeight);
                 if (preparedListener != null) {
                     preparedListener.onListen(o);
                 }
@@ -461,10 +465,33 @@ public class HHPlayer3 {
 
             @Override
             public void onSurfaceUpdated(Surface surface) {
- 
+
             }
         });
-   }
+    }
+
+    private void initHHGLSurfaceView() {
+        hhPlayerView = new HHPlayerView();
+        hhPlayerView.addView(mContext, viewGroup, 0, TypeView.HHGLSURFACE, new HHSurfaceStateListener() {
+            @Override
+            public void onSurfaceAvailable(Surface surface) {
+                hhPlayerCore.initView(surface);
+            }
+
+            @Override
+            public void onSurfaceSizeChanged(Surface surface, int width, int height) {
+            }
+
+            @Override
+            public boolean onSurfaceDestroyed(Surface surface) {
+                return false;
+            }
+
+            @Override
+            public void onSurfaceUpdated(Surface surface) {
+            }
+        });
+    }
 
     private void initSurface(Surface surface) {
         hhPlayerCore.initView(surface);

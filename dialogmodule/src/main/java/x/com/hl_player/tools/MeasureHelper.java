@@ -21,6 +21,7 @@ import android.view.View;
 
 import java.lang.ref.WeakReference;
 
+import x.com.hl_log.ViseLog;
 import x.com.hl_player.TypeBean.PlayerViewType;
 
 public final class MeasureHelper {
@@ -93,6 +94,9 @@ public final class MeasureHelper {
             int heightSpecMode = View.MeasureSpec.getMode(heightMeasureSpec);
             int heightSpecSize = View.MeasureSpec.getSize(heightMeasureSpec);
 
+            ViseLog.d("mVideo:" + mVideoWidth + mVideoHeight);
+            ViseLog.d("widthSpec:" + widthSpecMode + widthSpecSize);
+            ViseLog.d("heightSpec:" + heightSpecMode + heightSpecSize);
             if (widthSpecMode == View.MeasureSpec.AT_MOST && heightSpecMode == View.MeasureSpec.AT_MOST) {
                 float specAspectRatio = (float) widthSpecSize / (float) heightSpecSize;
                 float displayAspectRatio;
@@ -118,6 +122,7 @@ public final class MeasureHelper {
                 }
                 boolean shouldBeWider = displayAspectRatio > specAspectRatio;
 
+                ViseLog.d(displayAspectRatio + " " + specAspectRatio);
                 switch (mCurrentAspectRatio) {
                     case PlayerViewType.SCREEN_TYPE_DEFAULT:
                     case PlayerViewType.SCREEN_TYPE_16_9:
