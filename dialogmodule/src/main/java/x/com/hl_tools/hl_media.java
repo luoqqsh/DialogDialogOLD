@@ -113,8 +113,8 @@ public class hl_media {
      *
      * @param context
      */
-    public static void intentToGallery(Activity context) {
+    public static void intentToGallery(Activity context, int requestCode) {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        context.startActivityForResult(intent, 1);
+        context.startActivityForResult(intent, requestCode);
     }
 }

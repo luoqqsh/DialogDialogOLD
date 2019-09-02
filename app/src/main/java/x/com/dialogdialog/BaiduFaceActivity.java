@@ -39,8 +39,6 @@ import x.com.hl_tools.hl_media;
 
 public class BaiduFaceActivity extends BaseActivity {
     private FaceDetect faceDetect;
-    private BDFaceImageInstance bdFaceImageInstance;
-    private float[] imgs;
     private ImageView img1, img2;
     private FaceAuth faceAuth;
     private String token;
@@ -87,7 +85,7 @@ public class BaiduFaceActivity extends BaseActivity {
 
 
     public void select(View view) {
-        hl_media.intentToGallery(this);
+        hl_media.intentToGallery(this,1);
     }
 
     private byte[] firstFeature = new byte[512];
@@ -108,6 +106,9 @@ public class BaiduFaceActivity extends BaseActivity {
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
+        }
+        if (requestCode == 2 && (data != null && data.getData() != null)) {
+            getToken();
         }
     }
 
@@ -267,29 +268,12 @@ public class BaiduFaceActivity extends BaseActivity {
 
     /*********/////////////
     private void onLineTest(String token) {
-        Kalle.get("https://aip.baidubce.com/rest/2.0/image-classify/v1/body_seg?access_token="+token)
+        Kalle.post("https://aip.baidubce.com/rest/2.0/image-classify/v1/body_seg?access_token=" + token)
                 .addHeader("Content-Type", "application/x-www-form-urlencoded")
                 .param("image", "")
                 .perform(new SimpleCallback<User>() {
                     @Override
                     public void onResponse(SimpleResponse<User, String> response) {
-                        if (response.isSucceed()) {
-                            ViseLog.d(response);
-                        } else {
-                            ViseLog.d(response.failed());
-                        }
-                    }
-                });
-    }
-
-    private void getToken() {
-        Kalle.get("https://aip.baidubce.com/oauth/2.0/token")
-                .param("grant_type", "client_credentials")
-                .param("client_id", "aUEXdqAPTdUe8QFxv84hE5iM")
-                .param("client_secret", "ogMGTZtYbdL084TPpvQS3xUZtIDlhwZx")
-                .perform(new SimpleCallback<String>() {
-                    @Override
-                    public void onResponse(SimpleResponse<String, String> response) {
                         if (response.isSucceed()) {
                             ViseLog.d(response.succeed());
                         } else {
@@ -299,11 +283,29 @@ public class BaiduFaceActivity extends BaseActivity {
                 });
     }
 
-    public void token(View view) {
-        ViseLog.d("inittoken");
+    private void getToken() {
         initKalle();
-//        getToken();
         token = "25.3b6bc331cf7fad1e46d389a68892d9b2.315360000.1882777054.282335-17162119";
+        onLineTest(token);
+//        Kalle.get("https://aip.baidubce.com/oauth/2.0/token")
+//                .param("grant_type", "client_credentials")
+//                .param("client_id", "aUEXdqAPTdUe8QFxv84hE5iM")
+//                .param("client_secret", "ogMGTZtYbdL084TPpvQS3xUZtIDlhwZx")
+//                .perform(new SimpleCallback<String>() {
+//                    @Override
+//                    public void onResponse(SimpleResponse<String, String> response) {
+//                        onLineTest();
+//                        if (response.isSucceed()) {
+//                            ViseLog.d(response.succeed());
+//                        } else {
+//                            ViseLog.d(response.failed());
+//                        }
+//                    }
+//                });
+    }
+
+    public void token(View view) {
+        hl_media.intentToGallery(this,2);
     }
 
     private void initKalle() {
