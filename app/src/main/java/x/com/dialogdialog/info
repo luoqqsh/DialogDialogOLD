@@ -12,3 +12,18 @@ MODEL-型号:ELE-AL00
 Android系统版本:9
 Android系统SDK:28
 支持的CPU架构:arm64-v8a armeabi-v7a armeabi
+═══════════════════════════════════════════════
+Nox模拟器（雷电模拟器）
+屏幕(不含导航栏):1280,720
+设备(物理分辨率):1280,720
+导航栏(下方):36,不存在(隐藏)导航栏
+状态栏(上方):36
+res分辨率:hdpi
+
+BRAND-品牌:samsung
+MANUFACTURER-制造商:samsung
+MODEL-型号:SM-G955F
+当前语言:zh
+Android系统版本:7.1.2
+Android系统SDK:25
+支持的CPU架构:armeabi-v7a armeabi 

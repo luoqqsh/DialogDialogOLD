@@ -86,7 +86,7 @@ public class hl_file {
      */
     public static boolean isFileExist(String path) {
         if (TextUtils.isEmpty(path)) {
-            Log.e("hl_error", "path为空");
+            Log.e("hl_error", "文件路径为空");
             return false;
         }
         File file = new File(path);

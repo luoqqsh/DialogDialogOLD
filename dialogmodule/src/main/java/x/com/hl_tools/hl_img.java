@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -20,25 +21,20 @@ import java.util.Date;
 
 public class hl_img {
     // 将图片文件转化为字节数组字符串，并对其进行Base64编码处理
-    public static String imgToStr64(String imgFile) {
-        InputStream in;
-        byte[] data = null;
-        // 读取图片字节数组
-        try {
-            in = new FileInputStream(imgFile);
-            data = new byte[in.available()];
-            in.read(data);
-            in.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public static String imgToStr64(InputStream in) throws IOException {
+        if (in == null) return "";
+        byte[] data = new byte[in.available()];
+        in.read(data);
+        in.close();
         // 对字节数组Base64编码
+        return hl_base64.encode(data);// 返回Base64编码过的字节数组字符串
+    }
 
-        if (data != null) {
-            return hl_base64.encode(data);// 返回Base64编码过的字节数组字符串
-        } else {
-            return "";
+    public static String imgToStr64(String imgFile) throws IOException {
+        if (hl_file.isFileExist(imgFile)) {
+            return imgToStr64(new FileInputStream(imgFile));
         }
+        return "";
     }
 
     //保存照片
@@ -48,7 +44,30 @@ public class hl_img {
         bitmapToDcim(bitmap, context);
         Toast.makeText(context, "保存成功", Toast.LENGTH_SHORT).show();
         imageView.setDrawingCacheEnabled(false);//关闭catch
+    }
 
+    /**
+     * base64字符串转换成bitmap
+     *
+     * @param string 字符串
+     * @return bitmap
+     */
+    public static Bitmap stringToBitmap(String string) {
+        //将字符串转换成Bitmap类型
+        Bitmap bitmap = null;
+        try {
+            byte[] bitmapArray;
+            bitmapArray = Base64.decode(string, Base64.DEFAULT);
+            bitmap = BitmapFactory.decodeByteArray(bitmapArray, 0, bitmapArray.length);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return bitmap;
+    }
+
+    public static String addBase64Header(String imgstr) {
+        return "data:image/jpeg;base64," + imgstr;
     }
 
     /**

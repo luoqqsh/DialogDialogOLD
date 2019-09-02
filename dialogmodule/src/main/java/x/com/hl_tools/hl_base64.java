@@ -1,9 +1,5 @@
 package x.com.hl_tools;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Base64;
-
 import java.io.ByteArrayOutputStream;
 
 public class hl_base64 {
@@ -101,27 +97,6 @@ public class hl_base64 {
         }
         return buf.toByteArray();
     }
-
-    /**
-     * base64字符串转换成bitmap
-     *
-     * @param string 字符串
-     * @return bitmap
-     */
-    public static Bitmap stringtoBitmap(String string) {
-        //将字符串转换成Bitmap类型
-        Bitmap bitmap = null;
-        try {
-            byte[] bitmapArray;
-            bitmapArray = Base64.decode(string, Base64.DEFAULT);
-            bitmap = BitmapFactory.decodeByteArray(bitmapArray, 0, bitmapArray.length);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return bitmap;
-    }
-
 
     final static String encodingChar = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 

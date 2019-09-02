@@ -23,7 +23,6 @@ import x.com.hl_player.TvListBean.TvDataList;
 import x.com.hl_player.TvListBean.TypeClarity;
 import x.com.hl_player.TvListBean.TypeClass;
 import x.com.hl_player.TvListBean.TypeState;
-import x.com.hl_tools.hl_medialist;
 import x.com.hl_tools.hl_drawable;
 import x.com.hl_tools.hl_file;
 import x.com.hl_tools.hl_img;
@@ -53,7 +52,6 @@ public class DialogMainJavaActivity extends BaseActivity {
     }
 
     private void test() {
-        ViseLog.d(hl_medialist.getImageFolders(this));
     }
 
     private void initTvList() {
@@ -70,7 +68,6 @@ public class DialogMainJavaActivity extends BaseActivity {
         TvData tvUrl = new TvData(1, "20190719", "itv", tvDataLists);
         Gson gson = new Gson();
         String json = gson.toJson(tvUrl);
-        ViseLog.d(json);
     }
 
     private void init() {

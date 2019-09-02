@@ -30,11 +30,12 @@ import x.com.dialogdialog.Base.BaseActivity;
 import x.com.dialogdialog.face.listener.SdkInitListener;
 import x.com.dialogdialog.face.manager.FaceSDKManager;
 import x.com.dialogdialog.face.model.SingleBaseConfig;
-import x.com.dialogdialog.face.model.User;
 import x.com.dialogdialog.face.utils.BitmapUtils;
 import x.com.dialogdialog.face.utils.ImageUtils;
 import x.com.dialogdialog.face.utils.ToastUtils;
 import x.com.hl_log.ViseLog;
+import x.com.hl_tools.hl_file;
+import x.com.hl_tools.hl_img;
 import x.com.hl_tools.hl_media;
 
 public class BaiduFaceActivity extends BaseActivity {
@@ -71,7 +72,6 @@ public class BaiduFaceActivity extends BaseActivity {
             @Override
             public void initModelSuccess() {
                 ViseLog.d("initModelSuccess");
-
             }
 
             @Override
@@ -79,13 +79,10 @@ public class BaiduFaceActivity extends BaseActivity {
                 ViseLog.d(msg);
             }
         });
-
-
     }
 
-
     public void select(View view) {
-        hl_media.intentToGallery(this,1);
+        hl_media.intentToGallery(this, 1);
     }
 
     private byte[] firstFeature = new byte[512];
@@ -101,14 +98,21 @@ public class BaiduFaceActivity extends BaseActivity {
                     img1.setImageBitmap(bitmap);
                     // 提取特征值
                     syncFeature(bitmap, firstFeature, 1, true);
-
                 }
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
         }
         if (requestCode == 2 && (data != null && data.getData() != null)) {
-            getToken();
+            Uri uri1 = ImageUtils.geturi(data, this);
+            try {
+                String imgstr = hl_img.imgToStr64(getContentResolver().openInputStream(uri1));
+                getToken(imgstr);
+                Bitmap bitmap = hl_img.stringToBitmap(imgstr);
+                img2.setImageBitmap(bitmap);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -168,36 +172,29 @@ public class BaiduFaceActivity extends BaseActivity {
      * @return
      */
     public boolean qualityCheck(final FaceInfo faceInfo, boolean isFromPhotoLibrary) {
-
         // 不是相册选的图片，不必再次进行质量检测，因为采集图片的时候已经做过了
         if (!isFromPhotoLibrary) {
             return true;
         }
-
         if (!SingleBaseConfig.getBaseConfig().isQualityControl()) {
             return true;
         }
-
         if (faceInfo != null) {
-
             // 模糊结果过滤
             float blur = faceInfo.bluriness;
             if (blur > SingleBaseConfig.getBaseConfig().getBlur()) {
                 ViseLog.e("图片模糊");
                 return false;
             }
-
             // 光照结果过滤
             float illum = faceInfo.illum;
             if (illum < SingleBaseConfig.getBaseConfig().getIllumination()) {
                 ViseLog.e("图片光照不通过");
                 return false;
             }
-
             // 遮挡结果过滤
             if (faceInfo.occlusion != null) {
                 BDFaceOcclusion occlusion = faceInfo.occlusion;
-
                 if (occlusion.leftEye > SingleBaseConfig.getBaseConfig().getLeftEye()) {
                     // 左眼遮挡置信度
                     ViseLog.e("左眼遮挡");
@@ -265,28 +262,11 @@ public class BaiduFaceActivity extends BaseActivity {
         });
     }
 
-
     /*********/////////////
-    private void onLineTest(String token) {
-        Kalle.post("https://aip.baidubce.com/rest/2.0/image-classify/v1/body_seg?access_token=" + token)
-                .addHeader("Content-Type", "application/x-www-form-urlencoded")
-                .param("image", "")
-                .perform(new SimpleCallback<User>() {
-                    @Override
-                    public void onResponse(SimpleResponse<User, String> response) {
-                        if (response.isSucceed()) {
-                            ViseLog.d(response.succeed());
-                        } else {
-                            ViseLog.d(response.failed());
-                        }
-                    }
-                });
-    }
-
-    private void getToken() {
+    private void getToken(String imgstr) {
         initKalle();
-        token = "25.3b6bc331cf7fad1e46d389a68892d9b2.315360000.1882777054.282335-17162119";
-        onLineTest(token);
+        token = "25.0518cd702abdf421018d80ba38c11781.315360000.1882801780.282335-17162119";
+        onLineTest(token, imgstr);
 //        Kalle.get("https://aip.baidubce.com/oauth/2.0/token")
 //                .param("grant_type", "client_credentials")
 //                .param("client_id", "aUEXdqAPTdUe8QFxv84hE5iM")
@@ -304,8 +284,26 @@ public class BaiduFaceActivity extends BaseActivity {
 //                });
     }
 
+    private void onLineTest(String token, String imgstr) {
+        imgstr = hl_img.addBase64Header(imgstr);
+        hl_file.writeStringToFile(hl_file.DCIM, "aaaa.txt", imgstr);
+        Kalle.post("https://aip.baidubce.com/rest/2.0/image-classify/v1/body_seg?access_token=" + token)
+                .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                .param("image", imgstr)
+                .perform(new SimpleCallback<String>() {
+                    @Override
+                    public void onResponse(SimpleResponse<String, String> response) {
+                        if (response.isSucceed()) {
+                            ViseLog.d(response.succeed());
+                        } else {
+                            ViseLog.d(response.failed());
+                        }
+                    }
+                });
+    }
+
     public void token(View view) {
-        hl_media.intentToGallery(this,2);
+        hl_media.intentToGallery(this, 2);
     }
 
     private void initKalle() {
