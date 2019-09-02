@@ -1,10 +1,13 @@
 package x.com.hl_tools;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 
 import java.io.File;
@@ -84,6 +87,7 @@ public class hl_media {
 
     /**
      * 获取00：00格式时间
+     *
      * @param timeMs 时长，单位毫秒
      * @return 00：00格式文本
      */
@@ -102,5 +106,15 @@ public class hl_media {
         } else {
             return mFormatter.format("%02d:%02d", minutes, seconds).toString();
         }
+    }
+
+    /**
+     * intent跳转到图库页面，需要onActivityResult回调
+     *
+     * @param context
+     */
+    public static void intentToGallery(Activity context) {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        context.startActivityForResult(intent, 1);
     }
 }

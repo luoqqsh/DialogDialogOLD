@@ -37,7 +37,7 @@ class DialogMainActivity : BaseActivity() {
         view.setOnClickListener { startActivity(Intent(mContext, ViewActivity::class.java)) }
         camera.setOnClickListener { startActivity(Intent(mContext, HHCameraActivity::class.java)) }
         mediacodec.setOnClickListener { startActivity(Intent(mContext, ViewActivity::class.java)) }
-        vchart.setOnClickListener { startActivity(Intent(mContext, vchartActivity::class.java)) }
+        baiduface.setOnClickListener { startActivity(Intent(mContext, BaiduFaceActivity::class.java)) }
         map.setOnClickListener { startActivity(Intent(mContext, HHMapActivity::class.java)) }
         close.setOnClickListener {
             //            val orientation = hl_orientation()

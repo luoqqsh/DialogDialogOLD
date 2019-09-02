@@ -69,10 +69,10 @@
             android:text="opengl" />
 
         <Button
-            android:id="@+id/vchart"
+            android:id="@+id/baiduface"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="vchart" />
+            android:text="baidu" />
     </LinearLayout>
 
     <LinearLayout

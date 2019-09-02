@@ -80,9 +80,9 @@ dependencies {
     }
     implementation 'io.github.lizhangqu:retrace:1.0.2'
     implementation 'androidx.viewpager2:viewpager2:1.0.0-beta03'
-    implementation 'com.vinctor:vcharts:1.0.0'
     implementation 'tv.danmaku.ijk.media:ijkplayer-armv7a:0.8.8'
-
+    implementation(name: 'baiduface-release', ext: 'aar')
+    implementation 'com.yanzhenjie:okalle:0.1.7'
 }
 
 static def releaseTime() {
