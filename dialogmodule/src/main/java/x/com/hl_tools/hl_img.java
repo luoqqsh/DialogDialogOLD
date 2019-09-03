@@ -71,27 +71,27 @@ public class hl_img {
     }
 
     /**
-     * 保存方法
+     * 保存图片到DCIM目录下
+     *
+     * @param bitmap  图片bitmap
+     * @param context 上下文
+     * @return 图片路径
      */
-    public static void bitmapToDcim(Bitmap bitmap, Context context) {
+    public static String bitmapToDcim(Bitmap bitmap, Context context) {
         //更改的名字
         String imageName = new Date() + ".jpg";
-
-        String headPath = android.os.Environment.getExternalStorageDirectory() +
-                "/DCIM/Screenshots";
-
+        String headPath = android.os.Environment.getExternalStorageDirectory() + "/DCIM";
         File headDir = new File(headPath);
         if (!headDir.exists()) {
             headDir.mkdirs();
         }
         System.out.println(headPath + "\n" + headDir);
         FileOutputStream headFos = null;
-        File headFile = null;
+        File headFile;
         try {
             //重命名并保存
             headFile = new File(headPath, imageName);
             headFile.createNewFile();
-
             headFos = new FileOutputStream(headFile);
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, headFos);
             headFos.flush();
@@ -104,8 +104,10 @@ public class hl_img {
             }
             // 最后通知图库更新
             context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + headPath)));
+            return headFile.getAbsolutePath();
         } catch (Exception e) {
             e.printStackTrace();
+            return "";
         } finally {
             if (headFos != null) {
                 try {

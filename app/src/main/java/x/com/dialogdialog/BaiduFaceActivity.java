@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -18,6 +19,7 @@ import com.baidu.idl.main.facesdk.callback.Callback;
 import com.baidu.idl.main.facesdk.model.BDFaceImageInstance;
 import com.baidu.idl.main.facesdk.model.BDFaceOcclusion;
 import com.baidu.idl.main.facesdk.model.BDFaceSDKCommon;
+import com.google.gson.Gson;
 import com.yanzhenjie.kalle.Kalle;
 import com.yanzhenjie.kalle.KalleConfig;
 import com.yanzhenjie.kalle.connect.http.LoggerInterceptor;
@@ -29,20 +31,20 @@ import java.io.FileNotFoundException;
 import x.com.dialogdialog.Base.BaseActivity;
 import x.com.dialogdialog.face.listener.SdkInitListener;
 import x.com.dialogdialog.face.manager.FaceSDKManager;
+import x.com.dialogdialog.face.model.OnLineResponse;
+import x.com.dialogdialog.face.model.OnLineTokenResponse;
 import x.com.dialogdialog.face.model.SingleBaseConfig;
 import x.com.dialogdialog.face.utils.BitmapUtils;
 import x.com.dialogdialog.face.utils.ImageUtils;
 import x.com.dialogdialog.face.utils.ToastUtils;
 import x.com.hl_log.ViseLog;
-import x.com.hl_tools.hl_file;
 import x.com.hl_tools.hl_img;
 import x.com.hl_tools.hl_media;
 
 public class BaiduFaceActivity extends BaseActivity {
     private FaceDetect faceDetect;
-    private ImageView img1, img2;
+    private ImageView img1, img2, img3, img4, img5;
     private FaceAuth faceAuth;
-    private String token;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,6 +52,9 @@ public class BaiduFaceActivity extends BaseActivity {
         setContentView(R.layout.activity_vchart);
         img1 = findViewById(R.id.img1);
         img2 = findViewById(R.id.img2);
+        img3 = findViewById(R.id.img3);
+        img4 = findViewById(R.id.img4);
+        img5 = findViewById(R.id.img5);
 
         faceAuth = new FaceAuth();
         faceDetect = new FaceDetect();
@@ -108,8 +113,8 @@ public class BaiduFaceActivity extends BaseActivity {
             try {
                 String imgstr = hl_img.imgToStr64(getContentResolver().openInputStream(uri1));
                 getToken(imgstr);
-                Bitmap bitmap = hl_img.stringToBitmap(imgstr);
-                img2.setImageBitmap(bitmap);
+                Bitmap bitmap2 = hl_img.stringToBitmap(imgstr);
+                img2.setImageBitmap(bitmap2);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -158,11 +163,9 @@ public class BaiduFaceActivity extends BaseActivity {
                             + "人脸不是朝上，sdk不能检测出人脸");
                 }
             }
-
         } else {
             ViseLog.e("未检测到人脸,可能原因人脸太小");
         }
-
     }
 
     /**
@@ -265,36 +268,45 @@ public class BaiduFaceActivity extends BaseActivity {
     /*********/////////////
     private void getToken(String imgstr) {
         initKalle();
-        token = "25.0518cd702abdf421018d80ba38c11781.315360000.1882801780.282335-17162119";
-        onLineTest(token, imgstr);
-//        Kalle.get("https://aip.baidubce.com/oauth/2.0/token")
-//                .param("grant_type", "client_credentials")
-//                .param("client_id", "aUEXdqAPTdUe8QFxv84hE5iM")
-//                .param("client_secret", "ogMGTZtYbdL084TPpvQS3xUZtIDlhwZx")
-//                .perform(new SimpleCallback<String>() {
-//                    @Override
-//                    public void onResponse(SimpleResponse<String, String> response) {
-//                        onLineTest();
-//                        if (response.isSucceed()) {
-//                            ViseLog.d(response.succeed());
-//                        } else {
-//                            ViseLog.d(response.failed());
-//                        }
-//                    }
-//                });
+        Kalle.get("https://aip.baidubce.com/oauth/2.0/token")
+                .param("grant_type", "client_credentials")
+                .param("client_id", "aUEXdqAPTdUe8QFxv84hE5iM")
+                .param("client_secret", "ogMGTZtYbdL084TPpvQS3xUZtIDlhwZx")
+                .perform(new SimpleCallback<String>() {
+                    @Override
+                    public void onResponse(SimpleResponse<String, String> response) {
+                        Gson gson = new Gson();
+                        OnLineTokenResponse response1 = gson.fromJson(response.succeed(), OnLineTokenResponse.class);
+                        onLineTest(response1.getAccess_token(), imgstr);
+                        if (response.isSucceed()) {
+                            ViseLog.d(response.succeed());
+                        } else {
+                            ViseLog.d(response.failed());
+                        }
+                    }
+                });
     }
 
     private void onLineTest(String token, String imgstr) {
-        imgstr = hl_img.addBase64Header(imgstr);
-        hl_file.writeStringToFile(hl_file.DCIM, "aaaa.txt", imgstr);
-        Kalle.post("https://aip.baidubce.com/rest/2.0/image-classify/v1/body_seg?access_token=" + token)
+        Kalle.post("https://aip.baidubce.com/rest/2.0/image-classify/v1/body_seg")
                 .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                .urlParam("access_token", token)
                 .param("image", imgstr)
                 .perform(new SimpleCallback<String>() {
                     @Override
                     public void onResponse(SimpleResponse<String, String> response) {
                         if (response.isSucceed()) {
-                            ViseLog.d(response.succeed());
+                            Gson gson = new Gson();
+                            OnLineResponse onLineResponse = gson.fromJson(response.succeed(), OnLineResponse.class);
+                            if (onLineResponse.getErrorCode() != 0) {
+                                ViseLog.d(response.succeed());
+                                Toast.makeText(mContext, onLineResponse.getError_msg(), Toast.LENGTH_LONG).show();
+                                return;
+                            }
+                            img3.setImageBitmap(hl_img.stringToBitmap(onLineResponse.getForeground()));
+                            img4.setImageBitmap(hl_img.stringToBitmap(onLineResponse.getLabelmap()));
+                            img5.setImageBitmap(hl_img.stringToBitmap(onLineResponse.getScoremap()));
+                            hl_img.bitmapToDcim(hl_img.stringToBitmap(onLineResponse.getForeground()),BaiduFaceActivity.this);
                         } else {
                             ViseLog.d(response.failed());
                         }
