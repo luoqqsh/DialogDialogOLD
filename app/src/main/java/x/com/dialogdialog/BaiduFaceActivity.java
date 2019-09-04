@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -15,7 +16,6 @@ import androidx.annotation.Nullable;
 import com.baidu.idl.main.facesdk.FaceAuth;
 import com.baidu.idl.main.facesdk.FaceDetect;
 import com.baidu.idl.main.facesdk.FaceInfo;
-import com.baidu.idl.main.facesdk.callback.Callback;
 import com.baidu.idl.main.facesdk.model.BDFaceImageInstance;
 import com.baidu.idl.main.facesdk.model.BDFaceOcclusion;
 import com.baidu.idl.main.facesdk.model.BDFaceSDKCommon;
@@ -26,25 +26,35 @@ import com.yanzhenjie.kalle.connect.http.LoggerInterceptor;
 import com.yanzhenjie.kalle.simple.SimpleCallback;
 import com.yanzhenjie.kalle.simple.SimpleResponse;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import x.com.dialogdialog.Base.BaseActivity;
-import x.com.dialogdialog.face.listener.SdkInitListener;
 import x.com.dialogdialog.face.manager.FaceSDKManager;
 import x.com.dialogdialog.face.model.OnLineResponse;
 import x.com.dialogdialog.face.model.OnLineTokenResponse;
 import x.com.dialogdialog.face.model.SingleBaseConfig;
 import x.com.dialogdialog.face.utils.BitmapUtils;
 import x.com.dialogdialog.face.utils.ImageUtils;
-import x.com.dialogdialog.face.utils.ToastUtils;
+import x.com.hl_base.HOnListener;
+import x.com.hl_dialog.DFListFileDialog;
 import x.com.hl_log.ViseLog;
+import x.com.hl_tools.hl_file;
 import x.com.hl_tools.hl_img;
+import x.com.hl_tools.hl_math;
 import x.com.hl_tools.hl_media;
+import x.com.hl_tools.hl_time;
 
 public class BaiduFaceActivity extends BaseActivity {
     private FaceDetect faceDetect;
     private ImageView img1, img2, img3, img4, img5;
     private FaceAuth faceAuth;
+    private TextView tv_time;
+    private long time;
+    private StringBuilder requestlog;
+    private String img2info;
+    private String img3info;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,39 +65,40 @@ public class BaiduFaceActivity extends BaseActivity {
         img3 = findViewById(R.id.img3);
         img4 = findViewById(R.id.img4);
         img5 = findViewById(R.id.img5);
+        tv_time = findViewById(R.id.tv_time);
 
         faceAuth = new FaceAuth();
         faceDetect = new FaceDetect();
-        FaceSDKManager.getInstance().init(this, new SdkInitListener() {
-            @Override
-            public void initStart() {
-                ViseLog.d("initStart");
-            }
-
-            @Override
-            public void initLicenseSuccess() {
-                ViseLog.d("initLicenseSuccess");
-            }
-
-            @Override
-            public void initLicenseFail(int errorCode, String msg) {
-                ViseLog.d(msg);
-            }
-
-            @Override
-            public void initModelSuccess() {
-                ViseLog.d("initModelSuccess");
-            }
-
-            @Override
-            public void initModelFail(int errorCode, String msg) {
-                ViseLog.d(msg);
-            }
-        });
+//        FaceSDKManager.getInstance().init(this, new SdkInitListener() {
+//            @Override
+//            public void initStart() {
+//                ViseLog.d("initStart");
+//            }
+//
+//            @Override
+//            public void initLicenseSuccess() {
+//                ViseLog.d("initLicenseSuccess");
+//            }
+//
+//            @Override
+//            public void initLicenseFail(int errorCode, String msg) {
+//                ViseLog.d(msg);
+//            }
+//
+//            @Override
+//            public void initModelSuccess() {
+//                ViseLog.d("initModelSuccess");
+//            }
+//
+//            @Override
+//            public void initModelFail(int errorCode, String msg) {
+//                ViseLog.d(msg);
+//            }
+//        });
     }
 
     public void select(View view) {
-        hl_media.intentToGallery(this, 1);
+//        hl_media.intentToGallery(this, 1);
     }
 
     private byte[] firstFeature = new byte[512];
@@ -102,32 +113,30 @@ public class BaiduFaceActivity extends BaseActivity {
                 if (bitmap != null) {
                     img1.setImageBitmap(bitmap);
                     // 提取特征值
-                    syncFeature(bitmap, firstFeature, 1, true);
+//                    syncFeature(bitmap, firstFeature, 1, true);
                 }
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
         }
         if (requestCode == 2 && (data != null && data.getData() != null)) {
+            ViseLog.d(data);
             Uri uri1 = ImageUtils.geturi(data, this);
             try {
                 String imgstr = hl_img.imgToStr64(getContentResolver().openInputStream(uri1));
                 getToken(imgstr);
                 Bitmap bitmap2 = hl_img.stringToBitmap(imgstr);
                 img2.setImageBitmap(bitmap2);
+                time = hl_time.getNowTimeLong();
+                String path = ImageUtils.getPathFromUri(this, uri1);
+                float size = new File(path).length();
+                img2info = "原图:" + bitmap2.getWidth() + "," + bitmap2.getHeight() + "  " + hl_math.RoundingDouble(String.valueOf(size / 1024 / 1024), "0.00") + "M\n" + "path:" + path;
+                requestlog = new StringBuilder();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
-
-    /**
-     * bitmap -提取特征值
-     *
-     * @param bitmap
-     * @param feature
-     * @param index
-     */
 
     private void syncFeature(final Bitmap bitmap, final byte[] feature, final int index, boolean isFromPhotoLibrary) {
         float ret = -1;
@@ -228,41 +237,41 @@ public class BaiduFaceActivity extends BaseActivity {
     }
 
     public void auth(View view) {
-        faceAuth.initLicenseOnLine(this, "P9IC-AUHF-YFPY-QLQV", new Callback() {
-            @Override
-            public void onResponse(final int code, final String response) {
-                ToastUtils.toast(mContext, code + response);
-                if (code == 0) {
-                    FaceSDKManager.getInstance().initModel(mContext, new SdkInitListener() {
-                        @Override
-                        public void initStart() {
-                            ViseLog.d("initstart");
-                        }
-
-                        @Override
-                        public void initLicenseSuccess() {
-                            ViseLog.d("initLicenseSuccess");
-                        }
-
-                        @Override
-                        public void initLicenseFail(int errorCode, String msg) {
-                            ToastUtils.toast(mContext, errorCode + msg);
-
-                        }
-
-                        @Override
-                        public void initModelSuccess() {
-                            ViseLog.d("initModelSuccess");
-                        }
-
-                        @Override
-                        public void initModelFail(int errorCode, String msg) {
-
-                        }
-                    });
-                }
-            }
-        });
+//        faceAuth.initLicenseOnLine(this, "P9IC-AUHF-YFPY-QLQV", new Callback() {
+//            @Override
+//            public void onResponse(final int code, final String response) {
+//                ToastUtils.toast(mContext, code + response);
+//                if (code == 0) {
+//                    FaceSDKManager.getInstance().initModel(mContext, new SdkInitListener() {
+//                        @Override
+//                        public void initStart() {
+//                            ViseLog.d("initstart");
+//                        }
+//
+//                        @Override
+//                        public void initLicenseSuccess() {
+//                            ViseLog.d("initLicenseSuccess");
+//                        }
+//
+//                        @Override
+//                        public void initLicenseFail(int errorCode, String msg) {
+//                            ToastUtils.toast(mContext, errorCode + msg);
+//
+//                        }
+//
+//                        @Override
+//                        public void initModelSuccess() {
+//                            ViseLog.d("initModelSuccess");
+//                        }
+//
+//                        @Override
+//                        public void initModelFail(int errorCode, String msg) {
+//
+//                        }
+//                    });
+//                }
+//            }
+//        });
     }
 
     /*********/////////////
@@ -296,6 +305,7 @@ public class BaiduFaceActivity extends BaseActivity {
                     @Override
                     public void onResponse(SimpleResponse<String, String> response) {
                         if (response.isSucceed()) {
+                            ViseLog.d("ok");
                             Gson gson = new Gson();
                             OnLineResponse onLineResponse = gson.fromJson(response.succeed(), OnLineResponse.class);
                             if (onLineResponse.getErrorCode() != 0) {
@@ -303,10 +313,19 @@ public class BaiduFaceActivity extends BaseActivity {
                                 Toast.makeText(mContext, onLineResponse.getError_msg(), Toast.LENGTH_LONG).show();
                                 return;
                             }
-                            img3.setImageBitmap(hl_img.stringToBitmap(onLineResponse.getForeground()));
+                            Bitmap bitmap3 = hl_img.stringToBitmap(onLineResponse.getForeground());
+                            img3.setImageBitmap(bitmap3);
                             img4.setImageBitmap(hl_img.stringToBitmap(onLineResponse.getLabelmap()));
                             img5.setImageBitmap(hl_img.stringToBitmap(onLineResponse.getScoremap()));
-                            hl_img.bitmapToDcim(hl_img.stringToBitmap(onLineResponse.getForeground()),BaiduFaceActivity.this);
+
+
+                            String path = hl_img.bitmapToDcim(hl_img.stringToBitmap(onLineResponse.getForeground()), BaiduFaceActivity.this);
+                            float size = new File(path).length();
+//
+                            time = hl_time.getNowTimeLong() - time;
+                            img3info = "抠图:" + bitmap3.getWidth() + "," + bitmap3.getHeight() + "  " + hl_math.RoundingDouble(String.valueOf(size / 1024 / 1024), "0.00") + "M";
+                            requestlog.append("加载成功 ").append(time).append("ms\n").append(img2info).append("\n").append(img3info).append("\n").append("path:").append(path);
+                            tv_time.setText(requestlog);
                         } else {
                             ViseLog.d(response.failed());
                         }
@@ -322,5 +341,29 @@ public class BaiduFaceActivity extends BaseActivity {
         Kalle.setConfig(KalleConfig.newBuilder()
                 .addInterceptor(new LoggerInterceptor("KalleSample", BuildConfig.DEBUG))
                 .build());
+    }
+
+    public void selectfile(View view) {
+        DFListFileDialog dfListFileDialog = DFListFileDialog.newInstance(hl_file.QQFILE);
+        dfListFileDialog.setOnSelectFileListener(new HOnListener<File>() {
+            @Override
+            public void onListen(File file) {
+                try {
+                    String imgstr = hl_img.imgToStr64(file.getAbsolutePath());
+                    getToken(imgstr);
+                    Bitmap bitmap2 = hl_img.stringToBitmap(imgstr);
+                    img2.setImageBitmap(bitmap2);
+                    time = hl_time.getNowTimeLong();
+                    String path = file.getAbsolutePath();
+                    float size = new File(path).length();
+                    img2info = "原图:" + bitmap2.getWidth() + "," + bitmap2.getHeight() + "  " + hl_math.RoundingDouble(String.valueOf(size / 1024 / 1024), "0.00") + "M\n" + "path:" + path;
+                    requestlog = new StringBuilder();
+                    dfListFileDialog.dismiss();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        dfListFileDialog.showFDialog(this);
     }
 }

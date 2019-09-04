@@ -1,23 +1,19 @@
 package x.com.hl_tools;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.net.Uri;
-import android.provider.MediaStore;
+import android.media.MediaScannerConnection;
 import android.util.Base64;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Date;
 
 public class hl_img {
     // 将图片文件转化为字节数组字符串，并对其进行Base64编码处理
@@ -79,8 +75,8 @@ public class hl_img {
      */
     public static String bitmapToDcim(Bitmap bitmap, Context context) {
         //更改的名字
-        String imageName = new Date() + ".jpg";
-        String headPath = android.os.Environment.getExternalStorageDirectory() + "/DCIM";
+        String imageName = "kou" + hl_time.getNowTimeStr(hl_time.HHmmss) + ".png";
+        String headPath = android.os.Environment.getExternalStorageDirectory() + "/DCIM/koutu";
         File headDir = new File(headPath);
         if (!headDir.exists()) {
             headDir.mkdirs();
@@ -93,17 +89,22 @@ public class hl_img {
             headFile = new File(headPath, imageName);
             headFile.createNewFile();
             headFos = new FileOutputStream(headFile);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, headFos);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, headFos);
             headFos.flush();
             // 其次把文件插入到系统图库
+//            try {
+//                MediaStore.Images.Media.insertImage(context.getContentResolver(),
+//                        headFile.getAbsolutePath(), imageName, null);
+//            } catch (FileNotFoundException e) {
+//                e.printStackTrace();
+//            }
+            // 最后通知图库更新
             try {
-                MediaStore.Images.Media.insertImage(context.getContentResolver(),
-                        headFile.getAbsolutePath(), imageName, null);
-            } catch (FileNotFoundException e) {
+                MediaScannerConnection.scanFile(context, new String[]{headPath}, null, null);
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-            // 最后通知图库更新
-            context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + headPath)));
+//            context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + headPath)));
             return headFile.getAbsolutePath();
         } catch (Exception e) {
             e.printStackTrace();
