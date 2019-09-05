@@ -67,6 +67,7 @@ public class BaiduFaceActivity extends BaseActivity {
         img5 = findViewById(R.id.img5);
         tv_time = findViewById(R.id.tv_time);
 
+        hl_media.updateMedias(this,hl_file.CAMERA);
         faceAuth = new FaceAuth();
         faceDetect = new FaceDetect();
 //        FaceSDKManager.getInstance().init(this, new SdkInitListener() {
@@ -120,12 +121,11 @@ public class BaiduFaceActivity extends BaseActivity {
             }
         }
         if (requestCode == 2 && (data != null && data.getData() != null)) {
-            ViseLog.d(data);
             Uri uri1 = ImageUtils.geturi(data, this);
             try {
                 String imgstr = hl_img.imgToStr64(getContentResolver().openInputStream(uri1));
                 getToken(imgstr);
-                Bitmap bitmap2 = hl_img.stringToBitmap(imgstr);
+                Bitmap bitmap2 = hl_img.str64ToBitmap(imgstr);
                 img2.setImageBitmap(bitmap2);
                 time = hl_time.getNowTimeLong();
                 String path = ImageUtils.getPathFromUri(this, uri1);
@@ -305,7 +305,6 @@ public class BaiduFaceActivity extends BaseActivity {
                     @Override
                     public void onResponse(SimpleResponse<String, String> response) {
                         if (response.isSucceed()) {
-                            ViseLog.d("ok");
                             Gson gson = new Gson();
                             OnLineResponse onLineResponse = gson.fromJson(response.succeed(), OnLineResponse.class);
                             if (onLineResponse.getErrorCode() != 0) {
@@ -313,13 +312,18 @@ public class BaiduFaceActivity extends BaseActivity {
                                 Toast.makeText(mContext, onLineResponse.getError_msg(), Toast.LENGTH_LONG).show();
                                 return;
                             }
-                            Bitmap bitmap3 = hl_img.stringToBitmap(onLineResponse.getForeground());
+                            Bitmap bitmap3 = hl_img.str64ToBitmap(onLineResponse.getForeground());
                             img3.setImageBitmap(bitmap3);
-                            img4.setImageBitmap(hl_img.stringToBitmap(onLineResponse.getLabelmap()));
-                            img5.setImageBitmap(hl_img.stringToBitmap(onLineResponse.getScoremap()));
+                            img4.setImageBitmap(hl_img.str64ToBitmap(onLineResponse.getLabelmap()));
+                            img5.setImageBitmap(hl_img.str64ToBitmap(onLineResponse.getScoremap()));
 
 
-                            String path = hl_img.bitmapToDcim(hl_img.stringToBitmap(onLineResponse.getForeground()), BaiduFaceActivity.this);
+                            String path = null;
+                            try {
+                                path = hl_img.bitmapToCamera(hl_img.str64ToBitmap(onLineResponse.getForeground()), BaiduFaceActivity.this);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                             float size = new File(path).length();
 //
                             time = hl_time.getNowTimeLong() - time;
@@ -351,7 +355,7 @@ public class BaiduFaceActivity extends BaseActivity {
                 try {
                     String imgstr = hl_img.imgToStr64(file.getAbsolutePath());
                     getToken(imgstr);
-                    Bitmap bitmap2 = hl_img.stringToBitmap(imgstr);
+                    Bitmap bitmap2 = hl_img.str64ToBitmap(imgstr);
                     img2.setImageBitmap(bitmap2);
                     time = hl_time.getNowTimeLong();
                     String path = file.getAbsolutePath();

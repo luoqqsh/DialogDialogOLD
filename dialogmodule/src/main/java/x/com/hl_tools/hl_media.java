@@ -8,12 +8,14 @@ import android.graphics.BitmapFactory;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.text.TextUtils;
+import android.util.Log;
 
 import java.io.File;
 import java.net.FileNameMap;
 import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.Formatter;
+import java.util.List;
 import java.util.Locale;
 
 public class hl_media {
@@ -24,13 +26,43 @@ public class hl_media {
      * @param path    文件路径
      */
     public static void updateMedia(Context context, String path) {
-        if (!TextUtils.isEmpty(path)) {
-            context = context.getApplicationContext();
-            try {
-                MediaScannerConnection.scanFile(context, new String[]{path}, null, null);
-            } catch (Exception var3) {
-                var3.printStackTrace();
+        try {
+            if (hl_file.isFileExist(path)) {
+                MediaScannerConnection.scanFile(context.getApplicationContext(), new String[]{path}, null, new MediaScannerConnection.OnScanCompletedListener() {
+                    @Override
+                    public void onScanCompleted(String path, Uri uri) {
+                    }
+                });
+            } else {
+                Log.e("hl_error", "文件路径错误：" + path);
             }
+        } catch (Exception var3) {
+            var3.printStackTrace();
+        }
+    }
+
+    public static void updateMedias(Context context, String path) {
+        try {
+            if (hl_file.isFolderExist(path)) {
+                List<String> file = new ArrayList<>();
+                File[] fileList = new File(path).listFiles();
+                if (fileList != null) {
+                    for (File f : fileList) {
+                        if (hl_file.isFileExist(f.getAbsolutePath())) {
+                            file.add(f.getAbsolutePath());
+                        }
+                    }
+                }
+                MediaScannerConnection.scanFile(context.getApplicationContext(), file.toArray(new String[0]), null, new MediaScannerConnection.OnScanCompletedListener() {
+                    @Override
+                    public void onScanCompleted(String path, Uri uri) {
+                    }
+                });
+            } else {
+                Log.e("hl_error", "文件夹路径错误：" + path);
+            }
+        } catch (Exception var3) {
+            var3.printStackTrace();
         }
     }
 
@@ -79,10 +111,7 @@ public class hl_media {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(filePath, options);
-        if (options.outWidth == -1) {
-            return false;
-        }
-        return true;
+        return options.outWidth != -1;
     }
 
     /**
@@ -111,7 +140,7 @@ public class hl_media {
     /**
      * intent跳转到图库页面，需要onActivityResult回调
      *
-     * @param context
+     * @param context 上下文
      */
     public static void intentToGallery(Activity context, int requestCode) {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
