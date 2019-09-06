@@ -1,15 +1,18 @@
 package x.com.dialogdialog.Base;
 
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.WindowManager;
+import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 
+import x.com.hl_log.ViseLog;
 import x.com.hl_tools.hl_device;
 import x.com.hl_tools.hl_leak;
+import x.com.hl_tools.hl_rom;
 
 /**
  * 沉浸式base
@@ -21,12 +24,31 @@ public class BaseActivity extends AppCompatActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this;
-        //5.0以上支持状态栏颜色。4.4为半透明。6.0以上才支持黑色图标、文字，默认白色
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-        }
 
+        //5.0以上支持状态栏颜色。4.4为半透明。6.0以上才支持黑色图标、文字，默认白色
+        //简单开启半透明效果,界面绘制到顶部，设置颜色无效
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);//状态栏半透明
+//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);//导航栏半透明
+//        }
+        //设置背景颜色
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);//根据系统的标题栏绘制颜色
+//            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);//消除半透明黑色背景，部分机型会出现半透明黑色效果
+            getWindow().setStatusBarColor(Color.TRANSPARENT);// SDK21
+            getWindow().setNavigationBarColor(Color.RED);
+        }
+        //全屏
+//        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);//全屏，去掉状态栏，但是导航栏还在
+//        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);// 保持屏幕高亮
+        //状态栏字体颜色
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            //设置状态栏字体颜色为深色
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
+        //输入框没有被顶上去，在输入框的父布局中加入android:fitsSystemWindows="true"，待验证。
+
+        ViseLog.d(hl_rom.getName() + "  " + hl_rom.getVersion());
     }
 
     @Override

@@ -78,22 +78,18 @@ public class ImageUtils {
                 final String[] divide = docId.split(":");
                 final String type = divide[0];
                 if ("primary".equals(type)) {
-                    String path = Environment.getExternalStorageDirectory().getAbsolutePath().concat("/").concat(divide[1]);
-                    return path;
+                    return Environment.getExternalStorageDirectory().getAbsolutePath().concat("/").concat(divide[1]);
                 } else {
-                    String path = "/storage/".concat(type).concat("/").concat(divide[1]);
-                    return path;
+                    return "/storage/".concat(type).concat("/").concat(divide[1]);
                 }
             } else if ("com.android.providers.downloads.documents".equals(authority)) {
                 // 下載目錄
                 final String docId = DocumentsContract.getDocumentId(uri);
                 if (docId.startsWith("raw:")) {
-                    final String path = docId.replaceFirst("raw:", "");
-                    return path;
+                    return docId.replaceFirst("raw:", "");
                 }
                 final Uri downloadUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.parseLong(docId));
-                String path = queryAbsolutePath(context, downloadUri);
-                return path;
+                return queryAbsolutePath(context, downloadUri);
             } else if ("com.android.providers.media.documents".equals(authority)) {
                 // 圖片、影音檔案
                 final String docId = DocumentsContract.getDocumentId(uri);
@@ -110,8 +106,7 @@ public class ImageUtils {
                     return null;
                 }
                 mediaUri = ContentUris.withAppendedId(mediaUri, Long.parseLong(divide[1]));
-                String path = queryAbsolutePath(context, mediaUri);
-                return path;
+                return queryAbsolutePath(context, mediaUri);
             }
         } else {
             // 如果是一般的URI

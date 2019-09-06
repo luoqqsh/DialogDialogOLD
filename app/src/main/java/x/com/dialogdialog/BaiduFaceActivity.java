@@ -67,7 +67,7 @@ public class BaiduFaceActivity extends BaseActivity {
         img5 = findViewById(R.id.img5);
         tv_time = findViewById(R.id.tv_time);
 
-        hl_media.updateMedias(this,hl_file.CAMERA);
+        hl_media.updateMedias(this, hl_file.CAMERA);
         faceAuth = new FaceAuth();
         faceDetect = new FaceDetect();
 //        FaceSDKManager.getInstance().init(this, new SdkInitListener() {
@@ -126,6 +126,7 @@ public class BaiduFaceActivity extends BaseActivity {
                 String imgstr = hl_img.imgToStr64(getContentResolver().openInputStream(uri1));
                 getToken(imgstr);
                 Bitmap bitmap2 = hl_img.str64ToBitmap(imgstr);
+                ViseLog.d(hl_img.getBitmapDegree(uri1.toString()));
                 img2.setImageBitmap(bitmap2);
                 time = hl_time.getNowTimeLong();
                 String path = ImageUtils.getPathFromUri(this, uri1);

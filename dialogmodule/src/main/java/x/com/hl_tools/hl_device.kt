@@ -185,6 +185,8 @@ object hl_device {
                 "当前语言:" + getSystemLanguage() + "\n" +
                 "Android系统版本:" + getSystemVersion() + "\n" +
                 "Android系统SDK:" + Build.VERSION.SDK_INT + "\n" +
+                "系统ROM:" + hl_rom.getName() + "\n" +
+                "ROM版本:" + hl_rom.getVersion() + "\n" +
                 "支持的CPU架构:" + getsupportedAbis() + "\n"
     }
 
