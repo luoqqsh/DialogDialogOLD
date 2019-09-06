@@ -1,5 +1,6 @@
 package x.com.dialogdialog.Base;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -21,7 +22,10 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mContext = this;
 
-        hl_statusbar.setTranslucentStatus(this);
+        hl_statusbar.setStatusBarColor(this, Color.GREEN);
+        hl_statusbar.setNavigationBarColor(this,Color.RED);
+        hl_statusbar.setRootViewFitsSystemWindows(this,false);
+        hl_statusbar.setStatusBarDarkTheme(this,true);
     }
 
     @Override

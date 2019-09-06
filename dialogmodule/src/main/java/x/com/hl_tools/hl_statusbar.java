@@ -38,8 +38,6 @@ public class hl_statusbar {
             Window window = activity.getWindow();
             window.setStatusBarColor(colorId);
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            //使用SystemBarTintManager,需要先将状态栏设置为透明
-            setTranslucentStatus(activity);
         }
     }
 
