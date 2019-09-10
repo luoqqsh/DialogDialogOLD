@@ -60,7 +60,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'com.google.android.material:material:1.0.0'//原来的design
     testImplementation 'junit:junit:4.12'
@@ -72,17 +72,20 @@ dependencies {
     implementation project(':glide4')
     implementation project(':map_amap')
     implementation project(':map_bmap')
-//    implementation project(':map_gmap')
+    implementation project(':map_gmap')
     implementation project(':map_qmap')
+    implementation project(':map_kmap')
 
     implementation('com.airbnb.android:lottie:3.0.7') {
         exclude group: 'com.google.guava', module: 'listenablefuture'
     }
     implementation 'io.github.lizhangqu:retrace:1.0.2'
-    implementation 'androidx.viewpager2:viewpager2:1.0.0-beta03'
+    implementation 'androidx.viewpager2:viewpager2:1.0.0-beta04'
     implementation 'tv.danmaku.ijk.media:ijkplayer-armv7a:0.8.8'
     implementation(name: 'baiduface-release', ext: 'aar')
     implementation 'com.yanzhenjie:okalle:0.1.7'
+    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation'com.squareup.okhttp3:okhttp:4.1.1'
 }
 
 static def releaseTime() {

@@ -26,11 +26,11 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation project(':dialogmodule')
-    implementation files('libs/tencent_map_sdk_4.2.4.6411471.jar')
+    implementation files('libs/tencent-mapsdk-library-MainRelease-4.2.7.7a87b45d.jar')
     implementation files('libs/TencentLocationSdk_v7.1.7_r02c4bb5a_20190523_115148.jar')
 }

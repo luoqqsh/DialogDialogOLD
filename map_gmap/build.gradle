@@ -22,7 +22,7 @@ android {
     }
     repositories {
         flatDir {
-            dirs 'libs','../map_gmap/libs'
+            dirs 'libs', '../map_gmap/libs'
         }
     }
 }
@@ -30,16 +30,17 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     implementation project(':dialogmodule')
-    implementation 'com.google.android.gms:play-services-basement:17.1.0'
+//    implementation 'com.google.android.gms:play-services-basement:17.1.0'
     implementation 'com.google.android.gms:play-services-base:17.1.0'
 //    implementation 'com.google.android.gms:play-services-gcm:17.0.0'
     implementation 'com.google.android.gms:play-services-location:17.0.0'
-    implementation (name:'maps-sdk-3.0.0-beta', ext:'aar')
-    implementation (name:'places-maps-sdk-3.0.0-beta', ext:'aar')
+    implementation name: 'maps-sdk-3.0.0-beta', ext: 'aar'
+    implementation name: 'places-maps-sdk-3.0.0-beta', ext: 'aar'
+    implementation 'com.google.maps.android:android-maps-utils-sdk-v3-compat:0.1'
 }

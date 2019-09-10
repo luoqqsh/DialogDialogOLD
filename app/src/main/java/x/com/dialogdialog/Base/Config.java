@@ -6,6 +6,7 @@ public class Config {
     public static final String baiduKey = "f3mk8HXVjwnngwtC5XINDRGjdXZiViF5";
     public static final String google_api = "AIzaSyCK8jFSQ5kSCbcAHd9OB-pkHjrTJmXPz3A";
     public static final String qq_api = "DYZBZ-UQFRW-WJ7RE-O6BRH-P5HFE-HJBT5";
+    public static final String kailide_api = "8812be42a90gbps1d8edf7bb";
     public static final double testLat1 = 24.49022007503591;
     public static final double testLng1 = 118.11624459022053;
     public static final double testLat2 = 24.533831321967558;
