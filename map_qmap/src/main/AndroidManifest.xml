@@ -3,10 +3,7 @@
 
     <application
         android:label="@string/app_name">
-        <!--地图key-->
-        <meta-data
-            android:name="TencentMapSDK"
-            android:value="DYZBZ-UQFRW-WJ7RE-O6BRH-P5HFE-HJBT5" />
+    
     </application>
     <!--腾讯地图 SDK 要求的权限(开始)-->
     <!--访问网络获取地图服务-->

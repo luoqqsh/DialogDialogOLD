@@ -2,9 +2,6 @@
     package="com.example.xxing.map_gmap" >
     <application
         android:label="@string/app_name">
-        <!--地图key-->
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCK8jFSQ5kSCbcAHd9OB-pkHjrTJmXPz3A" />
+      
     </application>
 </manifest>

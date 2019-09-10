@@ -3,10 +3,6 @@
 
     <application
         android:label="@string/app_name">
-        <!--地图key-->
-        <meta-data
-            android:name="com.amap.api.v2.apikey"
-            android:value="bc0a5f96b7eba08c50f6fd21e42a1eb4" />
         <!--定位服务-->
         <service android:name="com.amap.api.location.APSService" />
     </application>

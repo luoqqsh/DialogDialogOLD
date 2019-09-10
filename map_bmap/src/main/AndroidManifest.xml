@@ -4,9 +4,6 @@
     <application
         android:label="@string/app_name">
         <!--地图key-->
-        <meta-data
-            android:name="com.baidu.lbsapi.API_KEY"
-            android:value="f3mk8HXVjwnngwtC5XINDRGjdXZiViF5" />
         <service android:name="com.baidu.location.f"
             android:enabled="true"
             android:process=":remote"/>

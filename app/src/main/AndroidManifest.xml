@@ -33,6 +33,30 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
+
+        <!--        高德地图-->
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="bc0a5f96b7eba08c50f6fd21e42a1eb4" />
+        <!--定位服务-->
+
+        <!--百度地图key-->
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="f3mk8HXVjwnngwtC5XINDRGjdXZiViF5" />
+
+        <!--谷歌地图-->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCK8jFSQ5kSCbcAHd9OB-pkHjrTJmXPz3A" />
+
+        <!--腾讯地图-->
+        <meta-data
+            android:name="TencentMapSDK"
+            android:value="DYZBZ-UQFRW-WJ7RE-O6BRH-P5HFE-HJBT5" />
+        
+        
+        
         <activity android:name=".DialogMainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -40,6 +64,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        
         <activity android:name=".NotificationActivity" />
         <activity android:name=".DialogActivity" />
         <activity android:name=".H5Activity" />
