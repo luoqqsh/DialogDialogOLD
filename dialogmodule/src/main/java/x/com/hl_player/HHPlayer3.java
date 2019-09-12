@@ -206,7 +206,7 @@ public class HHPlayer3 {
     }
 
     public void start() {
-        if (hhPlayerCore.isPrepared && hhPlayerCore.isPlayControl()) {
+        if (hhPlayerCore.isPrepared() && hhPlayerCore.isPlayControl()) {
             hhPlayerCore.start();
             hhPlayerCore.getCurrentStart();
             hhPlayerCore.mPlayerState = PlayerStateType.PLAYING;
@@ -506,11 +506,9 @@ public class HHPlayer3 {
         hhPlayerCore.getCurrentStop();
         hhPlayerCore.release();
         hhPlayerCore.mPlayerState = PlayerStateType.NONE;
-        hhPlayerCore.isPrepared = false;
+        hhPlayerCore.playerPrePareState = PlayerPrePareStateType.NONE;
         Log.d(hhPlayerCore.TAG, "doRelease");
     }
-
-
 /*
 
     public void fullScreen() {

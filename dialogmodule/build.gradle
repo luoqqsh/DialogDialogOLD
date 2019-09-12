@@ -20,6 +20,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+//    libraryVariants.all { variant ->
+//        variant.outputs.all {
+//            outputFileName = "_${defaultConfig.versionName}"+'.aar'
+//        }
+//    }
 }
 
 

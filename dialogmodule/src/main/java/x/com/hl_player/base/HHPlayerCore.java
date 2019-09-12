@@ -11,7 +11,6 @@ import java.util.TimerTask;
 import x.com.hl_base.HOnListener;
 import x.com.hl_player.TypeBean.PlayerPrePareStateType;
 import x.com.hl_player.TypeBean.PlayerStateType;
-import x.com.hl_rx.TaskDelayManager;
 
 /**
  * 播放器基础类
@@ -29,13 +28,11 @@ public abstract class HHPlayerCore {
     public float volume = 1;
     public Context context;//有的播放器需要context
     public boolean isLooping = true; //是否循环播放
-    public boolean isPrepared = false;//是否准备好
     public HOnListener<Object> onPreparedListener;
     public HOnListener<Long> onProgessListener;
     public HOnListener<Object> onCompletionListener;
     public HOnListener<Object> onErrorListener;
     public HOnListener<Integer> onBufferingUpdateListener;
-    private TaskDelayManager a;
     private Map<String, String> mHeaders;
     private Timer timer;
     public boolean isLive = false;//是否实时直播
@@ -78,7 +75,7 @@ public abstract class HHPlayerCore {
     }
 
     public boolean isPrepared() {
-        return isPrepared;
+        return playerPrePareState == PlayerPrePareStateType.PREPARED;
     }
 
     public Object getMediaPath() {
@@ -137,18 +134,6 @@ public abstract class HHPlayerCore {
                 }
             }, 0, 1000);//delay延迟时间，period间隔时间
         }
-
-//        if (a == null) {
-//            a = new TaskDelayManager() {
-//                @Override
-//                public void onListen(Long index) {
-//                    if (onProgessListener != null) {
-//                        onProgessListener.onListen(getCurrentPosition());
-//                    }
-//                }
-//            };
-//            a.loop(1000);
-//        }
     }
 
     //读取播放进度线程停止
@@ -156,10 +141,6 @@ public abstract class HHPlayerCore {
         if (timer != null) {
             timer.cancel();
             timer = null;
-        }
-        if (a != null) {
-            a.cancel();
-            a = null;
         }
     }
 

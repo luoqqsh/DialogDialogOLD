@@ -66,7 +66,7 @@ public class HHPlayer2 {
     }
 
     public void start() {
-        if (hhPlayerCore.isPrepared && hhPlayerCore.isPlayControl()) {
+        if (hhPlayerCore.isPrepared() && hhPlayerCore.isPlayControl()) {
             hhPlayerCore.start();
             hhPlayerCore.getCurrentStart();
             hhPlayerCore.mPlayerState = PlayerStateType.PLAYING;
@@ -91,7 +91,6 @@ public class HHPlayer2 {
     public void stop() {
         if (hhPlayerCore.isPlayControl()) {
             hhPlayerCore.stop();
-            hhPlayerCore.isPrepared = false;
             hhPlayerCore.mPlayerState = PlayerStateType.IDLE;
             hhPlayerCore.getCurrentStop();
             Log.d(hhPlayerCore.TAG, "doStop");
@@ -120,7 +119,6 @@ public class HHPlayer2 {
         stop();
         hhPlayerCore.getCurrentStop();
         hhPlayerCore.mPlayerState = PlayerStateType.NONE;
-        hhPlayerCore.isPrepared = false;
         Log.d(hhPlayerCore.TAG, "doRelease");
     }
 

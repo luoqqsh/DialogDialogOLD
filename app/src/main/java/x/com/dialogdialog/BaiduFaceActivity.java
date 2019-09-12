@@ -278,6 +278,7 @@ public class BaiduFaceActivity extends BaseActivity {
     /*********/////////////
     private void getToken(String imgstr) {
         initKalle();
+        Kalle.setConfig(KalleConfig.newBuilder().build());
         Kalle.get("https://aip.baidubce.com/oauth/2.0/token")
                 .param("grant_type", "client_credentials")
                 .param("client_id", "aUEXdqAPTdUe8QFxv84hE5iM")

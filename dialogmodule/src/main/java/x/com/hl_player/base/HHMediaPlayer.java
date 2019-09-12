@@ -46,7 +46,6 @@ public class HHMediaPlayer extends HHPlayerCore {
                 public void onPrepared(MediaPlayer mp) {
                     playerPrePareState = PlayerPrePareStateType.PREPARED;
                     mPlayerState = PlayerStateType.PREPARED;
-                    isPrepared = true;
                     videoWidth = mediaPlayer.getVideoWidth();
                     videoHeight = mediaPlayer.getVideoHeight();
                     mediaPlayer.setVolume(volume, volume);
@@ -169,7 +168,6 @@ public class HHMediaPlayer extends HHPlayerCore {
     public void start() {
         if (mediaPlayer != null) {
             mediaPlayer.start();
-            getCurrentStart();
         }
     }
 
@@ -196,7 +194,7 @@ public class HHMediaPlayer extends HHPlayerCore {
         //调用stop方法之后要重新调用prepare方法，不然无法播放
         if (mediaPlayer != null && isPlayControl()) {
             mediaPlayer.stop();
-            isPrepared = false;
+            playerPrePareState = PlayerPrePareStateType.NONE;
             mPlayerState = PlayerStateType.IDLE;
         }
     }
