@@ -35,6 +35,7 @@ import x.com.hl_map.bean.LatLngBean;
 import x.com.hl_map.bean.LocationBean;
 import x.com.hl_map.bean.LocationFrom;
 import x.com.hl_map.bean.LocationType;
+import x.com.hl_map.bean.MapType;
 import x.com.hl_map.listener.OnLocationListener;
 
 public class BmapSearch extends SearchController {
@@ -53,7 +54,7 @@ public class BmapSearch extends SearchController {
             public void onGetGeoCodeResult(GeoCodeResult geoCodeResult) {
                 ViseLog.d(geoCodeResult);
                 if (geoCodeResult.error == SearchResult.ERRORNO.NO_ERROR) {
-                    LocationBean locationBean = new LocationBean(LocationFrom.ADDRESS2POINT,
+                    LocationBean locationBean = new LocationBean(MapType.BAIDUMAP,LocationFrom.ADDRESS2POINT,
                             new LatLngBean(geoCodeResult.getLocation().latitude,
                                     geoCodeResult.getLocation().latitude));
                     locationBean.setAddress(geoCodeResult.getAddress());
@@ -93,7 +94,7 @@ public class BmapSearch extends SearchController {
             public void onGetReverseGeoCodeResult(ReverseGeoCodeResult reverseGeoCodeResult) {
                 ViseLog.d(reverseGeoCodeResult);
                 if (reverseGeoCodeResult.error == SearchResult.ERRORNO.NO_ERROR) {
-                    LocationBean locationBean = new LocationBean(LocationFrom.POINT2ADDRESS, new LatLngBean(reverseGeoCodeResult.getLocation().latitude,
+                    LocationBean locationBean = new LocationBean(MapType.BAIDUMAP,LocationFrom.POINT2ADDRESS, new LatLngBean(reverseGeoCodeResult.getLocation().latitude,
                             reverseGeoCodeResult.getLocation().latitude));
                     locationBean.setAddress(reverseGeoCodeResult.getAddress());
                     List<PoiInfo> items = reverseGeoCodeResult.getPoiList();
@@ -131,7 +132,7 @@ public class BmapSearch extends SearchController {
             public void onGetPoiResult(PoiResult poiResult) {
                 ViseLog.d(poiResult);
                 if (poiResult.error == SearchResult.ERRORNO.NO_ERROR) {
-                    LocationBean locationBean = new LocationBean(LocationFrom.POINT2ADDRESS, null);
+                    LocationBean locationBean = new LocationBean(MapType.BAIDUMAP,LocationFrom.POINT2ADDRESS, null);
                     List<PoiInfo> items = poiResult.getAllPoi();
                     if (items.size() > 0) {
                         List<LatLngBean> latLngBeans = new ArrayList<>();
@@ -183,7 +184,7 @@ public class BmapSearch extends SearchController {
             public void onGetSuggestionResult(SuggestionResult suggestionResult) {
                 if (suggestionResult.error == SearchResult.ERRORNO.NO_ERROR) {
                     if (suggestionResult.getAllSuggestions().size() > 0) {
-                        LocationBean locationBean = new LocationBean(LocationFrom.SHOWTIPS, null);
+                        LocationBean locationBean = new LocationBean(MapType.BAIDUMAP,LocationFrom.SHOWTIPS, null);
                         List<LatLngBean> latLngBeans = new ArrayList<>();
                         for (int j = 0; j < suggestionResult.getAllSuggestions().size(); j++) {
                             latLngBeans.add(new LatLngBean(suggestionResult.getAllSuggestions().get(j).getPt().latitude, suggestionResult.getAllSuggestions().get(j).getPt().longitude, suggestionResult.getAllSuggestions().get(j).getKey()));

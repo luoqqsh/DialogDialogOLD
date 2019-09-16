@@ -45,6 +45,7 @@ import x.com.hl_map.bean.LineBean;
 import x.com.hl_map.bean.LineType;
 import x.com.hl_map.bean.LocationBean;
 import x.com.hl_map.bean.LocationFrom;
+import x.com.hl_map.bean.MapType;
 import x.com.hl_map.bean.RouteSearchType;
 import x.com.hl_map.listener.OnCameraChangeListener;
 import x.com.hl_map.listener.OnLocationListener;
@@ -76,14 +77,14 @@ public class AmapController extends MapController {
             aMap.setOnCameraChangeListener(new AMap.OnCameraChangeListener() {
                 @Override
                 public void onCameraChange(CameraPosition cameraPosition) {
-                    LocationBean latLngs = new LocationBean(LocationFrom.MOVEMAP, new LatLngBean(cameraPosition.target.latitude, cameraPosition.target.longitude));
+                    LocationBean latLngs = new LocationBean(MapType.AMAP,LocationFrom.MOVEMAP, new LatLngBean(cameraPosition.target.latitude, cameraPosition.target.longitude));
                     latLngs.setZoom(cameraPosition.zoom);
                     onCameraChangeListener.onCameraChange(latLngs);
                 }
 
                 @Override
                 public void onCameraChangeFinish(CameraPosition cameraPosition) {
-                    LocationBean latLngs = new LocationBean(LocationFrom.MOVEMAP_FINISH, new LatLngBean(cameraPosition.target.latitude, cameraPosition.target.longitude));
+                    LocationBean latLngs = new LocationBean(MapType.AMAP,LocationFrom.MOVEMAP_FINISH, new LatLngBean(cameraPosition.target.latitude, cameraPosition.target.longitude));
                     latLngs.setZoom(cameraPosition.zoom);
                     onCameraChangeListener.onCameraChange(latLngs);
                 }
@@ -255,7 +256,7 @@ public class AmapController extends MapController {
             public void onDriveRouteSearched(DriveRouteResult driveRouteResult, int i) {
                 ViseLog.d(driveRouteResult);
                 if (i == 1000) {
-                    LocationBean locationBean = new LocationBean(LocationFrom.DRIVEROUTE, null);
+                    LocationBean locationBean = new LocationBean(MapType.AMAP,LocationFrom.DRIVEROUTE, null);
                     if (driveRouteResult.getPaths().size() > 0) {
                         List<LatLngBean> latLngBeans = new ArrayList<>();
                         List<Integer> colorList = new ArrayList<>();

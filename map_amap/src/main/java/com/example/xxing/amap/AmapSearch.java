@@ -27,6 +27,7 @@ import x.com.hl_map.bean.LatLngBean;
 import x.com.hl_map.bean.LocationBean;
 import x.com.hl_map.bean.LocationFrom;
 import x.com.hl_map.bean.LocationType;
+import x.com.hl_map.bean.MapType;
 import x.com.hl_map.listener.OnLocationListener;
 
 public class AmapSearch extends SearchController {
@@ -48,7 +49,7 @@ public class AmapSearch extends SearchController {
                 if (i == 1000) {
                     List<GeocodeAddress> geocodeAddressList = geocodeResult.getGeocodeAddressList();
                     if (geocodeAddressList.size() > 0) {
-                        LocationBean locationBean = new LocationBean(LocationFrom.ADDRESS2POINT,
+                        LocationBean locationBean = new LocationBean(MapType.AMAP, LocationFrom.ADDRESS2POINT,
                                 new LatLngBean(geocodeAddressList.get(0).getLatLonPoint().getLatitude(),
                                         geocodeAddressList.get(0).getLatLonPoint().getLongitude()));
                         locationBean.setAddress(geocodeAddressList.get(0).getFormatAddress());
@@ -77,14 +78,14 @@ public class AmapSearch extends SearchController {
             @Override
             public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int i) {
                 if (i == 1000) {
-                    LocationBean locationBean = new LocationBean(LocationFrom.POINT2ADDRESS, new LatLngBean(regeocodeResult.getRegeocodeQuery().getPoint().getLatitude(),
+                    LocationBean locationBean = new LocationBean(MapType.AMAP,LocationFrom.POINT2ADDRESS, new LatLngBean(regeocodeResult.getRegeocodeQuery().getPoint().getLatitude(),
                             regeocodeResult.getRegeocodeQuery().getPoint().getLongitude()));
                     locationBean.setAddress(regeocodeResult.getRegeocodeAddress().getFormatAddress());
                     List<PoiItem> items = regeocodeResult.getRegeocodeAddress().getPois();
                     if (items.size() > 0) {
                         List<LatLngBean> latLngBeans = new ArrayList<>();
                         for (int j = 0; j < items.size(); j++) {
-                            latLngBeans.add(new LatLngBean(items.get(j).getLatLonPoint().getLatitude(), items.get(j).getLatLonPoint().getLongitude(),items.get(j).getAdName()));
+                            latLngBeans.add(new LatLngBean(items.get(j).getLatLonPoint().getLatitude(), items.get(j).getLatLonPoint().getLongitude(), items.get(j).getAdName()));
                         }
                         locationBean.setPois(latLngBeans);
                         onLocationListener.onCurrentLocation(locationBean);
@@ -120,12 +121,12 @@ public class AmapSearch extends SearchController {
             @Override
             public void onPoiSearched(PoiResult poiResult, int i) {
                 if (i == 1000) {
-                    LocationBean locationBean = new LocationBean(LocationFrom.POINT2ADDRESS, null);
+                    LocationBean locationBean = new LocationBean(MapType.AMAP,LocationFrom.POINT2ADDRESS, null);
                     List<PoiItem> items = poiResult.getPois();
                     if (items.size() > 0) {
                         List<LatLngBean> latLngBeans = new ArrayList<>();
                         for (int j = 0; j < items.size(); j++) {
-                            latLngBeans.add(new LatLngBean(items.get(j).getLatLonPoint().getLatitude(), items.get(j).getLatLonPoint().getLongitude(),items.get(j).getTitle()));
+                            latLngBeans.add(new LatLngBean(items.get(j).getLatLonPoint().getLatitude(), items.get(j).getLatLonPoint().getLongitude(), items.get(j).getTitle()));
                         }
                         locationBean.setPois(latLngBeans);
                         onLocationListener.onCurrentLocation(locationBean);
@@ -158,7 +159,7 @@ public class AmapSearch extends SearchController {
             @Override
             public void onGetInputtips(List<Tip> list, int i) {
                 if (list.size() > 0) {
-                    LocationBean locationBean = new LocationBean(LocationFrom.SHOWTIPS, null);
+                    LocationBean locationBean = new LocationBean(MapType.AMAP,LocationFrom.SHOWTIPS, null);
                     List<LatLngBean> latLngBeans = new ArrayList<>();
                     for (int j = 0; j < list.size(); j++) {
                         latLngBeans.add(new LatLngBean(list.get(j).getPoint().getLatitude(), list.get(j).getPoint().getLongitude(), list.get(j).getName()));

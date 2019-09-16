@@ -36,6 +36,7 @@ import x.com.hl_map.bean.LineBean;
 import x.com.hl_map.bean.LineType;
 import x.com.hl_map.bean.LocationBean;
 import x.com.hl_map.bean.LocationFrom;
+import x.com.hl_map.bean.MapType;
 import x.com.hl_map.bean.RouteSearchType;
 import x.com.hl_map.listener.OnCameraChangeListener;
 import x.com.hl_map.listener.OnLocationListener;
@@ -66,14 +67,14 @@ public class QmapController extends MapController {
             qMap.setOnCameraChangeListener(new TencentMap.OnCameraChangeListener() {
                 @Override
                 public void onCameraChange(CameraPosition cameraPosition) {
-                    LocationBean latLngs = new LocationBean(LocationFrom.MOVEMAP, new LatLngBean(cameraPosition.target.latitude, cameraPosition.target.longitude));
+                    LocationBean latLngs = new LocationBean(MapType.QQMAP,LocationFrom.MOVEMAP, new LatLngBean(cameraPosition.target.latitude, cameraPosition.target.longitude));
                     latLngs.setZoom(cameraPosition.zoom);
                     onCameraChangeListener.onCameraChange(latLngs);
                 }
 
                 @Override
                 public void onCameraChangeFinished(CameraPosition cameraPosition) {
-                    LocationBean latLngs = new LocationBean(LocationFrom.MOVEMAP_FINISH, new LatLngBean(cameraPosition.target.latitude, cameraPosition.target.longitude));
+                    LocationBean latLngs = new LocationBean(MapType.QQMAP,LocationFrom.MOVEMAP_FINISH, new LatLngBean(cameraPosition.target.latitude, cameraPosition.target.longitude));
                     latLngs.setZoom(cameraPosition.zoom);
                     onCameraChangeListener.onCameraChange(latLngs);
                 }

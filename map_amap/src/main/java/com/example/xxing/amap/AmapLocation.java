@@ -13,6 +13,7 @@ import x.com.hl_map.LocationController;
 import x.com.hl_map.bean.LatLngBean;
 import x.com.hl_map.bean.LocationBean;
 import x.com.hl_map.bean.LocationFrom;
+import x.com.hl_map.bean.MapType;
 import x.com.hl_map.listener.OnLocationListener;
 
 public class AmapLocation extends LocationController {
@@ -41,7 +42,7 @@ public class AmapLocation extends LocationController {
             public void onLocationChanged(AMapLocation aMapLocation) {
                 if (onLocationListener != null) {
                     if (aMapLocation.getErrorCode() == 0) {
-                        LocationBean locationBean = new LocationBean(LocationFrom.LOCATION, new LatLngBean(aMapLocation.getLatitude(), aMapLocation.getLongitude()));
+                        LocationBean locationBean = new LocationBean(MapType.AMAP, LocationFrom.LOCATION, new LatLngBean(aMapLocation.getLatitude(), aMapLocation.getLongitude()));
                         locationBean.setZoom(locationBean.getZoom());
                         locationBean.setAddress(locationBean.getAddress());
                         locationBean.setBearing(locationBean.getBearing());

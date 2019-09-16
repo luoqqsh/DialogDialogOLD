@@ -2,10 +2,14 @@ package x.com.hl_map.bean;
 
 import java.util.List;
 
+/**
+ * 位置详细数据
+ */
 public class LocationBean {
     private int errorCode;
     private String errorInfo;
     private LocationFrom from;
+    private MapType mapType;
 
     private LatLngBean latLngBean;
     private String address;//地址，当类型为AMapLocation.LOCATION_TYPE_GPS时也可以返回地址信息(需要网络通畅，第一次有可能没有地址信息返回）
@@ -51,14 +55,15 @@ public class LocationBean {
     private int trustedLevel;//获取定位结果的可信度 只有在定位成功时才有意义 非常可信 AMapLocation.TRUSTED_LEVEL_HIGH 可信度一般AMapLocation.TRUSTED_LEVEL_NORMAL 可信度较低 AMapLocation.TRUSTED_LEVEL_LOW 非常不可信 AMapLocation.TRUSTED_LEVEL_BAD
 
 
-    public LocationBean(LocationFrom from, LatLngBean latLngBean) {
-        this(from, latLngBean, "");
+    public LocationBean(MapType mapType, LocationFrom from, LatLngBean latLngBean) {
+        this(mapType, from, latLngBean, "");
     }
 
-    public LocationBean(LocationFrom from, LatLngBean latLngBean, String address) {
+    public LocationBean(MapType mapType, LocationFrom from, LatLngBean latLngBean, String address) {
         this.latLngBean = latLngBean;
         this.address = address;
         this.from = from;
+        this.mapType = mapType;
     }
 
     public double getLat() {
@@ -132,5 +137,9 @@ public class LocationBean {
     public void setColorList(List<Integer> colorList) {
         this.colorList = colorList;
 
+    }
+
+    public MapType getMapType() {
+        return mapType;
     }
 }

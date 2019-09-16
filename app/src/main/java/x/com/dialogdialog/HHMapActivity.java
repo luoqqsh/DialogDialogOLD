@@ -6,8 +6,8 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 
-import com.example.xxing.amap.AmapController;
 import com.example.xxing.amap.AmapLocation;
+import com.example.xxing.map_bamap.BmapController;
 import com.example.xxing.map_bamap.BmapSearch;
 
 import x.com.dialogdialog.Base.BaseActivity;
@@ -37,7 +37,7 @@ public class HHMapActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mapview);
         LinearLayout ll_mapview = findViewById(R.id.ll_mapview);
-        hHmap = new HHmap(this, new AmapController());
+        hHmap = new HHmap(this, new BmapController());
         hHmap.addMapView(ll_mapview, savedInstanceState, new OnCameraChangeListener() {
             @Override
             public void onCameraChange(LocationBean latLngs) {
@@ -48,6 +48,7 @@ public class HHMapActivity extends BaseActivity {
         }, new OnMapReadyListener() {
             @Override
             public void onReady() {
+                ViseLog.d("onready");
                 hHmap.moveToPosition(new LatLngBean(Config.testLat1, Config.testLng1), new LatLngBean(Config.testLat2, Config.testLng2), 100);
                 hHmap.addMarker(new LineBean().setMarker(new LatLngBean(Config.testLat1, Config.testLng1), R.mipmap.map_icon_p));
                 hHmap.addMarker(new LineBean().setMarker(new LatLngBean(Config.testLat2, Config.testLng2), R.mipmap.map_icon_p));

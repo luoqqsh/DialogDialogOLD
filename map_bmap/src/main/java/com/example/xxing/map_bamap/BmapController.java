@@ -23,6 +23,7 @@ import com.baidu.mapapi.map.Overlay;
 import com.baidu.mapapi.map.Polyline;
 import com.baidu.mapapi.map.PolylineOptions;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.model.LatLngBounds;
 import com.baidu.mapapi.search.route.BikingRoutePlanOption;
 import com.baidu.mapapi.search.route.BikingRouteResult;
 import com.baidu.mapapi.search.route.DrivingRoutePlanOption;
@@ -47,6 +48,7 @@ import x.com.hl_map.bean.LineBean;
 import x.com.hl_map.bean.LineType;
 import x.com.hl_map.bean.LocationBean;
 import x.com.hl_map.bean.LocationFrom;
+import x.com.hl_map.bean.MapType;
 import x.com.hl_map.bean.RouteSearchType;
 import x.com.hl_map.listener.OnCameraChangeListener;
 import x.com.hl_map.listener.OnLocationListener;
@@ -87,14 +89,14 @@ public class BmapController extends MapController {
 
                 @Override
                 public void onMapStatusChange(MapStatus mapStatus) {
-                    LocationBean latLngs = new LocationBean(LocationFrom.MOVEMAP, new LatLngBean(mapStatus.target.latitude, mapStatus.target.longitude));
+                    LocationBean latLngs = new LocationBean(MapType.BAIDUMAP, LocationFrom.MOVEMAP, new LatLngBean(mapStatus.target.latitude, mapStatus.target.longitude));
                     latLngs.setZoom(mapStatus.zoom);
                     onCameraChangeListener.onCameraChange(latLngs);
                 }
 
                 @Override
                 public void onMapStatusChangeFinish(MapStatus mapStatus) {
-                    LocationBean latLngs = new LocationBean(LocationFrom.MOVEMAP_FINISH, new LatLngBean(mapStatus.target.latitude, mapStatus.target.longitude));
+                    LocationBean latLngs = new LocationBean(MapType.BAIDUMAP, LocationFrom.MOVEMAP_FINISH, new LatLngBean(mapStatus.target.latitude, mapStatus.target.longitude));
                     latLngs.setZoom(mapStatus.zoom);
                     onCameraChangeListener.onCameraChange(latLngs);
                 }
@@ -150,7 +152,12 @@ public class BmapController extends MapController {
 
     @Override
     public void moveToPosition(LatLngBean latLngBean1, LatLngBean latLngBean2, int padding) {
-
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        builder.include(new LatLng(latLngBean1.getLat(), latLngBean1.getLng()));
+        builder.include(new LatLng(latLngBean2.getLat(), latLngBean2.getLng()));
+        LatLngBounds latLngBounds = builder.build();
+        MapStatusUpdate msu = MapStatusUpdateFactory.newLatLngBounds(latLngBounds, padding, padding, padding, padding);
+        mBaiduMap.setMapStatus(msu);
     }
 
     @Override

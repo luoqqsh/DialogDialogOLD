@@ -9,12 +9,12 @@ import com.tencent.map.geolocation.TencentLocationListener;
 import com.tencent.map.geolocation.TencentLocationManager;
 import com.tencent.map.geolocation.TencentLocationRequest;
 
-import x.com.hl_log.ViseLog;
 import x.com.hl_map.HHconfig;
 import x.com.hl_map.LocationController;
 import x.com.hl_map.bean.LatLngBean;
 import x.com.hl_map.bean.LocationBean;
 import x.com.hl_map.bean.LocationFrom;
+import x.com.hl_map.bean.MapType;
 import x.com.hl_map.listener.OnLocationListener;
 
 public class QmapLocation extends LocationController {
@@ -44,10 +44,9 @@ public class QmapLocation extends LocationController {
         mLocationListener = new TencentLocationListener() {
             @Override
             public void onLocationChanged(TencentLocation tencentLocation, int i, String s) {
-                ViseLog.d(tencentLocation);
                 if (onLocationListener != null) {
                     if (i == TencentLocation.ERROR_OK) {
-                        LocationBean locationBean = new LocationBean(LocationFrom.LOCATION, new LatLngBean(tencentLocation.getLatitude(), tencentLocation.getLongitude()));
+                        LocationBean locationBean = new LocationBean(MapType.QQMAP,LocationFrom.LOCATION, new LatLngBean(tencentLocation.getLatitude(), tencentLocation.getLongitude()));
                         locationBean.setAddress(tencentLocation.getAddress());
                         locationBean.setBearing(tencentLocation.getBearing());
                         locationBean.setSpeed(tencentLocation.getSpeed());

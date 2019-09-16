@@ -7,13 +7,13 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 
-import x.com.hl_log.ViseLog;
 import x.com.hl_map.HHconfig;
 import x.com.hl_map.LocationController;
 import x.com.hl_map.bean.ErrorType;
 import x.com.hl_map.bean.LatLngBean;
 import x.com.hl_map.bean.LocationBean;
 import x.com.hl_map.bean.LocationFrom;
+import x.com.hl_map.bean.MapType;
 import x.com.hl_map.listener.OnLocationListener;
 
 public class BmapLocation extends LocationController {
@@ -39,10 +39,9 @@ public class BmapLocation extends LocationController {
         mLocationListener = new BDAbstractLocationListener() {
             @Override
             public void onReceiveLocation(BDLocation bdLocation) {
-                ViseLog.d(bdLocation);
                 if (onLocationListener != null) {
                     if (bdLocation != null) {
-                        LocationBean locationBean = new LocationBean(LocationFrom.LOCATION, new LatLngBean(bdLocation.getLatitude(), bdLocation.getLongitude()));
+                        LocationBean locationBean = new LocationBean(MapType.BAIDUMAP,LocationFrom.LOCATION, new LatLngBean(bdLocation.getLatitude(), bdLocation.getLongitude()));
                         locationBean.setZoom(locationBean.getZoom());
                         locationBean.setAddress(locationBean.getAddress());
                         locationBean.setBearing(locationBean.getBearing());

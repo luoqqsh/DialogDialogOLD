@@ -31,6 +31,7 @@ import x.com.hl_map.bean.LineBean;
 import x.com.hl_map.bean.LineType;
 import x.com.hl_map.bean.LocationBean;
 import x.com.hl_map.bean.LocationFrom;
+import x.com.hl_map.bean.MapType;
 import x.com.hl_map.bean.RouteSearchType;
 import x.com.hl_map.listener.OnCameraChangeListener;
 import x.com.hl_map.listener.OnLocationListener;
@@ -65,7 +66,7 @@ public class GmapController extends MapController {
                     gMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
                         @Override
                         public void onCameraMove() {
-                            LocationBean latLngs = new LocationBean(LocationFrom.MOVEMAP, new LatLngBean(gMap.getCameraPosition().target.latitude, gMap.getCameraPosition().target.longitude));
+                            LocationBean latLngs = new LocationBean(MapType.GOOGLEMAP,LocationFrom.MOVEMAP, new LatLngBean(gMap.getCameraPosition().target.latitude, gMap.getCameraPosition().target.longitude));
                             latLngs.setZoom(gMap.getCameraPosition().zoom);
                             onCameraChangeListener.onCameraChange(latLngs);
                         }
@@ -73,7 +74,7 @@ public class GmapController extends MapController {
                     gMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
                         @Override
                         public void onCameraIdle() {
-                            LocationBean latLngs = new LocationBean(LocationFrom.MOVEMAP_FINISH, new LatLngBean(gMap.getCameraPosition().target.latitude, gMap.getCameraPosition().target.longitude));
+                            LocationBean latLngs = new LocationBean(MapType.GOOGLEMAP,LocationFrom.MOVEMAP_FINISH, new LatLngBean(gMap.getCameraPosition().target.latitude, gMap.getCameraPosition().target.longitude));
                             latLngs.setZoom(gMap.getCameraPosition().zoom);
                             onCameraChangeListener.onCameraChange(latLngs);
                         }

@@ -1,5 +1,8 @@
 package x.com.hl_map.bean;
 
+/**
+ * 坐标来源
+ */
 public enum LocationFrom {
     POINT2ADDRESS,//坐标转地址
     ADDRESS2POINT,//地址转坐标
