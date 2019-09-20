@@ -36,7 +36,7 @@ class DialogMainActivity : BaseActivity() {
         mapping.setOnClickListener { startActivity(Intent(mContext, MappingActivity::class.java)) }
         view.setOnClickListener { startActivity(Intent(mContext, ViewActivity::class.java)) }
         camera.setOnClickListener { startActivity(Intent(mContext, HHCameraActivity::class.java)) }
-        mediacodec.setOnClickListener { startActivity(Intent(mContext, ViewActivity::class.java)) }
+        mediacodec.setOnClickListener { startActivity(Intent(mContext, MediaCodecActivity::class.java)) }
         baiduface.setOnClickListener { startActivity(Intent(mContext, BaiduFaceActivity::class.java)) }
         map.setOnClickListener { startActivity(Intent(mContext, HHMapActivity::class.java)) }
         close.setOnClickListener {
