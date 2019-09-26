@@ -41,7 +41,8 @@ public class HHMedia3Activity extends BaseActivity {
     //----------------------------------------------------------
     private String musicpath = "/storage/emulated/0/Music/不可说 - 霍建华、赵丽颖.mp3";
     //    private String videopath = "/storage/emulated/0/DCIM/Camera/19619104518845.mp4";
-    private String videopath = "http://s.bizhijingling.com/uploadfile/userload/vedio/2019/0516/20190516065450574.mp4";
+//    private String videopath = "http://s.bizhijingling.com/uploadfile/userload/vedio/2019/0516/20190516065450574.mp4";
+    private String videopath = "rtsp://27.148.240.138/PLTV/88888888/224/3221226716/10000100000000060000000001664269_0.smil";
     //    private String videopath = "http://cstv.live.wscdns.com/live/xiamen1/playlist.m3u8";
     private boolean ismute = false;
     private TextView currenttime, totaltime;
@@ -113,8 +114,8 @@ public class HHMedia3Activity extends BaseActivity {
         seekbar_volume.setMax(10);
 
         findViewById(R.id.select).setOnClickListener(v ->
-//                hhPlayer3.prepare(videopath, ""));
-                hhPlayer3.prepare(tvUrl.getLinks(), 0));
+                hhPlayer3.prepare(videopath, ""));
+//                hhPlayer3.prepare(tvUrl.getLinks(), 0));
         findViewById(R.id.play).setOnClickListener(v -> hhPlayer3.start());
         findViewById(R.id.pause).setOnClickListener(v -> hhPlayer3.pause());
         findViewById(R.id.stop).setOnClickListener(v -> hhPlayer3.stop());

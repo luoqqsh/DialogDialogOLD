@@ -16,6 +16,7 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 
 import java.util.List;
+import java.util.Map;
 
 import x.com.hl_base.HOnListener;
 import x.com.hl_player.TvListBean.TvDataList;
@@ -309,6 +310,10 @@ public class HHPlayer3 {
         }
     }
 
+    //设置请求头，在prepare之前执行
+    public void setHeader(Map<String, String> mHeaders) {
+        hhPlayerCore.setHeaders(mHeaders);
+    }
 
     public Object getMediaPath() {
         return hhPlayerCore.getMediaPath();

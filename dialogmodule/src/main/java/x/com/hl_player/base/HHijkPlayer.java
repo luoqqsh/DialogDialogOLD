@@ -1,14 +1,10 @@
 package x.com.hl_player.base;
 
 import android.content.res.AssetFileDescriptor;
-import android.media.MediaPlayer;
 import android.os.Build;
 import android.util.Log;
 import android.view.Surface;
 import android.view.SurfaceHolder;
-
-import java.lang.reflect.Method;
-import java.util.Map;
 
 import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
@@ -116,12 +112,8 @@ public class HHijkPlayer extends HHPlayerCore {
             if (mediaPath instanceof AssetFileDescriptor) {//Android assets file
 //                AssetFileDescriptor fd = (AssetFileDescriptor) mediaPath;
 //                mediaPlayer.setDataSource(fd.getFileDescriptor(), fd.getStartOffset(), fd.getLength());
-            } else if (mediaPath != null && getHeaders() != null) {//url with headers
-                Class<MediaPlayer> clazz = MediaPlayer.class;
-                Method method = clazz.getDeclaredMethod("setDataSource", String.class, Map.class);
-                method.invoke(mediaPlayer, mediaPath.toString(), getHeaders());
             } else if (mediaPath != null) {
-                mediaPlayer.setDataSource(mediaPath.toString());
+                mediaPlayer.setDataSource(mediaPath.toString(), getHeaders());
             }
             mediaPlayer.prepareAsync();//异步
         } catch (Exception e) {
