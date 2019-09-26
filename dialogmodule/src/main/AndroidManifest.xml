@@ -7,7 +7,10 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
 
-    <application android:label="@string/app_name">
+    <!--        resizeableActivity分屏模式需要安卓7.0以上-->
+    <application
+        android:label="@string/app_name"
+        android:resizeableActivity="true">
         <activity
             android:name="x.com.hl_tools.permissions.ApplyPermissionActivity"
             android:launchMode="singleTop"
@@ -29,6 +32,10 @@
             android:name="android.max_aspect"
             android:value="2.2" />
         <!-- 适配刘海屏、水滴屏 Android O 小米 -->
+        <!-- "none" 横竖屏都不绘制耳朵区-->
+        <!-- "portrait" 竖屏绘制到耳朵区-->
+        <!-- "landscape" 横屏绘制到耳朵区-->
+        <!-- "portrait|landscape" 横竖屏都绘制到耳朵区-->
         <meta-data
             android:name="notch.config"
             android:value="portrait|landscape" />
@@ -38,6 +45,8 @@
             android:value="true" />
 
         <!--适配刘海屏、水滴屏 Android P 谷歌 -->
-        <meta-data android:name="android.vendor.full_screen" android:value="true"/>
+        <meta-data
+            android:name="android.vendor.full_screen"
+            android:value="true" />
     </application>
 </manifest>

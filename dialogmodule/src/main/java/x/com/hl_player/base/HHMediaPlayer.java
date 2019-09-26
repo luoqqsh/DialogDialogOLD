@@ -29,6 +29,7 @@ public class HHMediaPlayer extends HHPlayerCore {
     public void initView(SurfaceHolder surfaceHolder) {
         if (mediaPlayer != null) {
             mediaPlayer.setDisplay(surfaceHolder);
+            Log.d(TAG, "surfaceHolder" + surfaceHolder.toString());
         }
     }
 
@@ -36,6 +37,7 @@ public class HHMediaPlayer extends HHPlayerCore {
     public void initView(Surface surface) {
         if (mediaPlayer != null && surface.isValid()) {
             mediaPlayer.setSurface(surface);
+            Log.d(TAG, "surface" + surface.toString());
         }
     }
 
@@ -57,6 +59,7 @@ public class HHMediaPlayer extends HHPlayerCore {
                     videoInfoLog.append("width: ").append(mediaPlayer.getVideoWidth()).append("\n");
                     videoInfoLog.append("height: ").append(mediaPlayer.getVideoHeight()).append("\n");
                     videoInfoLog.append("duration: ").append(mediaPlayer.getDuration());
+                    videoInfoLog.append("tag: ").append(TAG).append("\n");
                     ViseLog.d(videoInfoLog);
                 }
             });
@@ -168,6 +171,7 @@ public class HHMediaPlayer extends HHPlayerCore {
     public void start() {
         if (mediaPlayer != null) {
             mediaPlayer.start();
+            Log.d(TAG, "start");
         }
     }
 
@@ -175,6 +179,7 @@ public class HHMediaPlayer extends HHPlayerCore {
     public void pause() {
         if (mediaPlayer != null) {
             mediaPlayer.pause();
+            Log.d(TAG, "pause");
         }
     }
 
@@ -186,6 +191,7 @@ public class HHMediaPlayer extends HHPlayerCore {
             } else {
                 mediaPlayer.seekTo((int) position);
             }
+            Log.d(TAG, "seekTo " + position);
         }
     }
 
@@ -196,6 +202,7 @@ public class HHMediaPlayer extends HHPlayerCore {
             mediaPlayer.stop();
             playerPrePareState = PlayerPrePareStateType.NONE;
             mPlayerState = PlayerStateType.IDLE;
+            Log.d(TAG, "stop");
         }
     }
 
@@ -203,6 +210,7 @@ public class HHMediaPlayer extends HHPlayerCore {
     public void reset() {
         if (mediaPlayer != null) {
             mediaPlayer.reset();
+            Log.d(TAG, "reset");
         }
     }
 
@@ -211,6 +219,7 @@ public class HHMediaPlayer extends HHPlayerCore {
         if (mediaPlayer != null) {
             mediaPlayer.release();
             mediaPlayer = null;
+            Log.d(TAG, "release");
         }
     }
 
@@ -218,6 +227,7 @@ public class HHMediaPlayer extends HHPlayerCore {
     public void setVolume(float volume) {
         if (mediaPlayer != null) {
             mediaPlayer.setVolume(volume, volume);
+            Log.d(TAG, "setVolume " + volume);
         }
     }
 
@@ -226,6 +236,7 @@ public class HHMediaPlayer extends HHPlayerCore {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (mediaPlayer != null) {
                 mediaPlayer.setPlaybackParams(mediaPlayer.getPlaybackParams().setSpeed(speed));
+                Log.d(TAG, "setSpeed " + speed);
             }
         }
     }

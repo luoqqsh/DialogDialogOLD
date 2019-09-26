@@ -10,8 +10,10 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 
 import java.lang.reflect.Method;
@@ -185,6 +187,12 @@ public class hl_screen {
         return hl_screen.getDeviceHeight(context) - hl_screen.getScreenHeight(context) > 0;
     }
 
+    /**
+     * 判断普通机型是否显示导航栏
+     *
+     * @param context 上下文
+     * @return 是否显示导航栏
+     */
     public static boolean checkDeviceHasNavigationBar(Context context) {
         boolean hasNavigationBar = false;
         Resources rs = context.getResources();
@@ -207,16 +215,62 @@ public class hl_screen {
     }
 
     /**
+     * 判断全面屏是否启用虚拟键盘
+     * 需要在onCreate方法中加入如下代码方能生效
+     * //设置底部导航栏颜色
+     * if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+     * getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.white));
+     * }
+     *
+     * @param activity 上下文
+     * @return 结果
+     */
+    public static boolean isNavigationBarExist(@NonNull Activity activity) {
+        ViewGroup vp = (ViewGroup) activity.getWindow().getDecorView();
+        for (int i = 0; i < vp.getChildCount(); i++) {
+            vp.getChildAt(i).getContext().getPackageName();
+            if (vp.getChildAt(i).getId() != -1 && "navigationBarBackground".equals(activity.getResources().getResourceEntryName(vp.getChildAt(i).getId()))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isAllScreenDevice(Context context) {
+        // 低于 API 21的，都不会是全面屏。。。
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            return false;
+        }
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        if (windowManager != null) {
+            Display display = windowManager.getDefaultDisplay();
+            Point point = new Point();
+            display.getRealSize(point);
+            float width, height;
+            if (point.x < point.y) {
+                width = point.x;
+                height = point.y;
+            } else {
+                width = point.y;
+                height = point.x;
+            }
+            return height / width >= 1.97f;
+        }
+        return false;
+    }
+
+    /**
      * 获取屏幕相关数据
      *
      * @param context 上下文
      * @return 屏幕参数
      */
     public static String getScreenInfo(Context context) {
-        return "屏幕(不含导航栏):" + hl_screen.getScreenWidth(context) + "," + hl_screen.getScreenHeight(context) + "\n" +
-                "设备(物理分辨率):" + hl_screen.getDeviceWidth(context) + "," + hl_screen.getDeviceHeight(context) + "\n" +
-                "导航栏(下方):" + hl_screen.getDaoHangHeight(context) + "," + (checkDeviceHasNavigationBar(context) ? "显示导航栏" : "不存在(隐藏)导航栏") + "\n" +
-                "状态栏(上方):" + hl_screen.getStatusBarHeight(context) + "\n" +
+        return "屏幕(不含导航栏):" + getScreenWidth(context) + "," + getScreenHeight(context) + "\n" +
+                "设备(物理分辨率):" + getDeviceWidth(context) + "," + getDeviceHeight(context) + "\n" +
+                "导航栏(下方):" + getDaoHangHeight(context) + "," + (checkDeviceHasNavigationBar(context) ? "显示导航栏" : "不存在(隐藏)导航栏") + "\n" +
+                "状态栏(上方):" + getStatusBarHeight(context) + "\n" +
+                "是否全面屏手机（纵横比）:" + (isAllScreenDevice(context) ? "是全面屏" : "非全面屏") + "\n" +
                 "res分辨率:" + context.getResources().getString(R.string.fenbianlv) + "\n";
     }
 }

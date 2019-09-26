@@ -156,4 +156,6 @@ public abstract class HHPlayerCore {
     public void setHeaders(Map<String, String> mHeaders) {
         this.mHeaders = mHeaders;
     }
+
+
 }

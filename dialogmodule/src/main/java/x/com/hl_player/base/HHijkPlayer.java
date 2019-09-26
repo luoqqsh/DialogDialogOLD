@@ -27,7 +27,6 @@ public class HHijkPlayer extends HHPlayerCore {
 
     @Override
     public void initView(Surface surface) {
-        TAG = "HH-IJKPlayer-surface";
         if (surface.isValid() && mediaPlayer != null) {
             this.surface = surface;
             mediaPlayer.setSurface(surface);
@@ -36,7 +35,6 @@ public class HHijkPlayer extends HHPlayerCore {
 
     @Override
     public void initView(SurfaceHolder surfaceHolder) {
-        TAG = "HH-IJKPlayer-surface";
         if (mediaPlayer != null) {
             this.surface = surfaceHolder.getSurface();
             mediaPlayer.setSurface(surface);
@@ -61,6 +59,7 @@ public class HHijkPlayer extends HHPlayerCore {
                     videoInfoLog.append("width: ").append(mediaPlayer.getVideoWidth()).append("\n");
                     videoInfoLog.append("height: ").append(mediaPlayer.getVideoHeight()).append("\n");
                     videoInfoLog.append("duration: ").append(mediaPlayer.getDuration());
+                    videoInfoLog.append("tag: ").append(TAG).append("\n");
                     ViseLog.d(videoInfoLog);
                 }
             });

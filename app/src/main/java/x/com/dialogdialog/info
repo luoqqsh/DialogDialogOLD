@@ -26,4 +26,23 @@ MODEL-型号:SM-G955F
 当前语言:zh
 Android系统版本:7.1.2
 Android系统SDK:25
-支持的CPU架构:armeabi-v7a armeabi 
+支持的CPU架构:armeabi-v7a armeabi
+
+═══════════════════════════════════════════════
+屏幕(不含导航栏):1080,2190
+设备(物理分辨率):1080,2316
+导航栏(下方):126,显示导航栏
+状态栏(上方):84
+是否全面屏手机（纵横比）:是全面屏
+res分辨率:xxhdpi
+
+BRAND-品牌:vivo
+MANUFACTURER-制造商:vivo
+MODEL-型号:vivo NEX S
+当前语言:zh
+Android系统版本:10
+Android系统SDK:29
+系统ROM:VIVO
+ROM版本:10
+支持的CPU架构:arm64-v8a armeabi-v7a armeabi
+SSAID:4e90b50d566ae505

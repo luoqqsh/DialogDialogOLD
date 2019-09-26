@@ -43,6 +43,7 @@ public class HHPlayer3 {
     private ControlViewInterface cvInterface;
     private String title;
     private List<TvDataList> tvLists;
+    private HOnListener<Object> preparedListener;
 
     public String getTitle() {
         return title;
@@ -64,7 +65,7 @@ public class HHPlayer3 {
     }
 
     //使用NEWSURFACE、NEWTEXTURE必须传viewGroup
-    public HHPlayer3(Context context, HHPlayerCore hhPlayerCore, TypeView playerView, ViewGroup viewGroup, Surface surface) {
+    public HHPlayer3(Context context, final HHPlayerCore hhPlayerCore, TypeView playerView, final ViewGroup viewGroup, Surface surface) {
         mContext = context;
         hhPlayerCore.setContext(mContext);
         this.viewGroup = viewGroup;
@@ -75,6 +76,7 @@ public class HHPlayer3 {
             viewGroup.setLayoutParams(layoutParams);
         }
         this.hhPlayerCore = hhPlayerCore;
+        hhPlayerCore.TAG = playerView.toString();
         switch (playerView) {
             case NEWSURFACE:
                 initSurfaceView();
@@ -101,6 +103,21 @@ public class HHPlayer3 {
             case MUSIC:
                 break;
         }
+        hhPlayerCore.setPreparedListener(new HOnListener<Object>() {
+            @Override
+            public void onListen(Object o) {
+                if (cvInterface != null) {
+                    cvInterface.getPrePareState(PlayerPrePareStateType.PREPARED);
+                }
+                if (isPlayWhenPrepared) {
+                    start();
+                }
+                hhPlayerCore.isLive = hhPlayerCore.getMediaDuration() == 0;
+                if (preparedListener != null) {
+                    preparedListener.onListen(o);
+                }
+            }
+        });
     }
 
     public void addControlView() {
@@ -121,22 +138,7 @@ public class HHPlayer3 {
     }
 
     public void setPreparedListener(final HOnListener<Object> preparedListener) {
-        hhPlayerCore.setPreparedListener(new HOnListener<Object>() {
-            @Override
-            public void onListen(Object o) {
-                if (cvInterface != null) {
-                    cvInterface.getPrePareState(PlayerPrePareStateType.PREPARED);
-                }
-                if (isPlayWhenPrepared) {
-                    start();
-                }
-                hhPlayerCore.isLive = hhPlayerCore.getMediaDuration() == 0;
-                setVideoSize(hhPlayerCore.videoWidth, hhPlayerCore.videoHeight);
-                if (preparedListener != null) {
-                    preparedListener.onListen(o);
-                }
-            }
-        });
+        this.preparedListener = preparedListener;
     }
 
     //播放器播放完成监听
@@ -144,7 +146,6 @@ public class HHPlayer3 {
         hhPlayerCore.setCompletionListener(new HOnListener<Object>() {
             @Override
             public void onListen(Object o) {
-                Log.e(hhPlayerCore.TAG, "play Completion");
                 hhPlayerCore.mPlayerState = PlayerStateType.PLAYBACK_COMPLETED;
                 if (isChangeBrigtness) {//播放完恢复原来的亮度，没设置亮度则不启用
                     setScreenBrigtness(getSystemScreenBrightness());
@@ -210,7 +211,6 @@ public class HHPlayer3 {
             hhPlayerCore.start();
             hhPlayerCore.getCurrentStart();
             hhPlayerCore.mPlayerState = PlayerStateType.PLAYING;
-            Log.e(hhPlayerCore.TAG, "doStart");
         }
     }
 
@@ -218,7 +218,6 @@ public class HHPlayer3 {
         if (hhPlayerCore.isPlayControl() && hhPlayerCore.isMediaPlaying()) {
             hhPlayerCore.pause();
             hhPlayerCore.mPlayerState = PlayerStateType.PAUSE;
-            Log.e(hhPlayerCore.TAG, "doPause");
         }
     }
 
@@ -232,7 +231,6 @@ public class HHPlayer3 {
         if (hhPlayerCore.isPlayControl()) {
             hhPlayerCore.stop();
             hhPlayerCore.getCurrentStop();
-            Log.d(hhPlayerCore.TAG, "doStop");
         }
     }
 
@@ -241,7 +239,6 @@ public class HHPlayer3 {
         if (hhPlayerCore.isPlayControl()) {
             hhPlayerCore.playerPrePareState = PlayerPrePareStateType.PREPARING;
             hhPlayerCore.seekTo(position);
-            Log.d(hhPlayerCore.TAG, "seekTo");
         }
     }
 
@@ -309,7 +306,6 @@ public class HHPlayer3 {
     public void setSpeed(float speed) {
         if (hhPlayerCore.isPlayControl()) {
             hhPlayerCore.setSpeed(speed);
-            Log.d(hhPlayerCore.TAG, "setSpeed");
         }
     }
 
@@ -507,8 +503,8 @@ public class HHPlayer3 {
         hhPlayerCore.release();
         hhPlayerCore.mPlayerState = PlayerStateType.NONE;
         hhPlayerCore.playerPrePareState = PlayerPrePareStateType.NONE;
-        Log.d(hhPlayerCore.TAG, "doRelease");
     }
+
 /*
 
     public void fullScreen() {

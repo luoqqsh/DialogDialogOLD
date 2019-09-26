@@ -187,7 +187,8 @@ object hl_device {
                 "Android系统SDK:" + Build.VERSION.SDK_INT + "\n" +
                 "系统ROM:" + hl_rom.getName() + "\n" +
                 "ROM版本:" + hl_rom.getVersion() + "\n" +
-                "支持的CPU架构:" + getsupportedAbis() + "\n"
+                "支持的CPU架构:" + getsupportedAbis() + "\n" +
+                "SSAID:" + hl_id.getSSAID(context) + "\n"
     }
 
     fun getDeviceInfoDetail(context: Context): String {
