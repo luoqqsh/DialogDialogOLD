@@ -1,7 +1,7 @@
 package x.com.dialogdialog.Viewpager2
 
 import android.os.Bundle
-import x.com.dialogdialog.Base.BaseActivity
+import x.com.dialogdialog.BaseApp.BaseActivity
 import x.com.dialogdialog.R
 
 class ViewActivity : BaseActivity() {

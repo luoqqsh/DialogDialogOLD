@@ -9,9 +9,8 @@ import android.view.View;
 import android.widget.RemoteViews;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
-import x.com.dialogdialog.Base.BaseActivity;
+import x.com.dialogdialog.BaseApp.BaseActivity;
 import x.com.hl_tools.DialogTools.NotificationHelper;
 
 public class NotificationActivity extends BaseActivity {

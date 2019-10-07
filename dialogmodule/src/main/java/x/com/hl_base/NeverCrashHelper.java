@@ -1,4 +1,4 @@
-package x.com.hl_tools.DialogTools;
+package x.com.hl_base;
 
 import android.os.Handler;
 import android.os.Looper;

@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
-import x.com.dialogdialog.Base.BaseActivity;
+import x.com.dialogdialog.BaseApp.BaseActivity;
 import x.com.hl_tools.hl_permissions;
 import x.com.hl_web.x5WebChromeClient;
 import x.com.hl_web.x5WebClient;

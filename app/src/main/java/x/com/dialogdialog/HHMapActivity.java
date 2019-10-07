@@ -10,8 +10,8 @@ import com.example.xxing.amap.AmapLocation;
 import com.example.xxing.map_bamap.BmapController;
 import com.example.xxing.map_bamap.BmapSearch;
 
-import x.com.dialogdialog.Base.BaseActivity;
-import x.com.dialogdialog.Base.Config;
+import x.com.dialogdialog.BaseApp.BaseActivity;
+import x.com.dialogdialog.BaseApp.Config;
 import x.com.hl_log.ViseLog;
 import x.com.hl_map.HHLocation;
 import x.com.hl_map.HHSearch;

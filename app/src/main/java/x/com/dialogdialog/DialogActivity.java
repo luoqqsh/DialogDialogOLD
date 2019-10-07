@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 
-import x.com.dialogdialog.Base.BaseActivity;
+import x.com.dialogdialog.BaseApp.BaseActivity;
 import x.com.hl_dialog.DFLoadingDialog;
 import x.com.hl_dialog.DFNDialog;
 import x.com.hl_dialog.DFPermissionListDialog;

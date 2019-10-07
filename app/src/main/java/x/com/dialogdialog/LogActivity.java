@@ -6,15 +6,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import x.com.dialogdialog.Base.BaseActivity;
+import x.com.dialogdialog.BaseApp.BaseActivity;
 import x.com.hl_log.ViseLog;
 
 public class LogActivity extends BaseActivity implements View.OnClickListener {

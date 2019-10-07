@@ -3,9 +3,8 @@ package x.com.dialogdialog;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
-import x.com.dialogdialog.Base.BaseActivity;
+import x.com.dialogdialog.BaseApp.BaseActivity;
 import x.com.hl_gl.GLView;
 
 public class GLActivity extends BaseActivity {

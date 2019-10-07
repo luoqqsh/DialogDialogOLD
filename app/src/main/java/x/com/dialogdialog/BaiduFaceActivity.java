@@ -30,7 +30,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import x.com.dialogdialog.Base.BaseActivity;
+import x.com.dialogdialog.BaseApp.BaseActivity;
 import x.com.dialogdialog.face.manager.FaceSDKManager;
 import x.com.dialogdialog.face.model.OnLineResponse;
 import x.com.dialogdialog.face.model.OnLineTokenResponse;

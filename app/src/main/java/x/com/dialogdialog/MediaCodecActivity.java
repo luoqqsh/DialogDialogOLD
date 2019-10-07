@@ -8,7 +8,7 @@ import androidx.annotation.Nullable;
 
 import java.nio.ByteBuffer;
 
-import x.com.dialogdialog.Base.BaseActivity;
+import x.com.dialogdialog.BaseApp.BaseActivity;
 import x.com.hl_log.ViseLog;
 import x.com.hl_mediacodec.VideoDecoder;
 

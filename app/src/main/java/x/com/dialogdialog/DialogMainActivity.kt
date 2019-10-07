@@ -4,7 +4,7 @@ import android.Manifest
 import android.content.Intent
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_main.*
-import x.com.dialogdialog.Base.BaseActivity
+import x.com.dialogdialog.BaseApp.BaseActivity
 import x.com.dialogdialog.Viewpager2.ViewActivity
 import x.com.hl_log.ViseLog
 import x.com.hl_tools.DialogTest.myObjectPool

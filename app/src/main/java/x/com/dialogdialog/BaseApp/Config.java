@@ -1,4 +1,4 @@
-package x.com.dialogdialog.Base;
+package x.com.dialogdialog.BaseApp;
 
 public class Config {
     //高德地图

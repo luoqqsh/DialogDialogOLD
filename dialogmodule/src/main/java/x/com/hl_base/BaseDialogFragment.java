@@ -14,6 +14,8 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Objects;
 
 public class BaseDialogFragment extends DialogFragment {
@@ -32,7 +34,7 @@ public class BaseDialogFragment extends DialogFragment {
     }
 
     @Override
-    public void onDismiss(final DialogInterface dialog) {
+    public void onDismiss(@NotNull final DialogInterface dialog) {
         super.onDismiss(dialog);
         if (onDismissListener != null) {
             onDismissListener.OnDismiss();
@@ -44,14 +46,14 @@ public class BaseDialogFragment extends DialogFragment {
     }
 
     @Override
-    public void show(FragmentManager manager, String tag) {
+    public void show(@NotNull FragmentManager manager, String tag) {
         if (!isAdded()) {
             super.show(manager, tag);
         }
     }
 
     @Override
-    public int show(FragmentTransaction transaction, String tag) {
+    public int show(@NotNull FragmentTransaction transaction, String tag) {
         if (!isAdded()) {
             return super.show(transaction, tag);
         }
@@ -59,7 +61,7 @@ public class BaseDialogFragment extends DialogFragment {
     }
 
     @Override
-    public void showNow(FragmentManager manager, String tag) {
+    public void showNow(@NotNull FragmentManager manager, String tag) {
         if (!isAdded()) {
             super.showNow(manager, tag);
         }

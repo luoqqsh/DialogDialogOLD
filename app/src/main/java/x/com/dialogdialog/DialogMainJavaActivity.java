@@ -14,7 +14,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Map;
 
-import x.com.dialogdialog.Base.BaseActivity;
+import x.com.dialogdialog.BaseApp.BaseActivity;
 import x.com.hl_base.HOnListener;
 import x.com.hl_dialog.DFListFileDialog;
 import x.com.hl_log.ViseLog;
@@ -52,6 +52,7 @@ public class DialogMainJavaActivity extends BaseActivity {
     }
 
     private void test() {
+        
     }
 
     private void initTvList() {

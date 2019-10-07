@@ -1,4 +1,4 @@
-package x.com.dialogdialog.Base;
+package x.com.dialogdialog.BaseApp;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -22,6 +22,8 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mContext = this;
 
+        getLifecycle().addObserver(new MyLifeObserver());
+        
         hl_statusbar.setStatusBarColor(this, Color.GREEN);
         hl_statusbar.setNavigationBarColor(this,Color.RED);
         hl_statusbar.setRootViewFitsSystemWindows(this,false);

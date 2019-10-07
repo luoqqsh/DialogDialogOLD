@@ -10,7 +10,7 @@ import java.util.Collection;
 import io.github.lizhangqu.retrace.ClassMapping;
 import io.github.lizhangqu.retrace.MethodMapping;
 import io.github.lizhangqu.retrace.Retrace;
-import x.com.dialogdialog.Base.BaseActivity;
+import x.com.dialogdialog.BaseApp.BaseActivity;
 import x.com.hl_rx.TaskDelayBManager;
 
 public class MappingActivity extends BaseActivity {

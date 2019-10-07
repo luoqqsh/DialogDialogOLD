@@ -10,7 +10,7 @@ import androidx.appcompat.widget.AppCompatSeekBar;
 
 import java.util.ArrayList;
 
-import x.com.dialogdialog.Base.BaseActivity;
+import x.com.dialogdialog.BaseApp.BaseActivity;
 import x.com.hl_base.HOnListener;
 import x.com.hl_player.HHPlayer3;
 import x.com.hl_player.TvListBean.TvData;

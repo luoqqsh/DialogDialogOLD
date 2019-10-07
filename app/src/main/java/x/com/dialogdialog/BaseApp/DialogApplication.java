@@ -1,4 +1,4 @@
-package x.com.dialogdialog.Base;
+package x.com.dialogdialog.BaseApp;
 
 import android.content.Context;
 import android.os.Handler;
@@ -13,7 +13,7 @@ import com.squareup.leakcanary.LeakCanary;
 
 import x.com.hl_log.ViseLog;
 import x.com.hl_log.inner.LogcatTree;
-import x.com.hl_tools.DialogTools.NeverCrashHelper;
+import x.com.hl_base.NeverCrashHelper;
 import x.com.hl_web.x5Manager;
 
 public class DialogApplication extends MultiDexApplication {

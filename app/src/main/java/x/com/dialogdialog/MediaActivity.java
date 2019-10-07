@@ -5,7 +5,7 @@ import android.view.SurfaceView;
 
 import androidx.annotation.Nullable;
 
-import x.com.dialogdialog.Base.BaseActivity;
+import x.com.dialogdialog.BaseApp.BaseActivity;
 import x.com.hl_player.MediaPlayerController1;
 import x.com.hl_tools.hl_leak;
 

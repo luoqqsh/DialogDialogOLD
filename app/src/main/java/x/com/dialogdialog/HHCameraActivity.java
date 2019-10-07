@@ -7,7 +7,7 @@ import android.widget.RelativeLayout;
 
 import androidx.annotation.Nullable;
 
-import x.com.dialogdialog.Base.BaseActivity;
+import x.com.dialogdialog.BaseApp.BaseActivity;
 import x.com.hl_camera.Camera1;
 
 public class HHCameraActivity extends BaseActivity implements View.OnClickListener {
