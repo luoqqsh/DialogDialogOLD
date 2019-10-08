@@ -9,7 +9,10 @@ import android.os.Binder;
 import android.os.Build;
 import android.util.Log;
 
+
 import java.lang.reflect.Method;
+
+import x.com.hl_log.ViseLog;
 
 public class QikuUtils {
     private static final String TAG = "QikuUtils";
@@ -35,10 +38,10 @@ public class QikuUtils {
                 Method method = clazz.getDeclaredMethod("checkOp", int.class, int.class, String.class);
                 return AppOpsManager.MODE_ALLOWED == (int)method.invoke(manager, op, Binder.getCallingUid(), context.getPackageName());
             } catch (Exception e) {
-                Log.e(TAG, Log.getStackTraceString(e));
+                ViseLog.e(TAG, Log.getStackTraceString(e));
             }
         } else {
-            Log.e("", "Below API 19 cannot invoke!");
+            ViseLog.e("", "Below API 19 cannot invoke!");
         }
         return false;
     }
@@ -57,7 +60,7 @@ public class QikuUtils {
             if (isIntentAvailable(intent, context)) {
                 context.startActivity(intent);
             } else {
-                Log.e(TAG, "can't open permission page with particular name, please use " +
+                ViseLog.e(TAG, "can't open permission page with particular name, please use " +
                         "\"adb shell dumpsys activity\" command and tell me the name of the float window permission page");
             }
         }

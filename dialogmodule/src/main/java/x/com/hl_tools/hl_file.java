@@ -3,7 +3,7 @@ package x.com.hl_tools;
 import android.content.Context;
 import android.os.Environment;
 import android.text.TextUtils;
-import android.util.Log;
+
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -86,7 +86,7 @@ public class hl_file {
      */
     public static boolean isFileExist(String path) {
         if (TextUtils.isEmpty(path)) {
-            Log.e("hl_error", "文件路径为空");
+            ViseLog.e("hl_error", "文件路径为空");
             return false;
         }
         File file = new File(path);
@@ -101,7 +101,7 @@ public class hl_file {
      */
     public static boolean isFolderExist(String path) {
         if (TextUtils.isEmpty(path)) {
-            Log.e("hl_error", "path为空");
+            ViseLog.e("hl_error", "path为空");
             return false;
         }
         File file = new File(path);
@@ -123,7 +123,7 @@ public class hl_file {
         if (!(file.exists() && file.isDirectory())) {
             return (file.mkdirs());
         } else {
-            Log.e("hl_error", file.getAbsolutePath() + "该文件夹已存在");
+            ViseLog.e("hl_error", file.getAbsolutePath() + "该文件夹已存在");
         }
         return false;
     }
@@ -141,7 +141,7 @@ public class hl_file {
             File dirFile = new File(parentPath);
             if (!dirFile.exists()) {
                 if (!dirFile.mkdirs()) {
-                    Log.e("hl_error", "创建目录失败");
+                    ViseLog.e("hl_error", "创建目录失败");
                     return null;
                 }
             }
@@ -149,14 +149,14 @@ public class hl_file {
                 if (dirFile.delete()) {
                     return createFile(parentPath, dirName, isReplace);
                 } else {
-                    Log.e("hl_error", "删除旧文件失败");
+                    ViseLog.e("hl_error", "删除旧文件失败");
                     return null;
                 }
             }
             File file = new File(parentPath, dirName);
             if (!file.exists()) {
                 if (!file.createNewFile()) {
-                    Log.e("hl_error", "新建文件失败");
+                    ViseLog.e("hl_error", "新建文件失败");
                     return null;
                 }
             } else {
@@ -165,20 +165,20 @@ public class hl_file {
                         if (file.createNewFile()) {
                             return file;
                         } else {
-                            Log.e("hl_error", "删除后新建文件失败");
+                            ViseLog.e("hl_error", "删除后新建文件失败");
                             return null;
                         }
                     } else {
-                        Log.e("hl_error", "文件已存在且无法删除");
+                        ViseLog.e("hl_error", "文件已存在且无法删除");
                     }
                 } else {
-                    Log.e("hl_info", "文件已存在");
+                    ViseLog.e("hl_info", "文件已存在");
                     return null;
                 }
             }
             return file;
         } catch (Exception e) {
-            Log.e("hl_error", "新建文件失败" + e.getMessage());
+            ViseLog.e("hl_error", "新建文件失败" + e.getMessage());
             e.printStackTrace();
             return null;
         }
@@ -195,7 +195,7 @@ public class hl_file {
         if (isFileExist(filePath)) {
             return deleteFile(new File(filePath));
         }
-        Log.e("hl_error", filePath + "文件不存在");
+        ViseLog.e("hl_error", filePath + "文件不存在");
         return false;
     }
 
@@ -209,7 +209,7 @@ public class hl_file {
         if (isFolderExist(filePath)) {
             return deleteFile(new File(filePath));
         }
-        Log.e("hl_error", filePath + "文件夹不存在");
+        ViseLog.e("hl_error", filePath + "文件夹不存在");
         return false;
     }
 
@@ -223,7 +223,7 @@ public class hl_file {
         if (isFolderExist(filePath)) {
             return deleteFile(new File(filePath), true);
         }
-        Log.e("hl_error", filePath + "文件夹不存在");
+        ViseLog.e("hl_error", filePath + "文件夹不存在");
         return false;
     }
 
@@ -233,7 +233,7 @@ public class hl_file {
 
     public static boolean deleteFile(File file, boolean isClear) {
         if (file == null || !file.exists()) {
-            Log.e("hl_error", "文件不存在");
+            ViseLog.e("hl_error", "文件不存在");
             return false;
         }
         if (file.isDirectory()) {
@@ -241,7 +241,7 @@ public class hl_file {
             if (fileList != null) {
                 for (File f : fileList) {
                     if (!deleteFile(f)) {
-                        Log.e("hl_error", f.getName() + "删除失败");
+                        ViseLog.e("hl_error", f.getName() + "删除失败");
                     }
                 }
             }
@@ -266,7 +266,7 @@ public class hl_file {
     public static boolean copyFile(String inputFilePath, String outputFilePath, boolean isReplace) {
         try {
             if (!isFileExist(inputFilePath)) {
-                Log.e("hl_error", inputFilePath + "源文件不存在");
+                ViseLog.e("hl_error", inputFilePath + "源文件不存在");
                 return false;
             }
             File file = new File(outputFilePath);
@@ -277,11 +277,11 @@ public class hl_file {
                     if (file.delete()) {
                         createFile(file.getParent(), file.getName(), true);
                     } else {
-                        Log.e("hl_error", "文件删除失败");
+                        ViseLog.e("hl_error", "文件删除失败");
                         return false;
                     }
                 } else {
-                    Log.e("hl_error", "目标文件已存在，请使用强制复制");
+                    ViseLog.e("hl_error", "目标文件已存在，请使用强制复制");
                     return false;
                 }
             }
@@ -343,7 +343,7 @@ public class hl_file {
     private static boolean copyFolder(String inputFilePath, String outputFilePath, boolean isReplace) {
         try {
             if (!isFolderExist(inputFilePath)) {
-                Log.e("hl_error", inputFilePath + "源文件夹不存在");
+                ViseLog.e("hl_error", inputFilePath + "源文件夹不存在");
                 return false;
             }
             File in = new File(inputFilePath);
@@ -416,7 +416,7 @@ public class hl_file {
 
     public static String readStringFromFile(String filePath, String code) {
         if (TextUtils.isEmpty(filePath)) {
-            Log.e("hl_error", "路径不可为空");
+            ViseLog.e("hl_error", "路径不可为空");
             return null;
         }
         File file = new File(filePath);
@@ -435,7 +435,7 @@ public class hl_file {
 
     public static String readStringFromFile(File file, String code) {
         if (!file.exists()) {
-            Log.e("hl_error", file.getAbsolutePath() + "读取的文件不存在");
+            ViseLog.e("hl_error", file.getAbsolutePath() + "读取的文件不存在");
             return null;
         }
         try {
@@ -462,7 +462,7 @@ public class hl_file {
      */
     public static boolean renameFile(String path, String newName) {
         if (!isFileExist(path)) {
-            Log.e("hl_error", "文件不存在");
+            ViseLog.e("hl_error", "文件不存在");
             return false;
         }
         File newFile = new File(path);
@@ -471,7 +471,7 @@ public class hl_file {
 
     public static boolean renameFile(File file, String newName) {
         if (!file.exists()) {
-            Log.e("hl_error", "文件不存在");
+            ViseLog.e("hl_error", "文件不存在");
             return false;
         }
         File newFile = new File(file.getParent(), newName);

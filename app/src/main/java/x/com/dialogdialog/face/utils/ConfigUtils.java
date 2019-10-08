@@ -1,7 +1,7 @@
 package x.com.dialogdialog.face.utils;
 
 import android.os.Environment;
-import android.util.Log;
+
 
 import org.json.JSONObject;
 
@@ -13,6 +13,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import x.com.dialogdialog.face.model.SingleBaseConfig;
+import x.com.hl_log.ViseLog;
 
 
 /**
@@ -61,7 +62,7 @@ public class ConfigUtils {
     public static Boolean initConfig() {
         String configMessage = FileUtils.txt2String(filePath);
         if (configMessage.equals("")) {
-            Log.e("facesdk", "文件不存在");
+            ViseLog.e("facesdk", "文件不存在");
             return false;
         }
         JSONObject jsonObject = null;
@@ -116,7 +117,7 @@ public class ConfigUtils {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            Log.e("facesdk", "文件内容异常,请检测是否规范");
+            ViseLog.e("facesdk", "文件内容异常,请检测是否规范");
             return false;
         }
     }
@@ -283,7 +284,7 @@ public class ConfigUtils {
         } catch (Exception e) {
             String errorMessage = getErrorInfoFromException(e);
             e.printStackTrace();
-            Log.e("facesdk", "文件内容格式异常,请检测是否规范");
+            ViseLog.e("facesdk", "文件内容格式异常,请检测是否规范");
             return false;
         }
 

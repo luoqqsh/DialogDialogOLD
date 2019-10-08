@@ -3,7 +3,7 @@ package x.com.hl_player.base;
 import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
 import android.os.Build;
-import android.util.Log;
+
 import android.view.Surface;
 import android.view.SurfaceHolder;
 
@@ -29,7 +29,7 @@ public class HHMediaPlayer extends HHPlayerCore {
     public void initView(SurfaceHolder surfaceHolder) {
         if (mediaPlayer != null) {
             mediaPlayer.setDisplay(surfaceHolder);
-            Log.d(TAG, "surfaceHolder" + surfaceHolder.toString());
+            ViseLog.d(TAG, "surfaceHolder" + surfaceHolder.toString());
         }
     }
 
@@ -37,7 +37,7 @@ public class HHMediaPlayer extends HHPlayerCore {
     public void initView(Surface surface) {
         if (mediaPlayer != null && surface.isValid()) {
             mediaPlayer.setSurface(surface);
-            Log.d(TAG, "surface" + surface.toString());
+            ViseLog.d(TAG, "surface" + surface.toString());
         }
     }
 
@@ -67,7 +67,7 @@ public class HHMediaPlayer extends HHPlayerCore {
                 @Override
                 public void onSeekComplete(MediaPlayer mp) {
                     start();
-                    Log.d(TAG, "Seek Complete");
+                    ViseLog.d(TAG, "Seek Complete");
                 }
             });
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -81,10 +81,10 @@ public class HHMediaPlayer extends HHPlayerCore {
             mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
                 @Override
                 public boolean onError(MediaPlayer mp, int what, int extra) {
-                    Log.e(ETAG, "监听到错误。  " + mPlayerState);
+                    ViseLog.e(ETAG, "监听到错误。  " + mPlayerState);
                     mPlayerState = PlayerStateType.ERROR;
                     playerPrePareState = PlayerPrePareStateType.ERROR;
-                    Log.e(ETAG, what + "  " + extra + "\n" + "播放出错：" + mediaPath);
+                    ViseLog.e(ETAG, what + "  " + extra + "\n" + "播放出错：" + mediaPath);
                     if (onErrorListener != null) {
                         String err = "mediaplayer播放出错：" + what + " " + extra + " " + mPlayerState;
                         onErrorListener.onListen(err);
@@ -111,7 +111,7 @@ public class HHMediaPlayer extends HHPlayerCore {
 
     private void doPrepare(Object mediaPath, boolean isFirst) {
         if (mediaPath == null) {
-            Log.e(ETAG, "地址为空或找不到！");
+            ViseLog.e(ETAG, "地址为空或找不到！");
             return;
         }
         this.mediaPath = mediaPath;
@@ -134,7 +134,7 @@ public class HHMediaPlayer extends HHPlayerCore {
             e.printStackTrace();
             mPlayerState = PlayerStateType.ERROR;
             playerPrePareState = PlayerPrePareStateType.ERROR;
-            Log.e(ETAG, "Prepare失败。  " + this.mediaPath);
+            ViseLog.e(ETAG, "Prepare失败。  " + this.mediaPath);
             if (isFirst) dealError();
         }
     }
@@ -171,7 +171,7 @@ public class HHMediaPlayer extends HHPlayerCore {
     public void start() {
         if (mediaPlayer != null) {
             mediaPlayer.start();
-            Log.d(TAG, "start");
+            ViseLog.d(TAG, "start");
         }
     }
 
@@ -179,7 +179,7 @@ public class HHMediaPlayer extends HHPlayerCore {
     public void pause() {
         if (mediaPlayer != null) {
             mediaPlayer.pause();
-            Log.d(TAG, "pause");
+            ViseLog.d(TAG, "pause");
         }
     }
 
@@ -191,7 +191,7 @@ public class HHMediaPlayer extends HHPlayerCore {
             } else {
                 mediaPlayer.seekTo((int) position);
             }
-            Log.d(TAG, "seekTo " + position);
+            ViseLog.d(TAG, "seekTo " + position);
         }
     }
 
@@ -202,7 +202,7 @@ public class HHMediaPlayer extends HHPlayerCore {
             mediaPlayer.stop();
             playerPrePareState = PlayerPrePareStateType.NONE;
             mPlayerState = PlayerStateType.IDLE;
-            Log.d(TAG, "stop");
+            ViseLog.d(TAG, "stop");
         }
     }
 
@@ -210,7 +210,7 @@ public class HHMediaPlayer extends HHPlayerCore {
     public void reset() {
         if (mediaPlayer != null) {
             mediaPlayer.reset();
-            Log.d(TAG, "reset");
+            ViseLog.d(TAG, "reset");
         }
     }
 
@@ -219,7 +219,7 @@ public class HHMediaPlayer extends HHPlayerCore {
         if (mediaPlayer != null) {
             mediaPlayer.release();
             mediaPlayer = null;
-            Log.d(TAG, "release");
+            ViseLog.d(TAG, "release");
         }
     }
 
@@ -227,7 +227,7 @@ public class HHMediaPlayer extends HHPlayerCore {
     public void setVolume(float volume) {
         if (mediaPlayer != null) {
             mediaPlayer.setVolume(volume, volume);
-            Log.d(TAG, "setVolume " + volume);
+            ViseLog.d(TAG, "setVolume " + volume);
         }
     }
 
@@ -236,7 +236,7 @@ public class HHMediaPlayer extends HHPlayerCore {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (mediaPlayer != null) {
                 mediaPlayer.setPlaybackParams(mediaPlayer.getPlaybackParams().setSpeed(speed));
-                Log.d(TAG, "setSpeed " + speed);
+                ViseLog.d(TAG, "setSpeed " + speed);
             }
         }
     }

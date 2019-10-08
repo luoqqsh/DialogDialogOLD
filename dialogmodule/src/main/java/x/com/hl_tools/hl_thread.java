@@ -2,7 +2,7 @@ package x.com.hl_tools;
 
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
+
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
@@ -11,6 +11,8 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import x.com.hl_log.ViseLog;
 
 /**
  * android 主线程、子线程切换、主线程延时任务工具类
@@ -84,7 +86,7 @@ public class hl_thread {
     public static void runOnSubThread(Runnable runnable) {
 
         if (THREAD_POOL_EXECUTOR.getQueue().size() == 128 || THREAD_POOL_EXECUTOR.isShutdown()) {
-            Log.e(TAG, "线程池爆满警告，请查看是否开启了过多的耗时线程");
+            ViseLog.e(TAG, "线程池爆满警告，请查看是否开启了过多的耗时线程");
             return;
         }
         THREAD_POOL_EXECUTOR.execute(runnable);

@@ -8,7 +8,7 @@ import android.graphics.BitmapFactory;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.util.Log;
+
 
 import java.io.File;
 import java.net.FileNameMap;
@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.List;
 import java.util.Locale;
+
+import x.com.hl_log.ViseLog;
 
 public class hl_media {
     /**
@@ -34,7 +36,7 @@ public class hl_media {
                     }
                 });
             } else {
-                Log.e("hl_error", "文件路径错误：" + path);
+                ViseLog.e("hl_error", "文件路径错误：" + path);
             }
         } catch (Exception var3) {
             var3.printStackTrace();
@@ -59,7 +61,7 @@ public class hl_media {
                     }
                 });
             } else {
-                Log.e("hl_error", "文件夹路径错误：" + path);
+                ViseLog.e("hl_error", "文件夹路径错误：" + path);
             }
         } catch (Exception var3) {
             var3.printStackTrace();

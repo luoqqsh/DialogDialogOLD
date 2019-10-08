@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.SurfaceTexture;
 import android.provider.Settings;
-import android.util.Log;
+
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import x.com.hl_base.HOnListener;
+import x.com.hl_log.ViseLog;
 import x.com.hl_player.TvListBean.TvDataList;
 import x.com.hl_player.TvListBean.TypeView;
 import x.com.hl_player.TypeBean.PlayerPrePareStateType;
@@ -89,7 +90,7 @@ public class HHPlayer3 {
                 if (surface != null) {
                     initSurface(surface);
                 } else {
-                    Log.e(hhPlayerCore.ETAG, "surface为空");
+                    ViseLog.e(hhPlayerCore.ETAG, "surface为空");
                 }
                 break;
             case HHSURFACE:
@@ -131,7 +132,7 @@ public class HHPlayer3 {
 
     public void addExtraView(View view) {
         if (viewGroup == null) {
-            Log.e(hhPlayerCore.TAG, "必须设置viewGroup");
+            ViseLog.e(hhPlayerCore.TAG, "必须设置viewGroup");
         } else {
             ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             viewGroup.addView(view, params);
@@ -203,7 +204,7 @@ public class HHPlayer3 {
             this.tvLists = tvLists;
             prepare(tvLists.get(position).getChannelURLs().get(0).getChannelURL(), tvLists.get(position).getChannelName());
         } else {
-            Log.e(hhPlayerCore.ETAG, "播放列表为空，或不存在");
+            ViseLog.e(hhPlayerCore.ETAG, "播放列表为空，或不存在");
         }
     }
 
@@ -294,7 +295,7 @@ public class HHPlayer3 {
         } else {
             hhPlayerCore.volume = 1;
             hhPlayerCore.setVolume(1);
-            Log.e(hhPlayerCore.ETAG, "volume超范围：" + volume);
+            ViseLog.e(hhPlayerCore.ETAG, "volume超范围：" + volume);
         }
     }
 
@@ -366,7 +367,7 @@ public class HHPlayer3 {
 
     public void fullScreen() {
         if (viewGroup == null) {
-            Log.e(hhPlayerCore.ETAG, "必须要有viewGroup才能执行此操作");
+            ViseLog.e(hhPlayerCore.ETAG, "必须要有viewGroup才能执行此操作");
             return;
         }
     }

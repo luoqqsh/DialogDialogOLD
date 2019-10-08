@@ -2,13 +2,13 @@ package com.example.xxing.map_qmap;
 
 
 import android.content.Context;
-import android.util.Log;
 
 import com.tencent.map.geolocation.TencentLocation;
 import com.tencent.map.geolocation.TencentLocationListener;
 import com.tencent.map.geolocation.TencentLocationManager;
 import com.tencent.map.geolocation.TencentLocationRequest;
 
+import x.com.hl_log.ViseLog;
 import x.com.hl_map.HHconfig;
 import x.com.hl_map.LocationController;
 import x.com.hl_map.bean.LatLngBean;
@@ -52,7 +52,7 @@ public class QmapLocation extends LocationController {
                         locationBean.setSpeed(tencentLocation.getSpeed());
                         onLocationListener.onCurrentLocation(locationBean);
                     } else {
-                        Log.e("hl_error", i + "  " + s);
+                        ViseLog.e("hl_error", i + "  " + s);
                         onLocationListener.onError(i, s);
                     }
                 }

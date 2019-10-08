@@ -2,7 +2,6 @@
 //
 //import android.content.Context;
 //import android.os.Environment;
-//import android.util.Log;
 //import android.view.Surface;
 //import android.view.SurfaceHolder;
 //

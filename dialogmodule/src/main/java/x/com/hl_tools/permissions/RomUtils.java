@@ -2,11 +2,13 @@ package x.com.hl_tools.permissions;
 
 import android.os.Build;
 import android.text.TextUtils;
-import android.util.Log;
+
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
+import x.com.hl_log.ViseLog;
 
 /**
  * Description:
@@ -44,7 +46,7 @@ public class RomUtils {
             try {
                 return Integer.parseInt(version.substring(1));
             } catch (Exception e) {
-                Log.e(TAG, "get miui version code error, version : " + version);
+                ViseLog.e(TAG, "get miui version code error, version : " + version);
             }
         }
         return -1;
@@ -59,14 +61,14 @@ public class RomUtils {
             line = input.readLine();
             input.close();
         } catch (IOException ex) {
-            Log.e(TAG, "Unable to read sysprop " + propName, ex);
+            ViseLog.e(TAG, "Unable to read sysprop " + propName, ex);
             return null;
         } finally {
             if (input != null) {
                 try {
                     input.close();
                 } catch (IOException e) {
-                    Log.e(TAG, "Exception while closing InputStream", e);
+                    ViseLog.e(TAG, "Exception while closing InputStream", e);
                 }
             }
         }

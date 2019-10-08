@@ -7,12 +7,10 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.text.TextUtils;
-import android.util.Log;
 
 import java.util.List;
 
-import x.com.hl_rx.Utils;
-import x.com.hl_tools.permissions.RomUtils;
+import x.com.hl_log.ViseLog;
 
 /**
  * <pre>
@@ -81,7 +79,7 @@ public class hl_appstore {
         List<ResolveInfo> resolveInfos = context.getPackageManager()
                 .queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
         if (resolveInfos.size() == 0) {
-            Log.e(TAG, "No app store!");
+            ViseLog.e(TAG, "No app store!");
             return null;
         }
         Intent googleIntent = null;

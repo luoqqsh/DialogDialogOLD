@@ -3,7 +3,7 @@ package x.com.hl_player;
 import android.graphics.SurfaceTexture;
 import android.media.MediaPlayer;
 import android.os.Build;
-import android.util.Log;
+
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -144,7 +144,7 @@ public class MediaPlayerController1 {
                         preparedListener.onPreparedListener(mp);
                     }
                     isPrepared = true;
-                    Log.e(TAG, "Prepared OK");
+                    ViseLog.e(TAG, "Prepared OK");
                     if (MediaPlayerController1.this.isStartWhenPrepared) {
                         mp.start();
                     }
@@ -173,7 +173,7 @@ public class MediaPlayerController1 {
         } catch (Exception e) {
             e.printStackTrace();
             mPlayerState = PlayerState.ERROR;
-            Log.e(TAG, "Prepare失败。  " + musicPath);
+            ViseLog.e(TAG, "Prepare失败。  " + musicPath);
             if (isFirst) dealError();
         }
     }
@@ -193,7 +193,7 @@ public class MediaPlayerController1 {
             try {
                 mediaPlayer.start();
                 mPlayerState = PlayerState.PLAYING;
-                Log.e(TAG, "doStart");
+                ViseLog.e(TAG, "doStart");
             } catch (Exception e) {
                 e.printStackTrace();
                 mPlayerState = PlayerState.ERROR;
@@ -207,7 +207,7 @@ public class MediaPlayerController1 {
             if (isPlaying()) {
                 mediaPlayer.pause();
                 mPlayerState = PlayerState.PAUSED;
-                Log.e(TAG, "doPause");
+                ViseLog.e(TAG, "doPause");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -222,7 +222,7 @@ public class MediaPlayerController1 {
                 mediaPlayer.stop();
                 isPrepared = false;
                 mPlayerState = PlayerState.IDLE;
-                Log.e(TAG, "doStop");
+                ViseLog.e(TAG, "doStop");
             } catch (Exception e) {
                 e.printStackTrace();
                 mPlayerState = PlayerState.ERROR;
@@ -254,7 +254,7 @@ public class MediaPlayerController1 {
         if (mPlayerState == PlayerState.PLAYING && mediaPlayer != null) {
             return mediaPlayer.getDuration();
         } else {
-            Log.e(TAG, "媒体文件未准备好");
+            ViseLog.e(TAG, "媒体文件未准备好");
             return 0;
         }
     }
@@ -275,7 +275,7 @@ public class MediaPlayerController1 {
             mPlayerState = PlayerState.END;
             isPrepared = false;
             mediaPlayer = null;
-            Log.e(TAG, "doRelease");
+            ViseLog.e(TAG, "doRelease");
         }
     }
 }

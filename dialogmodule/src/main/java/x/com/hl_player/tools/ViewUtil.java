@@ -1,13 +1,15 @@
 package x.com.hl_player.tools;
 
-import android.util.Log;
+
 import android.view.ViewGroup;
+
+import x.com.hl_log.ViseLog;
 
 public class ViewUtil {
     //修改全屏下的显示比例问题
     public static void modifyFullProportion(ViewGroup viewGroup, int videoWidth, int videoHeight) {
         if (viewGroup != null) {
-            Log.e("modifyFullProportion", videoWidth + " " + videoHeight + " " + viewGroup.getWidth() + " " + viewGroup.getHeight());
+            ViseLog.e("modifyFullProportion", videoWidth + " " + videoHeight + " " + viewGroup.getWidth() + " " + viewGroup.getHeight());
             float scaleWidth = videoWidth * 1.0f / viewGroup.getWidth();
             float scaleHeight = videoHeight * 1.0f / viewGroup.getHeight();
             float scale = Math.min(scaleWidth, scaleHeight);

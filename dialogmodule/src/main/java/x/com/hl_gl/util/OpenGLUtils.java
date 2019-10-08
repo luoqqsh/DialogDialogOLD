@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 import android.opengl.GLES11Ext;
 import android.opengl.GLES20;
 import android.opengl.GLUtils;
-import android.util.Log;
+
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -40,7 +40,8 @@ public class OpenGLUtils {
      * @param mProjectionMatrix 矩阵数组
      */
     public static void logMatrix44(String tag, float[] mProjectionMatrix) {
-        Log.w(tag, mProjectionMatrix[0] + "  " + mProjectionMatrix[1] + "  " + mProjectionMatrix[2] + "  " + mProjectionMatrix[3] + "\n" +
+        ViseLog.setTag(tag);
+        ViseLog.w(mProjectionMatrix[0] + "  " + mProjectionMatrix[1] + "  " + mProjectionMatrix[2] + "  " + mProjectionMatrix[3] + "\n" +
                 mProjectionMatrix[4] + "  " + mProjectionMatrix[5] + "  " + mProjectionMatrix[6] + "  " + mProjectionMatrix[7] + "\n" +
                 mProjectionMatrix[8] + "  " + mProjectionMatrix[9] + "  " + mProjectionMatrix[10] + "  " + mProjectionMatrix[11] + "\n" +
                 mProjectionMatrix[12] + "  " + mProjectionMatrix[13] + "  " + mProjectionMatrix[14] + "  " + mProjectionMatrix[15]);

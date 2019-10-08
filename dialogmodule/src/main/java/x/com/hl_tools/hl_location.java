@@ -11,12 +11,14 @@ import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.Log;
+
 import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+
+import x.com.hl_log.ViseLog;
 
 public class hl_location {
     private static OnLocationChangeListener mListener;
@@ -209,13 +211,13 @@ public class hl_location {
             }
             switch (status) {
                 case LocationProvider.AVAILABLE:
-                    Log.d("onStatusChanged", "当前GPS状态为可见状态");
+                    ViseLog.d("onStatusChanged", "当前GPS状态为可见状态");
                     break;
                 case LocationProvider.OUT_OF_SERVICE:
-                    Log.d("onStatusChanged", "当前GPS状态为服务区外状态");
+                    ViseLog.d("onStatusChanged", "当前GPS状态为服务区外状态");
                     break;
                 case LocationProvider.TEMPORARILY_UNAVAILABLE:
-                    Log.d("onStatusChanged", "当前GPS状态为暂停服务状态");
+                    ViseLog.d("onStatusChanged", "当前GPS状态为暂停服务状态");
                     break;
             }
         }

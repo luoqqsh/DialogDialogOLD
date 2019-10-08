@@ -1,9 +1,10 @@
 package x.com.hl_mediacodec;
 
-import android.util.Log;
 
 
 import java.io.File;
+
+import x.com.hl_log.ViseLog;
 
 /**
  * 用来得到当前音视频中的各种信息,比如视频的宽高,码率, 帧率,
@@ -177,7 +178,7 @@ public class MediaInfo {
             return info.prepare() && info.isHaveVideo();
         } else {
             if (VERBOSE)
-                Log.i("MediaInfo", "video:" + videoPath + " not support");
+                ViseLog.d("MediaInfo", "video:" + videoPath + " not support");
             return false;
         }
     }
@@ -247,7 +248,7 @@ public class MediaInfo {
             }
         }
         if (noPrint == false) {
-            Log.i("MediaInfo", "当前文件的音视频信息是:" + ret);
+            ViseLog.d("MediaInfo", "当前文件的音视频信息是:" + ret);
         }
         return ret;
     }
@@ -285,14 +286,14 @@ public class MediaInfo {
                 return isSupport();
             } else {
                 if (ret == -13) {
-                    Log.e("MediaInfo", "MediaInfo执行失败，可能您没有打开读写文件授权导致的，我们提供了PermissionsManager类来检测,可参考使用");
+                    ViseLog.e("MediaInfo", "MediaInfo执行失败，可能您没有打开读写文件授权导致的，我们提供了PermissionsManager类来检测,可参考使用");
                 } else {
-                    Log.e("MediaInfo", "MediaInfo执行失败，" + prepareErrorInfo(filePath));
+                    ViseLog.e("MediaInfo", "MediaInfo执行失败，" + prepareErrorInfo(filePath));
                 }
                 return false;
             }
         } else {
-            Log.e("MediaInfo", "MediaInfo执行失败,你设置的文件不存在.您的设置是:" + filePath);
+            ViseLog.e("MediaInfo", "MediaInfo执行失败,你设置的文件不存在.您的设置是:" + filePath);
             return false;
         }
     }

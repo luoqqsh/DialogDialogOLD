@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
+
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -151,7 +151,7 @@ public class BaiduFaceActivity extends BaseActivity {
             if (qualityCheck(faceInfos[0], isFromPhotoLibrary)) {
                 ret = FaceSDKManager.getInstance().getFaceFeature().feature(BDFaceSDKCommon.FeatureType.
                         BDFACE_FEATURE_TYPE_ID_PHOTO, rgbInstance, faceInfos[0].landmarks, feature);
-                Log.i("qing", "ret:" + ret);
+                ViseLog.d("qing", "ret:" + ret);
 
                 if (ret == 128) {
                     ViseLog.e("图片" + index + "特征抽取成功");

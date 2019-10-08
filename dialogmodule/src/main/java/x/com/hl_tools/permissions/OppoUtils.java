@@ -11,6 +11,8 @@ import android.util.Log;
 
 import java.lang.reflect.Method;
 
+import x.com.hl_log.ViseLog;
+
 /**
  * Description:
  *
@@ -42,10 +44,10 @@ public class OppoUtils {
                 Method method = clazz.getDeclaredMethod("checkOp", int.class, int.class, String.class);
                 return AppOpsManager.MODE_ALLOWED == (int) method.invoke(manager, op, Binder.getCallingUid(), context.getPackageName());
             } catch (Exception e) {
-                Log.e(TAG, Log.getStackTraceString(e));
+                ViseLog.e(TAG, Log.getStackTraceString(e));
             }
         } else {
-            Log.e(TAG, "Below API 19 cannot invoke!");
+            ViseLog.e(TAG, "Below API 19 cannot invoke!");
         }
         return false;
     }

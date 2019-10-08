@@ -2,7 +2,7 @@ package x.com.hl_player.base;
 
 import android.content.res.AssetFileDescriptor;
 import android.os.Build;
-import android.util.Log;
+
 import android.view.Surface;
 import android.view.SurfaceHolder;
 
@@ -63,7 +63,7 @@ public class HHijkPlayer extends HHPlayerCore {
                 @Override
                 public void onSeekComplete(IMediaPlayer mp) {
                     start();
-                    Log.d(TAG, "Seek Complete");
+                    ViseLog.d(TAG, "Seek Complete");
                 }
             });
             mediaPlayer.setOnCompletionListener(new IjkMediaPlayer.OnCompletionListener() {
@@ -77,10 +77,10 @@ public class HHijkPlayer extends HHPlayerCore {
             mediaPlayer.setOnErrorListener(new IjkMediaPlayer.OnErrorListener() {
                 @Override
                 public boolean onError(IMediaPlayer mp, int what, int extra) {
-                    Log.e(TAG, "监听到错误。  " + mPlayerState);
+                    ViseLog.e(TAG, "监听到错误。  " + mPlayerState);
                     mPlayerState = PlayerStateType.ERROR;
                     playerPrePareState = PlayerPrePareStateType.ERROR;
-                    Log.e(TAG, what + "  " + extra + "\n" + "播放出错：" + mediaPath);
+                    ViseLog.e(TAG, what + "  " + extra + "\n" + "播放出错：" + mediaPath);
                     if (onErrorListener != null) {
                         String err = "ijk播放出错：" + what + " " + extra + " " + mPlayerState;
                         onErrorListener.onListen(err);
@@ -120,7 +120,7 @@ public class HHijkPlayer extends HHPlayerCore {
             e.printStackTrace();
             mPlayerState = PlayerStateType.ERROR;
             playerPrePareState = PlayerPrePareStateType.ERROR;
-            Log.e(TAG, "Prepare失败。  " + this.mediaPath);
+            ViseLog.e(TAG, "Prepare失败。  " + this.mediaPath);
             if (isFirst) dealError();
         }
     }

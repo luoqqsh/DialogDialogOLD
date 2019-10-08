@@ -44,6 +44,11 @@ public class ViseLog {
         TREE_OF_SOULS.e(object);
     }
 
+    public static void e(String tag, Object object) {
+        setTag(tag);
+        TREE_OF_SOULS.e(object);
+    }
+
     public static void w(String message, Object... args) {
         TREE_OF_SOULS.w(message, args);
     }
@@ -57,6 +62,11 @@ public class ViseLog {
     }
 
     public static void d(Object object) {
+        TREE_OF_SOULS.d(object);
+    }
+
+    public static void d(String tag, Object object) {
+        setTag(tag);
         TREE_OF_SOULS.d(object);
     }
 
@@ -90,6 +100,7 @@ public class ViseLog {
 
     /**
      * 获取配置信息，可重新进行设置
+     *
      * @return
      */
     public static LogConfig getLogConfig() {
@@ -98,6 +109,7 @@ public class ViseLog {
 
     /**
      * 设置标签
+     *
      * @param tag
      * @return
      */
@@ -111,6 +123,7 @@ public class ViseLog {
 
     /**
      * 植树，添加一颗树
+     *
      * @param tree
      */
     public static void plant(Tree tree) {
@@ -128,6 +141,7 @@ public class ViseLog {
 
     /**
      * 植树，添加几颗树
+     *
      * @param trees
      */
     public static void plant(Tree... trees) {
@@ -150,6 +164,7 @@ public class ViseLog {
 
     /**
      * 移除一颗树
+     *
      * @param tree
      */
     public static void uproot(Tree tree) {
@@ -174,6 +189,7 @@ public class ViseLog {
 
     /**
      * 获取森林
+     *
      * @return
      */
     public static List<Tree> forest() {
@@ -184,6 +200,7 @@ public class ViseLog {
 
     /**
      * 获取当前森林有几颗树
+     *
      * @return
      */
     public static int treeCount() {

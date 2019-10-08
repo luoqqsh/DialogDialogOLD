@@ -2,7 +2,6 @@ package x.com.hl_dialog;
 
 import android.app.Dialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,6 +12,7 @@ import java.io.File;
 import x.com.hl_base.BaseDialogFragment;
 import x.com.hl_base.HOnListener;
 import x.com.hl_fileselect.FileSelectorView;
+import x.com.hl_log.ViseLog;
 import x.com.hl_tools.hl_file;
 
 public class DFListFileDialog extends BaseDialogFragment {
@@ -23,6 +23,7 @@ public class DFListFileDialog extends BaseDialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        ViseLog.setTag(getClass().getName());
         Dialog dialog = new NDialog(getActivity(), NDialog.nDialog_ListFile, 0.9f, true)
                 .setTouchOutSideCancelable(true, true)
                 .create();
@@ -67,7 +68,7 @@ public class DFListFileDialog extends BaseDialogFragment {
         fileSelectorView.setOnFileSelectedListener(new FileSelectorView.OnFileSelectedListener() {
             @Override
             public void onSelected(File selectedFile) {
-                Log.d("FileListDialog", selectedFile.getAbsolutePath());
+                ViseLog.d(selectedFile.getAbsolutePath());
                 if (onSelectFileListener != null) {
                     onSelectFileListener.onListen(selectedFile);
                 }

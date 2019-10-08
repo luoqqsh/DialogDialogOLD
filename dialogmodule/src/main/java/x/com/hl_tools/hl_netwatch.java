@@ -6,12 +6,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.util.Log;
 
-
-/*
- * Copyright (C) 2010-2018 Alibaba Group Holding Limited.
- */
+import x.com.hl_log.ViseLog;
 
 /**
  * 网络连接状态的监听器。通过注册broadcast实现的
@@ -100,7 +96,7 @@ public class hl_netwatch {
             }
 
             if (NetworkInfo.State.CONNECTED != wifiState && NetworkInfo.State.CONNECTED == mobileState) {
-                Log.d(TAG, "onWifiTo4G()");
+                ViseLog.d(TAG, "onWifiTo4G()");
                 if (mNetChangeListener != null) {
                     mNetChangeListener.onWifiTo4G();
                 }

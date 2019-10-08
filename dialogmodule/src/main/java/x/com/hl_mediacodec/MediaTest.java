@@ -9,12 +9,14 @@ import android.media.MediaCodecInfo;
 import android.media.MediaExtractor;
 import android.media.MediaFormat;
 import android.media.MediaMetadataRetriever;
-import android.util.Log;
+
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+
+import x.com.hl_log.ViseLog;
 
 public class MediaTest {
     private static final String TAG = "VideoToFrames";
@@ -74,9 +76,9 @@ public class MediaTest {
             showSupportedColorFormat(decoder.getCodecInfo().getCapabilitiesForType(mime));
             if (isColorFormatSupported(decodeColorFormat, decoder.getCodecInfo().getCapabilitiesForType(mime))) {
                 mediaFormat.setInteger(MediaFormat.KEY_COLOR_FORMAT, decodeColorFormat);
-                Log.i(TAG, "set decode color format to type " + decodeColorFormat);
+                ViseLog.d(TAG, "set decode color format to type " + decodeColorFormat);
             } else {
-                Log.i(TAG, "unable to set decode color format, color format type " + decodeColorFormat + " not supported");
+                ViseLog.i(TAG, "unable to set decode color format, color format type " + decodeColorFormat + " not supported");
             }
 
             decoder.configure(mediaFormat, null, null, 0);
@@ -200,7 +202,7 @@ public class MediaTest {
             String mime = format.getString(MediaFormat.KEY_MIME);
             if (mime.startsWith("video/")) {
                 if (VERBOSE) {
-                    Log.d(TAG, "Extractor selected track " + i + " (" + mime + "): " + format);
+                    ViseLog.d(TAG, "Extractor selected track " + i + " (" + mime + "): " + format);
                 }
                 return i;
             }
@@ -237,7 +239,7 @@ public class MediaTest {
         buffer.get(data, 0, data.length);
 
 
-        if (VERBOSE) Log.v(TAG, "Finished reading data from plane " + i);
+        if (VERBOSE) ViseLog.d(TAG, "Finished reading data from plane " + i);
 
         return data;
     }
@@ -288,11 +290,11 @@ public class MediaTest {
             int rowStride = planes[i].getRowStride();
             int pixelStride = planes[i].getPixelStride();
             if (VERBOSE) {
-                Log.v(TAG, "pixelStride " + pixelStride);
-                Log.v(TAG, "rowStride " + rowStride);
-                Log.v(TAG, "width " + width);
-                Log.v(TAG, "height " + height);
-                Log.v(TAG, "buffer size " + buffer.remaining());
+                ViseLog.d(TAG, "pixelStride " + pixelStride);
+                ViseLog.d(TAG, "rowStride " + rowStride);
+                ViseLog.d(TAG, "width " + width);
+                ViseLog.d(TAG, "height " + height);
+                ViseLog.d(TAG, "buffer size " + buffer.remaining());
             }
             int shift = (i == 0) ? 0 : 1;
             int w = width >> shift;
@@ -316,7 +318,7 @@ public class MediaTest {
                     buffer.position(buffer.position() + rowStride - length);
                 }
             }
-            if (VERBOSE) Log.v(TAG, "Finished reading data from plane " + i);
+            if (VERBOSE) ViseLog.d(TAG, "Finished reading data from plane " + i);
         }
         return data;
     }

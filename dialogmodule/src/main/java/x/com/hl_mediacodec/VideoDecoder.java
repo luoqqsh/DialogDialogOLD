@@ -4,9 +4,11 @@ import android.media.MediaCodec;
 import android.media.MediaCodecInfo;
 import android.media.MediaCodecList;
 import android.media.MediaFormat;
-import android.util.Log;
+
 
 import java.nio.ByteBuffer;
+
+import x.com.hl_log.ViseLog;
 
 public class VideoDecoder   {
     private static final String TAG = "VideoEncoder";
@@ -68,14 +70,14 @@ public class VideoDecoder   {
         MediaCodecInfo.CodecCapabilities capabilities = codecInfo.getCapabilitiesForType("video/avc");
 
         for (int i = 0; i < capabilities.colorFormats.length; i++) {
-            Log.e(TAG,"format="+capabilities.colorFormats[i]);
+            ViseLog.e(TAG,"format="+capabilities.colorFormats[i]);
             switch (capabilities.colorFormats[i]) {
                 case MediaCodecInfo.CodecCapabilities.COLOR_FormatYUV420SemiPlanar:
                 case MediaCodecInfo.CodecCapabilities.COLOR_FormatYUV420Planar:
-                    Log.e(TAG, "supported color format " + capabilities.colorFormats[i]);
+                    ViseLog.e(TAG, "supported color format " + capabilities.colorFormats[i]);
                     return capabilities.colorFormats[i];
                 default:
-                    Log.e(TAG, "unsupported color format " + capabilities.colorFormats[i]);
+                    ViseLog.e(TAG, "unsupported color format " + capabilities.colorFormats[i]);
                     break;
             }
         }
@@ -124,10 +126,10 @@ public class VideoDecoder   {
         while (outputBufferIndex >= 0) {
 
             ByteBuffer outputBuffer = outputBuffers[outputBufferIndex];
-            Log.i(TAG, "outBufferIndex:" + outputBufferIndex+",size="+bufferInfo.size+",flag="+bufferInfo.flags+",buffer limit="+outputBuffer.limit());
+            ViseLog.i(TAG, "outBufferIndex:" + outputBufferIndex+",size="+bufferInfo.size+",flag="+bufferInfo.flags+",buffer limit="+outputBuffer.limit());
 
             if ((bufferInfo.flags & MediaCodec.BUFFER_FLAG_CODEC_CONFIG) != 0) {
-                Log.e(TAG, "ignoring BUFFER_FLAG_CODEC_CONFIG");
+                ViseLog.e(TAG, "ignoring BUFFER_FLAG_CODEC_CONFIG");
                 info = new byte[bufferInfo.size];
                 outputBuffer.get(info);
             } else if((bufferInfo.flags & MediaCodec.BUFFER_FLAG_KEY_FRAME) != 0){
@@ -137,7 +139,7 @@ public class VideoDecoder   {
                 encodeBuffer.put(outputBuffer);
                 encodeBuffer.flip();
 
-                Log.e(TAG,"encode buffer="+encodeBuffer.limit());
+                ViseLog.e(TAG,"encode buffer="+encodeBuffer.limit());
                 if(callback != null) {
                     callback.onEncodeData(encodeBuffer, MediaCodec.BUFFER_FLAG_KEY_FRAME);
                 }
@@ -151,7 +153,7 @@ public class VideoDecoder   {
             outputBufferIndex = mediaCodec.dequeueOutputBuffer(bufferInfo, 0);
 
             if ((bufferInfo.flags & MediaCodec.BUFFER_FLAG_END_OF_STREAM) != 0) {
-                Log.e(TAG,"++++++++stream is end+++++++++++");
+                ViseLog.e(TAG,"++++++++stream is end+++++++++++");
                 break;      // out of while
             }
         }

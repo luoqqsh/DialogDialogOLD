@@ -1,13 +1,13 @@
 package com.example.xxing.amap;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 
+import x.com.hl_log.ViseLog;
 import x.com.hl_map.HHconfig;
 import x.com.hl_map.LocationController;
 import x.com.hl_map.bean.LatLngBean;
@@ -50,7 +50,7 @@ public class AmapLocation extends LocationController {
                         locationBean.setDescription(locationBean.getDescription());
                         onLocationListener.onCurrentLocation(locationBean);
                     } else {
-                        Log.e("hl_error", aMapLocation.getErrorCode() + "  " + aMapLocation.getErrorInfo());
+                        ViseLog.e("hl_error", aMapLocation.getErrorCode() + "  " + aMapLocation.getErrorInfo());
                         onLocationListener.onError(aMapLocation.getErrorCode(), aMapLocation.getErrorInfo());
                     }
                 }

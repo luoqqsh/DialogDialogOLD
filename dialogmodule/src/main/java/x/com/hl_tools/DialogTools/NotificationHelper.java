@@ -7,12 +7,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
-import android.util.Log;
+
 import android.widget.RemoteViews;
 
 import androidx.core.app.NotificationCompat;
 
 import x.com.hl_dialog.R;
+import x.com.hl_log.ViseLog;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 
@@ -346,7 +347,7 @@ public class NotificationHelper {
      * @param progress 进度
      */
     public void setProgress(int progress, Intent intent) {
-        Log.d("TAG", "setProgress: " + progress);
+        ViseLog.d("TAG", "setProgress: " + progress);
         if (progress == 100) {
             mNotifyManager.cancel(mNotificationId);//不管当前显示进度多少，直接清空，并设置下载完成
             mBuilder.setContentText("下载完成").setProgress(100, 100, false);

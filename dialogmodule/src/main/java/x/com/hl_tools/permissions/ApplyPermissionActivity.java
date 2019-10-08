@@ -4,12 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 
+import x.com.hl_log.ViseLog;
 import x.com.hl_tools.hl_leak;
 import x.com.hl_tools.hl_permissions;
 
@@ -42,7 +42,7 @@ public class ApplyPermissionActivity extends Activity {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         } else {
-            Log.e("权限申请失败", "权限列表获取失败！");
+            ViseLog.e("权限申请失败", "权限列表获取失败！");
         }
     }
 

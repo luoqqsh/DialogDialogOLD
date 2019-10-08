@@ -6,9 +6,9 @@ import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_main.*
 import x.com.dialogdialog.BaseApp.BaseActivity
 import x.com.dialogdialog.Viewpager2.ViewActivity
+import x.com.hl_base.InitHlApp
 import x.com.hl_log.ViseLog
 import x.com.hl_tools.DialogTest.myObjectPool
-import x.com.hl_tools.hl_app
 import x.com.hl_tools.hl_permissions
 
 class DialogMainActivity : BaseActivity() {
@@ -23,7 +23,7 @@ class DialogMainActivity : BaseActivity() {
     }
 
     private fun test() {
-        hl_app.printInformation(applicationContext)
+        InitHlApp.printInformation(applicationContext)
     }
 
     private fun init() {

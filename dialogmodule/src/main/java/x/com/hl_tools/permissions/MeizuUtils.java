@@ -8,9 +8,9 @@ import android.os.Binder;
 import android.os.Build;
 import android.util.Log;
 
-
 import java.lang.reflect.Method;
 
+import x.com.hl_log.ViseLog;
 import x.com.hl_tools.hl_permissionsOther;
 
 
@@ -40,11 +40,11 @@ public class MeizuUtils {
             context.startActivity(intent);
         }catch (Exception e) {
             try {
-                Log.e(TAG, "获取悬浮窗权限, 打开AppSecActivity失败, " + Log.getStackTraceString(e));
+                ViseLog.e(TAG, "获取悬浮窗权限, 打开AppSecActivity失败, " + Log.getStackTraceString(e));
                 // 最新的魅族flyme 6.2.5 用上述方法获取权限失败, 不过又可以用下述方法获取权限了
                 hl_permissionsOther.getInstance().commonROMPermissionApplyInternal(context);
             } catch (Exception eFinal) {
-                Log.e(TAG, "获取悬浮窗权限失败, 通用获取方法失败, " + Log.getStackTraceString(eFinal));
+                ViseLog.e(TAG, "获取悬浮窗权限失败, 通用获取方法失败, " + Log.getStackTraceString(eFinal));
             }
         }
 
@@ -60,10 +60,10 @@ public class MeizuUtils {
                 Method method = clazz.getDeclaredMethod("checkOp", int.class, int.class, String.class);
                 return AppOpsManager.MODE_ALLOWED == (int) method.invoke(manager, op, Binder.getCallingUid(), context.getPackageName());
             } catch (Exception e) {
-                Log.e(TAG, Log.getStackTraceString(e));
+                ViseLog.e(TAG, Log.getStackTraceString(e));
             }
         } else {
-            Log.e(TAG, "Below API 19 cannot invoke!");
+            ViseLog.e(TAG, "Below API 19 cannot invoke!");
         }
         return false;
     }

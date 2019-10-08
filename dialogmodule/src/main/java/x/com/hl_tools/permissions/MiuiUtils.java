@@ -11,7 +11,10 @@ import android.os.Build;
 import android.provider.Settings;
 import android.util.Log;
 
+
 import java.lang.reflect.Method;
+
+import x.com.hl_log.ViseLog;
 
 public class MiuiUtils {
     private static final String TAG = "MiuiUtils";
@@ -27,8 +30,8 @@ public class MiuiUtils {
             try {
                 return Integer.parseInt(version.substring(1));
             } catch (Exception e) {
-                Log.e(TAG, "get miui version code error, version : " + version);
-                Log.e(TAG, Log.getStackTraceString(e));
+                ViseLog.e(TAG, "get miui version code error, version : " + version);
+                ViseLog.e(TAG, Log.getStackTraceString(e));
             }
         }
         return -1;
@@ -57,10 +60,10 @@ public class MiuiUtils {
                 Method method = clazz.getDeclaredMethod("checkOp", int.class, int.class, String.class);
                 return AppOpsManager.MODE_ALLOWED == (int) method.invoke(manager, op, Binder.getCallingUid(), context.getPackageName());
             } catch (Exception e) {
-                Log.e(TAG, Log.getStackTraceString(e));
+                ViseLog.e(TAG, Log.getStackTraceString(e));
             }
         } else {
-            Log.e(TAG, "Below API 19 cannot invoke!");
+            ViseLog.e(TAG, "Below API 19 cannot invoke!");
         }
         return false;
     }
@@ -79,7 +82,7 @@ public class MiuiUtils {
         } else if (versionCode == 8) {
             goToMiuiPermissionActivity_V8(context);
         } else {
-            Log.e(TAG, "this is a special MIUI rom version, its version code " + versionCode);
+            ViseLog.e(TAG, "this is a special MIUI rom version, its version code " + versionCode);
         }
     }
 
@@ -103,7 +106,7 @@ public class MiuiUtils {
         if (isIntentAvailable(intent, context)) {
             context.startActivity(intent);
         } else {
-            Log.e(TAG, "intent is not available!");
+            ViseLog.e(TAG, "intent is not available!");
         }
 
         //设置页面在应用详情页面
@@ -137,7 +140,7 @@ public class MiuiUtils {
         if (isIntentAvailable(intent, context)) {
             context.startActivity(intent);
         } else {
-            Log.e(TAG, "Intent is not available!");
+            ViseLog.e(TAG, "Intent is not available!");
         }
     }
 
@@ -153,7 +156,7 @@ public class MiuiUtils {
         if (isIntentAvailable(intent, context)) {
             context.startActivity(intent);
         } else {
-            Log.e(TAG, "Intent is not available!");
+            ViseLog.e(TAG, "Intent is not available!");
         }
     }
 
@@ -178,7 +181,7 @@ public class MiuiUtils {
             if (isIntentAvailable(intent, context)) {
                 context.startActivity(intent);
             } else {
-                Log.e(TAG, "Intent is not available!");
+                ViseLog.e(TAG, "Intent is not available!");
             }
         }
     }

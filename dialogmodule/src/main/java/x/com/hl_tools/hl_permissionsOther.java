@@ -366,7 +366,7 @@ public class hl_permissionsOther {
                     Method canDrawOverlays = clazz.getDeclaredMethod("canDrawOverlays", Context.class);
                     result = (Boolean) canDrawOverlays.invoke(null, context);
                 } catch (Exception e) {
-                    Log.e("TAG", Log.getStackTraceString(e));
+                    ViseLog.e("TAG", Log.getStackTraceString(e));
                 }
             }
             return result;

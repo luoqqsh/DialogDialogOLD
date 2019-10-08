@@ -3,13 +3,15 @@ package x.com.hl_tools;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.Base64;
-import android.util.Log;
+
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+
+import x.com.hl_log.ViseLog;
 
 public class hl_cachefile {
 
@@ -55,7 +57,7 @@ public class hl_cachefile {
             } catch (Exception e) {
                 e.printStackTrace();
                 remove(key);
-                Log.e("hl_error", "读取异常");
+                ViseLog.e("hl_error", "读取异常");
             }
         }
         return defaultValue;
@@ -77,7 +79,7 @@ public class hl_cachefile {
             hl_file.writeStringToFile(parentPath, hl_encrypt.Md5(key), text);
         } catch (Exception e) {
             e.printStackTrace();
-            Log.e("hl_error", "写入异常");
+            ViseLog.e("hl_error", "写入异常");
         }
     }
 
@@ -86,7 +88,7 @@ public class hl_cachefile {
             File file = new File(parentPath, hl_encrypt.Md5(key));
             if (file.exists()) {
                 if (!file.delete()) {
-                    Log.e("hl_error", "删除旧缓存失败");
+                    ViseLog.e("hl_error", "删除旧缓存失败");
                 }
             }
         }

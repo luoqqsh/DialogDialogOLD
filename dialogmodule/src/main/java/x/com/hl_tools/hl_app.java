@@ -17,11 +17,6 @@ import java.io.File;
 import x.com.hl_log.ViseLog;
 
 public class hl_app {
-    public static void printInformation(Context context) {
-        ViseLog.d(hl_screen.getScreenInfo(context));
-        ViseLog.d(hl_device.INSTANCE.getDeviceInfo(context));
-//        ViseLog.d(hl_device.INSTANCE.getDeviceInfoDetail(context));
-    }
 
     //安装
     public static void installAPK(final Activity activity, final File apkFile) {

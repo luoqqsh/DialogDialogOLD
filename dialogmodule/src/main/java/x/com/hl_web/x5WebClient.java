@@ -6,7 +6,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.util.Log;
+
 
 import com.tencent.smtt.export.external.interfaces.SslError;
 import com.tencent.smtt.export.external.interfaces.SslErrorHandler;
@@ -15,10 +15,12 @@ import com.tencent.smtt.sdk.WebViewClient;
 
 import java.util.List;
 
+import x.com.hl_log.ViseLog;
+
 public class x5WebClient extends WebViewClient {
     @Override
     public boolean shouldOverrideUrlLoading(WebView webView, String url) {
-        Log.i("hl-x5web:", url);
+        ViseLog.d("hl-x5web:", url);
         if (!url.startsWith("http")) {
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_VIEW);
@@ -53,13 +55,13 @@ public class x5WebClient extends WebViewClient {
     @Override
     public void onReceivedError(WebView webView, int errorCode, String description, String failingUrl) {
         super.onReceivedError(webView, errorCode, description, failingUrl);
-        Log.e("hl-x5web:", errorCode + "." + description + "\n" + failingUrl);
+        ViseLog.e("hl-x5web:", errorCode + "." + description + "\n" + failingUrl);
     }
 
     //处理https请求
     @Override
     public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-        Log.e("hl-x5web", "证书错误：" + error);
+        ViseLog.e("hl-x5web", "证书错误：" + error);
 //        handler.proceed();    //表示等待证书响应
         // handler.cancel();      //表示挂起连接，为默认方式
         // handler.handleMessage(null);    //可做其他处理

@@ -7,7 +7,7 @@ import android.content.res.Resources;
 import android.graphics.Point;
 import android.os.Build;
 import android.util.DisplayMetrics;
-import android.util.Log;
+
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.ViewGroup;
@@ -19,6 +19,7 @@ import androidx.appcompat.app.ActionBar;
 import java.lang.reflect.Method;
 
 import x.com.hl_dialog.R;
+import x.com.hl_log.ViseLog;
 
 import static x.com.hl_tools.hl_context.getAppCompActivity;
 
@@ -138,7 +139,7 @@ public class hl_screen {
     //获取屏幕密度dpi
     public static int getDensity(Context context) {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-        Log.d("TAG", "Density is " + displayMetrics.density + " densityDpi is " + displayMetrics.densityDpi + " height: " + displayMetrics.heightPixels +
+        ViseLog.d("TAG", "Density is " + displayMetrics.density + " densityDpi is " + displayMetrics.densityDpi + " height: " + displayMetrics.heightPixels +
                 " width: " + displayMetrics.widthPixels);
         return displayMetrics.densityDpi;
     }

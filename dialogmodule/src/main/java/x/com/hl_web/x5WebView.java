@@ -3,7 +3,6 @@ package x.com.hl_web;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 
 import com.tencent.smtt.sdk.CookieManager;
 import com.tencent.smtt.sdk.CookieSyncManager;
@@ -11,6 +10,8 @@ import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
 
 import java.util.Map;
+
+import x.com.hl_log.ViseLog;
 
 
 public class x5WebView extends WebView {
@@ -46,7 +47,7 @@ public class x5WebView extends WebView {
     public void initWebSetting() {
         WebSettings webSettings = getSettings();
         //缩放操作
-        webSettings.setUseWideViewPort(true); //将图片调整到适合webview的大小 
+        webSettings.setUseWideViewPort(true); //将图片调整到适合webview的大小
         webSettings.setLoadWithOverviewMode(true); // 缩放至屏幕的大小
         webSettings.setSupportZoom(false); //支持缩放，默认为true。是下面那个的前提。
         webSettings.setBuiltInZoomControls(true); //设置内置的缩放控件。若为false，则该WebView不可缩放
@@ -82,13 +83,13 @@ public class x5WebView extends WebView {
         webSettings.setSupportMultipleWindows(true);//代表支持多窗口打开
         // 设置与Js交互的权限
         webSettings.setJavaScriptEnabled(true);
-        // 设置允许JS弹窗,支持通过JS打开新窗口 
+        // 设置允许JS弹窗,支持通过JS打开新窗口
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
         // 把图片加载放在最后来加载渲染
         webSettings.setBlockNetworkImage(false);
         // 特征标记
         webSettings.setUserAgentString(webSettings.getUserAgentString() + "3500game");
-        Log.i("hl-x5web", "UserAgent:" + webSettings.getUserAgentString());
+        ViseLog.d("hl-x5web", "UserAgent:" + webSettings.getUserAgentString());
         webSettings.setBlockNetworkImage(false);
         webSettings.setBlockNetworkLoads(false);
         //String cacheDirPath = "路径";
@@ -110,7 +111,7 @@ public class x5WebView extends WebView {
         }
         CookieSyncManager.getInstance().sync();
         String cookie = cookieManager.getCookie(url);
-        Log.i("hl-x5web", "cookie:" + cookie);
+        ViseLog.d("hl-x5web", "cookie:" + cookie);
     }
 
     public void loadUrl(String url) {
