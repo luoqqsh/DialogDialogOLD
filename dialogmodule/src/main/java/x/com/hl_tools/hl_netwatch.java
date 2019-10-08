@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
+import android.net.Network;
 import android.net.NetworkInfo;
 
 import x.com.hl_log.ViseLog;
@@ -74,6 +75,8 @@ public class hl_netwatch {
 
             NetworkInfo.State wifiState = NetworkInfo.State.UNKNOWN;
             NetworkInfo.State mobileState = NetworkInfo.State.UNKNOWN;
+
+
 
             if (wifiNetworkInfo != null) {
                 wifiState = wifiNetworkInfo.getState();
@@ -169,6 +172,8 @@ public class hl_netwatch {
 
         NetworkInfo.State wifiState = NetworkInfo.State.UNKNOWN;
         NetworkInfo.State mobileState = NetworkInfo.State.UNKNOWN;
+
+
 
         if (wifiNetworkInfo != null) {
             wifiState = wifiNetworkInfo.getState();

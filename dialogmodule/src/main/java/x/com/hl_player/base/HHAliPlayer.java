@@ -56,7 +56,12 @@
 //                if (onPreparedListener != null) {
 //                    onPreparedListener.onListen(mAliyunVodPlayer);
 //                }
-//                Log.e(TAG, "Prepared OK");
+//                StringBuilder videoInfoLog = new StringBuilder("Prepared OK\n");
+//                videoInfoLog.append("width: ").append(mediaPlayer.getVideoWidth()).append("\n");
+//                videoInfoLog.append("height: ").append(mediaPlayer.getVideoHeight()).append("\n");
+//                videoInfoLog.append("duration: ").append(mediaPlayer.getDuration()).append("\n");
+//                videoInfoLog.append("tag: ").append(TAG);
+//                ViseLog.d(videoInfoLog);
 //            }
 //        });
 //        //播放器出错监听

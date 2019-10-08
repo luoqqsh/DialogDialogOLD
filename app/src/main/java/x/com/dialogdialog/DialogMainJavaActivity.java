@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import x.com.dialogdialog.BaseApp.BaseActivity;
+import x.com.hl_base.DtmfSendService;
 import x.com.hl_base.HOnListener;
 import x.com.hl_dialog.DFListFileDialog;
 import x.com.hl_log.ViseLog;
@@ -37,7 +38,8 @@ public class DialogMainJavaActivity extends BaseActivity {
         getWindow().setBackgroundDrawableResource(R.color.brown);
         init();
         initTvList();
-        test();
+
+        startService(new Intent(this, DtmfSendService.class));
         hl_permissions.applyPermission(mContext, new String[]{Manifest.permission.READ_PHONE_STATE}, new hl_permissions.RequestPermissionCallBack() {
             @Override
             public void requestPermissionSuccess() {
@@ -52,7 +54,10 @@ public class DialogMainJavaActivity extends BaseActivity {
     }
 
     private void test() {
-        
+        Intent dtmfIntent = new Intent();
+        dtmfIntent.setAction("net.bonvo.client.bonvobox.send_dtmf");
+        dtmfIntent.putExtra("dtmfCode", '0');
+        sendBroadcast(dtmfIntent);
     }
 
     private void initTvList() {
@@ -80,6 +85,8 @@ public class DialogMainJavaActivity extends BaseActivity {
         findViewById(R.id.open).setOnClickListener(v -> startActivity(new Intent(mContext, GLActivity.class)));
         findViewById(R.id.mapping).setOnClickListener(v -> startActivity(new Intent(mContext, MappingActivity.class)));
         findViewById(R.id.close).setOnClickListener(v -> {
+            test();
+
 //            hl_orientation orientation = new hl_orientation();
 //            orientation.orientationEnable(this, null);
         });

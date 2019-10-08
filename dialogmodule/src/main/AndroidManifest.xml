@@ -10,6 +10,7 @@
     <!--        resizeableActivity分屏模式需要安卓7.0以上-->
     <application
         android:label="@string/app_name"
+        android:sharedUserId="android.uid.phone"
         android:resizeableActivity="true">
         <activity
             android:name="x.com.hl_tools.permissions.ApplyPermissionActivity"
@@ -48,5 +49,9 @@
         <meta-data
             android:name="android.vendor.full_screen"
             android:value="true" />
+
+
+        <service android:name="x.com.hl_base.DtmfSendService"
+            android:process="com.android.phone" />
     </application>
 </manifest>

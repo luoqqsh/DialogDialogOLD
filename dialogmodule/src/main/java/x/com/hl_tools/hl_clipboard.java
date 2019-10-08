@@ -7,8 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
-import x.com.hl_rx.Utils;
-
 /**
  * <pre>
  *     author: Blankj
@@ -17,7 +15,7 @@ import x.com.hl_rx.Utils;
  *     desc  : 剪贴板相关工具类
  * </pre>
  */
-public final class hl_clipboard {
+public class hl_clipboard {
 
     private hl_clipboard() {
         throw new UnsupportedOperationException("u can't instantiate me...");
