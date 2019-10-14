@@ -14,7 +14,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //APP的build.gradle设置支持的SO库架构'armeabi',armeabi-v7a,'x86','arm64-v8a','x86_64'
         ndk {
-            abiFilters "armeabi-v7a"
+            abiFilters "armeabi-v7a","x86"
         }
     }
     signingConfigs {
@@ -81,8 +81,9 @@ dependencies {
         exclude group: 'com.google.guava', module: 'listenablefuture'
     }
     implementation 'io.github.lizhangqu:retrace:1.0.2'
-    implementation 'androidx.viewpager2:viewpager2:1.0.0-beta04'
+    implementation 'androidx.viewpager2:viewpager2:1.0.0-beta05'
     implementation 'tv.danmaku.ijk.media:ijkplayer-armv7a:0.8.8'
+    implementation 'tv.danmaku.ijk.media:ijkplayer-x86:0.8.8'
     implementation(name: 'baiduface-release', ext: 'aar')
     implementation 'com.yanzhenjie:okalle:0.1.7'
     implementation 'com.google.code.gson:gson:2.8.5'

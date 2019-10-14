@@ -1,14 +1,15 @@
 package x.com.hl_tools;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.provider.MediaStore;
-
 
 import java.io.File;
 import java.net.FileNameMap;
@@ -75,7 +76,7 @@ public class hl_media {
      * @param context  context
      * @return 返回后用Glide加载
      */
-    private static String getAlbumArt(int album_id, Context context) {
+    public static String getAlbumArt(int album_id, Context context) {
         String mUriAlbums = "content://media/external/audio/albums";
         String[] projection = new String[]{"album_art"};
         Cursor cur = context.getContentResolver().query(Uri.parse(mUriAlbums + "/" + album_id), projection, null, null, null);
@@ -87,6 +88,11 @@ public class hl_media {
         }
         cur.close();
         return album_art;
+    }
+
+    //安卓q方法
+    public static Bitmap getThumbnail(ContentResolver cr, long videoId) {
+        return MediaStore.Video.Thumbnails.getThumbnail(cr, videoId, MediaStore.Video.Thumbnails.MINI_KIND, null);
     }
 
     /**
