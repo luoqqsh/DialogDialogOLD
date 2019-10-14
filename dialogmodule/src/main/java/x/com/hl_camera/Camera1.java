@@ -22,7 +22,9 @@ public class Camera1 {
     private int mCameraId;
     private Camera mCamera;
     private byte[] buffer;
-    private Camera.PreviewCallback mPreviewCallback;
+    private Camera.PreviewCallback mPreviewCallback;//预览实时回调监听
+    private Camera.ShutterCallback mShutterCallback;//拍照监听
+    private Camera.AutoFocusCallback mAutoFocusCallback;//自动聚焦监听
     public SurfaceHolder surfaceHolder;
     private ViewGroup viewGroup;
 
@@ -43,7 +45,7 @@ public class Camera1 {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             mCamera.enableShutterSound(false);
         }
-        mCamera.setPreviewCallbackWithBuffer(callback);
+        mCamera.setPreviewCallbackWithBuffer(mPreviewCallback);
         Camera.Parameters parameters = mCamera.getParameters();//得到摄像头的参数
         parameters.setJpegQuality(100);//设置照片的质量
         parameters.setPreviewSize(WIDTH, HEIGHT);//设置预览尺寸
@@ -135,6 +137,28 @@ public class Camera1 {
         startPreView();
     }
 
+    private void takePhoto() {
+        if (mCamera != null) {
+            mCamera.takePicture(new Camera.ShutterCallback() {//shutter 拍照瞬间回调
+                                    @Override
+                                    public void onShutter() {
+
+                                    }
+                                }, new Camera.PictureCallback() {//raw 回调未压缩的原始数据
+                                    @Override
+                                    public void onPictureTaken(byte[] data, Camera camera) {
+
+                                    }
+                                }, null//postview 回调与postview图像数据
+                    , new Camera.PictureCallback() {//jpeg 回调JPEG图片数据
+                        @Override
+                        public void onPictureTaken(byte[] data, Camera camera) {
+
+                        }
+                    });
+        }
+    }
+
     private void setCameraRotation(int rotation) {
         Camera.CameraInfo info = new Camera.CameraInfo();
         //获取摄像头信息
@@ -197,8 +221,13 @@ public class Camera1 {
     }
 
 
+    //可以获得连续的帧
     public void setPreviewCallback(Camera.PreviewCallback previewCallback) {
-        mPreviewCallback = previewCallback;
+        if (previewCallback != null) {
+            mPreviewCallback = previewCallback;
+        } else {
+            mPreviewCallback = callback;
+        }
     }
 
 
@@ -215,4 +244,19 @@ public class Camera1 {
         }
     };
 
+    private Camera.AutoFocusCallback autoFocusCallback = new Camera.AutoFocusCallback() {
+        @Override
+        public void onAutoFocus(boolean success, Camera camera) {
+
+        }
+    };
+
+    //拍照后回调--data便是图片数据
+    public void setmShutterCallback(Camera.ShutterCallback mShutterCallback) {
+        this.mShutterCallback = mShutterCallback;
+    }
+
+    public void setmAutoFocusCallback(Camera.AutoFocusCallback mAutoFocusCallback) {
+        this.mAutoFocusCallback = mAutoFocusCallback;
+    }
 }

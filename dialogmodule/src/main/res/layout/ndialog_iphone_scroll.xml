@@ -19,7 +19,6 @@
             android:layout_marginLeft="28dp"
             android:layout_marginTop="25dp"
             android:layout_marginRight="28dp"
-            android:layout_marginBottom="25dp"
             android:textColor="#000000"
             android:textSize="17sp" />
     </ScrollView>
@@ -27,6 +26,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_marginTop="25dp"
         android:background="#fff0f0f0" />
 
     <LinearLayout

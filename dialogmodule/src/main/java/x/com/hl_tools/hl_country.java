@@ -7,16 +7,6 @@ import android.telephony.TelephonyManager;
 
 import java.util.HashMap;
 
-import x.com.hl_rx.Utils;
-
-/**
- * <pre>
- *     author: Blankj
- *     blog  : http://blankj.com
- *     time  : 2019/06/11
- *     desc  : utils about country code
- * </pre>
- */
 public class hl_country {
 
     private static HashMap<String, String> countryCodeMap;

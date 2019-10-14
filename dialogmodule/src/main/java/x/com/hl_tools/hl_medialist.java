@@ -81,6 +81,7 @@ public class hl_medialist {
             c = mContentResolver.query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, null, null, null, MediaStore.Video.Media.DEFAULT_SORT_ORDER);
             if (c != null) {
                 while (c.moveToNext()) {
+                    //注意，DATA 数据在 Android Q 以前代表了文件的路径，但在 Android Q上该路径无法被访问，因此没有意义。
                     String path = c.getString(c.getColumnIndexOrThrow(MediaStore.Video.Media.DATA));// 路径
                     if (!new File(path).exists()) {
                         continue;
