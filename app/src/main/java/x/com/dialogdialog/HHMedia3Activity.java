@@ -1,8 +1,6 @@
 package x.com.dialogdialog;
 
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.widget.FrameLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -11,6 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatSeekBar;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import x.com.dialogdialog.BaseApp.BaseActivity;
 import x.com.hl_base.HOnListener;
@@ -22,8 +21,9 @@ import x.com.hl_player.TvListBean.TypeClarity;
 import x.com.hl_player.TvListBean.TypeClass;
 import x.com.hl_player.TvListBean.TypeState;
 import x.com.hl_player.TvListBean.TypeView;
-import x.com.hl_player.base.HHijkPlayer;
-import x.com.hl_tools.hl_file;
+import x.com.hl_player.base.HHMediaPlayer;
+import x.com.hl_tools.DialogTest.phone.bean.MediaFileBean;
+import x.com.hl_tools.hl_medialist;
 import x.com.hl_tools.hl_time;
 
 public class HHMedia3Activity extends BaseActivity {
@@ -43,12 +43,15 @@ public class HHMedia3Activity extends BaseActivity {
 //  /storage/emulated/0/Music/不念 - 张靓颖.mp3
 //  /storage/emulated/0/Music/不可说 - 霍建华、赵丽颖.mp3
     //----------------------------------------------------------
-    private String musicpath = "/storage/emulated/0/Music/不可说 - 霍建华、赵丽颖.mp3";
-    private String videopath = "/storage/emulated/0/Download/mpaa.mp4";
+//    private String musicpath = "/storage/emulated/0/Music/不可说 - 霍建华、赵丽颖.mp3";
+//    private String videopath = "/storage/emulated/0/Download/mpaa.mp4";
+//    private String videopath = "/storage/emulated/0/Android/data/x.com.dialogdialog/mpaa.mp4";
+//    private String videopath = "/storage/emulated/0/DCIM/Camera/mpaa.mp4";
+//    private String videopath = "/storage/emulated/0/Android/data/x.com.dialogdialog/files/Download/mpaa.mp4";
 //    private String videopath = "/storage/emulated/0/DCIM/Camera/19101112858336.mp4";
-    //    private String videopath = "http://s.bizhijingling.com/uploadfile/userload/vedio/2019/0516/20190516065450574.mp4";
+//    private String videopath = "http://s.bizhijingling.com/uploadfile/userload/vedio/2019/0516/20190516065450574.mp4";
 //    private String videopath = "rtsp://27.148.240.138/PLTV/88888888/224/3221226716/10000100000000060000000001664269_0.smil";
-    //    private String videopath = "http://cstv.live.wscdns.com/live/xiamen1/playlist.m3u8";
+//    private String videopath = "http://cstv.live.wscdns.com/live/xiamen1/playlist.m3u8";
     private boolean ismute = false;
     private TextView currenttime, totaltime;
     private AppCompatSeekBar seekBar, seekbar_volume;
@@ -61,11 +64,8 @@ public class HHMedia3Activity extends BaseActivity {
         setContentView(R.layout.activity_mediaview);
         initList();
         initUI();
-        ViseLog.d(hl_file.DOWNLOADS);
-        ViseLog.d(hl_file.getQdir(this));
-        ViseLog.d(hl_file.getQdir(this, Environment.DIRECTORY_DOWNLOADS));
         hhview = findViewById(R.id.hhPlayerView);
-        hhPlayer3 = new HHPlayer3(this, new HHijkPlayer(), TypeView.HHTEXTURE, hhview);
+        hhPlayer3 = new HHPlayer3(this, new HHMediaPlayer(), TypeView.HHTEXTURE, hhview);
         hhPlayer3.addLoadingView();
         hhPlayer3.setPreparedListener(new HOnListener<Object>() {
             @Override
@@ -122,12 +122,14 @@ public class HHMedia3Activity extends BaseActivity {
         seekbar_volume.setMax(10);
 
         findViewById(R.id.select).setOnClickListener(v -> {
-            Uri imageContentUri =Uri.parse(videopath);
-            ViseLog.d(imageContentUri);
-            hhPlayer3.prepare(imageContentUri.toString(), "");
+//            Uri imageContentUri = hl_media.getUriStringById(hl_uri.getVideoUri());
+//            ViseLog.d(imageContentUri);
+            hhPlayer3.prepare(tvUrl.getLinks(), 0);
+            List<MediaFileBean> imgList = hl_medialist.getVideoList(mContext);
+            ViseLog.d(imgList);
+//            hhPlayer3.prepare("content://media/external/video/media/27", "");
         });
 
-//                hhPlayer3.prepare(tvUrl.getLinks(), 0))
         findViewById(R.id.play).setOnClickListener(v -> hhPlayer3.start());
         findViewById(R.id.pause).setOnClickListener(v -> hhPlayer3.pause());
         findViewById(R.id.stop).setOnClickListener(v -> hhPlayer3.stop());

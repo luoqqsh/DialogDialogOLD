@@ -35,6 +35,7 @@ public class hl_file {
 //    getExternalFilesDir(null) = /mnt/sdcard/Android/data/com.my.app/files
 //    getFilesDir()	= /data/data/com.my.app/files
 
+    //以下方法在安卓Q之后的版本能获取得到，但无法使用
     public static final String SDROOT = Environment.getExternalStorageDirectory().getPath();
     public static final String DIALOG = Environment.getExternalStorageDirectory().getPath() + File.separator + "dialog" + File.separator;
     public static final String QQFILE = Environment.getExternalStorageDirectory().getPath() + File.separator + "Tencent" + File.separator + "QQfile_recv" + File.separator;
@@ -49,6 +50,7 @@ public class hl_file {
 
     /**
      * 安卓Q获取沙盒目录
+     * /storage/emulated/0/Android/data/包名/cache
      *
      * @param context 上下文
      * @return 文件夹

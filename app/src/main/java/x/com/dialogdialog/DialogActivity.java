@@ -6,7 +6,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.widget.Toast;
 
-
 import x.com.dialogdialog.BaseApp.BaseActivity;
 import x.com.hl_dialog.DFLoadingDialog;
 import x.com.hl_dialog.DFNDialog;
@@ -21,6 +20,7 @@ public class DialogActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dialogtools);
+
     }
 
 //    private void downloads() {

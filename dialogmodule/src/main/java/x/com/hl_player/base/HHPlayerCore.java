@@ -21,7 +21,7 @@ public abstract class HHPlayerCore {
     public String TAG = "HHPlayerCore";
     public String ETAG = "hh_error";
 
-    public Object mediaPath;
+    public String mediaPath;
     public int videoWidth;
     public int videoHeight;
 
@@ -38,7 +38,7 @@ public abstract class HHPlayerCore {
     public boolean isLive = false;//是否实时直播
     private long times = 0;
 
-    public abstract void prepare(Object mediaPath);
+    public abstract void prepare(String mediaPath);
 
     public abstract void start();
 
@@ -78,7 +78,7 @@ public abstract class HHPlayerCore {
         return playerPrePareState == PlayerPrePareStateType.PREPARED;
     }
 
-    public Object getMediaPath() {
+    public String getMediaPath() {
         return mediaPath;
     }
 

@@ -1,54 +1,84 @@
 package x.com.hl_tools;
 
-import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
+import x.com.hl_dialog.R;
 
 public class hl_uri {
-    public static String getFilePathFromContentUri(Uri selectedVideoUri, ContentResolver contentResolver) {
-        String filePath;
-        String[] filePathColumn = {MediaStore.MediaColumns.DATA};
-        Cursor cursor = contentResolver.query(selectedVideoUri, filePathColumn, null, null, null);
-        //      也可用下面的方法拿到cursor  
-//      Cursor cursor = this.context.managedQuery(selectedVideoUri, filePathColumn, null, null, null);  
-        cursor.moveToFirst();
-        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-        filePath = cursor.getString(columnIndex);
-        cursor.close();
-        return filePath;
-    }
-
-    public static Uri getImageContentUri(Context context, File imageFile) {
-        String filePath = imageFile.getAbsolutePath();
-        Cursor cursor = context.getContentResolver().query(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                new String[]{MediaStore.Images.Media._ID},
-                MediaStore.Images.Media.DATA + "=? ",
-                new String[]{filePath}, null);
-        if (cursor != null && cursor.moveToFirst()) {
-            int id = cursor.getInt(cursor
-                    .getColumnIndex(MediaStore.MediaColumns._ID));
-            Uri baseUri = Uri.parse("content://media/external/images/media");
-            return Uri.withAppendedPath(baseUri, "" + id);
-        } else {
-            if (imageFile.exists()) {
-                ContentValues values = new ContentValues();
-                values.put(MediaStore.Images.Media.DATA, filePath);
-                return context.getContentResolver().insert(
-                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-            } else {
-                return null;
-            }
+    /**
+     * 在读取和写入时，我们可以借助 Content Uri 从 ContentResolver 里面拿到 AssetFileDescriptor，然后就可以拿到 InputSteam 或 OutputStream
+     */
+    public static void copy(File src, ParcelFileDescriptor parcelFileDescriptor) throws IOException {
+        FileInputStream istream = new FileInputStream(src);
+        FileOutputStream ostream = new FileOutputStream(parcelFileDescriptor.getFileDescriptor());
+        try {
+            hl_stream.streamCopy(istream, ostream);
+        } finally {
+            ostream.close();
+            istream.close();
         }
     }
 
+    public static void copy(ParcelFileDescriptor parcelFileDescriptor, File dst) throws IOException {
+        FileInputStream istream = new FileInputStream(parcelFileDescriptor.getFileDescriptor());
+        FileOutputStream ostream = new FileOutputStream(dst);
+        try {
+            hl_stream.streamCopy(istream, ostream);
+        } finally {
+            ostream.close();
+            istream.close();
+        }
+    }
+
+    public static void copy(InputStream ist, OutputStream ost) throws IOException {
+        byte[] buffer = new byte[4096];
+        int byteCount = 0;
+        while ((byteCount = ist.read(buffer)) != -1) {  // 循环从输入流读取 buffer字节
+            ost.write(buffer, 0, byteCount);        // 将读取的输入流写入到输出流
+        }
+    }
+
+    //保存媒体文件到公共区域，这里仅以 Video 示例，Image、Downloads 基本类似
+    public static Uri insertVideoIntoMediaStore(Context context, String fileName) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(MediaStore.Video.Media.DISPLAY_NAME, fileName);
+        contentValues.put(MediaStore.Video.Media.DATE_TAKEN, System.currentTimeMillis());
+        contentValues.put(MediaStore.Video.Media.MIME_TYPE, "video/mp4");
+        return context.getContentResolver().insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, contentValues);
+    }
+
+    public static Uri getPhotoUri(Cursor cursor) {
+        return getMediaUri(cursor, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+    }
+
+    public static Uri getVideoUri(Cursor cursor) {
+        return getMediaUri(cursor, MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
+    }
+
+    public static Uri getMediaUri(Cursor cursor, Uri uri) {
+        String id = cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns._ID));
+        return Uri.withAppendedPath(uri, id);
+    }
+
+    /**
+     * string类型的Uri转Uri类型
+     *
+     * @param uri string格式的uri
+     * @return Uri
+     */
     public static Uri str2Uri(String uri) {
         return Uri.parse(uri);
     }
@@ -66,4 +96,17 @@ public class hl_uri {
         }
     }
 
+    //*获取Res资源的url  ContentResolver.SCHEME_ANDROID_RESOURCE*/
+    public static Uri getResourceUri(Context context, int resource) {
+        return Uri.parse("android.resource://" + context.getPackageName() + "/" + resource);
+    }
+
+    public static Uri getResUri(Context context, int resource) {
+        return Uri.parse("res:///" + R.mipmap.ic_launcher);
+    }
+
+    //*获取asset资源的url,ContentResolver.SCHEME_FILE*/
+    public static Uri getAssessUri(int fileName) {
+        return Uri.parse("file:///android_asset/" + fileName);
+    }
 }

@@ -86,4 +86,8 @@ public class hl_app {
             return "1.0.0";
         }
     }
+
+    public static String getPackageName(Context context) {
+        return getPackageName(context, context.getPackageName());
+    }
 }

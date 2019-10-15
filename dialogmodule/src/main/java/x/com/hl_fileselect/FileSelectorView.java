@@ -21,6 +21,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import x.com.hl_dialog.R;
+import x.com.hl_log.ViseLog;
 
 /**
  * 自定义文件选择ListView
@@ -116,6 +117,10 @@ public class FileSelectorView extends ListView {
         //设置过滤
         File[] files = currentDirectory.listFiles(fileFilter);
 
+        if (files == null) {
+            ViseLog.e("files为空");
+            return;
+        }
         //1 判断当前目录是否为根目录
         if (!currentDirectory.getAbsolutePath().equals(Environment.getExternalStorageDirectory().getAbsolutePath())) {
             fileItemList.add(new FileItem(null, true));

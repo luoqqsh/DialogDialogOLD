@@ -1,16 +1,22 @@
 package x.com.hl_player.base;
 
+import android.content.ContentResolver;
 import android.content.res.AssetFileDescriptor;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Build;
-
 import android.view.Surface;
 import android.view.SurfaceHolder;
+
+import java.lang.reflect.Method;
+import java.util.Map;
 
 import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 import x.com.hl_log.ViseLog;
 import x.com.hl_player.TypeBean.PlayerPrePareStateType;
 import x.com.hl_player.TypeBean.PlayerStateType;
+import x.com.hl_tools.hl_uri;
 
 public class HHijkPlayer extends HHPlayerCore {
     private IjkMediaPlayer mediaPlayer;
@@ -100,8 +106,8 @@ public class HHijkPlayer extends HHPlayerCore {
         }
     }
 
-    private void doPrepare(Object mediaPath, boolean isFirst) {
-        this.mediaPath = mediaPath;
+    private void doPrepare(String mediaPath, boolean isFirst) {
+        this.mediaPath = (String) mediaPath;
         if (surface != null) {
             stop();
             reset();//ijkplayer调用reset会连画布一起重置，画布不会销毁
@@ -109,11 +115,16 @@ public class HHijkPlayer extends HHPlayerCore {
         }
         try {
             playerPrePareState = PlayerPrePareStateType.PREPARING;
-            if (mediaPath instanceof AssetFileDescriptor) {//Android assets file
-//                AssetFileDescriptor fd = (AssetFileDescriptor) mediaPath;
-//                mediaPlayer.setDataSource(fd.getFileDescriptor(), fd.getStartOffset(), fd.getLength());
-            } else if (mediaPath != null) {
-                mediaPlayer.setDataSource(mediaPath.toString(), getHeaders());
+            Uri uri = Uri.parse(mediaPath);
+            if (uri.getScheme() != null && uri.getScheme().equals(ContentResolver.SCHEME_ANDROID_RESOURCE)) {
+                AssetFileDescriptor fileDescriptor = context.getApplicationContext().getContentResolver().openAssetFileDescriptor(hl_uri.str2Uri(this.mediaPath), "r");
+                mediaPlayer.setDataSource(new RawDataSourceProvider(fileDescriptor));
+            } else if (getHeaders() != null) {//url with headers
+                Class<MediaPlayer> clazz = MediaPlayer.class;
+                Method method = clazz.getDeclaredMethod("setDataSource", String.class, Map.class);
+                method.invoke(mediaPlayer, mediaPath, getHeaders());
+            } else {
+                mediaPlayer.setDataSource(mediaPath);
             }
             mediaPlayer.prepareAsync();//异步
         } catch (Exception e) {
@@ -145,7 +156,7 @@ public class HHijkPlayer extends HHPlayerCore {
     }
 
     @Override
-    public void prepare(Object mediaPath) {
+    public void prepare(String mediaPath) {
         if ("HHPlayerCore".equals(TAG)) {
             TAG = "HH-IJKPlayer-Music";
         }

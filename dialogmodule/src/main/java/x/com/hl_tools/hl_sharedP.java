@@ -26,7 +26,7 @@ public class hl_sharedP {
         SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         try {
-            editor.putString(key, hl_steam.objectToSteam(object));
+            editor.putString(key, hl_stream.objectToStream(object));
         } catch (IOException e) {
             e.printStackTrace();
             return false;
@@ -38,7 +38,7 @@ public class hl_sharedP {
         SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         try {
-            editor.putString(key, hl_steam.objectToSteam(object));
+            editor.putString(key, hl_stream.objectToStream(object));
             editor.apply();
         } catch (IOException e) {
             e.printStackTrace();
@@ -59,7 +59,7 @@ public class hl_sharedP {
         String o = sp.getString(key, "");
         try {
             if (!TextUtils.isEmpty(o)) {
-                return hl_steam.streamToObject(o);
+                return hl_stream.streamToObject(o);
             } else {
                 return defaultObject;
             }

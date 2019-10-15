@@ -6,8 +6,7 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
 
@@ -17,42 +16,179 @@ import java.util.ArrayList;
 import java.util.List;
 
 import x.com.hl_tools.DialogTest.phone.FileUtils;
-import x.com.hl_tools.DialogTest.phone.bean.FileBean;
 import x.com.hl_tools.DialogTest.phone.bean.ImgFolderBean;
-import x.com.hl_tools.DialogTest.phone.bean.Music;
-import x.com.hl_tools.DialogTest.phone.bean.Video;
+import x.com.hl_tools.DialogTest.phone.bean.MediaFileBean;
 import x.com.hl_tools.model.AppInfo;
 
 public class hl_medialist {
+    /**
+     * 安卓Q获取图片列表
+     */
+    public static List<MediaFileBean> getImgList(Context context) {
+        Uri mImageUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+        List<MediaFileBean> list = new ArrayList<>();
+        String[] projection = {MediaStore.Images.Media._ID,
+                MediaStore.Images.Media.DATA,
+                MediaStore.Images.Media.DATE_ADDED,
+                MediaStore.Images.Thumbnails.DATA
+        };
+        //全部图片
+        String where = MediaStore.Images.Media.MIME_TYPE + "=? or "
+                + MediaStore.Images.Media.MIME_TYPE + "=? or "
+                + MediaStore.Images.Media.MIME_TYPE + "=?";
+        //指定格式
+        String[] whereArgs = {"image/jpeg", "image/png", "image/jpg"};
+        //查询
+        Cursor mCursor = context.getContentResolver().query(mImageUri, projection, null, null, null);
+        if (mCursor != null) {
+            while (mCursor.moveToNext()) {
+                // 获取图片的路径
+                int thumbPathIndex = mCursor.getColumnIndex(MediaStore.Images.Thumbnails.DATA);
+                int timeIndex = mCursor.getColumnIndex(MediaStore.Images.Media.DATE_ADDED);
+                int pathIndex = mCursor.getColumnIndex(MediaStore.Images.Media.DATA);
+                int id = mCursor.getColumnIndex(MediaStore.Images.Media._ID);
+
+                long date = mCursor.getLong(timeIndex) * 1000;
+                String fileUri, thumbPath;
+                //适配Android Q
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    fileUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI.buildUpon()
+                            .appendPath(String.valueOf(mCursor.getInt(id))).build().toString();
+                    if (hl_media.isContentUriExists(context, Uri.parse(fileUri))) {
+                        MediaFileBean mediaFileBean = new MediaFileBean();
+                        mediaFileBean.setMediaId(id);
+                        mediaFileBean.setMediaPath(mCursor.getString(pathIndex));
+                        mediaFileBean.setDate(date);
+                        mediaFileBean.setMediaPathUri(fileUri);
+                        list.add(mediaFileBean);
+                    }
+                } else {
+                    thumbPath = mCursor.getString(thumbPathIndex);
+                    fileUri = mCursor.getString(pathIndex);
+                    //判断文件是否存在，存在才去加入
+                    if (hl_file.isFileExist(fileUri)) {
+                        MediaFileBean mediaFileBean = new MediaFileBean();
+                        mediaFileBean.setMediaId(id);
+                        mediaFileBean.setMediaPath(fileUri);
+                        mediaFileBean.setThumbPath(thumbPath);
+                        mediaFileBean.setDate(date);
+                        mediaFileBean.setMediaPathUri(hl_uri.getPhotoUri(mCursor).toString());
+                        list.add(mediaFileBean);
+                    }
+                }
+            }
+            mCursor.close();
+            return list;
+        }
+        return null;
+    }
+
+    /**
+     * 安卓Q获取视频列表
+     *
+     * @param context
+     * @return
+     */
+    public static List<MediaFileBean> getVideoList(Context context) {
+        Uri mVideoUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+        List<MediaFileBean> videoList = new ArrayList<>();
+        String[] projection = {MediaStore.Video.Thumbnails._ID
+                , MediaStore.Video.Thumbnails.DATA
+                , MediaStore.Video.Media.DURATION
+                , MediaStore.Video.Media.SIZE
+                , MediaStore.Video.Media.DATE_ADDED
+                , MediaStore.Video.Media.RESOLUTION
+                , MediaStore.Video.Media.DISPLAY_NAME
+                , MediaStore.Video.Media.DATE_MODIFIED};
+        //全部视频
+        String where = MediaStore.Images.Media.MIME_TYPE + "=? or "
+                + MediaStore.Video.Media.MIME_TYPE + "=? or "
+                + MediaStore.Video.Media.MIME_TYPE + "=? or "
+                + MediaStore.Video.Media.MIME_TYPE + "=? or "
+                + MediaStore.Video.Media.MIME_TYPE + "=? or "
+                + MediaStore.Video.Media.MIME_TYPE + "=? or "
+                + MediaStore.Video.Media.MIME_TYPE + "=? or "
+                + MediaStore.Video.Media.MIME_TYPE + "=? or "
+                + MediaStore.Video.Media.MIME_TYPE + "=?";
+        String[] whereArgs = {"video/mp4", "video/3gp", "video/aiv", "video/rmvb", "video/vob", "video/flv", "video/mkv", "video/mov", "video/mpg"};
+        Cursor mCursor = context.getContentResolver().query(mVideoUri, projection, null, null, MediaStore.Video.Media.DATE_ADDED + " DESC ");
+        if (mCursor != null) {
+            while (mCursor.moveToNext()) {
+                int thumbPathIndex = mCursor.getColumnIndex(MediaStore.Images.Thumbnails.DATA);
+                int timeIndex = mCursor.getColumnIndex(MediaStore.Images.Media.DATE_ADDED);
+                int pathIndex = mCursor.getColumnIndex(MediaStore.Images.Media.DATA);
+                String resolution = mCursor.getString(mCursor.getColumnIndexOrThrow(MediaStore.Video.Media.RESOLUTION));//分辨率
+                long size = mCursor.getLong(mCursor.getColumnIndexOrThrow(MediaStore.Video.Media.SIZE)) / 1024; //单位kb
+                long date = mCursor.getLong(timeIndex) * 1000;
+                int videoId = mCursor.getInt(mCursor.getColumnIndex(MediaStore.Video.Media._ID));
+                String path;
+                //适配Android Q
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    path = MediaStore.Video.Media
+                            .EXTERNAL_CONTENT_URI
+                            .buildUpon()
+                            .appendPath(String.valueOf(videoId)).build().toString();
+                } else {
+                    path = mCursor.getString(mCursor.getColumnIndex(MediaStore.Video.Media.DATA));
+                }
+                long duration = mCursor.getLong(mCursor.getColumnIndex(MediaStore.Video.Media.DURATION));
+                if (size < 0) {
+                    //某些设备获取size<0，直接计算
+                    size = new File(path).length() / 1024;
+                }
+                String displayName = mCursor.getString(mCursor.getColumnIndex(MediaStore.Video.Media.DISPLAY_NAME));
+                //用于展示相册初始化界面
+                //需要判断当前文件是否存在  一定要加，不然有些文件已经不存在图片显示不出来。这里适配Android Q
+                synchronized (context) {
+                    boolean fileIsExists;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        fileIsExists = hl_media.isContentUriExists(context, Uri.parse(path));
+                        if (fileIsExists) {
+                            MediaFileBean mediaFileBean = new MediaFileBean(videoId, path, resolution, size, date, duration);
+                            mediaFileBean.setMediaPathUri(hl_uri.getVideoUri(mCursor).toString());
+                            videoList.add(mediaFileBean);
+                        }
+                    } else {
+                        fileIsExists = hl_file.isFileExist(path);
+                        if (fileIsExists) {
+                            MediaFileBean mediaFileBean = new MediaFileBean(videoId, path, resolution, size, date, duration);
+                            mediaFileBean.setMediaPathUri(hl_uri.getVideoUri(mCursor).toString());
+                            videoList.add(mediaFileBean);
+                        }
+                    }
+                }
+            }
+            mCursor.close();
+            return videoList;
+        }
+        return null;
+    }
+
     /**
      * 获取本机音乐列表
      *
      * @param context 上下文
      * @return 列表
      */
-    public static List<Music> getMusics(Context context) {
+    public static List<MediaFileBean> getMusics(Context context) {
         ContentResolver mContentResolver = context.getContentResolver();
-        ArrayList<Music> musics = new ArrayList<>();
+        ArrayList<MediaFileBean> musics = new ArrayList<>();
         Cursor c = null;
         try {
             c = mContentResolver.query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, null, null, null,
                     MediaStore.Audio.Media.DEFAULT_SORT_ORDER);
             if (c != null) {
                 while (c.moveToNext()) {
-                    String path = c.getString(c.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA));// 路径
-                    if (!new File(path).exists()) {
-                        continue;
-                    }
-                    Music music = new Music();
+                    MediaFileBean music = new MediaFileBean();
                     music.setFileName(c.getString(c.getColumnIndexOrThrow(MediaStore.Audio.Media.DISPLAY_NAME)));
                     music.setTitle(c.getString(c.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE)));
                     music.setAlbum(c.getString(c.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM)));
                     music.setArtist(c.getString(c.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST)));
                     music.setSize(c.getLong(c.getColumnIndexOrThrow(MediaStore.Audio.Media.SIZE)));
                     music.setDuration(c.getInt(c.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)));
-                    music.setMusicId(c.getInt(c.getColumnIndexOrThrow(MediaStore.Audio.Media._ID)));
+                    music.setMediaId(c.getInt(c.getColumnIndexOrThrow(MediaStore.Audio.Media._ID)));
                     music.setAlbumId(c.getInt(c.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID)));
-                    music.setPath(path);
+                    music.setMediaPath(c.getString(c.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)));
                     music.setType(c.getString(c.getColumnIndexOrThrow(MediaStore.Audio.Media.MIME_TYPE)));
                     music.setYear(c.getString(c.getColumnIndexOrThrow(MediaStore.Audio.Media.YEAR)));
                     musics.add(music);
@@ -73,23 +209,19 @@ public class hl_medialist {
      *
      * @return
      */
-    public static List<Video> getVideos(Context context) {
+    public static List<MediaFileBean> getVideos(Context context) {
         ContentResolver mContentResolver = context.getContentResolver();
-        List<Video> videos = new ArrayList<>();
+        List<MediaFileBean> videos = new ArrayList<>();
         Cursor c = null;
         try {
             c = mContentResolver.query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, null, null, null, MediaStore.Video.Media.DEFAULT_SORT_ORDER);
             if (c != null) {
                 while (c.moveToNext()) {
+                    MediaFileBean video = new MediaFileBean();
                     //注意，DATA 数据在 Android Q 以前代表了文件的路径，但在 Android Q上该路径无法被访问，因此没有意义。
-                    String path = c.getString(c.getColumnIndexOrThrow(MediaStore.Video.Media.DATA));// 路径
-                    if (!new File(path).exists()) {
-                        continue;
-                    }
-                    Video video = new Video();
-                    video.setPath(path);
-                    video.setId(c.getInt(c.getColumnIndexOrThrow(MediaStore.Video.Media._ID)));// 视频的id
-                    video.setName(c.getString(c.getColumnIndexOrThrow(MediaStore.Video.Media.DISPLAY_NAME))); // 视频名称
+                    video.setMediaPath(c.getString(c.getColumnIndexOrThrow(MediaStore.Video.Media.DATA)));
+                    video.setMediaId(c.getInt(c.getColumnIndexOrThrow(MediaStore.Video.Media._ID)));// 视频的id
+                    video.setFileName(c.getString(c.getColumnIndexOrThrow(MediaStore.Video.Media.DISPLAY_NAME))); // 视频名称
                     video.setResolution(c.getString(c.getColumnIndexOrThrow(MediaStore.Video.Media.RESOLUTION))); //分辨率
                     video.setSize(c.getLong(c.getColumnIndexOrThrow(MediaStore.Video.Media.SIZE)));// 大小
                     video.setDuration(c.getLong(c.getColumnIndexOrThrow(MediaStore.Video.Media.DURATION)));// 时长
@@ -107,23 +239,11 @@ public class hl_medialist {
         return videos;
     }
 
-    //
-    // 获取视频缩略图
-    public Bitmap getVideoThumbnail(int id, Context context) {
-        Bitmap bitmap;
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inDither = false;
-        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-        bitmap = MediaStore.Video.Thumbnails.getThumbnail(context.getContentResolver(), id, MediaStore.Images.Thumbnails.MICRO_KIND, options);
-        return bitmap;
-    }
-//
-
     /**
      * 通过文件类型得到相应文件的集合
      **/
-    public List<FileBean> getFilesByType(int fileType, Context context) {
-        List<FileBean> files = new ArrayList<>();
+    public List<MediaFileBean> getFilesByType(int fileType, Context context) {
+        List<MediaFileBean> files = new ArrayList<>();
         // 扫描files文件库
         Cursor c = null;
         try {
@@ -143,7 +263,7 @@ public class hl_medialist {
                             continue;
                         }
                         long size = c.getLong(sizeindex);
-                        FileBean fileBean = new FileBean(path, FileUtils.getFileIconByPath(path));
+                        MediaFileBean fileBean = new MediaFileBean(path, FileUtils.getFileIconByPath(path));
                         files.add(fileBean);
                     }
                 }

@@ -1,10 +1,5 @@
 package x.com.hl_tools.DialogTest.phone.bean;
 
-/**
- * @创建人 chaychan
- * @创建时间 2016/7/24  10:05
- * @描述 图片文件夹的bean类
- */
 public class ImgFolderBean {
     /**当前文件夹的路径*/
     private String dir;
@@ -53,15 +48,5 @@ public class ImgFolderBean {
         this.fistImgPath = fistImgPath;
         this.name = name;
         this.count = count;
-    }
-
-    @Override
-    public String toString() {
-        return "ImgFolderBean{" +
-                "dir='" + dir + '\'' +
-                ", fistImgPath='" + fistImgPath + '\'' +
-                ", name='" + name + '\'' +
-                ", count=" + count +
-                '}';
     }
 }

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.AssetFileDescriptor;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,6 +13,8 @@ import android.net.Uri;
 import android.provider.MediaStore;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.FileNameMap;
 import java.net.URLConnection;
 import java.util.ArrayList;
@@ -95,6 +98,16 @@ public class hl_media {
         return MediaStore.Video.Thumbnails.getThumbnail(cr, videoId, MediaStore.Video.Thumbnails.MINI_KIND, null);
     }
 
+    // 获取视频缩略图
+    public Bitmap getVideoThumbnail(int id, Context context) {
+        Bitmap bitmap;
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inDither = false;
+        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+        bitmap = MediaStore.Video.Thumbnails.getThumbnail(context.getContentResolver(), id, MediaStore.Images.Thumbnails.MICRO_KIND, options);
+        return bitmap;
+    }
+
     /**
      * 是否视频文件
      *
@@ -146,12 +159,43 @@ public class hl_media {
     }
 
     /**
-     * intent跳转到图库页面，需要onActivityResult回调
+     * intent跳转到图库页面，需要处理onActivityResult回调
      *
      * @param context 上下文
      */
     public static void intentToGallery(Activity context, int requestCode) {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         context.startActivityForResult(intent, requestCode);
+    }
+
+    public static String getUriStringById(int id) {
+        return MediaStore.Video.Media
+                .EXTERNAL_CONTENT_URI
+                .buildUpon()
+                .appendPath(String.valueOf(id)).build().toString();
+    }
+
+    //这种方法最大的问题即是，对应于一个同步 I/O 调用，易造成线程等待。因此，目前对于 MediaStore 中扫描出来的文件可能不存在的情况，没有直接的好方法可以解决过滤。
+    public static boolean isContentUriExists(Context context, Uri uri) {
+        if (null == context || uri == null) {
+            return false;
+        }
+        ContentResolver cr = context.getContentResolver();
+        try {
+            AssetFileDescriptor afd = cr.openAssetFileDescriptor(uri, "r");
+            if (null == afd) {
+                return false;
+            } else {
+                try {
+                    afd.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return false;
+                }
+            }
+        } catch (FileNotFoundException e) {
+            return false;
+        }
+        return true;
     }
 }
