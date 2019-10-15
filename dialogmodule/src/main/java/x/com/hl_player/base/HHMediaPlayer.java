@@ -1,9 +1,7 @@
 package x.com.hl_player.base;
 
-import android.content.ContentResolver;
 import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Build;
 import android.view.Surface;
 import android.view.SurfaceHolder;
@@ -14,7 +12,6 @@ import java.util.Map;
 import x.com.hl_log.ViseLog;
 import x.com.hl_player.TypeBean.PlayerPrePareStateType;
 import x.com.hl_player.TypeBean.PlayerStateType;
-import x.com.hl_tools.hl_uri;
 
 /**
  * MediaPlayer具体实现
@@ -110,7 +107,7 @@ public class HHMediaPlayer extends HHPlayerCore {
         }
     }
 
-    private void doPrepare(String mediaPath, boolean isFirst) {
+    private void doPrepare(Object mediaPath, boolean isFirst) {
         if (mediaPath == null) {
             ViseLog.e(ETAG, "地址为空或找不到！");
             return;
@@ -120,9 +117,9 @@ public class HHMediaPlayer extends HHPlayerCore {
         reset();
         try {
             playerPrePareState = PlayerPrePareStateType.PREPARING;
-            if (ContentResolver.SCHEME_ANDROID_RESOURCE.equals(hl_uri.str2Uri(this.mediaPath).getScheme())) {
-                AssetFileDescriptor fileDescriptor = context.getApplicationContext().getContentResolver().openAssetFileDescriptor(hl_uri.str2Uri(this.mediaPath), "r");
-                mediaPlayer.setDataSource(fileDescriptor);
+            if (mediaPath instanceof AssetFileDescriptor) {//Android assets file
+                AssetFileDescriptor fd = (AssetFileDescriptor) mediaPath;
+                mediaPlayer.setDataSource(fd.getFileDescriptor(), fd.getStartOffset(), fd.getLength());
             } else if (getHeaders() != null) {//url with headers
                 Class<MediaPlayer> clazz = MediaPlayer.class;
                 Method method = clazz.getDeclaredMethod("setDataSource", String.class, Map.class);

@@ -106,7 +106,7 @@ public class HHijkPlayer extends HHPlayerCore {
         }
     }
 
-    private void doPrepare(String mediaPath, boolean isFirst) {
+    private void doPrepare(Object mediaPath, boolean isFirst) {
         this.mediaPath = (String) mediaPath;
         if (surface != null) {
             stop();
@@ -115,16 +115,16 @@ public class HHijkPlayer extends HHPlayerCore {
         }
         try {
             playerPrePareState = PlayerPrePareStateType.PREPARING;
-            Uri uri = Uri.parse(mediaPath);
+            Uri uri = Uri.parse((String) mediaPath);
             if (uri.getScheme() != null && uri.getScheme().equals(ContentResolver.SCHEME_ANDROID_RESOURCE)) {
-                AssetFileDescriptor fileDescriptor = context.getApplicationContext().getContentResolver().openAssetFileDescriptor(hl_uri.str2Uri(this.mediaPath), "r");
+                AssetFileDescriptor fileDescriptor = context.getApplicationContext().getContentResolver().openAssetFileDescriptor(hl_uri.str2Uri(String.valueOf(this.mediaPath)), "r");
                 mediaPlayer.setDataSource(new RawDataSourceProvider(fileDescriptor));
             } else if (getHeaders() != null) {//url with headers
                 Class<MediaPlayer> clazz = MediaPlayer.class;
                 Method method = clazz.getDeclaredMethod("setDataSource", String.class, Map.class);
                 method.invoke(mediaPlayer, mediaPath, getHeaders());
             } else {
-                mediaPlayer.setDataSource(mediaPath);
+                mediaPlayer.setDataSource(String.valueOf(mediaPath));
             }
             mediaPlayer.prepareAsync();//异步
         } catch (Exception e) {

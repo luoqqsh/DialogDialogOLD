@@ -21,7 +21,7 @@ public abstract class HHPlayerCore {
     public String TAG = "HHPlayerCore";
     public String ETAG = "hh_error";
 
-    public String mediaPath;
+    public Object mediaPath;
     public int videoWidth;
     public int videoHeight;
 
@@ -78,7 +78,7 @@ public abstract class HHPlayerCore {
         return playerPrePareState == PlayerPrePareStateType.PREPARED;
     }
 
-    public String getMediaPath() {
+    public Object getMediaPath() {
         return mediaPath;
     }
 
