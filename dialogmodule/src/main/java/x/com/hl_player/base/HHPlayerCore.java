@@ -27,7 +27,7 @@ public abstract class HHPlayerCore {
 
     public float volume = 1;
     public Context context;//有的播放器需要context
-    public boolean isLooping = true; //是否循环播放
+    public boolean isLooping = false; //是否循环播放
     public HOnListener<Object> onPreparedListener;
     public HOnListener<Long> onProgessListener;
     public HOnListener<Object> onCompletionListener;

@@ -39,18 +39,16 @@ public class HHPlayer3 {
     private HHPlayerCore hhPlayerCore;//播放器内
     private HHPlayerView hhPlayerView;
     private Context mContext;
-    private boolean isChangeBrigtness = false;
-    private ViewGroup viewGroup;
+    private ViewGroup viewGroup;//视频容器
+    private boolean isChangeBrigtness = false;//是否设置改变亮度
     private boolean isPlayWhenPrepared = false;//准备好立即播放
     private ControlViewInterface cvInterface;
     private String title;
-    private List<TvDataList> tvLists;
+    private List<TvDataList> tvLists;//播放列表
     private HOnListener<Object> preparedListener;
+    private HOnListener<PlayerStateType> stateChangeListener;
 
-    public String getTitle() {
-        return title;
-    }
-
+    /***********************************初始化播放器部分**************************************************************/
     //播放音乐
     public HHPlayer3(Context context, HHPlayerCore hhPlayerCore) {
         this(context, hhPlayerCore, TypeView.MUSIC, null, null);
@@ -139,53 +137,82 @@ public class HHPlayer3 {
         }
     }
 
-    public void setPreparedListener(final HOnListener<Object> preparedListener) {
-        this.preparedListener = preparedListener;
+    private void initSurface(Surface surface) {
+        hhPlayerCore.initView(surface);
     }
 
-    //播放器播放完成监听
-    public void setCompletionListener(final HOnListener<Object> completionListener) {
-        hhPlayerCore.setCompletionListener(new HOnListener<Object>() {
-            @Override
-            public void onListen(Object o) {
-                hhPlayerCore.mPlayerState = PlayerStateType.PLAYBACK_COMPLETED;
-                if (isChangeBrigtness) {//播放完恢复原来的亮度，没设置亮度则不启用
-                    setScreenBrigtness(getSystemScreenBrightness());
-                }
-                completionListener.onListen(o);
-            }
-        });
+    private void initSurfaceHolder(SurfaceHolder surfaceHolder) {
+        hhPlayerCore.initView(surfaceHolder);
     }
 
-    //播放器错误监听
-    public void setOnErrorListener(HOnListener<Object> errorListener) {
-        hhPlayerCore.setOnErrorListener(errorListener);
-    }
-
-    //播放器播放进度监听//当前是timer线程
-    public void setProgessListener(final HOnListener<Long> progessListener) {
-        hhPlayerCore.setProgessListener(new HOnListener<Long>() {
-            @Override
-            public void onListen(Long aLong) {
-                if (progessListener != null) {
-                    progessListener.onListen(aLong);
-                }
-                if (cvInterface != null) {
-                    cvInterface.changeProgress(aLong);
-                }
-            }
-        });
-    }
-
-    //播放器缓存进度监听
-    public void setOnBufferingUpdateListener(HOnListener<Integer> onBufferingUpdateListener) {
-        hhPlayerCore.setOnBufferingUpdateListener(onBufferingUpdateListener);
-    }
-
+    /***********************************设置部分**************************************************************/
     public void setPlayWhenPrepared(boolean isPlayWhenPrepared) {
         this.isPlayWhenPrepared = isPlayWhenPrepared;
     }
 
+    //设置屏幕亮度
+    public void setScreenBrigtness(int brightness) {
+        Window localWindow = ((Activity) mContext).getWindow();
+        WindowManager.LayoutParams localLayoutParams = localWindow.getAttributes();
+        localLayoutParams.screenBrightness = (float) brightness / 100.0F;
+        localWindow.setAttributes(localLayoutParams);
+        isChangeBrigtness = true;
+    }
+
+    //设置是否循环播放
+    public void setLooping(boolean looping) {
+        hhPlayerCore.setLooping(looping);
+    }
+
+    //设置静音
+    public void setMute(boolean mute) {
+        setVolume(mute ? 0 : 1);
+    }
+
+    //设置音量，范围0-1
+    public void setVolume(float volume) {
+        if (volume >= 0 && volume <= 1) {
+            hhPlayerCore.volume = volume;
+            hhPlayerCore.setVolume(volume);
+        } else {
+            hhPlayerCore.volume = 1;
+            hhPlayerCore.setVolume(1);
+            ViseLog.e(hhPlayerCore.ETAG, "volume超范围：" + volume);
+        }
+    }
+
+    //设置播放速度，快放慢放。0就停了，1为正常速度。。。
+    public void setSpeed(float speed) {
+        if (hhPlayerCore.isPlayControl()) {
+            hhPlayerCore.setSpeed(speed);
+        }
+    }
+
+    //设置视频缩放类型
+    public void setVideoScaleType(int scaleType) {
+        if (hhPlayerView != null) {
+            hhPlayerView.setVideoScaleType(scaleType);
+        }
+    }
+
+    //设置视频大小
+    public void setVideoSize(int width, int height) {
+        if (hhPlayerView != null) {
+            hhPlayerView.setVideoSize(width, height);
+        }
+    }
+
+    //设置添加view的交互
+    public void setCvInterface(ControlViewInterface cvInterface) {
+        this.cvInterface = cvInterface;
+    }
+
+    //设置请求头，在prepare之前执行
+    public void setHeader(Map<String, String> mHeaders) {
+        hhPlayerCore.setHeaders(mHeaders);
+    }
+
+    /***********************************播放控制部分**************************************************************/
     public void prepare(String path) {
         prepare(path, "");
     }
@@ -214,6 +241,12 @@ public class HHPlayer3 {
             hhPlayerCore.getCurrentStart();
             hhPlayerCore.mPlayerState = PlayerStateType.PLAYING;
         }
+        if (stateChangeListener != null) {
+            stateChangeListener.onListen(hhPlayerCore.mPlayerState);
+        }
+        if (cvInterface != null) {
+            cvInterface.getPlayState(hhPlayerCore.mPlayerState);
+        }
     }
 
     public void pause() {
@@ -221,18 +254,30 @@ public class HHPlayer3 {
             hhPlayerCore.pause();
             hhPlayerCore.mPlayerState = PlayerStateType.PAUSE;
         }
+        if (stateChangeListener != null) {
+            stateChangeListener.onListen(hhPlayerCore.mPlayerState);
+        }
+        if (cvInterface != null) {
+            cvInterface.getPlayState(hhPlayerCore.mPlayerState);
+        }
     }
 
     public void reset() {
         hhPlayerCore.reset();
         hhPlayerCore.getCurrentStop();
         hhPlayerCore.mPlayerState = PlayerStateType.IDLE;
+        if (stateChangeListener != null) {
+            stateChangeListener.onListen(hhPlayerCore.mPlayerState);
+        }
     }
 
     public void stop() {
         if (hhPlayerCore.isPlayControl()) {
             hhPlayerCore.stop();
             hhPlayerCore.getCurrentStop();
+        }
+        if (stateChangeListener != null) {
+            stateChangeListener.onListen(hhPlayerCore.mPlayerState);
         }
     }
 
@@ -244,15 +289,23 @@ public class HHPlayer3 {
         }
     }
 
-    //设置屏幕亮度
-    public void setScreenBrigtness(int brightness) {
-        Window localWindow = ((Activity) mContext).getWindow();
-        WindowManager.LayoutParams localLayoutParams = localWindow.getAttributes();
-        localLayoutParams.screenBrightness = (float) brightness / 100.0F;
-        localWindow.setAttributes(localLayoutParams);
-        isChangeBrigtness = true;
+    //全屏
+    public void fullScreen() {
+        if (viewGroup == null) {
+            ViseLog.e(hhPlayerCore.ETAG, "必须要有viewGroup才能执行此操作");
+            return;
+        }
     }
 
+    public void release() {
+        stop();
+        hhPlayerCore.getCurrentStop();
+        hhPlayerCore.release();
+        hhPlayerCore.mPlayerState = PlayerStateType.NONE;
+        hhPlayerCore.playerPrePareState = PlayerPrePareStateType.NONE;
+    }
+
+    /***********************************获取参数部分**************************************************************/
     //获取系统屏幕亮度
     private int getSystemScreenBrightness() {
         try {
@@ -276,44 +329,10 @@ public class HHPlayer3 {
         }
         return getSystemScreenBrightness();
     }
-
-    //设置是否循环播放
-    public void setLooping(boolean looping) {
-        hhPlayerCore.setLooping(looping);
-    }
-
-    //设置静音
-    public void setMute(boolean mute) {
-        setVolume(mute ? 0 : 1);
-    }
-
-    //设置音量，范围0-1
-    public void setVolume(float volume) {
-        if (volume >= 0 && volume <= 1) {
-            hhPlayerCore.volume = volume;
-            hhPlayerCore.setVolume(volume);
-        } else {
-            hhPlayerCore.volume = 1;
-            hhPlayerCore.setVolume(1);
-            ViseLog.e(hhPlayerCore.ETAG, "volume超范围：" + volume);
-        }
-    }
-
     //获取当前音量
+
     public float getVolume() {
         return hhPlayerCore.volume;
-    }
-
-    //设置播放速度，快放慢放。0就停了，1为正常速度。。。
-    public void setSpeed(float speed) {
-        if (hhPlayerCore.isPlayControl()) {
-            hhPlayerCore.setSpeed(speed);
-        }
-    }
-
-    //设置请求头，在prepare之前执行
-    public void setHeader(Map<String, String> mHeaders) {
-        hhPlayerCore.setHeaders(mHeaders);
     }
 
     public Object getMediaPath() {
@@ -324,12 +343,32 @@ public class HHPlayer3 {
         return hhPlayerCore.isMediaPlaying();
     }
 
+    public String getTitle() {
+        return title;
+    }
+
     //获取当前播放进度，-1为获取失败
     public long getCurrentPosition() {
         if (hhPlayerCore.isPlayControl()) {
             return hhPlayerCore.getCurrentPosition();
         }
         return -1;
+    }
+
+    //获取视频宽，需要在prepare完成之后执行
+    public long getMediaWidth() {
+        if (hhPlayerCore.isPlayControl()) {
+            return hhPlayerCore.videoWidth;
+        }
+        return 0;
+    }
+
+    //获取视频高，需要在prepare完成之后执行
+    public long getMediaHeight() {
+        if (hhPlayerCore.isPlayControl()) {
+            return hhPlayerCore.videoHeight;
+        }
+        return 0;
     }
 
     //获取媒体总时长，-1为获取失败
@@ -345,33 +384,13 @@ public class HHPlayer3 {
         return hhPlayerCore.mPlayerState;
     }
 
-    public void setCvInterface(ControlViewInterface cvInterface) {
-        this.cvInterface = cvInterface;
-    }
 
+    //获取播放列表
     public List<TvDataList> getUrlDataList() {
         return tvLists;
     }
 
-    public void setVideoScaleType(int scaleType) {
-        if (hhPlayerView != null) {
-            hhPlayerView.setVideoScaleType(scaleType);
-        }
-    }
-
-    public void setVideoSize(int width, int height) {
-        if (hhPlayerView != null) {
-            hhPlayerView.setVideoSize(width, height);
-        }
-    }
-
-    public void fullScreen() {
-        if (viewGroup == null) {
-            ViseLog.e(hhPlayerCore.ETAG, "必须要有viewGroup才能执行此操作");
-            return;
-        }
-    }
-
+    /***********************************初始化view部分**************************************************************/
     private void initSurfaceView() {
         SurfaceView mSurfaceView = new SurfaceView(mContext.getApplicationContext());
         mSurfaceView.setKeepScreenOn(true);
@@ -495,22 +514,54 @@ public class HHPlayer3 {
         });
     }
 
-    private void initSurface(Surface surface) {
-        hhPlayerCore.initView(surface);
+    /***********************************设置监听部分**************************************************************/
+    public void setPreparedListener(final HOnListener<Object> preparedListener) {
+        this.preparedListener = preparedListener;
     }
 
-    private void initSurfaceHolder(SurfaceHolder surfaceHolder) {
-        hhPlayerCore.initView(surfaceHolder);
+    //播放器播放完成监听
+    public void setCompletionListener(final HOnListener<Object> completionListener) {
+        hhPlayerCore.setCompletionListener(new HOnListener<Object>() {
+            @Override
+            public void onListen(Object o) {
+                hhPlayerCore.mPlayerState = PlayerStateType.PLAYBACK_COMPLETED;
+                if (isChangeBrigtness) {//播放完恢复原来的亮度，没设置亮度则不启用
+                    setScreenBrigtness(getSystemScreenBrightness());
+                }
+                completionListener.onListen(o);
+            }
+        });
     }
 
-    public void release() {
-        stop();
-        hhPlayerCore.getCurrentStop();
-        hhPlayerCore.release();
-        hhPlayerCore.mPlayerState = PlayerStateType.NONE;
-        hhPlayerCore.playerPrePareState = PlayerPrePareStateType.NONE;
+    //播放器错误监听
+    public void setOnErrorListener(HOnListener<Object> errorListener) {
+        hhPlayerCore.setOnErrorListener(errorListener);
     }
 
+    //播放器播放进度监听//当前是timer线程
+    public void setProgessListener(final HOnListener<Long> progessListener) {
+        hhPlayerCore.setProgessListener(new HOnListener<Long>() {
+            @Override
+            public void onListen(Long aLong) {
+                if (progessListener != null) {
+                    progessListener.onListen(aLong);
+                }
+                if (cvInterface != null) {
+                    cvInterface.changeProgress(aLong);
+                }
+            }
+        });
+    }
+
+    //播放器缓存进度监听
+    public void setOnBufferingUpdateListener(HOnListener<Integer> onBufferingUpdateListener) {
+        hhPlayerCore.setOnBufferingUpdateListener(onBufferingUpdateListener);
+    }
+
+    //播放器状态改变监听
+    public void setStateChangeListener(HOnListener<PlayerStateType> stateChangeListener) {
+        this.stateChangeListener = stateChangeListener;
+    }
 /*
 
     public void fullScreen() {

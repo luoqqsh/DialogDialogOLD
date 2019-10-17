@@ -14,6 +14,7 @@ import x.com.hl_base.OnDoubleClickListener;
 import x.com.hl_dialog.R;
 import x.com.hl_player.HHPlayer3;
 import x.com.hl_player.TypeBean.PlayerPrePareStateType;
+import x.com.hl_player.TypeBean.PlayerStateType;
 import x.com.hl_player.base.ControlViewInterface;
 
 public class HHLoadingView extends FrameLayout implements View.OnClickListener, ControlViewInterface {
@@ -101,7 +102,17 @@ public class HHLoadingView extends FrameLayout implements View.OnClickListener, 
             mStartButton.setVisibility(GONE);
         }
     }
-
+    @Override
+    public void getPlayState(PlayerStateType playerStateType) {
+        switch (playerStateType) {
+            case PAUSE:
+                showMidStart(true);
+                break;
+            case PLAYING:
+                showMidStart(false);
+                break;
+        }
+    }
     @Override
     public void getPrePareState(PlayerPrePareStateType playerPrePareStateType) {
         if (playerPrePareStateType == PlayerPrePareStateType.PREPARING) {

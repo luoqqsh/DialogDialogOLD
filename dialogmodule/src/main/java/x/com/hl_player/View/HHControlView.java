@@ -21,6 +21,7 @@ import x.com.hl_base.OnDoubleClickListener;
 import x.com.hl_dialog.R;
 import x.com.hl_player.HHPlayer3;
 import x.com.hl_player.TypeBean.PlayerPrePareStateType;
+import x.com.hl_player.TypeBean.PlayerStateType;
 import x.com.hl_player.TypeBean.PlayerViewType;
 import x.com.hl_player.base.ControlViewInterface;
 import x.com.hl_tools.hl_time;
@@ -228,6 +229,11 @@ public class HHControlView extends FrameLayout implements View.OnClickListener, 
                 }
                 break;
         }
+    }
+
+    @Override
+    public void getPlayState(PlayerStateType playerStateType) {
+
     }
 
     @Override
