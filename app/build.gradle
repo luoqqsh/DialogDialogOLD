@@ -77,7 +77,7 @@ dependencies {
     implementation project(':map_qmap')
     implementation project(':map_kmap')
 
-    implementation('com.airbnb.android:lottie:3.0.7') {
+    implementation('com.airbnb.android:lottie:3.1.0') {
         exclude group: 'com.google.guava', module: 'listenablefuture'
     }
     implementation 'io.github.lizhangqu:retrace:1.0.2'
@@ -86,8 +86,8 @@ dependencies {
     implementation 'tv.danmaku.ijk.media:ijkplayer-x86:0.8.8'
     implementation(name: 'baiduface-release', ext: 'aar')
     implementation 'com.yanzhenjie:okalle:0.1.7'
-    implementation 'com.google.code.gson:gson:2.8.5'
-    implementation'com.squareup.okhttp3:okhttp:4.1.1'
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.squareup.okhttp3:okhttp:4.2.2'
 }
 
 static def releaseTime() {
