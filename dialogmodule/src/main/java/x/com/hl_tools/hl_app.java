@@ -18,6 +18,7 @@ import x.com.hl_log.ViseLog;
 
 public class hl_app {
 
+
     //安装
     public static void installAPK(final Activity activity, final File apkFile) {
         Intent intent = new Intent();
