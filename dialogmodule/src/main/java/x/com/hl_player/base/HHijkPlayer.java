@@ -58,6 +58,7 @@ public class HHijkPlayer extends HHPlayerCore {
                         onPreparedListener.onListen(mp);
                     }
                     StringBuilder videoInfoLog = new StringBuilder("Prepared OK\n");
+                    videoInfoLog.append("path: ").append(mediaPath).append("\n");
                     videoInfoLog.append("width: ").append(mediaPlayer.getVideoWidth()).append("\n");
                     videoInfoLog.append("height: ").append(mediaPlayer.getVideoHeight()).append("\n");
                     videoInfoLog.append("duration: ").append(mediaPlayer.getDuration()).append("\n");

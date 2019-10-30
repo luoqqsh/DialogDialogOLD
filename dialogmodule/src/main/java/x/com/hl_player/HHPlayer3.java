@@ -406,8 +406,6 @@ public class HHPlayer3 {
 
             @Override
             public void surfaceDestroyed(SurfaceHolder holder) {
-                holder.removeCallback(this);
-                release();
             }
         });
         ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -427,7 +425,6 @@ public class HHPlayer3 {
                 if (surface != null) {
                     surface.release();
                 }
-                release();
                 return true;
             }
 

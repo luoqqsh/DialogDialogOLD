@@ -9,7 +9,6 @@ import android.widget.Toast;
 import androidx.multidex.MultiDexApplication;
 
 import com.liulishuo.filedownloader.FileDownloader;
-import com.squareup.leakcanary.LeakCanary;
 
 import x.com.hl_base.InitHlApp;
 import x.com.hl_base.NeverCrashHelper;
@@ -29,10 +28,6 @@ public class DialogApplication extends MultiDexApplication {
 //        Debug.startMethodTracing("/storage/emulated/0/DCIM/app.trash");
         InitHlApp.setShowLog(true);
         FileDownloader.setup(getApplicationContext());
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            return;
-        }
-        LeakCanary.install(this);
 
         NeverCrashHelper.init((t, e) -> {
 //            e.printStackTrace();

@@ -13,7 +13,6 @@ import java.util.List;
 
 import x.com.dialogdialog.BaseApp.BaseActivity;
 import x.com.hl_base.HOnListener;
-import x.com.hl_log.ViseLog;
 import x.com.hl_player.HHPlayer3;
 import x.com.hl_player.TvListBean.TvData;
 import x.com.hl_player.TvListBean.TvDataList;
@@ -65,7 +64,7 @@ public class HHMedia3Activity extends BaseActivity {
         initList();
         initUI();
         hhview = findViewById(R.id.hhPlayerView);
-        hhPlayer3 = new HHPlayer3(this, new HHMediaPlayer(), TypeView.HHTEXTURE, hhview);
+        hhPlayer3 = new HHPlayer3(this, new HHMediaPlayer(), TypeView.NEWSURFACE, hhview);
         hhPlayer3.addLoadingView();
         hhPlayer3.setPreparedListener(new HOnListener<Object>() {
             @Override
@@ -126,7 +125,6 @@ public class HHMedia3Activity extends BaseActivity {
 //            ViseLog.d(imageContentUri);
             hhPlayer3.prepare(tvUrl.getLinks(), 0);
             List<MediaFileBean> imgList = hl_medialist.getVideoList(mContext);
-            ViseLog.d(imgList);
 //            hhPlayer3.prepare("content://media/external/video/media/27", "");
         });
 
