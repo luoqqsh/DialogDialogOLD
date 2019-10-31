@@ -532,7 +532,17 @@ public class HHPlayer3 {
 
     //播放器错误监听
     public void setOnErrorListener(HOnListener<Object> errorListener) {
-        hhPlayerCore.setOnErrorListener(errorListener);
+        hhPlayerCore.setOnErrorListener(new HOnListener<Object>() {
+            @Override
+            public void onListen(Object o) {
+                if (cvInterface != null) {
+                    cvInterface.getPrePareState(PlayerPrePareStateType.ERROR);
+                }
+                if (errorListener != null) {
+                    errorListener.onListen(o);
+                }
+            }
+        });
     }
 
     //播放器播放进度监听//当前是timer线程
