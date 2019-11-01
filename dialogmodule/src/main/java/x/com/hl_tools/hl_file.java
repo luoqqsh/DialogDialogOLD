@@ -36,16 +36,16 @@ public class hl_file {
 //    getFilesDir()	= /data/data/com.my.app/files
 
     //以下方法在安卓Q之后的版本能获取得到，但无法使用
-    public static final String SDROOT = Environment.getExternalStorageDirectory().getPath() + File.separator;
-    public static final String DCIM = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) + File.separator;
-    public static final String MUSIC = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC) + File.separator;
-    public static final String MOVIE = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) + File.separator;
-    public static final String ALARMS = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_ALARMS) + File.separator;
-    public static final String RINGTONES = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_RINGTONES) + File.separator;
-    public static final String DOWNLOADS = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator;
-    public static final String CAMERA = DCIM + "Camera" + File.separator;
-    public static final String DIALOG = SDROOT + "dialog" + File.separator;
-    public static final String QQFILE = SDROOT + "Tencent" + File.separator + "QQfile_recv" + File.separator;
+    public static final String SDROOT = Environment.getExternalStorageDirectory().getPath();
+    public static final String DCIM = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath();
+    public static final String MUSIC = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC).getAbsolutePath();
+    public static final String MOVIE = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES).getAbsolutePath();
+    public static final String ALARMS = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_ALARMS).getAbsolutePath();
+    public static final String RINGTONES = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_RINGTONES).getAbsolutePath();
+    public static final String DOWNLOADS = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
+    public static final String CAMERA = DCIM + File.separator + "Camera";
+    public static final String DIALOG = SDROOT + File.separator + "dialog";
+    public static final String QQFILE = SDROOT + File.separator + "Tencent" + File.separator + "QQfile_recv";
 
 
     /**
