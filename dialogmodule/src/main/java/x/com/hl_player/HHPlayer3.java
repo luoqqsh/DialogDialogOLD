@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.SurfaceTexture;
 import android.provider.Settings;
-
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -240,12 +239,12 @@ public class HHPlayer3 {
             hhPlayerCore.start();
             hhPlayerCore.getCurrentStart();
             hhPlayerCore.mPlayerState = PlayerStateType.PLAYING;
-        }
-        if (stateChangeListener != null) {
-            stateChangeListener.onListen(hhPlayerCore.mPlayerState);
-        }
-        if (cvInterface != null) {
-            cvInterface.getPlayState(hhPlayerCore.mPlayerState);
+            if (stateChangeListener != null) {
+                stateChangeListener.onListen(hhPlayerCore.mPlayerState);
+            }
+            if (cvInterface != null) {
+                cvInterface.getPlayState(hhPlayerCore.mPlayerState);
+            }
         }
     }
 
@@ -253,12 +252,12 @@ public class HHPlayer3 {
         if (hhPlayerCore.isPlayControl() && hhPlayerCore.isMediaPlaying()) {
             hhPlayerCore.pause();
             hhPlayerCore.mPlayerState = PlayerStateType.PAUSE;
-        }
-        if (stateChangeListener != null) {
-            stateChangeListener.onListen(hhPlayerCore.mPlayerState);
-        }
-        if (cvInterface != null) {
-            cvInterface.getPlayState(hhPlayerCore.mPlayerState);
+            if (stateChangeListener != null) {
+                stateChangeListener.onListen(hhPlayerCore.mPlayerState);
+            }
+            if (cvInterface != null) {
+                cvInterface.getPlayState(hhPlayerCore.mPlayerState);
+            }
         }
     }
 
@@ -284,7 +283,7 @@ public class HHPlayer3 {
     //单位毫秒
     public void seekTo(long position) {
         if (hhPlayerCore.isPlayControl()) {
-            hhPlayerCore.playerPrePareState = PlayerPrePareStateType.PREPARING;
+//            hhPlayerCore.playerPrePareState = PlayerPrePareStateType.PREPARING;
             hhPlayerCore.seekTo(position);
         }
     }

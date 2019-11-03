@@ -2,17 +2,18 @@
 //
 //import android.content.Context;
 //import android.os.Environment;
+//import android.util.Log;
 //import android.view.Surface;
 //import android.view.SurfaceHolder;
 //
 //import com.aliyun.vodplayer.media.AliyunLocalSource;
 //import com.aliyun.vodplayer.media.AliyunVodPlayer;
 //import com.aliyun.vodplayer.media.IAliyunVodPlayer;
-//import com.xunrui.videowallpaper.photoalbum.myplayer.TypeBean.PlayerPrePareStateType;
-//import com.xunrui.videowallpaper.photoalbum.myplayer.TypeBean.PlayerStateType;
+//import com.cll.video.tools.hhplayer.TypeBean.PlayerPrePareStateType;
+//import com.cll.video.tools.hhplayer.TypeBean.PlayerStateType;
 //
 //import x.com.hl_log.ViseLog;
-//
+//import x.com.hl_player.base.HHPlayerCore;
 //
 //public class HHAliPlayer extends HHPlayerCore {
 //    private AliyunVodPlayer mAliyunVodPlayer;
@@ -56,19 +57,14 @@
 //                if (onPreparedListener != null) {
 //                    onPreparedListener.onListen(mAliyunVodPlayer);
 //                }
-//                StringBuilder videoInfoLog = new StringBuilder("Prepared OK\n");
-//                videoInfoLog.append("width: ").append(mediaPlayer.getVideoWidth()).append("\n");
-//                videoInfoLog.append("height: ").append(mediaPlayer.getVideoHeight()).append("\n");
-//                videoInfoLog.append("duration: ").append(mediaPlayer.getDuration()).append("\n");
-//                videoInfoLog.append("tag: ").append(TAG);
-//                ViseLog.d(videoInfoLog);
+//                UIHelper.showLog(TAG, "Prepared OK");
 //            }
 //        });
 //        //播放器出错监听
 //        mAliyunVodPlayer.setOnErrorListener(new IAliyunVodPlayer.OnErrorListener() {
 //            @Override
 //            public void onError(int errorCode, int errorEvent, String errorMsg) {
-//                Log.e(TAG, "监听到错误。  " + mPlayerState);
+//                UIHelper.showLog(TAG, "监听到错误。  " + mPlayerState);
 //                mPlayerState = PlayerStateType.ERROR;
 //                playerPrePareState = PlayerPrePareStateType.ERROR;
 //                ViseLog.e("ERROR: " + errorCode + "  " + errorMsg);
@@ -82,6 +78,14 @@
 //                if (onCompletionListener != null) {
 //                    onCompletionListener.onListen(mAliyunVodPlayer);
 //                }
+//            }
+//        });
+//        mAliyunVodPlayer.setOnSeekCompleteListener(new IAliyunVodPlayer.OnSeekCompleteListener() {
+//            @Override
+//            public void onSeekComplete() {
+//                mPlayerState = PlayerStateType.PLAYING;
+//                start();
+//                Log.d(TAG, "Seek Complete");
 //            }
 //        });
 //    }

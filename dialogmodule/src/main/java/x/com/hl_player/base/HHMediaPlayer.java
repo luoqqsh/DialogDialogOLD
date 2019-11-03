@@ -65,6 +65,7 @@ public class HHMediaPlayer extends HHPlayerCore {
             mediaPlayer.setOnSeekCompleteListener(new MediaPlayer.OnSeekCompleteListener() {
                 @Override
                 public void onSeekComplete(MediaPlayer mp) {
+                    mPlayerState = PlayerStateType.PLAYING;
                     start();
                     ViseLog.d(TAG, "Seek Complete");
                 }
