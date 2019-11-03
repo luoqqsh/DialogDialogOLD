@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.SurfaceTexture;
 import android.provider.Settings;
-
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -14,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import java.util.List;
@@ -129,6 +127,7 @@ public class HHPlayer3 {
     public void addLoadingView() {
         addExtraView(new HHLoadingView(mContext, this));
     }
+
     public void addLoadingView(int imageResource) {
         HHLoadingView hhLoadingView = new HHLoadingView(mContext, this);
         hhLoadingView.addThumb(imageResource);
@@ -140,13 +139,7 @@ public class HHPlayer3 {
         hhLoadingView.addThumb(bitmap);
         addExtraView(hhLoadingView);
     }
-    public void addThumbImg(Bitmap bitmap) {
-        ImageView imageView = new ImageView(mContext);
-        imageView.setScaleType(ImageView.ScaleType.CENTER);
-        imageView.setImageBitmap(bitmap);
-        addExtraView(imageView);
-    }
-
+  
     public void addExtraView(View view) {
         if (viewGroup == null) {
             ViseLog.e(hhPlayerCore.TAG, "必须设置viewGroup");
