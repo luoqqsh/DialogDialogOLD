@@ -1,11 +1,13 @@
 package x.com.hl_player.View;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,10 +28,11 @@ public class HHLoadingView extends FrameLayout implements View.OnClickListener, 
     //顶部和底部区域
     protected ViewGroup mTopContainer, mBottomContainer;
 
-    private View contentPanel;
+    private RelativeLayout contentPanel;
     private boolean isPanelShow = false;
     private RotateImageView loading;
     private ViewGroup loading_layout;
+    private ImageView defaultThumb;
 
     public HHLoadingView(@NonNull Context context, HHPlayer3 hhPlayer3) {
         super(context);
@@ -46,12 +49,21 @@ public class HHLoadingView extends FrameLayout implements View.OnClickListener, 
         super(context, attrs, defStyleAttr);
     }
 
+    public void addThumb(int imageResource) {
+        defaultThumb.setImageResource(imageResource);
+    }
+
+    public void addThumb(Bitmap bitmap) {
+        defaultThumb.setImageBitmap(bitmap);
+    }
+
     private void initView(Context context) {
         View.inflate(context, getLayoutId() != 0 ? getLayoutId() : R.layout.player_loadview, this);
 
         loading_layout = findViewById(R.id.loading_layout);
         contentPanel = findViewById(R.id.contentPanel);
         loading = findViewById(R.id.loading);
+        defaultThumb = findViewById(R.id.defaultThumb);
         mStartButton = findViewById(R.id.play_pause);
         mStartButton.setOnClickListener(this);
         contentPanel.setOnClickListener(this);
@@ -102,6 +114,7 @@ public class HHLoadingView extends FrameLayout implements View.OnClickListener, 
             mStartButton.setVisibility(GONE);
         }
     }
+
     @Override
     public void getPlayState(PlayerStateType playerStateType) {
         switch (playerStateType) {
@@ -113,12 +126,17 @@ public class HHLoadingView extends FrameLayout implements View.OnClickListener, 
                 break;
         }
     }
+
     @Override
     public void getPrePareState(PlayerPrePareStateType playerPrePareStateType) {
         if (playerPrePareStateType == PlayerPrePareStateType.PREPARING) {
             loading.setVisibility(VISIBLE);
             loading_layout.setVisibility(VISIBLE);
             loading.start();
+            if (defaultThumb != null) {
+                contentPanel.removeView(defaultThumb);
+                defaultThumb = null;
+            }
         } else {
             loading.setVisibility(GONE);
             loading_layout.setVisibility(GONE);

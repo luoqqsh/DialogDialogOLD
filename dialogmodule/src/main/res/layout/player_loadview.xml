@@ -12,5 +12,11 @@
 
     </RelativeLayout>
 
+    <ImageView
+        android:id="@+id/defaultThumb"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="center" />
+
     <include layout="@layout/player_include_loading" />
 </RelativeLayout>
