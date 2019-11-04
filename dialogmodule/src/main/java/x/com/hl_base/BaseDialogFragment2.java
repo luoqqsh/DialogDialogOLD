@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import x.com.hl_dialog.R;
+import x.com.hl_log.ViseLog;
 import x.com.hl_rx.TaskDelayManager;
 
 /**
@@ -47,6 +49,7 @@ public abstract class BaseDialogFragment2 extends DialogFragment implements Dial
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         checkContext();
+        if (isShowLog) ViseLog.d("onCreate " + mActivity);
     }
 
     public void setShowLog(boolean isShowLog) {
@@ -64,17 +67,20 @@ public abstract class BaseDialogFragment2 extends DialogFragment implements Dial
     public void onDestroy() {
         super.onDestroy();
         isNeedShowing = false;
+        if (isShowLog) ViseLog.d("onDestroy " + mActivity);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         isNeedShowing = false;
+        if (isShowLog) ViseLog.d("onDestroyView");
     }
 
     @Override
     public void onStart() {
         super.onStart();
+        if (isShowLog) ViseLog.d("onStart");
         Dialog dialog = getDialog();
         if (dialog != null) {
             Window window = dialog.getWindow();
@@ -87,6 +93,7 @@ public abstract class BaseDialogFragment2 extends DialogFragment implements Dial
     @Override
     public void onResume() {
         super.onResume();
+        if (isShowLog) ViseLog.d("onResume " + mActivity);
         if (!isNeedShowing) {
             dismiss();
         }
@@ -95,6 +102,7 @@ public abstract class BaseDialogFragment2 extends DialogFragment implements Dial
     @Override
     public void onStop() {
         super.onStop();
+        if (isShowLog) ViseLog.d("onStop " + mActivity);
         if (!isNeedShowing) {
             dismiss();
         }
@@ -104,12 +112,14 @@ public abstract class BaseDialogFragment2 extends DialogFragment implements Dial
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         checkContext();
+        if (isShowLog) ViseLog.d("onActivityCreated");
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         checkContext();
+        if (isShowLog) ViseLog.d("onCreateView " + mActivity);
         View layout = inflater.inflate(getLayoutId(), container);
         initUI(layout);
         return layout;
@@ -119,6 +129,7 @@ public abstract class BaseDialogFragment2 extends DialogFragment implements Dial
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         checkContext();
+        if (isShowLog) ViseLog.d("onCreateDialog " + mActivity);
         Dialog dialog = super.onCreateDialog(savedInstanceState);
         Window window = dialog.getWindow();
         if (window != null) {
@@ -139,12 +150,13 @@ public abstract class BaseDialogFragment2 extends DialogFragment implements Dial
         dialog.setOnDismissListener(this);
         dialog.setOnCancelListener(this);
         if (onKeyListener != null) dialog.setOnKeyListener(onKeyListener);
-//        if (isNoDismissByTouchAndBackPress) UIHelper.setDialogNoDismissByTouchAndBackPress(dialog);
+        if (isNoDismissByTouchAndBackPress) setDialogNoDismissByTouchAndBackPress(dialog);
         return dialog;
     }
 
     @Override
     public void onShow(DialogInterface dialog) {
+        if (isShowLog) ViseLog.d("onShow " + mActivity);
         if (onShowListener != null) {
             onShowListener.onShow(dialog);
         }
@@ -158,6 +170,7 @@ public abstract class BaseDialogFragment2 extends DialogFragment implements Dial
         super.onDismiss(dialog);
         isNeedShowing = false;
 
+        if (isShowLog) ViseLog.d("onDismiss " + mActivity);
         if (onDismissListener != null) {
             onDismissListener.onDismiss(dialog);
         }
@@ -166,6 +179,7 @@ public abstract class BaseDialogFragment2 extends DialogFragment implements Dial
     @Override
     public void onCancel(DialogInterface dialog) {
         super.onCancel(dialog);
+        if (isShowLog) ViseLog.d("onCancel " + mActivity);
         if (onCancelListener != null) {
             onCancelListener.onCancel(dialog);
         }
@@ -197,13 +211,14 @@ public abstract class BaseDialogFragment2 extends DialogFragment implements Dial
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        if (isShowLog) ViseLog.d("onViewCreated " + mActivity);
 //        initUI(view);
     }
 
     public void setDialogNoDismissByTouchAndBackPress() {
         isNoDismissByTouchAndBackPress = true;
         if (getDialog() != null) {
-//            UIHelper.setDialogNoDismissByTouchAndBackPress(getDialog());
+            setDialogNoDismissByTouchAndBackPress(getDialog());
         }
     }
 
@@ -291,10 +306,12 @@ public abstract class BaseDialogFragment2 extends DialogFragment implements Dial
 
     public void show(FragmentManager fragmentManager, long dismissDelayTime) {
         if (fragmentManager == null) {
+            if (isShowLog) ViseLog.d("show return fragmentManager==null");
             return;
         }
         if (!isShowing()) {
             if (isAdded()) {
+                if (isShowLog) ViseLog.d("show return isAdded");
                 return;
             }
             isNeedShowing = true;
@@ -339,17 +356,39 @@ public abstract class BaseDialogFragment2 extends DialogFragment implements Dial
     @Override
     public void dismiss() {
         isNeedShowing = false;
+        if (isShowLog) ViseLog.d("dismiss " + mActivity);
         FragmentManager manager = getFragmentManager();
         if (manager == null) {
+            if (isShowLog) ViseLog.d("dismiss return fragmentManager==null");
             return;
         }
         boolean isStateSaved = manager.isStateSaved();
         if (isStateSaved) {
+            if (isShowLog) ViseLog.d("dismiss return isStateSaved = true");
             return;
         }
         if (!isAdded()) {
+            if (isShowLog) ViseLog.d("dismiss return !isAdded");
             return;
         }
+        if (taskDelayManager != null) {
+            taskDelayManager.cancel();
+            taskDelayManager = null;
+        }
         super.dismiss();
+    }
+
+    private void setDialogNoDismissByTouchAndBackPress(Dialog dialog) {
+        if (dialog == null) return;
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+            @Override
+            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 }
