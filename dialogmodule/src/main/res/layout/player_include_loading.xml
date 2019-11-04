@@ -10,8 +10,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_centerInParent="true"
-        android:background="#80000000"
-        android:visibility="gone">
+        android:background="#80000000">
 
         <x.com.hl_player.View.RotateImageView
             android:id="@+id/loading"

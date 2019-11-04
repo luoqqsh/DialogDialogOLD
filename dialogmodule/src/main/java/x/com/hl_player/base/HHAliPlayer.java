@@ -15,12 +15,16 @@
 //import x.com.hl_log.ViseLog;
 //import x.com.hl_player.base.HHPlayerCore;
 //
-//public class HHAliPlayer extends HHPlayerCore {
+//publicpublic class HHAliPlayer extends HHPlayerCore {
 //    private AliyunVodPlayer mAliyunVodPlayer;
 //    private boolean isCompletePlay = false;
 //
 //    public HHAliPlayer(Context context) {
 //        mAliyunVodPlayer = new AliyunVodPlayer(context);
+//        //缓存路径
+//        String sdDir = FileConfig.getQdir(context).getPath() + File.separator + "ali_video_cache";
+//        mAliyunVodPlayer.setPlayingCache(true, sdDir, 60 * 60 /*单个文件的最大时长, s */, 300 /*缓存目录文件的总大小，MB*/);
+////        mAliyunVodPlayer.enableNativeLog();
 //        initListener();
 //    }
 //
@@ -41,9 +45,6 @@
 //    }
 //
 //    private void initListener() {
-//        String sdDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/test_save_cache";
-//        mAliyunVodPlayer.setPlayingCache(true, sdDir, 60 * 60 /*单个文件的最大时长, s */, 300 /*缓存目录文件的总大小，MB*/);
-////        mAliyunVodPlayer.enableNativeLog();
 //        //设置准备回调
 //        mAliyunVodPlayer.setOnPreparedListener(new IAliyunVodPlayer.OnPreparedListener() {
 //            @Override
@@ -68,6 +69,9 @@
 //                mPlayerState = PlayerStateType.ERROR;
 //                playerPrePareState = PlayerPrePareStateType.ERROR;
 //                ViseLog.e("ERROR: " + errorCode + "  " + errorMsg);
+//                if (onErrorListener != null) {
+//                    onErrorListener.onListen("errorCode:" + errorCode + "  errorEvent:" + errorEvent + "  errorMsg:" + errorMsg);
+//                }
 //            }
 //        });
 //        mAliyunVodPlayer.setOnCompletionListener(new IAliyunVodPlayer.OnCompletionListener() {
@@ -200,3 +204,4 @@
 //        return mAliyunVodPlayer.isPlaying();
 //    }
 //}
+

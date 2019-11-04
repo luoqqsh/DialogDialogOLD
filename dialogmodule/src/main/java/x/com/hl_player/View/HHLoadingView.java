@@ -63,6 +63,7 @@ public class HHLoadingView extends FrameLayout implements View.OnClickListener, 
         loading_layout = findViewById(R.id.loading_layout);
         contentPanel = findViewById(R.id.contentPanel);
         loading = findViewById(R.id.loading);
+        loading.start();
         defaultThumb = findViewById(R.id.defaultThumb);
         mStartButton = findViewById(R.id.play_pause);
         mStartButton.setOnClickListener(this);
@@ -133,14 +134,16 @@ public class HHLoadingView extends FrameLayout implements View.OnClickListener, 
             loading.setVisibility(VISIBLE);
             loading_layout.setVisibility(VISIBLE);
             loading.start();
-            if (defaultThumb != null) {
-                contentPanel.removeView(defaultThumb);
-                defaultThumb = null;
-            }
         } else {
             loading.setVisibility(GONE);
             loading_layout.setVisibility(GONE);
             loading.stop();
+            if (defaultThumb != null) {
+                defaultThumb.postDelayed(() -> {
+                    contentPanel.removeView(defaultThumb);
+                    defaultThumb = null;
+                }, 300);
+            }
         }
     }
 
