@@ -14,7 +14,7 @@ import x.com.hl_tools.hl_statusbar;
 /**
  * 沉浸式base
  */
-public class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity {
     public FragmentActivity mContext;
 
     @Override
@@ -22,8 +22,9 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mContext = this;
 
-        getLifecycle().addObserver(new MyLifeObserver());
-        
+//        getLifecycle().addObserver(new MyLifeObserver7());
+        getLifecycle().addObserver(new MyLifeObserver8(getClass().getSimpleName()));
+
         hl_statusbar.setStatusBarColor(this, Color.GREEN);
         hl_statusbar.setNavigationBarColor(this,Color.RED);
         hl_statusbar.setRootViewFitsSystemWindows(this,false);
@@ -34,7 +35,7 @@ public class BaseActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         if (hl_device.INSTANCE.isHuaWeiPhone()) {
-            hl_leak.fixInputMethodManagerLeak(this);
+            hl_leak.fixHuaWeiLeak(this);
         }
     }
 }

@@ -175,6 +175,7 @@ public class hl_media {
                 .appendPath(String.valueOf(id)).build().toString();
     }
 
+    //判断uri对应的文件是否存在
     //这种方法最大的问题即是，对应于一个同步 I/O 调用，易造成线程等待。因此，目前对于 MediaStore 中扫描出来的文件可能不存在的情况，没有直接的好方法可以解决过滤。
     public static boolean isContentUriExists(Context context, Uri uri) {
         if (null == context || uri == null) {
@@ -198,4 +199,6 @@ public class hl_media {
         }
         return true;
     }
+
+
 }

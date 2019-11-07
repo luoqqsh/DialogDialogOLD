@@ -30,7 +30,6 @@ import x.com.hl_tools.hl_img;
 import x.com.hl_tools.hl_permissions;
 
 public class DialogMainJavaActivity extends BaseActivity {
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,10 +53,6 @@ public class DialogMainJavaActivity extends BaseActivity {
     }
 
     private void test() {
-        Intent dtmfIntent = new Intent();
-        dtmfIntent.setAction("net.bonvo.client.bonvobox.send_dtmf");
-        dtmfIntent.putExtra("dtmfCode", '0');
-        sendBroadcast(dtmfIntent);
     }
 
     private void initTvList() {
@@ -79,27 +74,22 @@ public class DialogMainJavaActivity extends BaseActivity {
     private void init() {
         findViewById(R.id.java).setVisibility(View.GONE);
         findViewById(R.id.tongzhi).setOnClickListener(view -> startActivity(new Intent(mContext, NotificationActivity.class)));
-        findViewById(R.id.media).setOnClickListener(view -> startActivity(new Intent(mContext, HHMedia2Activity.class)));
+        findViewById(R.id.media).setOnClickListener(view -> startActivity(new Intent(mContext, HHMedia3Activity.class)));
         findViewById(R.id.x5web).setOnClickListener(v -> startActivity(new Intent(mContext, H5Activity.class)));
         findViewById(R.id.log).setOnClickListener(v -> startActivity(new Intent(mContext, LogActivity.class)));
         findViewById(R.id.open).setOnClickListener(v -> startActivity(new Intent(mContext, GLActivity.class)));
         findViewById(R.id.mapping).setOnClickListener(v -> startActivity(new Intent(mContext, MappingActivity.class)));
         findViewById(R.id.close).setOnClickListener(v -> {
             test();
+//            ViseLog.d("aaa");
+//            ViseLog.d("aaa", "bbb");
 
-//            hl_orientation orientation = new hl_orientation();
-//            orientation.orientationEnable(this, null);
+            ViseLog.d("aaa", 1, 3, 5);
         });
 
         findViewById(R.id.dialog).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                b = DFNDialog.newInstance();
-//                b.setMessage("dddddddddd", 4);
-//                if (!b.isAdded()) {
-//                    b.show(getSupportFragmentManager(), "normalDialog");
-//                }
-
                 DFListFileDialog df = DFListFileDialog.newInstance(hl_file.QQFILE);
                 df.setOnSelectFileListener(new HOnListener<File>() {
                     @Override

@@ -1,6 +1,5 @@
 package x.com.hl_tools;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 
 public class hl_id {

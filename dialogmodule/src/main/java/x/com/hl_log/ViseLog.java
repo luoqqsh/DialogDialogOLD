@@ -11,11 +11,6 @@ import x.com.hl_log.inner.Tree;
 
 import static java.util.Collections.unmodifiableList;
 
-/**
- * @Description: 日志操作
- * @author: <a href="http://www.xiaoyaoyou1212.com">DAWI</a>
- * @date: 16/12/10 21:49.
- */
 public class ViseLog {
     //森林
     private static final List<Tree> FOREST = new ArrayList<>();

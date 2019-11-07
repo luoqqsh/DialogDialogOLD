@@ -3,14 +3,12 @@ package x.com.hl_log.inner;
 import android.text.TextUtils;
 import android.util.Log;
 
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.MissingFormatArgumentException;
 
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Source;
@@ -27,8 +25,6 @@ import x.com.hl_log.config.LogDefaultConfig;
 
 /**
  * @Description: 日志树功能实现
- * @author: <a href="http://www.xiaoyaoyou1212.com">DAWI</a>
- * @date: 16/12/10 21:50.
  */
 public abstract class Tree implements ITree {
 
@@ -168,8 +164,7 @@ public abstract class Tree implements ITree {
         if (msg.length() > LogConstant.LINE_MAX) {//超过一行
             if (mLogConfig.isShowBorder()) {
                 printLog(type, tag, LogConvert.printDividingLine(LogConstant.DIVIDER_TOP));
-                printLog(type, tag, LogConvert.printDividingLine(LogConstant.DIVIDER_NORMAL) +
-                        getTopStackInfo());
+                printLog(type, tag, LogConvert.printDividingLine(LogConstant.DIVIDER_NORMAL) + getTopStackInfo());
                 printLog(type, tag, LogConvert.printDividingLine(LogConstant.DIVIDER_CENTER));
             }
             for (String subMsg : LogConvert.largeStringToList(msg)) {
@@ -181,28 +176,32 @@ public abstract class Tree implements ITree {
             return;
         }
         if (args.length > 0) {//有格式化参数
-            try {
-                msg = String.format(msg, args);
-            } catch (MissingFormatArgumentException e) {
-                e.printStackTrace();
+            //类似C语言的写法，msg带百分号类型，对应args里的参数
+//            try {
+//                msg = String.format(msg, args);
+//            } catch (MissingFormatArgumentException e) {
+//                e.printStackTrace();
+//            }
+            //安卓上还是用纯组合的做吧
+            StringBuilder msgBuilder = new StringBuilder(msg);
+            for (Object arg : args) {
+                msgBuilder.append(",").append(arg);
             }
+            msg = msgBuilder.toString();
         }
         //判断是否显示排版线条
         if (mLogConfig.isShowBorder()) {//显示排版线条
             //判定是否需要分段显示
             if (isPart) {//需要分段显示
                 for (String sub : msg.split(LogConstant.BR)) {
-                    printLog(type, tag, LogConvert.printDividingLine(LogConstant.DIVIDER_NORMAL)
-                            + sub);
+                    printLog(type, tag, LogConvert.printDividingLine(LogConstant.DIVIDER_NORMAL) + sub);
                 }
             } else {//不需要分段显示
                 printLog(type, tag, LogConvert.printDividingLine(LogConstant.DIVIDER_TOP));
-                printLog(type, tag, LogConvert.printDividingLine(LogConstant.DIVIDER_NORMAL) +
-                        getTopStackInfo());
+                printLog(type, tag, LogConvert.printDividingLine(LogConstant.DIVIDER_NORMAL) + getTopStackInfo());
                 printLog(type, tag, LogConvert.printDividingLine(LogConstant.DIVIDER_CENTER));
                 for (String sub : msg.split(LogConstant.BR)) {
-                    printLog(type, tag, LogConvert.printDividingLine(LogConstant.DIVIDER_NORMAL)
-                            + sub);
+                    printLog(type, tag, LogConvert.printDividingLine(LogConstant.DIVIDER_NORMAL) + sub);
                 }
                 printLog(type, tag, LogConvert.printDividingLine(LogConstant.DIVIDER_BOTTOM));
             }
@@ -213,6 +212,7 @@ public abstract class Tree implements ITree {
 
     /**
      * 生成标签
+     *
      * @return
      */
     private String generateTag() {
@@ -226,6 +226,7 @@ public abstract class Tree implements ITree {
 
     /**
      * 获取当前堆栈信息
+     *
      * @return
      */
     private StackTraceElement getCurrentStackTrace() {
@@ -239,6 +240,7 @@ public abstract class Tree implements ITree {
 
     /**
      * 获取顶部堆栈信息
+     *
      * @return
      */
     private String getTopStackInfo() {
@@ -261,6 +263,7 @@ public abstract class Tree implements ITree {
 
     /**
      * 获取堆栈信息下标
+     *
      * @param trace
      * @param cla
      * @return
@@ -282,6 +285,7 @@ public abstract class Tree implements ITree {
 
     /**
      * 输出日志
+     *
      * @param type
      * @param tag
      * @param msg
@@ -295,6 +299,7 @@ public abstract class Tree implements ITree {
 
     /**
      * 日志具体实现方式，可以是打印、文件存储等
+     *
      * @param type
      * @param tag
      * @param message

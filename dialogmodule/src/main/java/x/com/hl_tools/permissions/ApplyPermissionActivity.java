@@ -70,6 +70,6 @@ public class ApplyPermissionActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        hl_leak.fixInput(this);
+        hl_leak.fixHuaWeiLeak(this);
     }
 }

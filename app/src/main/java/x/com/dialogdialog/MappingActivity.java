@@ -39,7 +39,6 @@ public class MappingActivity extends BaseActivity {
         String originalName = retraceClass.getOriginalName();
         String obfuscatedName = retraceClass.getObfuscatedName();
 
-
         Collection<MethodMapping> methods = retraceClass.getMethods("join");
         for (MethodMapping methodMapping : methods) {
             String originalMethodName = methodMapping.getOriginalName();
@@ -59,7 +58,6 @@ public class MappingActivity extends BaseActivity {
         String obfuscatedName = retraceClass.getObfuscatedName();
         String originalName = retraceClass.getOriginalName();
 
-
         Collection<MethodMapping> methods = retraceClass.getMethods("a");
         for (MethodMapping methodMapping : methods) {
             String obfuscatedMethodName = methodMapping.getObfuscatedName();
@@ -75,7 +73,6 @@ public class MappingActivity extends BaseActivity {
      */
     private void c() {
         Retrace retrace = Retrace.createRetrace(mappingFile, false);
-        String originalStacktrace = retrace.stackTrace(
-                "");
+        String originalStacktrace = retrace.stackTrace("");
     }
 }

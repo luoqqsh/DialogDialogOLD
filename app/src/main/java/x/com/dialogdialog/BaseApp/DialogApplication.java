@@ -24,8 +24,6 @@ public class DialogApplication extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        //参数：分析结果存在的文件
-//        Debug.startMethodTracing("/storage/emulated/0/DCIM/app.trash");
         InitHlApp.setShowLog(true);
         FileDownloader.setup(getApplicationContext());
 
@@ -35,7 +33,6 @@ public class DialogApplication extends MultiDexApplication {
             showToast(e.getMessage());
         });
         x5Manager.getInstance().init(this);
-//        Debug.stopMethodTracing();
     }
 
     private void showToast(final String text) {
