@@ -107,12 +107,11 @@ public abstract class BaseDialogFragment2 extends DialogFragment implements Dial
             dismiss();
         }
     }
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
         checkContext();
         if (isShowLog) ViseLog.d("onActivityCreated");
+        super.onActivityCreated(savedInstanceState);
     }
 
     @Nullable

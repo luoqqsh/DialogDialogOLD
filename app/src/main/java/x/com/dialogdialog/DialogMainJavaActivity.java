@@ -2,6 +2,7 @@ package x.com.dialogdialog;
 
 import android.Manifest;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -9,6 +10,7 @@ import android.widget.ImageView;
 import androidx.annotation.Nullable;
 
 import com.google.gson.Gson;
+import com.jiujie.glide.GlideUtil;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -24,6 +26,7 @@ import x.com.hl_player.TvListBean.TvDataList;
 import x.com.hl_player.TvListBean.TypeClarity;
 import x.com.hl_player.TvListBean.TypeClass;
 import x.com.hl_player.TvListBean.TypeState;
+import x.com.hl_rx.TaskManager;
 import x.com.hl_tools.hl_drawable;
 import x.com.hl_tools.hl_file;
 import x.com.hl_tools.hl_img;
@@ -53,6 +56,18 @@ public class DialogMainJavaActivity extends BaseActivity {
     }
 
     private void test() {
+        new TaskManager<Bitmap>() {
+            @Override
+            public Bitmap runOnBackgroundThread() {
+                return GlideUtil.instance().getImageBitmap(mContext, "http://s.bizhijingling.com/uploadfile/coustom/2019/1735/20191029090827981.jpg");
+
+            }
+
+            @Override
+            public void runOnUIThread(Bitmap bitmap) {
+                ViseLog.d(bitmap);
+            }
+        }.start();
     }
 
     private void initTvList() {
@@ -61,14 +76,24 @@ public class DialogMainJavaActivity extends BaseActivity {
 
         TvDataList tvDataList = new TvDataList(TypeClass.中央台, "中央电视台", "rtsp://27.148.240.138/PLTV/88888888/224/3221227012/10000100000000060000000001740935_0.smil", TypeClarity.H4k, TypeState.流畅);
         TvDataList tvDataList2 = new TvDataList(TypeClass.中央台, "美国电视台", "http://183.56.168.47/cdn-out.iqy.sc96655.com/tslive/c204_scc_20190107_yvwl5h02_original_t10/c204_scc_20190107_yvwl5h02_original_t103.m3u8", TypeClarity.标清, TypeState.流畅);
+        TvDataList tvDataList3 = new TvDataList(TypeClass.中央台, "美国电视台", "http://183.56.168.47/cdn-out.iqy.sc96655.com/tslive/c204_scc_20190107_yvwl5h02_original_t10/c204_scc_20190107_yvwl5h02_original_t103.m3u8", TypeClarity.标清, TypeState.流畅);
         tvDataList.addUrl("http://183.56.168.47/cdn-out.iqy.sc96655.com/tslive/c204_scc_20190107_yvwl5h02_original_t10/c204_scc_20190107_yvwl5h02_original_t10.m3u8", TypeClarity.高清, TypeState.流畅);
+        tvDataList.addUrl("rtsp://27.148.240.138/PLTV/88888888/224/3221226716/10000100000000060000000001664269_0.smil", TypeClarity.H8k, TypeState.卡顿);
+        tvDataList.addUrl("rtsp://27.148.240.138/PLTV/88888888/224/3221226716/10000100000000060000000001664269_0.smil", TypeClarity.H8k, TypeState.卡顿);
         tvDataList.addUrl("rtsp://27.148.240.138/PLTV/88888888/224/3221226716/10000100000000060000000001664269_0.smil", TypeClarity.H8k, TypeState.卡顿);
         ArrayList<TvDataList> tvDataLists = new ArrayList<>();
         tvDataLists.add(tvDataList);
+        tvDataLists.add(tvDataList3);
+        tvDataLists.add(tvDataList);
+        tvDataLists.add(tvDataList3);
+        tvDataLists.add(tvDataList2);
         tvDataLists.add(tvDataList2);
         TvData tvUrl = new TvData(1, "20190719", "itv", tvDataLists);
         Gson gson = new Gson();
         String json = gson.toJson(tvUrl);
+
+//        ViseLog.d(json);
+        ViseLog.d(tvUrl);
     }
 
     private void init() {

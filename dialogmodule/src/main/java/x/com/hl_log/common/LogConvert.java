@@ -1,6 +1,8 @@
 package x.com.hl_log.common;
 
 
+import android.app.Activity;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -11,8 +13,6 @@ import x.com.hl_log.parser.Parser;
 
 /**
  * @Description: 日志转换工具
- * @author: <a href="http://www.xiaoyaoyou1212.com">DAWI</a>
- * @date: 16/12/11 10:55.
  */
 public class LogConvert {
 
@@ -171,6 +171,9 @@ public class LogConvert {
         if (childLevel > LogConstant.MAX_CHILD_LEVEL) {
             return object.toString();
         }
+        if (object instanceof Activity) {
+            return object.getClass().getSimpleName();
+        }
         if (LogConstant.getParsers() != null && LogConstant.getParsers().size() > 0) {
             for (Parser parser : LogConstant.getParsers()) {
                 if (parser.parseClassType().isAssignableFrom(object.getClass())) {
@@ -189,7 +192,9 @@ public class LogConvert {
                 getClassFields(superClass, builder, object, true, childLevel);
                 superClass = superClass.getSuperclass();
             }
-            return builder.toString();
+
+            String s = builder.toString();
+            return s.replace("]} ,", "]} ,\n------");
         } else {
             // 若对象重写toString()方法默认走toString()
             return object.toString();
@@ -205,9 +210,7 @@ public class LogConvert {
      * @param isSubClass  死否为子class
      * @param childOffset 递归解析属性的层级
      */
-    private static void getClassFields(Class cla, StringBuilder builder, Object o, boolean
-            isSubClass,
-                                       int childOffset) {
+    private static void getClassFields(Class cla, StringBuilder builder, Object o, boolean isSubClass, int childOffset) {
         if (cla.equals(Object.class)) {
             return;
         }
@@ -215,7 +218,7 @@ public class LogConvert {
             builder.append(LogConstant.BR).append(LogConstant.BR).append("=> ");
         }
         String breakLine = "";
-        builder.append(cla.getSimpleName()).append(" {");
+        builder.append(cla.getSimpleName()).append("\n{");
         Field[] fields = cla.getDeclaredFields();
         for (int i = 0; i < fields.length; ++i) {
             Field field = fields[i];
@@ -231,8 +234,7 @@ public class LogConvert {
             } finally {
                 if (subObject != null) {
                     // 解决Instant Run情况下内部类死循环的问题
-                    if (!isStaticInnerClass(cla) && (field.getName().equals("$change") || field
-                            .getName().equalsIgnoreCase("this$0"))) {
+                    if (!isStaticInnerClass(cla) && (field.getName().equals("$change") || field.getName().equalsIgnoreCase("this$0"))) {
                         continue;
                     }
                     if (subObject instanceof String) {
@@ -245,8 +247,7 @@ public class LogConvert {
                     }
                 }
                 String formatString = breakLine + "%s = %s, ";
-                builder.append(String.format(formatString, field.getName(),
-                        subObject == null ? "null" : subObject.toString()));
+                builder.append(String.format(formatString, field.getName(), subObject == null ? "null" : subObject.toString()));
             }
         }
         if (builder.toString().endsWith("{")) {
