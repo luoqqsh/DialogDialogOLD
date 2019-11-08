@@ -46,3 +46,22 @@ Android系统SDK:29
 ROM版本:10
 支持的CPU架构:arm64-v8a armeabi-v7a armeabi
 SSAID:4e90b50d566ae505
+
+═══════════════════════════════════════════════
+ 屏幕(不含导航栏):1080,2210
+ 设备(物理分辨率):1080,2340
+ 导航栏(下方):130,显示导航栏
+ 状态栏(上方):96
+ 是否全面屏手机（纵横比）:是全面屏
+ res分辨率:xxhdpi
+
+ BRAND-品牌:Xiaomi
+ MANUFACTURER-制造商:Xiaomi
+ MODEL-型号:Redmi K20 Pro Premium Edition
+ 当前语言:zh
+ Android系统版本:10
+ Android系统SDK:29
+ 系统ROM:MIUI
+ ROM版本:V11
+ 支持的CPU架构:arm64-v8a armeabi-v7a armeabi
+ SSAID:d60db892ca6b8dc1

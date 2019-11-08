@@ -2,7 +2,6 @@ package x.com.hl_camera;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.ImageFormat;
 import android.graphics.PixelFormat;
 import android.hardware.Camera;
 import android.os.Build;
@@ -15,13 +14,8 @@ import java.io.IOException;
 
 import x.com.hl_tools.hl_device;
 
-public class Camera1 {
-
-    public static final int WIDTH = 1920;
-    public static final int HEIGHT = 1080;
-    private int mCameraId;
+public class Camera1 extends CameraCore {
     private Camera mCamera;
-    private byte[] buffer;
     private Camera.PreviewCallback mPreviewCallback;//预览实时回调监听
     private Camera.ShutterCallback mShutterCallback;//拍照监听
     private Camera.AutoFocusCallback mAutoFocusCallback;//自动聚焦监听
@@ -29,42 +23,34 @@ public class Camera1 {
     private ViewGroup viewGroup;
 
     public Camera1(Activity activity, int mCameraId, ViewGroup viewGroup) {
-        this.mCameraId = mCameraId;
 //        initCamera(mCameraId);
         setPreView(viewGroup);
     }
 
     public Camera1(Activity activity, int mCameraId, SurfaceHolder surfaceHolder) {
-        this.mCameraId = mCameraId;
-        initCamera(mCameraId);
+        initCamera();
         setPreView(surfaceHolder);
     }
 
-    private synchronized void initCamera(int mCameraId) {
-        mCamera = Camera.open(mCameraId);
+    @Override
+    public synchronized void initCamera() {
+        mCamera = Camera.open(CameraConfig.CAMERA_FRONT);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            mCamera.enableShutterSound(false);
+            mCamera.enableShutterSound(CameraConfig.isOpenVoice);
         }
         mCamera.setPreviewCallbackWithBuffer(mPreviewCallback);
         Camera.Parameters parameters = mCamera.getParameters();//得到摄像头的参数
-        parameters.setJpegQuality(100);//设置照片的质量
-        parameters.setPreviewSize(WIDTH, HEIGHT);//设置预览尺寸
-        parameters.setPictureSize(WIDTH, HEIGHT);//设置照片尺寸
-        parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);// 连续对焦模式
-//        Camera.Parameters.FOCUS_MODE_AUTO; //自动聚焦模式
-//        Camera.Parameters.FOCUS_MODE_INFINITY;//无穷远
-//        Camera.Parameters.FOCUS_MODE_MACRO;//微距
-//        Camera.Parameters.FOCUS_MODE_FIXED;//固定焦距
-        parameters.setZoom(1);
+        parameters.setJpegQuality(CameraConfig.JpegQuality);//设置照片的质量
+        parameters.setPreviewSize(CameraConfig.PreviewWidth, CameraConfig.PreviewHeight);//设置预览尺寸
+        parameters.setPictureSize(CameraConfig.PictureWidth, CameraConfig.PictureHeight);//设置照片尺寸
+        parameters.setFocusMode(CameraConfig.FOCUS_CONTINUOUS_PICTURE);
+        parameters.setZoom(CameraConfig.zoom);
         //设置预览数据格式为nv21
-        parameters.setPreviewFormat(ImageFormat.NV21);
-        //这是摄像头宽、高
-        parameters.setPreviewSize(WIDTH, HEIGHT);
+        parameters.setPreviewFormat(CameraConfig.pixelFormat);
         //数据缓存区
-        buffer = new byte[WIDTH * HEIGHT * 3 / 2];
-        mCamera.addCallbackBuffer(buffer);
+        mCamera.addCallbackBuffer(CameraConfig.getBuffer());
         mCamera.setParameters(parameters);
-        setCameraRotation(0);
+        setCameraRotation(CameraConfig.cameraRotation);
     }
 
     public void setPreView(SurfaceHolder surfaceHolder) {
@@ -96,7 +82,7 @@ public class Camera1 {
                 //在 Surface 首次创建时被立即调用：获得焦点时。一般在这里开启相机预览
                 try {
                     //设置预览画面
-                    initCamera(mCameraId);
+                    initCamera();
                     surfaceHolder = surfaceHolder1;
                     if (mCamera != null) {
                         mCamera.setPreviewDisplay(surfaceHolder);
@@ -115,7 +101,7 @@ public class Camera1 {
             @Override
             public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
                 //在 Surface 被销毁时立即调用：失去焦点时。一般在这里将相机预览停止销毁
-                release();
+                releaseCamera();
             }
         });
         ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -126,18 +112,18 @@ public class Camera1 {
         return hl_device.INSTANCE.isSupportCamera(context);
     }
 
-    public synchronized void switchCamera() {
-        if (mCameraId == Camera.CameraInfo.CAMERA_FACING_BACK) {
-            mCameraId = Camera.CameraInfo.CAMERA_FACING_FRONT;
-        } else {
-            mCameraId = Camera.CameraInfo.CAMERA_FACING_BACK;
-        }
-//        release();
-        setPreView(surfaceHolder);
-        startPreView();
+    @Override
+    public void setPreviewDisplay(SurfaceHolder surfaceHolder) {
+
     }
 
-    private void takePhoto() {
+    @Override
+    public void setCameraId(int mCameraId) {
+
+    }
+
+    @Override
+    public void takePhoto() {
         if (mCamera != null) {
             mCamera.takePicture(new Camera.ShutterCallback() {//shutter 拍照瞬间回调
                                     @Override
@@ -162,7 +148,7 @@ public class Camera1 {
     private void setCameraRotation(int rotation) {
         Camera.CameraInfo info = new Camera.CameraInfo();
         //获取摄像头信息
-        Camera.getCameraInfo(mCameraId, info);
+        Camera.getCameraInfo(CameraConfig.CAMERA_FRONT, info);
         //获取摄像头当前的角度
         int degrees = 0;
         switch (rotation) {
@@ -192,10 +178,6 @@ public class Camera1 {
         }
     }
 
-    public int getCameraId() {
-        return mCameraId;
-    }
-
     public void stopPreview() {
         if (mCamera != null) {
             //预览数据回调接口
@@ -205,7 +187,8 @@ public class Camera1 {
         }
     }
 
-    public void release() {
+    @Override
+    public void releaseCamera() {
         if (mCamera != null) {
             stopPreview();
             //释放摄像头
@@ -214,10 +197,16 @@ public class Camera1 {
         }
     }
 
+    @Override
     public void startPreView() {
         if (mCamera != null) {
             mCamera.startPreview();
         }
+    }
+
+    @Override
+    public void stopPreView() {
+
     }
 
 
@@ -240,7 +229,7 @@ public class Camera1 {
             if (null != mPreviewCallback) {
                 mPreviewCallback.onPreviewFrame(bytes, camera);
             }
-            camera.addCallbackBuffer(buffer);
+            camera.addCallbackBuffer(CameraConfig.getBuffer());
         }
     };
 
