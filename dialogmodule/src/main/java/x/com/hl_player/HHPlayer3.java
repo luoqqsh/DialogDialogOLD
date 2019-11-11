@@ -21,7 +21,7 @@ import java.util.Map;
 import x.com.hl_base.HOnListener;
 import x.com.hl_log.ViseLog;
 import x.com.hl_player.TvListBean.TvDataList;
-import x.com.hl_player.TvListBean.TypeView;
+import x.com.hl_player.TvListBean.TvView;
 import x.com.hl_player.TypeBean.PlayerPrePareStateType;
 import x.com.hl_player.TypeBean.PlayerStateType;
 import x.com.hl_player.View.HHControlView;
@@ -40,7 +40,7 @@ public class HHPlayer3 {
     private HHPlayerView hhPlayerView;
     private Context mContext;
     private ViewGroup viewGroup;//视频容器
-    private boolean isChangeBrigtness = false;//是否设置改变亮度
+    private boolean isChangeBrightness = false;//是否设置改变亮度
     private boolean isPlayWhenPrepared = false;//准备好立即播放
     private ControlViewInterface cvInterface;
     private String title;
@@ -51,21 +51,21 @@ public class HHPlayer3 {
     /***********************************初始化播放器部分**************************************************************/
     //播放音乐
     public HHPlayer3(Context context, HHPlayerCore hhPlayerCore) {
-        this(context, hhPlayerCore, TypeView.MUSIC, null, null);
+        this(context, hhPlayerCore, TvView.MUSIC, null, null);
     }
 
     //使用外部的suraface
     public HHPlayer3(Context context, HHPlayerCore hhPlayerCore, Surface surface) {
-        this(context, hhPlayerCore, TypeView.SURFACE, null, surface);
+        this(context, hhPlayerCore, TvView.SURFACE, null, surface);
     }
 
     //使用外部的viewGroup，需要选择NEWSURFACE、NEWTEXTURE
-    public HHPlayer3(Context context, HHPlayerCore hhPlayerCore, TypeView playerView, ViewGroup viewGroup) {
+    public HHPlayer3(Context context, HHPlayerCore hhPlayerCore, TvView playerView, ViewGroup viewGroup) {
         this(context, hhPlayerCore, playerView, viewGroup, null);
     }
 
     //使用NEWSURFACE、NEWTEXTURE必须传viewGroup
-    public HHPlayer3(Context context, final HHPlayerCore hhPlayerCore, TypeView playerView, final ViewGroup viewGroup, Surface surface) {
+    public HHPlayer3(Context context, final HHPlayerCore hhPlayerCore, TvView playerView, final ViewGroup viewGroup, Surface surface) {
         mContext = context;
         hhPlayerCore.setContext(mContext);
         this.viewGroup = viewGroup;
@@ -139,7 +139,7 @@ public class HHPlayer3 {
         hhLoadingView.addThumb(bitmap);
         addExtraView(hhLoadingView);
     }
-  
+
     public void addExtraView(View view) {
         if (viewGroup == null) {
             ViseLog.e(hhPlayerCore.TAG, "必须设置viewGroup");
@@ -168,7 +168,7 @@ public class HHPlayer3 {
         WindowManager.LayoutParams localLayoutParams = localWindow.getAttributes();
         localLayoutParams.screenBrightness = (float) brightness / 100.0F;
         localWindow.setAttributes(localLayoutParams);
-        isChangeBrigtness = true;
+        isChangeBrightness = true;
     }
 
     //设置是否循环播放
@@ -454,7 +454,7 @@ public class HHPlayer3 {
 
     private void initHHSurfaceView() {
         hhPlayerView = new HHPlayerView();
-        hhPlayerView.addView(mContext, viewGroup, 0, TypeView.HHSURFACE, new HHSurfaceStateListener() {
+        hhPlayerView.addView(mContext, viewGroup, 0, TvView.HHSURFACE, new HHSurfaceStateListener() {
             @Override
             public void onSurfaceAvailable(Surface surface) {
                 hhPlayerCore.initView(surface);
@@ -477,7 +477,7 @@ public class HHPlayer3 {
 
     private void initHHTextureView() {
         hhPlayerView = new HHPlayerView();
-        hhPlayerView.addView(mContext, viewGroup, 0, TypeView.HHTEXTURE, new HHSurfaceStateListener() {
+        hhPlayerView.addView(mContext, viewGroup, 0, TvView.HHTEXTURE, new HHSurfaceStateListener() {
             @Override
             public void onSurfaceAvailable(Surface surface) {
                 hhPlayerCore.initView(surface);
@@ -502,7 +502,7 @@ public class HHPlayer3 {
 
     private void initHHGLSurfaceView() {
         hhPlayerView = new HHPlayerView();
-        hhPlayerView.addView(mContext, viewGroup, 0, TypeView.HHGLSURFACE, new HHSurfaceStateListener() {
+        hhPlayerView.addView(mContext, viewGroup, 0, TvView.HHGLSURFACE, new HHSurfaceStateListener() {
             @Override
             public void onSurfaceAvailable(Surface surface) {
                 hhPlayerCore.initView(surface);
@@ -534,7 +534,7 @@ public class HHPlayer3 {
             @Override
             public void onListen(Object o) {
                 hhPlayerCore.mPlayerState = PlayerStateType.PLAYBACK_COMPLETED;
-                if (isChangeBrigtness) {//播放完恢复原来的亮度，没设置亮度则不启用
+                if (isChangeBrightness) {//播放完恢复原来的亮度，没设置亮度则不启用
                     setScreenBrigtness(getSystemScreenBrightness());
                 }
                 completionListener.onListen(o);

@@ -19,7 +19,7 @@ import x.com.hl_player.TvListBean.TvDataList;
 import x.com.hl_player.TvListBean.TypeClarity;
 import x.com.hl_player.TvListBean.TypeClass;
 import x.com.hl_player.TvListBean.TypeState;
-import x.com.hl_player.TvListBean.TypeView;
+import x.com.hl_player.TvListBean.TvView;
 import x.com.hl_player.base.HHMediaPlayer;
 import x.com.hl_tools.DialogTest.phone.bean.MediaFileBean;
 import x.com.hl_tools.hl_medialist;
@@ -64,7 +64,7 @@ public class HHMedia3Activity extends BaseActivity {
         initList();
         initUI();
         hhview = findViewById(R.id.hhPlayerView);
-        hhPlayer3 = new HHPlayer3(this, new HHMediaPlayer(), TypeView.NEWSURFACE, hhview);
+        hhPlayer3 = new HHPlayer3(this, new HHMediaPlayer(), TvView.NEWSURFACE, hhview);
         hhPlayer3.addLoadingView();
         hhPlayer3.setPreparedListener(new HOnListener<Object>() {
             @Override

@@ -15,12 +15,15 @@ public class HHCamera {
         this.mCamera = mCamera;
         this.mContext = mContext;
         mCamera.initCamera();
+
     }
 
     public HHCamera(Context mContext, CameraCore mCamera, ViewGroup viewGroup) {
         this.viewGroup = viewGroup;
         this.mCamera = mCamera;
         this.mContext = mContext;
+
+        initSurfaceView();
     }
 
     public void takePhoto() {
@@ -70,9 +73,9 @@ public class HHCamera {
                 //在 Surface 首次创建时被立即调用：获得焦点时。一般在这里开启相机预览
                 try {
                     //设置预览画面
-                    if (mCamera != null) {
-                        mCamera.setPreviewDisplay(surfaceHolder);
-                    }
+                    mCamera.initCamera();
+                    mCamera.setPreviewDisplay(surfaceHolder);
+                    mCamera.initCamera();
                     startPreView();
                 } catch (Exception ex) {
                     ex.printStackTrace();

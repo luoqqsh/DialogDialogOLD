@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
-import x.com.hl_player.TvListBean.TypeView;
+import x.com.hl_player.TvListBean.TvView;
 import x.com.hl_player.TypeBean.PlayerViewType;
 import x.com.hl_player.tools.MeasureHelper;
 
@@ -19,13 +19,13 @@ public class HHPlayerView implements MeasureHelper.MeasureFormVideoParamsListene
     /**
      * 添加播放的view
      */
-    public void addView(final Context context, final ViewGroup textureViewContainer, final int rotate, TypeView typeView,
+    public void addView(final Context context, final ViewGroup textureViewContainer, final int rotate, TvView tvView,
                         final HHSurfaceStateListener surfaceStateListener
 //                        final MeasureHelper.MeasureFormVideoParamsListener videoParamsListener,
 //                        final GSYVideoGLView.ShaderInterface effect, final float[] transform,
 //                        final GSYVideoGLViewBaseRender customRender, int mode
     ) {
-        switch (typeView) {
+        switch (tvView) {
             case HHSURFACE:
                 hhRenderView = HHSurfaceView.addSurfaceView(context, textureViewContainer, rotate, surfaceStateListener, this);
                 break;

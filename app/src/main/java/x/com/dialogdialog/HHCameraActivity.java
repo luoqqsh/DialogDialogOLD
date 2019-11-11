@@ -1,6 +1,5 @@
 package x.com.dialogdialog;
 
-import android.hardware.Camera;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -9,9 +8,10 @@ import androidx.annotation.Nullable;
 
 import x.com.dialogdialog.BaseApp.BaseActivity;
 import x.com.hl_camera.Camera1;
+import x.com.hl_camera.HHCamera;
 
 public class HHCameraActivity extends BaseActivity implements View.OnClickListener {
-    private Camera1 camera1;
+    private HHCamera camera1;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -23,7 +23,7 @@ public class HHCameraActivity extends BaseActivity implements View.OnClickListen
         findViewById(R.id.camera).setOnClickListener(this);
         findViewById(R.id.stop).setOnClickListener(this);
         findViewById(R.id.switchcamera).setOnClickListener(this);
-        camera1 = new Camera1(this, Camera.CameraInfo.CAMERA_FACING_FRONT, rl_camera);
+        camera1 = new HHCamera(this, new Camera1(), rl_camera);
 
     }
 
@@ -41,7 +41,7 @@ public class HHCameraActivity extends BaseActivity implements View.OnClickListen
                 camera1.switchCamera();
                 break;
             case R.id.stop:
-                camera1.stopPreview();
+                camera1.stopPreView();
                 break;
         }
     }
@@ -50,7 +50,7 @@ public class HHCameraActivity extends BaseActivity implements View.OnClickListen
     protected void onPause() {
         super.onPause();
         if (camera1 != null) {
-            camera1.stopPreview();
+            camera1.stopPreView();
         }
     }
 

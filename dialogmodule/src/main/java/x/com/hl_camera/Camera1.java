@@ -1,44 +1,44 @@
 package x.com.hl_camera;
 
-import android.app.Activity;
 import android.content.Context;
-import android.graphics.PixelFormat;
 import android.hardware.Camera;
 import android.os.Build;
 import android.view.Surface;
 import android.view.SurfaceHolder;
-import android.view.SurfaceView;
-import android.view.ViewGroup;
 
 import java.io.IOException;
 
+import x.com.hl_log.ViseLog;
 import x.com.hl_tools.hl_device;
 
 public class Camera1 extends CameraCore {
     private Camera mCamera;
+
     private Camera.PreviewCallback mPreviewCallback;//预览实时回调监听
     private Camera.ShutterCallback mShutterCallback;//拍照监听
     private Camera.AutoFocusCallback mAutoFocusCallback;//自动聚焦监听
     public SurfaceHolder surfaceHolder;
-    private ViewGroup viewGroup;
 
-    public Camera1(Activity activity, int mCameraId, ViewGroup viewGroup) {
-//        initCamera(mCameraId);
-        setPreView(viewGroup);
+    public Camera1() {
+        this(CameraConfig.CAMERA_FRONT);
     }
 
-    public Camera1(Activity activity, int mCameraId, SurfaceHolder surfaceHolder) {
-        initCamera();
-        setPreView(surfaceHolder);
+    public Camera1(int CameraId) {
+        ViseLog.d("相机数：" + Camera.getNumberOfCameras());
+        mCameraId = CameraId;
     }
 
     @Override
     public synchronized void initCamera() {
-        mCamera = Camera.open(CameraConfig.CAMERA_FRONT);
+        mCamera = Camera.open(mCameraId);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             mCamera.enableShutterSound(CameraConfig.isOpenVoice);
         }
         mCamera.setPreviewCallbackWithBuffer(mPreviewCallback);
+
+    }
+
+    public void getParam(){
         Camera.Parameters parameters = mCamera.getParameters();//得到摄像头的参数
         parameters.setJpegQuality(CameraConfig.JpegQuality);//设置照片的质量
         parameters.setPreviewSize(CameraConfig.PreviewWidth, CameraConfig.PreviewHeight);//设置预览尺寸
@@ -49,63 +49,8 @@ public class Camera1 extends CameraCore {
         parameters.setPreviewFormat(CameraConfig.pixelFormat);
         //数据缓存区
         mCamera.addCallbackBuffer(CameraConfig.getBuffer());
-        mCamera.setParameters(parameters);
         setCameraRotation(CameraConfig.cameraRotation);
-    }
-
-    public void setPreView(SurfaceHolder surfaceHolder) {
-        try {
-            if (surfaceHolder != null) {
-                mCamera.setPreviewDisplay(surfaceHolder);
-            } else {
-                setPreView(viewGroup);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void setPreView(ViewGroup viewGroup) {
-        if (viewGroup == null) return;
-        SurfaceView mSurfaceView = new SurfaceView(viewGroup.getContext());
-        //获取SurfaceHolder对象
-        SurfaceHolder mSurfaceHolder = mSurfaceView.getHolder();
-        // 设置 Surface 格式
-        // 参数： PixelFormat中定义的 int 值 ,详细参见 PixelFormat.java
-        mSurfaceHolder.setFormat(PixelFormat.TRANSPARENT);
-        //保持屏幕常亮（可选）
-        mSurfaceHolder.setKeepScreenOn(true);
-        // 添加 Surface 的 callback 接口
-        mSurfaceHolder.addCallback(new SurfaceHolder.Callback() {
-            @Override
-            public void surfaceCreated(SurfaceHolder surfaceHolder1) {
-                //在 Surface 首次创建时被立即调用：获得焦点时。一般在这里开启相机预览
-                try {
-                    //设置预览画面
-                    initCamera();
-                    surfaceHolder = surfaceHolder1;
-                    if (mCamera != null) {
-                        mCamera.setPreviewDisplay(surfaceHolder);
-                    }
-                    startPreView();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            }
-
-            @Override
-            public void surfaceChanged(SurfaceHolder surfaceHolder, int format, int width, int height) {
-                //在 Surface 格式 和 大小发生变化时会立即调用，可以在这个方法中更新 Surface
-            }
-
-            @Override
-            public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
-                //在 Surface 被销毁时立即调用：失去焦点时。一般在这里将相机预览停止销毁
-                releaseCamera();
-            }
-        });
-        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        viewGroup.addView(mSurfaceView, params);
+        mCamera.setParameters(parameters);//必须先设置preview才能设置预览尺寸
     }
 
     public static boolean isSupportCamera(Context context) {
@@ -114,12 +59,18 @@ public class Camera1 extends CameraCore {
 
     @Override
     public void setPreviewDisplay(SurfaceHolder surfaceHolder) {
-
+        try {
+            if (surfaceHolder != null) {
+                mCamera.setPreviewDisplay(surfaceHolder);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void setCameraId(int mCameraId) {
-
+        mCamera = Camera.open(mCameraId);
     }
 
     @Override

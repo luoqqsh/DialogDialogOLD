@@ -1,10 +1,9 @@
 package x.com.hl_camera;
 
-import android.hardware.Camera;
 import android.view.SurfaceHolder;
 
 public abstract class CameraCore {
-    private int mCameraId = CameraConfig.CAMERA_BACK;
+    public int mCameraId = CameraConfig.CAMERA_BACK;
 
     public abstract void initCamera();
 
@@ -21,10 +20,10 @@ public abstract class CameraCore {
     public abstract void setCameraId(int mCameraId);
 
     public synchronized void switchCamera() {
-        if (mCameraId == Camera.CameraInfo.CAMERA_FACING_BACK) {
-            mCameraId = Camera.CameraInfo.CAMERA_FACING_FRONT;
+        if (mCameraId == CameraConfig.CAMERA_BACK) {
+            mCameraId = CameraConfig.CAMERA_FRONT;
         } else {
-            mCameraId = Camera.CameraInfo.CAMERA_FACING_BACK;
+            mCameraId = CameraConfig.CAMERA_BACK;
         }
         setCameraId(mCameraId);
         startPreView();

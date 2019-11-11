@@ -25,6 +25,11 @@ android {
             dirs 'libs', '../map_gmap/libs'
         }
     }
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
 }
 
 dependencies {
