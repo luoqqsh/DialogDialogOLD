@@ -1,5 +1,6 @@
 package x.com.dialogdialog;
 
+
 import android.os.Bundle;
 import android.widget.FrameLayout;
 import android.widget.SeekBar;
@@ -8,19 +9,20 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatSeekBar;
 
+import com.xing.hhplayer.common.HHPlayer3;
+import com.xing.hhplayer.common.TvListBean.TvData;
+import com.xing.hhplayer.common.TvListBean.TvDataList;
+import com.xing.hhplayer.common.TvListBean.TvView;
+import com.xing.hhplayer.common.TvListBean.TypeClarity;
+import com.xing.hhplayer.common.TvListBean.TypeClass;
+import com.xing.hhplayer.common.TvListBean.TypeState;
+import com.xing.hhplayer.ijk.HHijkPlayer;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import x.com.dialogdialog.BaseApp.BaseActivity;
 import x.com.hl_base.HOnListener;
-import x.com.hl_player.HHPlayer3;
-import x.com.hl_player.TvListBean.TvData;
-import x.com.hl_player.TvListBean.TvDataList;
-import x.com.hl_player.TvListBean.TypeClarity;
-import x.com.hl_player.TvListBean.TypeClass;
-import x.com.hl_player.TvListBean.TypeState;
-import x.com.hl_player.TvListBean.TvView;
-import x.com.hl_player.base.HHMediaPlayer;
 import x.com.hl_tools.DialogTest.phone.bean.MediaFileBean;
 import x.com.hl_tools.hl_medialist;
 import x.com.hl_tools.hl_time;
@@ -64,8 +66,8 @@ public class HHMedia3Activity extends BaseActivity {
         initList();
         initUI();
         hhview = findViewById(R.id.hhPlayerView);
-        hhPlayer3 = new HHPlayer3(this, new HHMediaPlayer(), TvView.NEWSURFACE, hhview);
-        hhPlayer3.addLoadingView();
+        hhPlayer3 = new HHPlayer3(this, new HHijkPlayer(), TvView.NEWSURFACE, hhview);
+        hhPlayer3.addControlView();
         hhPlayer3.setPreparedListener(new HOnListener<Object>() {
             @Override
             public void onListen(Object o) {
@@ -123,7 +125,7 @@ public class HHMedia3Activity extends BaseActivity {
         findViewById(R.id.select).setOnClickListener(v -> {
 //            Uri imageContentUri = hl_media.getUriStringById(hl_uri.getVideoUri());
 //            ViseLog.d(imageContentUri);
-            hhPlayer3.prepare(tvUrl.getLinks(), 0);
+            hhPlayer3.prepare("http://vp.bizhijingling.com/uploadfile/userload/vedio/2019/0911/20190911221853403.mp4");
             List<MediaFileBean> imgList = hl_medialist.getVideoList(mContext);
 //            hhPlayer3.prepare("content://media/external/video/media/27", "");
         });

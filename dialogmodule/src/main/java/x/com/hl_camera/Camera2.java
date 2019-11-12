@@ -3,10 +3,6 @@ package x.com.hl_camera;
 import android.view.SurfaceHolder;
 
 public class Camera2 extends CameraCore{
-    @Override
-    public void initCamera() {
-
-    }
 
     @Override
     public void takePhoto() {
@@ -35,6 +31,11 @@ public class Camera2 extends CameraCore{
 
     @Override
     public void setCameraId(int mCameraId) {
+
+    }
+
+    @Override
+    public void initCameraParam() {
 
     }
 

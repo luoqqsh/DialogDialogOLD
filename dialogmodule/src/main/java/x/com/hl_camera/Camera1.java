@@ -26,19 +26,18 @@ public class Camera1 extends CameraCore {
     public Camera1(int CameraId) {
         ViseLog.d("相机数：" + Camera.getNumberOfCameras());
         mCameraId = CameraId;
-    }
-
-    @Override
-    public synchronized void initCamera() {
         mCamera = Camera.open(mCameraId);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             mCamera.enableShutterSound(CameraConfig.isOpenVoice);
         }
         mCamera.setPreviewCallbackWithBuffer(mPreviewCallback);
-
+        mCamera.addCallbackBuffer(CameraConfig.getBuffer());
+        setCameraRotation(CameraConfig.cameraRotation);
     }
 
-    public void getParam(){
+    @Override
+    public void initCameraParam() {
+        ViseLog.d(surfaceHolder);
         Camera.Parameters parameters = mCamera.getParameters();//得到摄像头的参数
         parameters.setJpegQuality(CameraConfig.JpegQuality);//设置照片的质量
         parameters.setPreviewSize(CameraConfig.PreviewWidth, CameraConfig.PreviewHeight);//设置预览尺寸
@@ -48,8 +47,6 @@ public class Camera1 extends CameraCore {
         //设置预览数据格式为nv21
         parameters.setPreviewFormat(CameraConfig.pixelFormat);
         //数据缓存区
-        mCamera.addCallbackBuffer(CameraConfig.getBuffer());
-        setCameraRotation(CameraConfig.cameraRotation);
         mCamera.setParameters(parameters);//必须先设置preview才能设置预览尺寸
     }
 
@@ -61,7 +58,10 @@ public class Camera1 extends CameraCore {
     public void setPreviewDisplay(SurfaceHolder surfaceHolder) {
         try {
             if (surfaceHolder != null) {
+                this.surfaceHolder = surfaceHolder;
                 mCamera.setPreviewDisplay(surfaceHolder);
+                initCameraParam();
+                startPreView();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -150,14 +150,18 @@ public class Camera1 extends CameraCore {
 
     @Override
     public void startPreView() {
-        if (mCamera != null) {
+        if (mCamera != null ) {
             mCamera.startPreview();
+        } else {
+            ViseLog.e("surfaceHolder为空，无法预览");
         }
     }
 
     @Override
     public void stopPreView() {
-
+        if (mCamera != null) {
+            mCamera.stopPreview();
+        }
     }
 
 

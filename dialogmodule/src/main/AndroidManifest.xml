@@ -17,7 +17,6 @@
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
         <!--7.0以上 安装apk-->
-        <!--android:authorities="${applicationId}.fileProvider"-->
         <provider
             android:name="x.com.hl_dialog.Provider.CheckProvider"
             android:authorities="${applicationId}.fileProvider"
@@ -49,9 +48,5 @@
         <meta-data
             android:name="android.vendor.full_screen"
             android:value="true" />
-
-
-        <service android:name="x.com.hl_base.DtmfSendService"
-            android:process="com.android.phone" />
     </application>
 </manifest>

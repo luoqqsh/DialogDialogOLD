@@ -9,8 +9,6 @@ apply plugin: 'com.github.dcendents.android-maven'
 android {
     compileSdkVersion 29
     defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 29
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         compileOptions {
             targetCompatibility JavaVersion.VERSION_1_8
@@ -28,7 +26,11 @@ android {
 //            outputFileName = "_${defaultConfig.versionName}"+'.aar'
 //        }
 //    }
-
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
+    }
     sourceSets {
         main {
             jniLibs.srcDirs = ['libs']
@@ -50,8 +52,6 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp-urlconnection:4.2.2'
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
     implementation 'io.reactivex.rxjava2:rxjava:2.2.12'
-    implementation 'com.google.android.exoplayer:exoplayer:2.10.1'
-    implementation 'tv.danmaku.ijk.media:ijkplayer-java:0.8.8'
 
 }
 

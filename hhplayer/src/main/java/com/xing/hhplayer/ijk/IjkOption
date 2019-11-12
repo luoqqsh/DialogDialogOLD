@@ -1,0 +1,104 @@
+ // IJKPlayer 属性参数设置
+    IJKFFOptions *options = [IJKFFOptions optionsByDefault];
+
+
+    /*------------- Start Option -------------*/
+
+    // 解码方式，0:软解，1:硬解
+    [options setFormatOptionIntValue:1 forKey:@"videotoolbox"];
+    // 如果是rtsp协议，可以优先用tcp(默认是用udp)
+    [options setFormatOptionValue:@"tcp" forKey:@"rtsp_transport"];
+    // rtsp设置 https://ffmpeg.org/ffmpeg-protocols.html#rtsp
+    [options setFormatOptionValue:@"prefer_tcp" forKey:@"rtsp_flags"];
+
+    // 解码参数，画面更清晰
+    [options setOptionIntValue:IJK_AVDISCARD_DEFAULT forKey:@"skip_frame" ofCategory:kIJKFFOptionCategoryCodec];
+    // 解码参数，画面更清晰
+    [options setOptionIntValue:IJK_AVDISCARD_DEFAULT forKey:@"skip_loop_filter" ofCategory:kIJKFFOptionCategoryCodec];
+    // 解码方式，0:软解，1:硬解
+    [options setOptionIntValue:1 forKey:@"videotoolbox" ofCategory:kIJKFFOptionCategoryPlayer];
+    // 最小fps
+    [options setOptionIntValue:25 forKey:@"min-frames" ofCategory:kIJKFFOptionCategoryPlayer];
+    // 最大fps
+    [options setOptionIntValue:60 forKey:@"max-fps" ofCategory:kIJKFFOptionCategoryPlayer];
+
+    // 设置音量大小，256 为标准音量。（要设置成两倍音量时则输入 512，依此类推）
+    [options setPlayerOptionIntValue:512 forKey:@"vol"];
+    // 最大缓存大小 5 秒，可以依据自己的需求修改
+    [options setPlayerOptionIntValue:5000 forKey:@"max_cached_duration"];
+    // 无限读
+    [options setPlayerOptionIntValue:1 forKey:@"infbuf"];
+    // 关闭播放器缓冲 (这个必须关闭，否则会出现播放一段时间后，一直卡主，控制台打印 FFP_MSG_BUFFERING_START)
+    [options setPlayerOptionIntValue:0 forKey:@"packet-buffering"];
+
+    // 跳帧开关，如果 CPU 解码能力不足，可以设置成 5，否则
+    // 会引起音视频不同步，也可以通过设置它来跳帧达到倍速播放
+    [options setPlayerOptionIntValue:5 forKey:@"framedrop"];
+    // URL 切换 400（ http 与 https 域名共用）
+    [options setPlayerOptionIntValue:1 forKey:@"dns_cache_clear"];
+
+    // 根据媒体类型来配置
+    [options setFormatOptionValue:@"video" forKey:@"allowed_media_types"];
+    // 超时时间，timeout 参数只对 http 设置有效。若果你用 rtmp 设置 timeout，ijkplayer 内部会忽略 timeout 参数。rtmp 的 timeout 参数含义和http的不一样。
+    [options setPlayerOptionIntValue:10000 forKey:@"timeout"];
+    //
+    [options setPlayerOptionIntValue:1316 forKey:@"buffer_size"];
+
+    //
+    [options setPlayerOptionIntValue:1 forKey:@"start-on-prepared"];
+    //
+    [options setPlayerOptionIntValue:0 forKey:@"http-detect-range-support"];
+    // 播放前的探测 Size，默认是 1M, 当前 8192, 改小一点会出画面更快
+    [options setPlayerOptionIntValue:1024*16*0.5 forKey:@"probesize"];
+    // 播放前的探测时间
+    [options setPlayerOptionIntValue:1 forKey:@"analyzeduration"];
+    //
+    [options setFormatOptionValue:@"nobuffer" forKey:@"fflags"];
+    // 自动转屏开关
+    [options setFormatOptionIntValue:0 forKey:@"auto_convert"];
+    // 重连次数
+    [options setFormatOptionIntValue:1 forKey:@"reconnect"];
+
+    // 快进和慢放接口，已经支持全版本，如果遇到声调问题
+    [options setPlayerOptionIntValue:1 forKey:@"soundtouch"];
+    // 设置缓存大小，太大了没啥用,太小了视频就处于边播边加载的状态，目前是 10M，后期可以调整
+    [options setPlayerOptionIntValue:1024*1024*10 forKey:@"max-buffer-size"];
+
+    // 检查安全路径
+    [options setFormatOptionIntValue:0 forKey:@"safe"];
+    //
+    [options setFormatOptionValue:@"ijkplayer" forKey:@"user-agent"];
+
+
+    /*------------- End Option -------------*/
+
+
+
+    NSURL *url = [NSURL URLWithString:self.url];
+    self.player = [[IJKFFMoviePlayerController alloc] initWithContentURL:url withOptions:options];
+    [self.player setScalingMode:IJKMPMovieScalingModeAspectFit];
+
+
+    /*------------- H265 Option -------------*/
+
+    // 打开 H265 硬解
+    [self.player setPlayerOptionIntValue:1 forKey:@"mediacodec-hevc"];
+    // 开启 mediacodec 硬解
+    [self.player setPlayerOptionIntValue:1 forKey:@"mediacodec"];
+    [self.player setPlayerOptionIntValue:1 forKey:@"mediacodec_mpeg4"];
+    [self.player setPlayerOptionIntValue:0 forKey:@"mediacodec-auto-rotate"];
+    [self.player setPlayerOptionIntValue:0 forKey:@"mediacodec-handle-resolution-change"];
+
+
+
+    /*------------- PlayerOption -------------*/
+
+    // 解决 m3u8 文件拖动问题
+    [self.player setFormatOptionValue:@"fastseek" forKey:@"fflags"];
+    // 某些视频在 SeekTo 的时候，会跳回到拖动前的位置，这是因为视频的关键帧的问题，通俗一点就是 FFMPEG 不兼容，视频压缩过于厉害，seek 只支持关键帧，出现这个情况就是原始的视频文件中 i 帧比较少，可开启以下来解决
+    [self.player setPlayerOptionIntValue:1 forKey:@"enable-accurate-seek"];
+    // 每处理一个 packet 之后刷新 io 上下文
+    [self.player setPlayerOptionIntValue:1 forKey:@"flush_packets"];
+
+
+    /*------------- End Option -------------*/

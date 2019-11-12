@@ -14,7 +14,6 @@ public class HHCamera {
     public HHCamera(Context mContext, CameraCore mCamera) {
         this.mCamera = mCamera;
         this.mContext = mContext;
-        mCamera.initCamera();
 
     }
 
@@ -71,15 +70,7 @@ public class HHCamera {
             @Override
             public void surfaceCreated(SurfaceHolder surfaceHolder) {
                 //在 Surface 首次创建时被立即调用：获得焦点时。一般在这里开启相机预览
-                try {
-                    //设置预览画面
-                    mCamera.initCamera();
-                    mCamera.setPreviewDisplay(surfaceHolder);
-                    mCamera.initCamera();
-                    startPreView();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
+                mCamera.setPreviewDisplay(surfaceHolder);
             }
 
             @Override
