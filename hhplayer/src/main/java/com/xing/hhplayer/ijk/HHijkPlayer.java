@@ -8,17 +8,17 @@ import android.os.Build;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 
+import com.xing.hhplayer.common.TypeBean.PlayerPrePareStateType;
+import com.xing.hhplayer.common.TypeBean.PlayerStateType;
+import com.xing.hhplayer.common.base.HHPlayerCore;
+import com.xing.hhplayer.common.base.RawDataSourceProvider;
+
 import java.lang.reflect.Method;
 import java.util.Map;
 
 import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 import x.com.hl_log.ViseLog;
-import com.xing.hhplayer.common.TypeBean.PlayerPrePareStateType;
-import com.xing.hhplayer.common.TypeBean.PlayerStateType;
-import com.xing.hhplayer.common.base.HHPlayerCore;
-import com.xing.hhplayer.common.base.RawDataSourceProvider;
-
 import x.com.hl_tools.hl_uri;
 
 public class HHijkPlayer extends HHPlayerCore {
@@ -231,7 +231,12 @@ public class HHijkPlayer extends HHPlayerCore {
         }
     }
 
-
+    @Override
+    public void setScalingMode(int scalingMode) {
+        if (videoScalingMode != scalingMode) {
+            videoScalingMode = scalingMode;
+        }
+    }
     private void dealError() {
         doPrepare(mediaPath, false);
     }

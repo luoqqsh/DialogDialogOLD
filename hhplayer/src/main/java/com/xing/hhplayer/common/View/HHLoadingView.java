@@ -1,7 +1,6 @@
 package com.xing.hhplayer.common.View;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +33,6 @@ public class HHLoadingView extends FrameLayout implements View.OnClickListener, 
     private boolean isPanelShow = false;
     private RotateImageView loading;
     private ViewGroup loading_layout;
-    private ImageView defaultThumb;
 
     public HHLoadingView(@NonNull Context context, HHPlayer3 hhPlayer3) {
         super(context);
@@ -51,22 +49,13 @@ public class HHLoadingView extends FrameLayout implements View.OnClickListener, 
         super(context, attrs, defStyleAttr);
     }
 
-    public void addThumb(int imageResource) {
-        defaultThumb.setImageResource(imageResource);
-    }
-
-    public void addThumb(Bitmap bitmap) {
-        defaultThumb.setImageBitmap(bitmap);
-    }
-
     private void initView(Context context) {
-        View.inflate(context, getLayoutId() != 0 ? getLayoutId() : R.layout.player_loadview, this);
+        View.inflate(context, getLayoutId() != 0 ? getLayoutId() : R.layout.hhplayer_loadview, this);
 
         loading_layout = findViewById(R.id.loading_layout);
         contentPanel = findViewById(R.id.contentPanel);
         loading = findViewById(R.id.loading);
         loading.start();
-        defaultThumb = findViewById(R.id.defaultThumb);
         mStartButton = findViewById(R.id.play_pause);
         mStartButton.setOnClickListener(this);
         contentPanel.setOnClickListener(this);
@@ -140,12 +129,6 @@ public class HHLoadingView extends FrameLayout implements View.OnClickListener, 
             loading.setVisibility(GONE);
             loading_layout.setVisibility(GONE);
             loading.stop();
-            if (defaultThumb != null) {
-                defaultThumb.postDelayed(() -> {
-                    contentPanel.removeView(defaultThumb);
-                    defaultThumb = null;
-                }, 300);
-            }
         }
     }
 

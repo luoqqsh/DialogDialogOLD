@@ -138,5 +138,5 @@
         android:src="@mipmap/unlock"
         android:visibility="gone" />
 
-    <include layout="@layout/player_include_loading" />
+    <include layout="@layout/hhplayer_include_loading" />
 </RelativeLayout>

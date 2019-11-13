@@ -2,7 +2,6 @@ package com.xing.hhplayer.common;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.SurfaceTexture;
 import android.provider.Settings;
 import android.view.Surface;
@@ -13,13 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
-
-import java.util.List;
-import java.util.Map;
-
-import x.com.hl_base.HOnListener;
-import x.com.hl_log.ViseLog;
 
 import com.xing.hhplayer.common.TvListBean.TvDataList;
 import com.xing.hhplayer.common.TvListBean.TvView;
@@ -29,9 +23,15 @@ import com.xing.hhplayer.common.View.HHControlView;
 import com.xing.hhplayer.common.View.HHLoadingView;
 import com.xing.hhplayer.common.View.HHPlayerView;
 import com.xing.hhplayer.common.View.HHSurfaceStateListener;
+import com.xing.hhplayer.common.View.HHThumbView;
 import com.xing.hhplayer.common.base.ControlViewInterface;
 import com.xing.hhplayer.common.base.HHPlayerCore;
 
+import java.util.List;
+import java.util.Map;
+
+import x.com.hl_base.HOnListener;
+import x.com.hl_log.ViseLog;
 import x.com.hl_tools.hl_screen;
 
 /**
@@ -108,6 +108,7 @@ public class HHPlayer3 {
         hhPlayerCore.setPreparedListener(new HOnListener<Object>() {
             @Override
             public void onListen(Object o) {
+                hhPlayerCore.setScalingMode(0);
                 if (cvInterface != null) {
                     cvInterface.getPrePareState(PlayerPrePareStateType.PREPARED);
                 }
@@ -123,31 +124,25 @@ public class HHPlayer3 {
     }
 
     public void addControlView() {
-        addExtraView(new HHControlView(mContext, HHPlayer3.this));
+        addExtraView(new HHControlView(mContext, HHPlayer3.this),-1);
     }
 
     public void addLoadingView() {
-        addExtraView(new HHLoadingView(mContext, this));
+        addExtraView(new HHLoadingView(mContext, this),-1);
     }
 
-    public void addLoadingView(int imageResource) {
-        HHLoadingView hhLoadingView = new HHLoadingView(mContext, this);
-        hhLoadingView.addThumb(imageResource);
-        addExtraView(hhLoadingView);
+    public ImageView addThumbView() {
+        HHThumbView hhThumbView = new HHThumbView(mContext, this);
+        addExtraView(hhThumbView,0);
+        return hhThumbView.getDefaultThumb();
     }
 
-    public void addLoadingView(Bitmap bitmap) {
-        HHLoadingView hhLoadingView = new HHLoadingView(mContext, this);
-        hhLoadingView.addThumb(bitmap);
-        addExtraView(hhLoadingView);
-    }
-
-    public void addExtraView(View view) {
+    public void addExtraView(View view, int index) {
         if (viewGroup == null) {
             ViseLog.e(hhPlayerCore.TAG, "必须设置viewGroup");
         } else {
             ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            viewGroup.addView(view, params);
+            viewGroup.addView(view, index, params);
         }
     }
 

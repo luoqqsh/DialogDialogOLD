@@ -43,7 +43,7 @@ public class HHListView extends FrameLayout {
         if (tvDataList == null) {
             tvDataList = new ArrayList<>();
         }
-        View view = View.inflate(context, R.layout.player_listview, this);
+        View view = View.inflate(context, R.layout.hhplayer_listview, this);
         ListView playlistView = view.findViewById(R.id.lv_playlist);
         tvListAdapter = new TvListAdapter(tvDataList, context);
         playlistView.setBackgroundColor(0x99000000);

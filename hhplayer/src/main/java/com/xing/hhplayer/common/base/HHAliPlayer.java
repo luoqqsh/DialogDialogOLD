@@ -10,6 +10,7 @@
 //import com.aliyun.vodplayer.media.IAliyunVodPlayer;
 //import com.cll.video.tools.hhplayer.TypeBean.PlayerPrePareStateType;
 //import com.cll.video.tools.hhplayer.TypeBean.PlayerStateType;
+//import com.xing.hhplayer.common.base.HHPlayerCore;
 //
 //import java.io.File;
 //
@@ -169,6 +170,25 @@
 //        if (mAliyunVodPlayer != null) {
 //            mAliyunVodPlayer.setVolume((int) volume);
 //            Log.d(TAG, "setVolume " + volume);
+//        }
+//    }
+//
+//    @Override
+//    public void setScalingMode(int scalingMode) {
+//        if (videoScalingMode != scalingMode) {
+//            videoScalingMode = scalingMode;
+//            IAliyunVodPlayer.VideoScalingMode mode = null;
+//            switch (scalingMode) {
+//                case 0:
+//                    mode = IAliyunVodPlayer.VideoScalingMode.VIDEO_SCALING_MODE_SCALE_TO_FIT;
+//                    break;
+//                case 1:
+//                    mode = IAliyunVodPlayer.VideoScalingMode.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING;
+//                    break;
+//            }
+//            if (mAliyunVodPlayer != null && mode != null) {
+//                mAliyunVodPlayer.setVideoScalingMode(mode);
+//            }
 //        }
 //    }
 //

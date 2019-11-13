@@ -6,12 +6,13 @@ import android.os.Build;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 
+import com.xing.hhplayer.common.TypeBean.PlayerPrePareStateType;
+import com.xing.hhplayer.common.TypeBean.PlayerStateType;
+
 import java.lang.reflect.Method;
 import java.util.Map;
 
 import x.com.hl_log.ViseLog;
-import com.xing.hhplayer.common.TypeBean.PlayerPrePareStateType;
-import com.xing.hhplayer.common.TypeBean.PlayerStateType;
 
 /**
  * MediaPlayer具体实现
@@ -228,6 +229,16 @@ public class HHMediaPlayer extends HHPlayerCore {
         if (mediaPlayer != null) {
             mediaPlayer.setVolume(volume, volume);
             ViseLog.d(TAG, "setVolume " + volume);
+        }
+    }
+
+    @Override
+    public void setScalingMode(int scalingMode) {
+        if (videoScalingMode != scalingMode) {
+            videoScalingMode = scalingMode;
+            if (mediaPlayer != null) {
+                mediaPlayer.setVideoScalingMode(scalingMode);
+            }
         }
     }
 

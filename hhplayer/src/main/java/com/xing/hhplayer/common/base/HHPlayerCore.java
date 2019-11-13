@@ -4,13 +4,14 @@ import android.content.Context;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 
+import com.xing.hhplayer.common.TypeBean.PlayerPrePareStateType;
+import com.xing.hhplayer.common.TypeBean.PlayerStateType;
+
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import x.com.hl_base.HOnListener;
-import com.xing.hhplayer.common.TypeBean.PlayerPrePareStateType;
-import com.xing.hhplayer.common.TypeBean.PlayerStateType;
 
 /**
  * 播放器基础类
@@ -37,6 +38,7 @@ public abstract class HHPlayerCore {
     private Timer timer;
     public boolean isLive = false;//是否实时直播
     private long times = 0;
+    public int videoScalingMode;//缩放模式,0为默认大小，1为填充
 
     public abstract void prepare(String mediaPath);
 
@@ -65,6 +67,8 @@ public abstract class HHPlayerCore {
     public abstract void initView(Surface surface);
 
     public abstract void initView(SurfaceHolder surfaceHolder);
+
+    public abstract void setScalingMode(int videoScalingMode);
 
     public void setLooping(boolean looping) {
         isLooping = looping;

@@ -115,7 +115,7 @@ public class HHControlView extends FrameLayout implements View.OnClickListener, 
     }
 
     private int getLayoutId() {
-        return R.layout.player_liveview;
+        return R.layout.hhplayer_liveview;
     }
 
     private int mType = 0;
