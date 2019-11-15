@@ -5,6 +5,7 @@ apply plugin: 'com.github.dcendents.android-maven'
 android {
     compileSdkVersion 29
     defaultConfig {
+        minSdkVersion 16
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         compileOptions {
             targetCompatibility JavaVersion.VERSION_1_8
