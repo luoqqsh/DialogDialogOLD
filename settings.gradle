@@ -1,4 +1,4 @@
-include ':app', ':dialogmodule', ':glide4', ':map_amap', ':map_bmap', ':umeng'
+include ':app', ':dialogmodule', ':glide4', ':map_amap', ':map_bmap', ':umeng_813'
 include ':map_gmap'
 include ':map_qmap'
 include ':map_kmap'

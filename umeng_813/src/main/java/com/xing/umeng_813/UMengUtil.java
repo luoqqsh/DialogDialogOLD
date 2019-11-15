@@ -106,15 +106,15 @@ public class UMengUtil {
             mPushAgent.setNotificationClickHandler(notificationClickHandler);
         }
         //分享
-        if (config.isInitWX) {
-            PlatformConfig.setWeixin(config.WX_ID, config.WX_SECRET);
-        }
-        if (config.isInitQQ) {
-            PlatformConfig.setQQZone(config.QQ_ID, config.QQ_KEY);
-        }
-        if (config.isInitSina) {
-            PlatformConfig.setSinaWeibo(config.SINA_ID, config.SINA_SECRET, config.SINA_REDIREC_URL);
-        }
+//        if (config.isInitWX) {
+        PlatformConfig.setWeixin(config.WX_ID, config.WX_SECRET);
+//        }
+//        if (config.isInitQQ) {
+        PlatformConfig.setQQZone(config.QQ_ID, config.QQ_KEY);
+//        }
+//        if (config.isInitSina) {
+        PlatformConfig.setSinaWeibo(config.SINA_ID, config.SINA_SECRET, config.SINA_REDIREC_URL);
+//        }
         UMShareAPI.init(context, config.APPKEY);
         UMShareAPI.get(context);
     }
