@@ -9,27 +9,19 @@ import android.view.WindowManager;
 public class hl_floatWindow {
     private static WindowManager windowManager;
 
-    public static void show(Context context, View windowView, boolean isHaveActionInView, String TAG) {
-        try {
-            if (windowManager == null) {
-                windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-            }
-            windowManager.addView(windowView, getLayoutParams(context, isHaveActionInView));
-        } catch (Exception e) {
-            e.printStackTrace();
+    public static void showFloatWindow(Context context, View windowView, boolean isHaveActionInView) {
+        if (windowManager == null) {
+            windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         }
+        windowManager.addView(windowView, getLayoutParams(context, isHaveActionInView));
     }
 
-    public static void hide(Context context, View windowView, String TAG) {
-        try {
-            if (windowView == null) return;
-            if (windowManager == null) {
-                windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-            }
-            windowManager.removeView(windowView);
-        } catch (Exception e) {
-            e.printStackTrace();
+    public static void hideFloatWindow(Context context, View windowView) {
+        if (windowView == null) return;
+        if (windowManager == null) {
+            windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         }
+        windowManager.removeView(windowView);
     }
 
     private static WindowManager.LayoutParams getLayoutParams(Context context, boolean isHaveActionInView) {
@@ -63,5 +55,4 @@ public class hl_floatWindow {
         }
         return wmParams;
     }
-
 }

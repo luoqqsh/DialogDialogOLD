@@ -122,11 +122,9 @@ public class HHLoadingView extends FrameLayout implements View.OnClickListener, 
     @Override
     public void getPrePareState(PlayerPrePareStateType playerPrePareStateType) {
         if (playerPrePareStateType == PlayerPrePareStateType.PREPARING) {
-            loading.setVisibility(VISIBLE);
             loading_layout.setVisibility(VISIBLE);
             loading.start();
         } else {
-            loading.setVisibility(GONE);
             loading_layout.setVisibility(GONE);
             loading.stop();
         }

@@ -16,13 +16,13 @@ import com.xing.hhplayer.common.TvListBean.TvView;
 import com.xing.hhplayer.common.TvListBean.TypeClarity;
 import com.xing.hhplayer.common.TvListBean.TypeClass;
 import com.xing.hhplayer.common.TvListBean.TypeState;
+import com.xing.hhplayer.common.base.OnPlayerListener;
 import com.xing.hhplayer.ijk.HHijkPlayer;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import x.com.dialogdialog.BaseApp.BaseActivity;
-import x.com.hl_base.HOnListener;
 import x.com.hl_tools.DialogTest.phone.bean.MediaFileBean;
 import x.com.hl_tools.hl_medialist;
 import x.com.hl_tools.hl_time;
@@ -68,7 +68,7 @@ public class HHMedia3Activity extends BaseActivity {
         hhview = findViewById(R.id.hhPlayerView);
         hhPlayer3 = new HHPlayer3(this, new HHijkPlayer(), TvView.NEWSURFACE, hhview);
         hhPlayer3.addControlView();
-        hhPlayer3.setPreparedListener(new HOnListener<Object>() {
+        hhPlayer3.setPreparedListener(new OnPlayerListener<Object>() {
             @Override
             public void onListen(Object o) {
                 hhPlayer3.start();
@@ -77,7 +77,7 @@ public class HHMedia3Activity extends BaseActivity {
                 seekBar.setMax((int) (hhPlayer3.getMediaDuration() / 1000));
             }
         });
-        hhPlayer3.setProgessListener(new HOnListener<Long>() {
+        hhPlayer3.setProgessListener(new OnPlayerListener<Long>() {
             @Override
             public void onListen(Long time) {//当前是timer线程
                 runOnUiThread(new Runnable() {
@@ -89,7 +89,7 @@ public class HHMedia3Activity extends BaseActivity {
                 });
             }
         });
-        hhPlayer3.setOnBufferingUpdateListener(new HOnListener<Integer>() {
+        hhPlayer3.setOnBufferingUpdateListener(new OnPlayerListener<Integer>() {
             @Override
             public void onListen(Integer integer) {
                 seekBar.setSecondaryProgress(integer);

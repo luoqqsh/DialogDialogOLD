@@ -11,8 +11,6 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import x.com.hl_base.HOnListener;
-
 /**
  * 播放器基础类
  */
@@ -29,11 +27,11 @@ public abstract class HHPlayerCore {
     public float volume = 1;
     public Context context;//有的播放器需要context
     public boolean isLooping = false; //是否循环播放
-    public HOnListener<Object> onPreparedListener;
-    public HOnListener<Long> onProgessListener;
-    public HOnListener<Object> onCompletionListener;
-    public HOnListener<Object> onErrorListener;
-    public HOnListener<Integer> onBufferingUpdateListener;
+    public OnPlayerListener<Object> onPreparedListener;
+    public OnPlayerListener<Long> onProgessListener;
+    public OnPlayerListener<Object> onCompletionListener;
+    public OnPlayerListener<Object> onErrorListener;
+    public OnPlayerListener<Integer> onBufferingUpdateListener;
     private Map<String, String> mHeaders;
     private Timer timer;
     public boolean isLive = false;//是否实时直播
@@ -86,23 +84,23 @@ public abstract class HHPlayerCore {
         return mediaPath;
     }
 
-    public void setPreparedListener(HOnListener<Object> preparedListener) {
+    public void setPreparedListener(OnPlayerListener<Object> preparedListener) {
         this.onPreparedListener = preparedListener;
     }
 
-    public void setProgessListener(HOnListener<Long> progessListener) {
+    public void setProgessListener(OnPlayerListener<Long> progessListener) {
         this.onProgessListener = progessListener;
     }
 
-    public void setOnErrorListener(HOnListener<Object> onErrorListener) {
+    public void setOnErrorListener(OnPlayerListener<Object> onErrorListener) {
         this.onErrorListener = onErrorListener;
     }
 
-    public void setCompletionListener(HOnListener<Object> completionListener) {
+    public void setCompletionListener(OnPlayerListener<Object> completionListener) {
         this.onCompletionListener = completionListener;
     }
 
-    public void setOnBufferingUpdateListener(HOnListener<Integer> OnBufferingUpdateListener) {
+    public void setOnBufferingUpdateListener(OnPlayerListener<Integer> OnBufferingUpdateListener) {
         this.onBufferingUpdateListener = OnBufferingUpdateListener;
     }
 

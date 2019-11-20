@@ -1,7 +1,6 @@
 package com.xing.hhplayer.common;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.SurfaceTexture;
 import android.provider.Settings;
 import android.view.Surface;
@@ -15,6 +14,8 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import androidx.fragment.app.FragmentActivity;
+
 import com.xing.hhplayer.common.TvListBean.TvDataList;
 import com.xing.hhplayer.common.TvListBean.TvView;
 import com.xing.hhplayer.common.TypeBean.PlayerPrePareStateType;
@@ -26,11 +27,11 @@ import com.xing.hhplayer.common.View.HHSurfaceStateListener;
 import com.xing.hhplayer.common.View.HHThumbView;
 import com.xing.hhplayer.common.base.ControlViewInterface;
 import com.xing.hhplayer.common.base.HHPlayerCore;
+import com.xing.hhplayer.common.base.OnPlayerListener;
 
 import java.util.List;
 import java.util.Map;
 
-import x.com.hl_base.HOnListener;
 import x.com.hl_log.ViseLog;
 import x.com.hl_tools.hl_screen;
 
@@ -40,41 +41,41 @@ import x.com.hl_tools.hl_screen;
 public class HHPlayer3 {
     private HHPlayerCore hhPlayerCore;//播放器内
     private HHPlayerView hhPlayerView;
-    private Context mContext;
+    private FragmentActivity mActivity;
     private ViewGroup viewGroup;//视频容器
     private boolean isChangeBrightness = false;//是否设置改变亮度
     private boolean isPlayWhenPrepared = false;//准备好立即播放
     private ControlViewInterface cvInterface;
     private String title;
     private List<TvDataList> tvLists;//播放列表
-    private HOnListener<Object> preparedListener;
-    private HOnListener<PlayerStateType> stateChangeListener;
+    private OnPlayerListener<Object> preparedListener;
+    private OnPlayerListener<PlayerStateType> stateChangeListener;
 
     /***********************************初始化播放器部分**************************************************************/
     //播放音乐
-    public HHPlayer3(Context context, HHPlayerCore hhPlayerCore) {
+    public HHPlayer3(FragmentActivity context, HHPlayerCore hhPlayerCore) {
         this(context, hhPlayerCore, TvView.MUSIC, null, null);
     }
 
     //使用外部的suraface
-    public HHPlayer3(Context context, HHPlayerCore hhPlayerCore, Surface surface) {
+    public HHPlayer3(FragmentActivity context, HHPlayerCore hhPlayerCore, Surface surface) {
         this(context, hhPlayerCore, TvView.SURFACE, null, surface);
     }
 
     //使用外部的viewGroup，需要选择NEWSURFACE、NEWTEXTURE
-    public HHPlayer3(Context context, HHPlayerCore hhPlayerCore, TvView playerView, ViewGroup viewGroup) {
+    public HHPlayer3(FragmentActivity context, HHPlayerCore hhPlayerCore, TvView playerView, ViewGroup viewGroup) {
         this(context, hhPlayerCore, playerView, viewGroup, null);
     }
 
     //使用NEWSURFACE、NEWTEXTURE必须传viewGroup
-    public HHPlayer3(Context context, final HHPlayerCore hhPlayerCore, TvView playerView, final ViewGroup viewGroup, Surface surface) {
-        mContext = context;
-        hhPlayerCore.setContext(mContext);
+    public HHPlayer3(FragmentActivity mActivity, final HHPlayerCore hhPlayerCore, TvView playerView, final ViewGroup viewGroup, Surface surface) {
+        this.mActivity = mActivity;
+        hhPlayerCore.setContext(mActivity);
         this.viewGroup = viewGroup;
         if (viewGroup != null) {
             //给viewGroup设置宽高
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            layoutParams.height = hl_screen.getHeightFromWidth(context);
+            layoutParams.height = hl_screen.getHeightFromWidth(mActivity);
             viewGroup.setLayoutParams(layoutParams);
         }
         this.hhPlayerCore = hhPlayerCore;
@@ -105,7 +106,7 @@ public class HHPlayer3 {
             case MUSIC:
                 break;
         }
-        hhPlayerCore.setPreparedListener(new HOnListener<Object>() {
+        hhPlayerCore.setPreparedListener(new OnPlayerListener<Object>() {
             @Override
             public void onListen(Object o) {
                 hhPlayerCore.setScalingMode(0);
@@ -124,16 +125,16 @@ public class HHPlayer3 {
     }
 
     public void addControlView() {
-        addExtraView(new HHControlView(mContext, HHPlayer3.this),-1);
+        addExtraView(new HHControlView(mActivity, HHPlayer3.this), -1);
     }
 
     public void addLoadingView() {
-        addExtraView(new HHLoadingView(mContext, this),-1);
+        addExtraView(new HHLoadingView(mActivity, this), -1);
     }
 
     public ImageView addThumbView() {
-        HHThumbView hhThumbView = new HHThumbView(mContext, this);
-        addExtraView(hhThumbView,0);
+        HHThumbView hhThumbView = new HHThumbView(mActivity, this);
+        addExtraView(hhThumbView, 0);
         return hhThumbView.getDefaultThumb();
     }
 
@@ -161,7 +162,7 @@ public class HHPlayer3 {
 
     //设置屏幕亮度
     public void setScreenBrigtness(int brightness) {
-        Window localWindow = ((Activity) mContext).getWindow();
+        Window localWindow = ((Activity) mActivity).getWindow();
         WindowManager.LayoutParams localLayoutParams = localWindow.getAttributes();
         localLayoutParams.screenBrightness = (float) brightness / 100.0F;
         localWindow.setAttributes(localLayoutParams);
@@ -312,13 +313,16 @@ public class HHPlayer3 {
         hhPlayerCore.release();
         hhPlayerCore.mPlayerState = PlayerStateType.NONE;
         hhPlayerCore.playerPrePareState = PlayerPrePareStateType.NONE;
+        if (cvInterface != null) {
+            cvInterface.getPrePareState(hhPlayerCore.playerPrePareState);
+        }
     }
 
     /***********************************获取参数部分**************************************************************/
     //获取系统屏幕亮度
     private int getSystemScreenBrightness() {
         try {
-            int brightNess = Settings.System.getInt(mContext.getContentResolver(), "screen_brightness");
+            int brightNess = Settings.System.getInt(mActivity.getContentResolver(), "screen_brightness");
             return (int) ((float) (brightNess * 100) / 255.0F);
         } catch (Settings.SettingNotFoundException var4) {
             return -1;
@@ -327,8 +331,8 @@ public class HHPlayer3 {
 
     //获取屏幕亮度
     public int getScreenBrightness() {
-        if (this.mContext instanceof Activity) {
-            Window localWindow = ((Activity) this.mContext).getWindow();
+        if (this.mActivity instanceof Activity) {
+            Window localWindow = ((Activity) this.mActivity).getWindow();
             WindowManager.LayoutParams localLayoutParams = localWindow.getAttributes();
             float screenBrightness = localLayoutParams.screenBrightness;
             if (screenBrightness > 1.0F || screenBrightness < 0.1) {
@@ -401,7 +405,7 @@ public class HHPlayer3 {
 
     /***********************************初始化view部分**************************************************************/
     private void initSurfaceView() {
-        SurfaceView mSurfaceView = new SurfaceView(mContext.getApplicationContext());
+        SurfaceView mSurfaceView = new SurfaceView(mActivity.getApplicationContext());
         mSurfaceView.setKeepScreenOn(true);
         mSurfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
@@ -422,7 +426,7 @@ public class HHPlayer3 {
     }
 
     private void initTextureView() {
-        TextureView mTextureView = new TextureView(mContext.getApplicationContext());
+        TextureView mTextureView = new TextureView(mActivity.getApplicationContext());
         mTextureView.setSurfaceTextureListener(new TextureView.SurfaceTextureListener() {
             @Override
             public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int width, int height) {
@@ -451,7 +455,7 @@ public class HHPlayer3 {
 
     private void initHHSurfaceView() {
         hhPlayerView = new HHPlayerView();
-        hhPlayerView.addView(mContext, viewGroup, 0, TvView.HHSURFACE, new HHSurfaceStateListener() {
+        hhPlayerView.addView(mActivity, viewGroup, 0, TvView.HHSURFACE, new HHSurfaceStateListener() {
             @Override
             public void onSurfaceAvailable(Surface surface) {
                 hhPlayerCore.initView(surface);
@@ -474,7 +478,7 @@ public class HHPlayer3 {
 
     private void initHHTextureView() {
         hhPlayerView = new HHPlayerView();
-        hhPlayerView.addView(mContext, viewGroup, 0, TvView.HHTEXTURE, new HHSurfaceStateListener() {
+        hhPlayerView.addView(mActivity, viewGroup, 0, TvView.HHTEXTURE, new HHSurfaceStateListener() {
             @Override
             public void onSurfaceAvailable(Surface surface) {
                 hhPlayerCore.initView(surface);
@@ -499,7 +503,7 @@ public class HHPlayer3 {
 
     private void initHHGLSurfaceView() {
         hhPlayerView = new HHPlayerView();
-        hhPlayerView.addView(mContext, viewGroup, 0, TvView.HHGLSURFACE, new HHSurfaceStateListener() {
+        hhPlayerView.addView(mActivity, viewGroup, 0, TvView.HHGLSURFACE, new HHSurfaceStateListener() {
             @Override
             public void onSurfaceAvailable(Surface surface) {
                 hhPlayerCore.initView(surface);
@@ -521,13 +525,13 @@ public class HHPlayer3 {
     }
 
     /***********************************设置监听部分**************************************************************/
-    public void setPreparedListener(final HOnListener<Object> preparedListener) {
+    public void setPreparedListener(final OnPlayerListener<Object> preparedListener) {
         this.preparedListener = preparedListener;
     }
 
     //播放器播放完成监听
-    public void setCompletionListener(final HOnListener<Object> completionListener) {
-        hhPlayerCore.setCompletionListener(new HOnListener<Object>() {
+    public void setCompletionListener(final OnPlayerListener<Object> completionListener) {
+        hhPlayerCore.setCompletionListener(new OnPlayerListener<Object>() {
             @Override
             public void onListen(Object o) {
                 hhPlayerCore.mPlayerState = PlayerStateType.PLAYBACK_COMPLETED;
@@ -540,8 +544,8 @@ public class HHPlayer3 {
     }
 
     //播放器错误监听
-    public void setOnErrorListener(HOnListener<Object> errorListener) {
-        hhPlayerCore.setOnErrorListener(new HOnListener<Object>() {
+    public void setOnErrorListener(OnPlayerListener<Object> errorListener) {
+        hhPlayerCore.setOnErrorListener(new OnPlayerListener<Object>() {
             @Override
             public void onListen(Object o) {
                 if (cvInterface != null) {
@@ -555,8 +559,8 @@ public class HHPlayer3 {
     }
 
     //播放器播放进度监听//当前是timer线程
-    public void setProgessListener(final HOnListener<Long> progessListener) {
-        hhPlayerCore.setProgessListener(new HOnListener<Long>() {
+    public void setProgessListener(final OnPlayerListener<Long> progessListener) {
+        hhPlayerCore.setProgessListener(new OnPlayerListener<Long>() {
             @Override
             public void onListen(Long aLong) {
                 if (progessListener != null) {
@@ -570,12 +574,12 @@ public class HHPlayer3 {
     }
 
     //播放器缓存进度监听
-    public void setOnBufferingUpdateListener(HOnListener<Integer> onBufferingUpdateListener) {
+    public void setOnBufferingUpdateListener(OnPlayerListener<Integer> onBufferingUpdateListener) {
         hhPlayerCore.setOnBufferingUpdateListener(onBufferingUpdateListener);
     }
 
     //播放器状态改变监听
-    public void setStateChangeListener(HOnListener<PlayerStateType> stateChangeListener) {
+    public void setStateChangeListener(OnPlayerListener<PlayerStateType> stateChangeListener) {
         this.stateChangeListener = stateChangeListener;
     }
 /*
