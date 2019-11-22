@@ -7,6 +7,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 
+import com.xing.umeng.UMengUtil;
+
 import x.com.hl_tools.hl_device;
 import x.com.hl_tools.hl_leak;
 import x.com.hl_tools.hl_statusbar;
@@ -26,9 +28,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         getLifecycle().addObserver(new MyLifeObserver8(getClass().getSimpleName()));
 
         hl_statusbar.setStatusBarColor(this, Color.GREEN);
-        hl_statusbar.setNavigationBarColor(this,Color.RED);
-        hl_statusbar.setRootViewFitsSystemWindows(this,false);
-        hl_statusbar.setStatusBarDarkTheme(this,true);
+        hl_statusbar.setNavigationBarColor(this, Color.RED);
+//        hl_statusbar.setRootViewFitsSystemWindows(this, false);
+        hl_statusbar.setStatusBarDarkTheme(this, true);
+        UMengUtil.instance().initPushInStart(this);
+
     }
 
     @Override

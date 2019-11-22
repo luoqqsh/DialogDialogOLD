@@ -56,7 +56,6 @@
             android:value="DYZBZ-UQFRW-WJ7RE-O6BRH-P5HFE-HJBT5" />
 
 
-
         <activity android:name=".DialogMainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -79,6 +78,11 @@
         <activity android:name=".MediaCodecActivity" />
         <activity android:name=".HHCameraActivity" />
         <activity android:name=".Demo.DemoActivity" />
+
+
+        <service
+            android:name="x.com.dialogdialog.MyPushIntentService"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
     </application>
 
 </manifest>

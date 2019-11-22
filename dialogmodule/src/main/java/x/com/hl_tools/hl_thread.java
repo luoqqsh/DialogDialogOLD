@@ -91,4 +91,13 @@ public class hl_thread {
         }
         THREAD_POOL_EXECUTOR.execute(runnable);
     }
+
+    /**
+     * 判断是否在主线程
+     *
+     * @return 结果
+     */
+    public static boolean isRunInUIThread() {
+        return Looper.myLooper() == Looper.getMainLooper();
+    }
 }

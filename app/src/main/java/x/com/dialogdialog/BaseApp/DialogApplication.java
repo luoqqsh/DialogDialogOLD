@@ -9,7 +9,10 @@ import android.widget.Toast;
 import androidx.multidex.MultiDexApplication;
 
 import com.liulishuo.filedownloader.FileDownloader;
+import com.umeng.message.PushAgent;
+import com.xing.umeng.UMengUtil;
 
+import x.com.dialogdialog.MyPushIntentService;
 import x.com.hl_base.InitHlApp;
 import x.com.hl_base.NeverCrashHelper;
 import x.com.hl_log.ViseLog;
@@ -33,6 +36,9 @@ public class DialogApplication extends MultiDexApplication {
             showToast(e.getMessage());
         });
         x5Manager.getInstance().init(this);
+
+        UMengUtil.instance().init(this, new Umeng());
+        PushAgent.getInstance(this).setPushIntentServiceClass(MyPushIntentService.class);
     }
 
     private void showToast(final String text) {

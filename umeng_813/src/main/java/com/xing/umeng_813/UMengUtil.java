@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.nfc.Tag;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -21,6 +22,7 @@ import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMWeb;
+import com.vise.log.ViseLog;
 import com.xing.umeng_813.bean.OauthInfo;
 import com.xing.umeng_813.bean.ShareData;
 import com.xing.umeng_813.bean.UmengConfig;
@@ -42,7 +44,7 @@ public class UMengUtil {
     private static UMengUtil uMengUtil;
     private Context context;
     private UmengConfig config;
-    private final String TAG = "Umeng-8.1.3";
+    private final String TAG = "Umeng";
     private OnUmRegisterCallbackListener onUmRegisterCallbackListener;
     private UmengNotificationClickHandler notificationClickHandler;
 
@@ -73,14 +75,16 @@ public class UMengUtil {
         UMConfigure.setEncryptEnabled(config.encryptEnabled);//日志加密
         MobclickAgent.setSessionContinueMillis(config.sessionContinueMillis);//退出应用，再过多长时间进来表示不同的启动
 //        MobclickAgent.openActivityDurationTrack(true);//页面统计--手动统计
+
         //推送
-        UMConfigure.init(context, UMConfigure.DEVICE_TYPE_PHONE, config.PUSH_SECRET);
-        if (config.isInitPush) {
+        UMConfigure.init(context, config.APPKEY, config.CHANNEL, UMConfigure.DEVICE_TYPE_PHONE, config.PUSH_SECRET);
+        if (config.isInitPush()) {
             PushAgent mPushAgent = PushAgent.getInstance(context);
+            PushAgent.DEBUG = config.isDebug;
             mPushAgent.register(new IUmengRegisterCallback() {
                 @Override
                 public void onSuccess(String deviceToken) {
-                    Log.d(TAG, "onSuccess deviceToken:" + deviceToken);
+                    Log.d(TAG, "推送注册成功 deviceToken:" + deviceToken);
                     if (onUmRegisterCallbackListener != null) {
                         onUmRegisterCallbackListener.onListener(true, deviceToken, "");
                     }
@@ -88,7 +92,7 @@ public class UMengUtil {
 
                 @Override
                 public void onFailure(String s, String s1) {
-                    Log.e("initUmeng", "onFailure s:" + s + ",s1:" + s1);
+                    Log.e(TAG, "推送注册失败" + "onFailure s:" + s + ",s1:" + s1);
                     if (onUmRegisterCallbackListener != null) {
                         onUmRegisterCallbackListener.onListener(false, s, s1);
                     }
@@ -106,15 +110,15 @@ public class UMengUtil {
             mPushAgent.setNotificationClickHandler(notificationClickHandler);
         }
         //分享
-//        if (config.isInitWX) {
-        PlatformConfig.setWeixin(config.WX_ID, config.WX_SECRET);
-//        }
-//        if (config.isInitQQ) {
-        PlatformConfig.setQQZone(config.QQ_ID, config.QQ_KEY);
-//        }
-//        if (config.isInitSina) {
-        PlatformConfig.setSinaWeibo(config.SINA_ID, config.SINA_SECRET, config.SINA_REDIREC_URL);
-//        }
+        if (config.isInitWX()) {
+            PlatformConfig.setWeixin(config.WX_ID, config.WX_SECRET);
+        }
+        if (config.isInitQQ()) {
+            PlatformConfig.setQQZone(config.QQ_ID, config.QQ_KEY);
+        }
+        if (config.isInitSina()) {
+            PlatformConfig.setSinaWeibo(config.SINA_ID, config.SINA_SECRET, config.SINA_REDIREC_URL);
+        }
         UMShareAPI.init(context, config.APPKEY);
         UMShareAPI.get(context);
     }
