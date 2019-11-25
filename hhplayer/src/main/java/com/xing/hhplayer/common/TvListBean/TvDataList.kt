@@ -6,6 +6,7 @@ class TvDataList {
     var channelName: String = ""//频道名称
     var channelClass: Int = -1//频道分类
     var channelThumb: String? = null//封面图片
+    var isChannelSelect: Boolean? = false//封面图片
     var channelURLs = ArrayList<UrlData>()//频道播放地址
 
     constructor(typeClass: TypeClass, channelName: String, channelUrl: String, clarity: TypeClarity, state: TypeState) {

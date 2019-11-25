@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <FrameLayout
-        android:id="@+id/loading_layout"
+        android:id="@+id/loadingLayout"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_centerInParent="true"
@@ -14,7 +14,7 @@
         android:visibility="gone">
 
         <x.com.hl_view.RotateImageView
-            android:id="@+id/loading"
+            android:id="@+id/loadingView"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="center"
@@ -26,7 +26,7 @@
     </FrameLayout>
 
     <ImageView
-        android:id="@+id/play_pause"
+        android:id="@+id/loadingMidPause"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"

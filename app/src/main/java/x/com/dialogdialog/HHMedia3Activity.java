@@ -1,7 +1,7 @@
 package x.com.dialogdialog;
 
-
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.widget.FrameLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -20,11 +20,8 @@ import com.xing.hhplayer.common.base.OnPlayerListener;
 import com.xing.hhplayer.ijk.HHijkPlayer;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import x.com.dialogdialog.BaseApp.BaseActivity;
-import x.com.hl_tools.DialogTest.phone.bean.MediaFileBean;
-import x.com.hl_tools.hl_medialist;
 import x.com.hl_tools.hl_time;
 
 public class HHMedia3Activity extends BaseActivity {
@@ -37,26 +34,10 @@ public class HHMedia3Activity extends BaseActivity {
 //  /storage/emulated/0/Music/城门 - 陈浩民.mp3
 //  /storage/emulated/0/Music/车站 - 张秀卿.mp3
 //  /storage/emulated/0/Music/常回家看看 - 陈红.mp3
-//  /storage/emulated/0/Music/沧桑的浪漫 - 张睿、李晟.mp3
-//  /storage/emulated/0/Music/沧海一声笑 - 任贤齐.mp3
-//  /storage/emulated/0/Music/不要在我寂寞的时候说爱我 - 郑源.mp3
-//  /storage/emulated/0/Music/不是因为寂寞才想你 - 陶钰玉.mp3
-//  /storage/emulated/0/Music/不念 - 张靓颖.mp3
-//  /storage/emulated/0/Music/不可说 - 霍建华、赵丽颖.mp3
     //----------------------------------------------------------
-//    private String musicpath = "/storage/emulated/0/Music/不可说 - 霍建华、赵丽颖.mp3";
-//    private String videopath = "/storage/emulated/0/Download/mpaa.mp4";
-//    private String videopath = "/storage/emulated/0/Android/data/x.com.dialogdialog/mpaa.mp4";
-//    private String videopath = "/storage/emulated/0/DCIM/Camera/mpaa.mp4";
-//    private String videopath = "/storage/emulated/0/Android/data/x.com.dialogdialog/files/Download/mpaa.mp4";
-//    private String videopath = "/storage/emulated/0/DCIM/Camera/19101112858336.mp4";
-//    private String videopath = "http://s.bizhijingling.com/uploadfile/userload/vedio/2019/0516/20190516065450574.mp4";
-//    private String videopath = "rtsp://27.148.240.138/PLTV/88888888/224/3221226716/10000100000000060000000001664269_0.smil";
-//    private String videopath = "http://cstv.live.wscdns.com/live/xiamen1/playlist.m3u8";
     private boolean ismute = false;
     private TextView currenttime, totaltime;
     private AppCompatSeekBar seekBar, seekbar_volume;
-    private TextView tvback5;
     private TvData tvUrl;
 
     @Override
@@ -67,7 +48,7 @@ public class HHMedia3Activity extends BaseActivity {
         initUI();
         hhview = findViewById(R.id.hhPlayerView);
         hhPlayer3 = new HHPlayer3(this, new HHijkPlayer(), TvView.NEWSURFACE, hhview);
-        hhPlayer3.addControlView();
+        hhPlayer3.addTVView();
         hhPlayer3.setPreparedListener(new OnPlayerListener<Object>() {
             @Override
             public void onListen(Object o) {
@@ -98,14 +79,14 @@ public class HHMedia3Activity extends BaseActivity {
     }
 
     private void initList() {
-        TvDataList tvDataList = new TvDataList(TypeClass.中央台, "中央电视台rtsp-smil", "rtsp://27.148.245.116:554/PLTV/88888888/224/3221227004/10000100000000060000000001740930_0.smil", TypeClarity.H4k, TypeState.流畅);
-        TvDataList tvDataList2 = new TvDataList(TypeClass.中央台, "mp4", "http://s.bizhijingling.com/uploadfile/userload/vedio/2019/0516/20190516065450574.mp4", TypeClarity.标清, TypeState.流畅);
-        TvDataList tvDataList3 = new TvDataList(TypeClass.中央台, "福建综合rtsp", "rtsp://27.148.219.129:554/live/ch15102621311662932570.sdp?playtype=1&boid=001&backupagent=27.148.219.129:554&clienttype=1&time=20190312204601+08&life=172800&ifpricereqsnd=1&vcdnid=001&userid=5922751618830&mediaid=ch15102621311662932570&ctype=2&TSTVTimeLife=7200&contname=&authid=0&terminalflag=1&UserLiveType=0&stbid=AC10049900703340000090D8F3A8EC17&nodelevel=3&bitrate=2000", TypeClarity.标清, TypeState.流畅);
-        TvDataList tvDataList4 = new TvDataList(TypeClass.中央台, "湖南卫视rtsp", "rtsp://27.148.219.129:554/live/ch15102717162145789452.sdp?playtype=1&boid=001&backupagent=27.148.219.129:554&clienttype=1&time=20190312204601+08&life=172800&ifpricereqsnd=1&vcdnid=001&userid=5922751618830&mediaid=ch15102717162145789452&ctype=2&TSTVTimeLife=7200&contname=&authid=0&terminalflag=1&UserLiveType=0&stbid=AC10049900703340000090D8F3A8EC17&nodelevel=3&bitrate=2000", TypeClarity.标清, TypeState.流畅);
-        TvDataList tvDataList5 = new TvDataList(TypeClass.中央台, "江苏卫视m3u8", "http://27.148.224.161/PLTV/88888888/224/3221226752/index.m3u8", TypeClarity.标清, TypeState.流畅);
-        TvDataList tvDataList6 = new TvDataList(TypeClass.中央台, "cctv-4k", "http://183.56.168.47/cdn-out.iqy.sc96655.com/tslive/c204_scc_20190107_yvwl5h02_original_t10/c204_scc_20190107_yvwl5h02_original_t10.m3u8", TypeClarity.标清, TypeState.流畅);
+        TvDataList tvDataList = new TvDataList(TypeClass.厦门台, "厦门电视台1", "http://cstvpull.live.wscdns.com/live/xiamen1.flv", TypeClarity.H4k, TypeState.流畅);
+        TvDataList tvDataList2 = new TvDataList(TypeClass.厦门台, "厦门电视台2", "http://cstvpull.live.wscdns.com/live/xiamen2.flv", TypeClarity.H4k, TypeState.流畅);
+        TvDataList tvDataList3 = new TvDataList(TypeClass.厦门台, "厦门电视台3", "http://cstvpull.live.wscdns.com/live/xiamen3.flv", TypeClarity.H4k, TypeState.流畅);
+        TvDataList tvDataList4 = new TvDataList(TypeClass.厦门台, "厦门电视台4", "http://cstvpull.live.wscdns.com/live/xiamen4.flv", TypeClarity.H4k, TypeState.流畅);
+        TvDataList tvDataList5 = new TvDataList(TypeClass.厦门台, "厦门卫视", "http://cstvpull.live.wscdns.com/live/xiamen.flv", TypeClarity.H4k, TypeState.流畅);
+        TvDataList tvDataList6 = new TvDataList(TypeClass.厦门台, "厦门移动电视", "http://cstvpull.live.wscdns.com/live/xiamenyidong.flv", TypeClarity.H4k, TypeState.流畅);
         ArrayList<TvDataList> tvDataLists = new ArrayList<>();
-//        tvDataLists.add(tvDataList);
+        tvDataLists.add(tvDataList);
         tvDataLists.add(tvDataList2);
         tvDataLists.add(tvDataList3);
         tvDataLists.add(tvDataList4);
@@ -115,43 +96,41 @@ public class HHMedia3Activity extends BaseActivity {
     }
 
     private void initUI() {
-        currenttime = findViewById(R.id.currenttime);
-        totaltime = findViewById(R.id.totaltime);
-        seekbar_volume = findViewById(R.id.seekbar_volume);
-        seekBar = findViewById(R.id.seekbar);
+        currenttime = findViewById(R.id.testCurrentTime);
+        totaltime = findViewById(R.id.testTotalTime);
+        seekbar_volume = findViewById(R.id.testSeekVolume);
+        seekBar = findViewById(R.id.testSeekProgress);
         seekBar.setMax(100);
         seekbar_volume.setMax(10);
 
-        findViewById(R.id.select).setOnClickListener(v -> {
-//            Uri imageContentUri = hl_media.getUriStringById(hl_uri.getVideoUri());
-//            ViseLog.d(imageContentUri);
-            hhPlayer3.prepare("http://vp.bizhijingling.com/uploadfile/userload/vedio/2019/0911/20190911221853403.mp4");
-            List<MediaFileBean> imgList = hl_medialist.getVideoList(mContext);
+        findViewById(R.id.testSelect).setOnClickListener(v -> {
+            hhPlayer3.prepare(tvUrl.getLinks(), 0);
+//            hhPlayer3.prepare("http://vp.bizhijingling.com/uploadfile/userload/vedio/2019/0911/20190911221853403.mp4");
+//            List<MediaFileBean> imgList = hl_medialist.getVideoList(mContext);
 //            hhPlayer3.prepare("content://media/external/video/media/27", "");
         });
 
-        findViewById(R.id.play).setOnClickListener(v -> hhPlayer3.start());
-        findViewById(R.id.pause).setOnClickListener(v -> hhPlayer3.pause());
-        findViewById(R.id.stop).setOnClickListener(v -> hhPlayer3.stop());
-        findViewById(R.id.reset).setOnClickListener(v -> hhPlayer3.reset());
-        findViewById(R.id.full).setOnClickListener(v -> hhPlayer3.fullScreen());
-        findViewById(R.id.mute).setOnClickListener(v -> hhPlayer3.setMute(!ismute));
-        findViewById(R.id.fast).setOnClickListener(v -> hhPlayer3.setSpeed(2));
-        findViewById(R.id.slow).setOnClickListener(v -> hhPlayer3.setSpeed(0.5f));
-        findViewById(R.id.release).setOnClickListener(v -> hhPlayer3.release());
-        findViewById(R.id.go5).setOnClickListener(v -> {
+        findViewById(R.id.testPlay).setOnClickListener(v -> hhPlayer3.start());
+        findViewById(R.id.testPause).setOnClickListener(v -> hhPlayer3.pause());
+        findViewById(R.id.testStop).setOnClickListener(v -> hhPlayer3.stop());
+        findViewById(R.id.testReset).setOnClickListener(v -> hhPlayer3.reset());
+        findViewById(R.id.testFull).setOnClickListener(v -> hhPlayer3.fullScreen());
+        findViewById(R.id.testMute).setOnClickListener(v -> hhPlayer3.setMute(!ismute));
+        findViewById(R.id.testFast).setOnClickListener(v -> hhPlayer3.setSpeed(2));
+        findViewById(R.id.testSlow).setOnClickListener(v -> hhPlayer3.setSpeed(0.5f));
+        findViewById(R.id.testRelease).setOnClickListener(v -> hhPlayer3.release());
+        findViewById(R.id.testGo5).setOnClickListener(v -> {
             if (hhPlayer3.getCurrentPosition() + 5000 < hhPlayer3.getMediaDuration()) {
                 hhPlayer3.seekTo(hhPlayer3.getCurrentPosition() + 5000);
             }
         });
-        tvback5 = findViewById(R.id.back5);
+        TextView tvback5 = findViewById(R.id.testBack5);
         tvback5.setOnClickListener(v -> {
             if (hhPlayer3.getCurrentPosition() > 5000) {
                 hhPlayer3.seekTo(hhPlayer3.getCurrentPosition() - 5000);
             }
         });
-        findViewById(R.id.slow).setOnClickListener(v -> hhPlayer3.setSpeed(0.5f));
-        findViewById(R.id.get).setOnClickListener(v -> {
+        findViewById(R.id.testGet).setOnClickListener(v -> {
         });
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -189,6 +168,21 @@ public class HHMedia3Activity extends BaseActivity {
 
             }
         });
+
+        findViewById(R.id.testKeyUp).setOnClickListener(v -> hhPlayer3.sendKeyDown(KeyEvent.KEYCODE_DPAD_UP));
+        findViewById(R.id.testKeyDown).setOnClickListener(v -> hhPlayer3.sendKeyDown(KeyEvent.KEYCODE_DPAD_DOWN));
+        findViewById(R.id.testKeyLeft).setOnClickListener(v -> hhPlayer3.sendKeyDown(KeyEvent.KEYCODE_DPAD_LEFT));
+        findViewById(R.id.testKeyRight).setOnClickListener(v -> hhPlayer3.sendKeyDown(KeyEvent.KEYCODE_DPAD_RIGHT));
+        findViewById(R.id.testKeyMenu).setOnClickListener(v -> hhPlayer3.sendKeyDown(KeyEvent.KEYCODE_MENU));
+        findViewById(R.id.testKeyBack).setOnClickListener(v -> hhPlayer3.sendKeyDown(KeyEvent.KEYCODE_BACK));
+        findViewById(R.id.testKeyEnter).setOnClickListener(v -> hhPlayer3.sendKeyDown(KeyEvent.KEYCODE_DPAD_CENTER));
+    }
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        hhPlayer3.sendKeyDown(keyCode);
+        return true;//return false 会调用系统的方法
     }
 
     @Override

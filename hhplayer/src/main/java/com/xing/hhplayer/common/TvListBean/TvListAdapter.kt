@@ -5,10 +5,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
-import x.com.hl_dialog.R
+import com.example.hhplayer.R
 
 class TvListAdapter(private val tv: MutableList<TvDataList>, private val context: Context) : BaseAdapter() {
-
+    private lateinit var holder: ViewHolder
     override fun getCount(): Int {
         return tv.size
     }
@@ -27,18 +27,22 @@ class TvListAdapter(private val tv: MutableList<TvDataList>, private val context
         if (convertView1 == null) {
             convertView1 = View.inflate(context, R.layout.item_tv, null)
             holder = ViewHolder()
-            holder.textview = convertView1!!.findViewById(R.id.tv_tv)
+            holder.itemChannelText = convertView1!!.findViewById(R.id.itemChannelText)
             convertView1.tag = holder
         } else {
             holder = convertView1.tag as ViewHolder
         }
-
-        holder.textview!!.text = (position + 1).toString() + ". " + tv[position].channelName
+        this.holder = holder
+        holder.itemChannelText!!.text = (position + 1).toString() + ". " + tv[position].channelName
+        if (tv[position].isChannelSelect!!) {
+            holder.itemChannelText!!.setBackgroundResource(R.drawable.bg_conner_kuang)
+        } else {
+            holder.itemChannelText!!.background = null
+        }
         return convertView1
     }
 
     internal inner class ViewHolder {
-        var textview: TextView? = null
+        var itemChannelText: TextView? = null
     }
-
 }

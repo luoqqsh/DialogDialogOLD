@@ -16,7 +16,7 @@ import x.com.hl_tools.permissions.ApplyPermissionActivity;
  * 动态权限申请
  */
 public class hl_permissions {
-    private static Map<String, Boolean> faildPermission;
+    private static Map<String, Boolean> failPermission;
 
     public interface RequestPermissionCallBack {
         void requestPermissionSuccess();
@@ -32,13 +32,7 @@ public class hl_permissions {
     }
 
     public static void applyWriteStoragePermission(Context context, RequestPermissionCallBack permissionCallBack) {
-        String[] q;
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-//            q = null;
-//            q = new String[]{Manifest.permission.READ_PHONE_STATE, Manifest.permission.READ_MEDIA_IMAGES, Manifest.permission.READ_MEDIA_VIDEO, Manifest.permission.READ_MEDIA_AUDIO};
-//        } else {
-        q = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
-//        }
+        String[] q = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
         applyPermission(context, q, permissionCallBack);
     }
 
@@ -53,7 +47,7 @@ public class hl_permissions {
     }
 
     public static void applyPermission(Context context, String[] permissionList, RequestPermissionCallBack permissionCallBack) {
-        faildPermission = new HashMap<>();
+        failPermission = new HashMap<>();
         mPermissionCallBack = permissionCallBack;
         //6.0及以上 申请权限
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null) {
@@ -75,7 +69,9 @@ public class hl_permissions {
             }
         } else {
             //6.0以下直接执行
-            permissionCallBack.requestPermissionSuccess();
+            if (permissionCallBack != null) {
+                permissionCallBack.requestPermissionSuccess();
+            }
         }
     }
 
@@ -85,13 +81,13 @@ public class hl_permissions {
             if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
                 //存在权限申请被拒绝
                 isApplyFail = true;
-                faildPermission.put(permissions[i], isNoTip[i]);
+                failPermission.put(permissions[i], isNoTip[i]);
             }
         }
         if (isApplyFail) {
             //被拒绝了
             if (mPermissionCallBack != null) {
-                mPermissionCallBack.requestPermissionFail(faildPermission);
+                mPermissionCallBack.requestPermissionFail(failPermission);
             }
         } else {
             //申请成功

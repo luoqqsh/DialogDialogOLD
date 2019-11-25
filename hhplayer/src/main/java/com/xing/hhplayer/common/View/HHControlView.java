@@ -17,11 +17,13 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.example.hhplayer.R;
 import com.xing.hhplayer.common.HHPlayer3;
+import com.xing.hhplayer.common.TvListBean.TvDataList;
 import com.xing.hhplayer.common.TypeBean.PlayerPrePareStateType;
 import com.xing.hhplayer.common.TypeBean.PlayerStateType;
 import com.xing.hhplayer.common.TypeBean.PlayerViewType;
 import com.xing.hhplayer.common.base.ControlViewInterface;
 
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -69,11 +71,11 @@ public class HHControlView extends FrameLayout implements View.OnClickListener, 
         View.inflate(context, getLayoutId(), this);
         //top
         mTopContainer = findViewById(R.id.layout_top);
-        mTitleTextView = findViewById(R.id.title);
+        mTitleTextView = findViewById(R.id.liveTitle);
         ImageView mBackButton = findViewById(R.id.back);
         mBackButton.setOnClickListener(this);
         //bottom
-        seekbarlayout = findViewById(R.id.seekbarlayout);
+        seekbarlayout = findViewById(R.id.seekBarLayout);
         mBottomContainer = findViewById(R.id.layout_bottom);
         mFullscreenButton = findViewById(R.id.fullscreen);
         mCurrentTimeTextView = findViewById(R.id.current);
@@ -87,10 +89,10 @@ public class HHControlView extends FrameLayout implements View.OnClickListener, 
         //list
         layout_list = findViewById(R.id.layout_list);
         //mid
-        loading_layout = findViewById(R.id.loading_layout);
+        loading_layout = findViewById(R.id.loadingLayout);
         mLockScreen = findViewById(R.id.lock_screen);
-        loading = findViewById(R.id.loading);
-        mStartButton = findViewById(R.id.play_pause);
+        loading = findViewById(R.id.loadingView);
+        mStartButton = findViewById(R.id.loadingMidPause);
         playlist = findViewById(R.id.playlist);
         playlist.setOnClickListener(this);
         mStartButton.setOnClickListener(this);
@@ -124,7 +126,7 @@ public class HHControlView extends FrameLayout implements View.OnClickListener, 
     public void onClick(View view) {
         int id = view.getId();
         //播放暂停
-        if (id == R.id.play || id == R.id.play_pause) {
+        if (id == R.id.play || id == R.id.loadingMidPause) {
             playControl();
         }
         //显示比例
@@ -230,7 +232,6 @@ public class HHControlView extends FrameLayout implements View.OnClickListener, 
                     params.gravity = Gravity.RIGHT;
                     hhListView = new HHListView(mActivity, hhPlayer3.getUrlDataList(), hhPlayer3);
                     layout_list.addView(hhListView, params);
-                    hhListView.refreshList(hhPlayer3.getUrlDataList());
                     playlist.setVisibility(VISIBLE);
                     layout_list.setVisibility(GONE);
                 }
@@ -258,6 +259,16 @@ public class HHControlView extends FrameLayout implements View.OnClickListener, 
                 }
             }
         });
+    }
+
+    @Override
+    public void receiveKeyDown(int keyCode) {
+
+    }
+
+    @Override
+    public void refreshPlayList(List<TvDataList> tvDataLists) {
+        hhListView.refreshList(tvDataLists);
     }
 
     private void startDismissTimer() {

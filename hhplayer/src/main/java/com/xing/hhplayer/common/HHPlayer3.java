@@ -24,6 +24,7 @@ import com.xing.hhplayer.common.View.HHControlView;
 import com.xing.hhplayer.common.View.HHLoadingView;
 import com.xing.hhplayer.common.View.HHPlayerView;
 import com.xing.hhplayer.common.View.HHSurfaceStateListener;
+import com.xing.hhplayer.common.View.HHTVView;
 import com.xing.hhplayer.common.View.HHThumbView;
 import com.xing.hhplayer.common.base.ControlViewInterface;
 import com.xing.hhplayer.common.base.HHPlayerCore;
@@ -128,6 +129,10 @@ public class HHPlayer3 {
         addExtraView(new HHControlView(mActivity, HHPlayer3.this), -1);
     }
 
+    public void addTVView() {
+        addExtraView(new HHTVView(mActivity, HHPlayer3.this), -1);
+    }
+
     public void addLoadingView() {
         addExtraView(new HHLoadingView(mActivity, this), -1);
     }
@@ -223,10 +228,12 @@ public class HHPlayer3 {
     }
 
     /***********************************播放控制部分**************************************************************/
+    //准备-地址，标题为空
     public void prepare(String path) {
         prepare(path, "");
     }
 
+    //准备-地址，标题
     public void prepare(String path, String title) {
         this.title = title;
         hhPlayerCore.mPlayerState = PlayerStateType.IDLE;
@@ -236,6 +243,15 @@ public class HHPlayer3 {
         hhPlayerCore.prepare(path);
     }
 
+    //刷新播放列表，刷新后自动播放当前列表第一个
+    public void updatePlayList(List<TvDataList> tvLists) {
+        if (cvInterface != null) {
+            cvInterface.refreshPlayList(tvLists);
+        }
+        prepare(tvLists, 0);
+    }
+
+    //准备-列表，第几个
     public void prepare(List<TvDataList> tvLists, int position) {
         if (tvLists != null && tvLists.size() > 0 && tvLists.size() > position) {
             this.tvLists = tvLists;
@@ -294,7 +310,6 @@ public class HHPlayer3 {
     //单位毫秒
     public void seekTo(long position) {
         if (hhPlayerCore.isPlayControl()) {
-//            hhPlayerCore.playerPrePareState = PlayerPrePareStateType.PREPARING;
             hhPlayerCore.seekTo(position);
         }
     }
@@ -581,6 +596,12 @@ public class HHPlayer3 {
     //播放器状态改变监听
     public void setStateChangeListener(OnPlayerListener<PlayerStateType> stateChangeListener) {
         this.stateChangeListener = stateChangeListener;
+    }
+
+    public void sendKeyDown(int keyCode) {
+        if (cvInterface != null) {
+            cvInterface.receiveKeyDown(keyCode);
+        }
     }
 /*
 

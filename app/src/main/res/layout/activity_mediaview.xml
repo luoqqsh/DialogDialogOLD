@@ -17,7 +17,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/select"
+            android:id="@+id/testSelect"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -25,7 +25,7 @@
             android:text="select" />
 
         <Button
-            android:id="@+id/play"
+            android:id="@+id/testPlay"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -33,14 +33,14 @@
             android:text="play" />
 
         <Button
-            android:id="@+id/pause"
+            android:id="@+id/testPause"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="pause" />
 
         <Button
-            android:id="@+id/stop"
+            android:id="@+id/testStop"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -48,7 +48,7 @@
             android:text="stop" />
 
         <Button
-            android:id="@+id/full"
+            android:id="@+id/testFull"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -63,7 +63,7 @@
 
 
         <Button
-            android:id="@+id/mute"
+            android:id="@+id/testMute"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -71,7 +71,7 @@
             android:text="mute" />
 
         <Button
-            android:id="@+id/get"
+            android:id="@+id/testGet"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -79,7 +79,7 @@
             android:text="get" />
 
         <Button
-            android:id="@+id/reset"
+            android:id="@+id/testReset"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -87,7 +87,7 @@
             android:text="reset" />
 
         <Button
-            android:id="@+id/fast"
+            android:id="@+id/testFast"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -95,7 +95,7 @@
             android:text="fast" />
 
         <Button
-            android:id="@+id/slow"
+            android:id="@+id/testSlow"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -112,7 +112,7 @@
 
 
         <Button
-            android:id="@+id/go5"
+            android:id="@+id/testGo5"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -120,7 +120,7 @@
             android:text="go5" />
 
         <Button
-            android:id="@+id/back5"
+            android:id="@+id/testBack5"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -128,7 +128,7 @@
             android:text="back5" />
 
         <Button
-            android:id="@+id/release"
+            android:id="@+id/testRelease"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -142,36 +142,102 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:orientation="horizontal">
+
+
+        <Button
+            android:id="@+id/testKeyUp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:maxLines="1"
+            android:text="上" />
+
+        <Button
+            android:id="@+id/testKeyDown"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:maxLines="1"
+            android:text="下" />
+
+        <Button
+            android:id="@+id/testKeyLeft"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:maxLines="1"
+            android:text="左" />
+
+        <Button
+            android:id="@+id/testKeyRight"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:maxLines="1"
+            android:text="右" />
+
+        <Button
+            android:id="@+id/testKeyEnter"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:maxLines="1"
+            android:text="确定" />
+
+        <Button
+            android:id="@+id/testKeyBack"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:maxLines="1"
+            android:text="返回" />
+
+        <Button
+            android:id="@+id/testKeyMenu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:maxLines="1"
+            android:text="菜单" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
         android:orientation="horizontal"
         android:padding="10dp">
 
         <TextView
-            android:id="@+id/currenttime"
+            android:id="@+id/testCurrentTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="00:00" />
 
         <TextView
-            android:id="@+id/totaltime"
+            android:id="@+id/testTotalTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=" / 00:00" />
 
         <androidx.appcompat.widget.AppCompatSeekBar
-            android:id="@+id/seekbar"
+            android:id="@+id/testSeekProgress"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
         <androidx.appcompat.widget.AppCompatSeekBar
-            android:id="@+id/seekbar_volume"
+            android:id="@+id/testSeekVolume"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_list"
+        android:id="@+id/testPlayList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 </LinearLayout>

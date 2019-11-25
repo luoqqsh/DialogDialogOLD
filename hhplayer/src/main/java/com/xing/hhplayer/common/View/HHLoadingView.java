@@ -13,9 +13,12 @@ import androidx.annotation.Nullable;
 
 import com.example.hhplayer.R;
 import com.xing.hhplayer.common.HHPlayer3;
+import com.xing.hhplayer.common.TvListBean.TvDataList;
 import com.xing.hhplayer.common.TypeBean.PlayerPrePareStateType;
 import com.xing.hhplayer.common.TypeBean.PlayerStateType;
 import com.xing.hhplayer.common.base.ControlViewInterface;
+
+import java.util.List;
 
 import x.com.hl_base.OnDoubleClickListener;
 import x.com.hl_view.RotateImageView;
@@ -52,11 +55,11 @@ public class HHLoadingView extends FrameLayout implements View.OnClickListener, 
     private void initView(Context context) {
         View.inflate(context, getLayoutId() != 0 ? getLayoutId() : R.layout.hhplayer_loadview, this);
 
-        loading_layout = findViewById(R.id.loading_layout);
+        loading_layout = findViewById(R.id.loadingLayout);
         contentPanel = findViewById(R.id.contentPanel);
-        loading = findViewById(R.id.loading);
+        loading = findViewById(R.id.loadingView);
         loading.start();
-        mStartButton = findViewById(R.id.play_pause);
+        mStartButton = findViewById(R.id.loadingMidPause);
         mStartButton.setOnClickListener(this);
         contentPanel.setOnClickListener(this);
         contentPanel.setOnTouchListener(new OnDoubleClickListener(new OnDoubleClickListener.DoubleClickCallback() {
@@ -79,7 +82,7 @@ public class HHLoadingView extends FrameLayout implements View.OnClickListener, 
     @Override
     public void onClick(View view) {
         int id = view.getId();
-        if (id == R.id.play_pause) {
+        if (id == R.id.loadingMidPause) {
             playControl();
         } else if (id == R.id.contentPanel) {
             mBottomContainer.setVisibility(isPanelShow ? VISIBLE : INVISIBLE);
@@ -132,6 +135,16 @@ public class HHLoadingView extends FrameLayout implements View.OnClickListener, 
 
     @Override
     public void changeProgress(final long time) {
+
+    }
+
+    @Override
+    public void receiveKeyDown(int keyCode) {
+
+    }
+
+    @Override
+    public void refreshPlayList(List<TvDataList> tvDataLists) {
 
     }
 }
