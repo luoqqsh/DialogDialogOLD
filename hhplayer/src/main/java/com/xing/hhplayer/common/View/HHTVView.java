@@ -24,6 +24,8 @@ import com.xing.hhplayer.common.TypeBean.PlayerViewType;
 import com.xing.hhplayer.common.base.ControlViewInterface;
 
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import x.com.hl_base.OnDoubleClickListener;
 import x.com.hl_tools.hl_time;
@@ -46,6 +48,7 @@ public class HHTVView extends FrameLayout implements View.OnClickListener, Contr
     private boolean isShowSeekBar = false;//是否显示进度条
     private int currentPlay;
     private long mExitTime;
+    private Timer mDismissControlViewTimer;
 
     public HHTVView(@NonNull FragmentActivity context, HHPlayer3 hhPlayer3) {
         super(context);
@@ -144,7 +147,8 @@ public class HHTVView extends FrameLayout implements View.OnClickListener, Contr
     }
 
     private void showPlayControl(boolean isPanelShow) {
-        mBottomContainer.setVisibility(isPanelShow ? VISIBLE : INVISIBLE);
+        //下面先不显示
+//        mBottomContainer.setVisibility(isPanelShow ? VISIBLE : INVISIBLE);
         mTopContainer.setVisibility(isPanelShow ? VISIBLE : GONE);
     }
 
@@ -190,9 +194,13 @@ public class HHTVView extends FrameLayout implements View.OnClickListener, Contr
                     layout_list.addView(hhListView, params);
                     layout_list.setVisibility(GONE);//默认隐藏
                 }
+                isPanelShow = true;
+                showPlayControl(true);
+                startDismissTimer();
                 break;
             case NONE:
             case ERROR:
+                cancelDismissTimer();
                 break;
         }
     }
@@ -258,6 +266,7 @@ public class HHTVView extends FrameLayout implements View.OnClickListener, Contr
 //                } else {
 //                    mActivity.finish();
 //                }
+                cancelDismissTimer();
                 mActivity.finish();
                 break;
             case KeyEvent.KEYCODE_MENU://菜单键
@@ -289,6 +298,30 @@ public class HHTVView extends FrameLayout implements View.OnClickListener, Contr
         hhListView.setCurrentSelectPlay(currentSelectDown);
         if (!isShowList) {
             hhPlayer3.prepare(hhPlayer3.getUrlDataList(), currentSelectDown);
+        }
+    }
+    private void startDismissTimer() {
+        cancelDismissTimer();
+        mDismissControlViewTimer = new Timer();
+        mDismissControlViewTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                contentPanel.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        isPanelShow = false;
+                        showPlayControl(false);
+                        cancelDismissTimer();
+                    }
+                });
+            }
+        }, 3000);
+    }
+
+    private void cancelDismissTimer() {
+        if (mDismissControlViewTimer != null) {
+            mDismissControlViewTimer.cancel();
+            mDismissControlViewTimer = null;
         }
     }
 }
