@@ -46,6 +46,11 @@ public class hl_permissions {
         applyPermission(context, q, permissionCallBack);
     }
 
+    public static void applyWallpaperPermission(Context context, RequestPermissionCallBack permissionCallBack) {
+        String[] q = new String[]{Manifest.permission.SET_WALLPAPER, Manifest.permission.SET_WALLPAPER_HINTS, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        applyPermission(context, q, permissionCallBack);
+    }
+
     public static void applyPermission(Context context, String[] permissionList, RequestPermissionCallBack permissionCallBack) {
         failPermission = new HashMap<>();
         mPermissionCallBack = permissionCallBack;

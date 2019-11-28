@@ -9,7 +9,9 @@ import android.media.ExifInterface;
 import android.util.Base64;
 import android.widget.ImageView;
 
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,37 +40,40 @@ public class hl_img {
      * @param string 字符串
      * @return bitmap
      */
-    public static Bitmap str64ToBitmap(String string) {
+    public static Bitmap getBitmapFromStr64(String string) {
         //将字符串转换成Bitmap类型
-        Bitmap bitmap = null;
         try {
             byte[] bitmapArray;
             bitmapArray = Base64.decode(string, Base64.DEFAULT);
-            bitmap = BitmapFactory.decodeByteArray(bitmapArray, 0, bitmapArray.length);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(bitmapArray, 0, bitmapArray.length);
             bitmap.setHasAlpha(true);
+            return bitmap;
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-        return bitmap;
     }
 
+    /**
+     * 增加base64头部信息，应该是要用不到才对
+     *
+     * @param imgstr 图片base64后的数据
+     * @return 图片base64后的数据
+     */
     public static String addBase64ImgHeader(String imgstr) {
         return "data:image/jpeg;base64," + imgstr;
     }
 
-    public static Bitmap assetsToBitmap(Context context, String assets) throws IOException {
-        return BitmapFactory.decodeStream(context.getResources().getAssets().open(assets));
-    }
 
     /**
-     * string值转为颜色值
+     * #5bc0de值转为颜色值
      */
     public static int getColorFromString(String color) {
         return Color.parseColor(color);
     }
 
     /**
-     * 保存图片到DCIM目录下
+     * 保存图片到相册目录下
      *
      * @param bitmap  图片bitmap
      * @param context 上下文
@@ -81,25 +86,76 @@ public class hl_img {
     public static String bitmapToCamera(Bitmap bitmap, Context context, boolean isUpdateGalley) throws IOException {
         //更改的名字
         String imageName = "dd" + hl_time.getNowTimeStr(hl_time.HHmmss) + ".png";
-        bitmapToFile(bitmap, hl_file.CAMERA + imageName);
+        bitmapToFile(bitmap, hl_file.CAMERA + File.separator + imageName);
         if (isUpdateGalley) {
-            hl_media.updateMedia(context, hl_file.CAMERA + imageName);
+            hl_media.updateMedia(context, hl_file.CAMERA + File.separator + imageName);
         }
-        return hl_file.CAMERA + imageName;
+        return hl_file.CAMERA + File.separator + imageName;
     }
 
-
-    public static void bitmapToFile(Bitmap bitmap, String filePath) throws IOException {
-        FileOutputStream outputStream = new FileOutputStream(filePath);
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
-        outputStream.flush();
-        outputStream.close();
+    /**
+     * 保存图片到指定文件
+     *
+     * @param bitmap   图片bitmap
+     * @param filePath 保存文件路径
+     * @return 图片路径
+     */
+    public static void bitmapToFile(Bitmap bitmap, String filePath) {
+        try {
+            FileOutputStream outputStream = new FileOutputStream(filePath);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+            outputStream.flush();
+            outputStream.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    //保存照片
+    /**
+     * 把assets里的图片转成bitmap
+     *
+     * @param context 上下文
+     * @param assets  图片名称，根目录下
+     * @return bitmap
+     */
+    public static Bitmap getBitmapFromAssets(Context context, String assets) {
+        try {
+            InputStream is = context.getAssets().open(assets);
+            Bitmap bitmap = BitmapFactory.decodeStream(is);
+            is.close();
+            return bitmap;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * 从文件获取bitmap
+     *
+     * @return 图片路径
+     */
+    public static Bitmap getBitmapFromFile(File file) {
+        return getBitmapFromPath(file.getAbsolutePath());
+    }
+
+    public static Bitmap getBitmapFromPath(String path) {
+        if (hl_file.isFileExist(path)) {
+            return BitmapFactory.decodeFile(path);
+        }
+        return null;
+    }
+
+    public static Bitmap getBitmapFromResource(Context context, int resource) {
+        return BitmapFactory.decodeResource(context.getResources(), resource);
+    }
+
+    //把imageview的图片保存到文件，相册目录
     public static void ImgViewToCamera(ImageView imageView, Context context) throws IOException {
         imageView.setDrawingCacheEnabled(true);//开启catch，开启之后才能获取ImageView中的bitmap
-        Bitmap bitmap = imageView.getDrawingCache();//获取imageview中的图像
+        Bitmap bitmap = imageView.getDrawingCache();//获取imageView中的图像
         bitmapToCamera(bitmap, context);
         imageView.setDrawingCacheEnabled(false);//关闭catch
     }

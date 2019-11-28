@@ -29,6 +29,7 @@ import java.util.TimerTask;
 
 import x.com.hl_base.OnDoubleClickListener;
 import x.com.hl_tools.hl_time;
+import x.com.hl_tools.hl_volume;
 import x.com.hl_view.RotateImageView;
 
 public class HHTVView extends FrameLayout implements View.OnClickListener, ControlViewInterface {
@@ -46,8 +47,6 @@ public class HHTVView extends FrameLayout implements View.OnClickListener, Contr
     private boolean isPanelShow = true;//是否显示面板
     private boolean isShowList = false;//是否显示列表
     private boolean isShowSeekBar = false;//是否显示进度条
-    private int currentPlay;
-    private long mExitTime;
     private Timer mDismissControlViewTimer;
 
     public HHTVView(@NonNull FragmentActivity context, HHPlayer3 hhPlayer3) {
@@ -112,6 +111,9 @@ public class HHTVView extends FrameLayout implements View.OnClickListener, Contr
     @Override
     public void onClick(View view) {
         int id = view.getId();
+        if (id == R.id.loadingMidPause) {
+            playControl();
+        }
         //显示比例
         if (id == R.id.scaleView) {
             if (mType == 0) {
@@ -244,6 +246,12 @@ public class HHTVView extends FrameLayout implements View.OnClickListener, Contr
                 break;
             case KeyEvent.KEYCODE_DPAD_RIGHT://导航右
                 break;
+            case KeyEvent.KEYCODE_VOLUME_UP://音量+
+                hl_volume.mediaVolumeUp(mActivity);
+                break;
+            case KeyEvent.KEYCODE_VOLUME_DOWN://音量-
+                hl_volume.mediaVolumeDown(mActivity);
+                break;
             case KeyEvent.KEYCODE_DPAD_CENTER://导航-确定
                 //列表没显示则显示列表
                 if (!isShowList) {
@@ -300,6 +308,7 @@ public class HHTVView extends FrameLayout implements View.OnClickListener, Contr
             hhPlayer3.prepare(hhPlayer3.getUrlDataList(), currentSelectDown);
         }
     }
+
     private void startDismissTimer() {
         cancelDismissTimer();
         mDismissControlViewTimer = new Timer();

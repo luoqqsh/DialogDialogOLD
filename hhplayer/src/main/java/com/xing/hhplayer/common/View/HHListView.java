@@ -18,6 +18,8 @@ import com.xing.hhplayer.common.TvListBean.TvListAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import x.com.hl_tools.hl_clickChecker;
+
 public class HHListView extends FrameLayout {
     private HHPlayer3 hhPlayer3;
     private List<TvDataList> tvDataList;
@@ -52,6 +54,7 @@ public class HHListView extends FrameLayout {
         playlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if (!hl_clickChecker.checkClickEnable()) return;
                 //点击事件，电视上的话不存在这个
                 currentSelectPlay = i;
                 hhPlayer3.prepare(tvDataList.get(i).getChannelURLs().get(0).getChannelURL(), tvDataList.get(i).getChannelName());

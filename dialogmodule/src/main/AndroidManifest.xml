@@ -6,12 +6,15 @@
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
-
-    <!--        resizeableActivity分屏模式需要安卓7.0以上-->
+    <!--设置壁纸相关权限-->
+    <uses-permission android:name="android.permission.SET_WALLPAPER" />
+    <uses-permission android:name="android.permission.SET_WALLPAPER_HINTS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!--resizeableActivity分屏模式需要安卓7.0以上-->
     <application
         android:label="@string/app_name"
-        android:sharedUserId="android.uid.phone"
-        android:resizeableActivity="true">
+        android:resizeableActivity="true"
+        android:sharedUserId="android.uid.phone">
         <activity
             android:name="x.com.hl_tools.permissions.ApplyPermissionActivity"
             android:launchMode="singleTop"

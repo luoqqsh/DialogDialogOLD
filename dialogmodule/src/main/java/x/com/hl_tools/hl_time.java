@@ -1,5 +1,7 @@
 package x.com.hl_tools;
 
+import android.content.Context;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -10,7 +12,8 @@ import java.util.Locale;
 public class hl_time {
     public static final String yyyyMMddHHmmssSSS = "yyyy-MM-dd HH:mm:ss SSS";
     public static final String yyyyMMddHHmmss = "yyyy-MM-dd HH:mm:ss";
-    public static final String yyyyMMdd = "yyyy-MM-dd";
+    public static final String yyyy_MM_dd = "yyyy-MM-dd";
+    public static final String yyyyMMdd = "yyyyMMdd";
     public static final String HHmmss = "HH:mm:ss";
 
     /**
@@ -149,5 +152,25 @@ public class hl_time {
             default:
                 return "";
         }
+    }
+
+    /**
+     * 是否今天第一次
+     *
+     * @param context 上下文
+     * @param key     关键字
+     * @param isSave  是否保存
+     * @return 结果
+     */
+    private static boolean isTodayFirst(Context context, String key, boolean isSave) {
+        String currentActivityDate = getNowTimeStr(yyyyMMdd);
+        String activityDate = hl_sharedP.getParam(context, key + "activity_date", "");
+        if (!activityDate.equals(currentActivityDate)) {
+            if (isSave) {
+                hl_sharedP.setParam(context, key + "activity_date", currentActivityDate);
+            }
+            return true;
+        }
+        return false;
     }
 }

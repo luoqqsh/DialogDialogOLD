@@ -13,22 +13,28 @@ public abstract class TaskDelayManager {
      * 主线程使用
      */
     private Disposable mDisposable;
+    private long loopMs;
 
     public TaskDelayManager() {
     }
 
-    public TaskDelayManager loop(long delay, long period) {
-        doWork(getLoopObservable(delay, period));
+    public TaskDelayManager loop(long delayMs, long loopMs) {
+        doWork(getLoopObservable(delayMs, loopMs));
         return this;
     }
 
-    public TaskDelayManager loop(long period) {
-        doWork(getLoopObservable(period));
+    public TaskDelayManager loop(long loopMs) {
+        doWork(getLoopObservable(loopMs));
         return this;
     }
 
-    public TaskDelayManager delay(long time) {
-        doWork(getDelayObservable(time));
+    public TaskDelayManager delay(long delayMs) {
+        doWork(getDelayObservable(delayMs));
+        return this;
+    }
+
+    public TaskDelayManager start() {
+        doWork(getDelayObservable(0));
         return this;
     }
 
@@ -45,16 +51,20 @@ public abstract class TaskDelayManager {
                     public void onNext(Long index) {
 //                        aLong 0,1,2,3,4,5,6,7,8...
                         onListen(index);
+                        if (loopMs == 0) {
+                            cancel();
+                        }
                     }
 
                     @Override
                     public void onError(Throwable throwable) {
-
+                        if (throwable != null) throwable.printStackTrace();
+                        cancel();
                     }
 
                     @Override
                     public void onComplete() {
-
+                        cancel();
                     }
                 });
     }
@@ -66,17 +76,20 @@ public abstract class TaskDelayManager {
         }
     }
 
-    private Observable<Long> getDelayObservable(long time) {
-        return Observable.timer(time, TimeUnit.MILLISECONDS);
+    private Observable<Long> getDelayObservable(long delayMs) {
+        this.loopMs = 0;
+        return Observable.timer(delayMs, TimeUnit.MILLISECONDS);
     }
 
-    private Observable<Long> getLoopObservable(long delay, long period) {
-        return Observable.interval(delay, period, TimeUnit.MILLISECONDS);
+    private Observable<Long> getLoopObservable(long delayMs, long loopMs) {
+        this.loopMs = loopMs;
+        return Observable.interval(delayMs, loopMs, TimeUnit.MILLISECONDS);
     }
 
-    private Observable<Long> getLoopObservable(long period) {
-        if (period <= 0) period = 1;
-        return Observable.interval(period, TimeUnit.MILLISECONDS);
+    private Observable<Long> getLoopObservable(long loopMs) {
+        if (loopMs <= 0) loopMs = 1;
+        this.loopMs = loopMs;
+        return Observable.interval(loopMs, TimeUnit.MILLISECONDS);
     }
 
     public abstract void onListen(Long index);

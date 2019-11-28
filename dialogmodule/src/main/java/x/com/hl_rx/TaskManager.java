@@ -32,15 +32,18 @@ public abstract class TaskManager<T> {
                     @Override
                     public void onNext(T t) {
                         runOnUIThread(t);
+                        cancel();
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
+                        cancel();
                     }
 
                     @Override
                     public void onComplete() {
+                        cancel();
                     }
                 });
         return this;
@@ -65,8 +68,9 @@ public abstract class TaskManager<T> {
                         public void onListen(Long index) {
                             runOnUIThread(null);
                             observableEmitter.onComplete();
+                            cancel();
                         }
-                    }.delay(0);
+                    }.start();
                 } else {
                     observableEmitter.onNext(t);
                     observableEmitter.onComplete();

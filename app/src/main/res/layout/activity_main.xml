@@ -68,10 +68,10 @@
             android:text="opengl" />
 
         <Button
-            android:id="@+id/baiduface"
+            android:id="@+id/wallpaperset"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="baidu" />
+            android:text="paper" />
     </LinearLayout>
 
     <LinearLayout

@@ -9,8 +9,12 @@ import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 
-import com.google.gson.Gson;
 import com.jiujie.glide.GlideUtil;
+import com.xing.hhplayer.common.TvListBean.TvData;
+import com.xing.hhplayer.common.TvListBean.TvDataList;
+import com.xing.hhplayer.common.TvListBean.TypeClarity;
+import com.xing.hhplayer.common.TvListBean.TypeClass;
+import com.xing.hhplayer.common.TvListBean.TypeState;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -21,16 +25,14 @@ import x.com.hl_base.DtmfSendService;
 import x.com.hl_base.HOnListener;
 import x.com.hl_dialog.DFListFileDialog;
 import x.com.hl_log.ViseLog;
-import com.xing.hhplayer.common.TvListBean.TvData;
-import com.xing.hhplayer.common.TvListBean.TvDataList;
-import com.xing.hhplayer.common.TvListBean.TypeClarity;
-import com.xing.hhplayer.common.TvListBean.TypeClass;
-import com.xing.hhplayer.common.TvListBean.TypeState;
+import x.com.hl_rx.TaskDelayBManager;
 import x.com.hl_rx.TaskManager;
 import x.com.hl_tools.hl_drawable;
 import x.com.hl_tools.hl_file;
+import x.com.hl_tools.hl_gson;
 import x.com.hl_tools.hl_img;
 import x.com.hl_tools.hl_permissions;
+import x.com.hl_tools.hl_wallpaper;
 
 public class DialogMainJavaActivity extends BaseActivity {
     @Override
@@ -89,8 +91,7 @@ public class DialogMainJavaActivity extends BaseActivity {
         tvDataLists.add(tvDataList2);
         tvDataLists.add(tvDataList2);
         TvData tvUrl = new TvData(1, "20190719", "itv", tvDataLists);
-        Gson gson = new Gson();
-        String json = gson.toJson(tvUrl);
+        String json = hl_gson.instance().toJson(tvUrl);
 
 //        ViseLog.d(json);
         ViseLog.d(tvUrl);
@@ -104,11 +105,19 @@ public class DialogMainJavaActivity extends BaseActivity {
         findViewById(R.id.log).setOnClickListener(v -> startActivity(new Intent(mContext, LogActivity.class)));
         findViewById(R.id.open).setOnClickListener(v -> startActivity(new Intent(mContext, GLActivity.class)));
         findViewById(R.id.mapping).setOnClickListener(v -> startActivity(new Intent(mContext, MappingActivity.class)));
+        findViewById(R.id.wallpaperset).setOnClickListener(v -> {
+            ViseLog.d("asd");
+            new TaskDelayBManager() {
+                @Override
+                public void onListen(Long index) {
+                    Bitmap imageBitmap = GlideUtil.instance().getImageBitmap(mContext, "http://s.bizhijingling.com/uploadfile/2019/1107/thumb_show_20191107171530891.jpg");
+                    ViseLog.d(imageBitmap);
+                    hl_wallpaper.setSystemPicWallpaper(mContext, imageBitmap);
+                }
+            }.start();
+        });
         findViewById(R.id.close).setOnClickListener(v -> {
             test();
-//            ViseLog.d("aaa");
-//            ViseLog.d("aaa", "bbb");
-
             ViseLog.d("aaa", 1, 3, 5);
         });
 

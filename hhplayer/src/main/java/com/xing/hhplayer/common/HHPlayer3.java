@@ -46,6 +46,7 @@ public class HHPlayer3 {
     private ViewGroup viewGroup;//视频容器
     private boolean isChangeBrightness = false;//是否设置改变亮度
     private boolean isPlayWhenPrepared = false;//准备好立即播放
+    private boolean isReStart = false;//是否重新加载
     private ControlViewInterface cvInterface;
     private String title;
     private List<TvDataList> tvLists;//播放列表
@@ -114,7 +115,8 @@ public class HHPlayer3 {
                 if (cvInterface != null) {
                     cvInterface.getPrePareState(PlayerPrePareStateType.PREPARED);
                 }
-                if (isPlayWhenPrepared) {
+                if (isPlayWhenPrepared || isReStart) {
+                    isReStart = false;
                     start();
                 }
                 hhPlayerCore.isLive = hhPlayerCore.getMediaDuration() == 0;
@@ -273,6 +275,13 @@ public class HHPlayer3 {
                 cvInterface.getPlayState(hhPlayerCore.mPlayerState);
             }
         }
+    }
+
+    public void restart() {
+        hhPlayerCore.prepare(hhPlayerCore.getMediaPath().toString());
+        hhPlayerCore.getCurrentStart();
+        hhPlayerCore.mPlayerState = PlayerStateType.IDLE;
+        isReStart = true;
     }
 
     public void pause() {
