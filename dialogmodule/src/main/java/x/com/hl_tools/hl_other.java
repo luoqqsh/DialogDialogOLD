@@ -7,8 +7,6 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -28,8 +26,7 @@ public class hl_other {
     public static boolean isJson(String str) {
         if (str.startsWith("{") && str.endsWith("}")) {
             try {
-                Gson g = new Gson();
-                g.fromJson(str, Object.class);
+                hl_gson.instance().fromJson(str, Object.class);
                 return true;
             } catch (Exception e) {
                 return false;
