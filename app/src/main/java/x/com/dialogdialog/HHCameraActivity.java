@@ -16,7 +16,15 @@ public class HHCameraActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_camera);
+    }
+
+    @Override
+    public int getLayoutId() {
+        return R.layout.activity_camera;
+    }
+
+    @Override
+    public void initUI(Bundle savedInstanceState) {
         RelativeLayout rl_camera = findViewById(R.id.rl_camera);
         findViewById(R.id.get).setOnClickListener(this);
         findViewById(R.id.video).setOnClickListener(this);
@@ -24,7 +32,6 @@ public class HHCameraActivity extends BaseActivity implements View.OnClickListen
         findViewById(R.id.stop).setOnClickListener(this);
         findViewById(R.id.switchcamera).setOnClickListener(this);
         camera1 = new HHCamera(this, new Camera1(), rl_camera);
-
     }
 
     @Override

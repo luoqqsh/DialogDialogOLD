@@ -89,8 +89,6 @@ dependencies {
     implementation project(':map_gmap')
     implementation project(':map_qmap')
     implementation project(':map_kmap')
-//    implementation project(':umeng')
-//    implementation(name: 'umeng-20191122', ext: 'aar')
 
     implementation('com.airbnb.android:lottie:3.1.0') {
         exclude group: 'com.google.guava', module: 'listenablefuture'

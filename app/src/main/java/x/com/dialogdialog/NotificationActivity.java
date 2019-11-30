@@ -8,18 +8,18 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.RemoteViews;
 
-import androidx.annotation.Nullable;
-
 import x.com.dialogdialog.BaseApp.BaseActivity;
 import x.com.hl_tools.DialogTools.NotificationHelper;
 
 public class NotificationActivity extends BaseActivity {
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_notification);
+    public int getLayoutId() {
+        return R.layout.activity_notification;
+    }
 
+    @Override
+    public void initUI(Bundle savedInstanceState) {
         //通知使用
         new NotificationHelper(this)
                 //通知标题
@@ -56,11 +56,11 @@ public class NotificationActivity extends BaseActivity {
                 //.setProgress(100, null);
                 //显示
                 .notifyShow();
-                //取消通知
-                //.cancel()
+        //取消通知
+        //.cancel()
     }
 
-    public void sendNormal(View view){
+    public void sendNormal(View view) {
         //优先级default（3）默认通知，不可折叠
         new NotificationHelper(this)
                 .setTitle("普通通知")
@@ -75,7 +75,7 @@ public class NotificationActivity extends BaseActivity {
                 .notifyShow();
     }
 
-    public void sendOther(View view){
+    public void sendOther(View view) {
         //优先级min（1）没有提醒，可以折叠
         new NotificationHelper(this)
                 .setTitle("折叠通知")
@@ -85,7 +85,7 @@ public class NotificationActivity extends BaseActivity {
                 .notifyShow();
     }
 
-    public void sendDownload(View view){
+    public void sendDownload(View view) {
         //优先级low（2）下载通知，带进度条
         NotificationHelper notificationHelper = new NotificationHelper(this)
                 .setTitle("下载通知")
@@ -96,7 +96,7 @@ public class NotificationActivity extends BaseActivity {
         notificationHelper.setProgress(100, new Intent(Intent.ACTION_SEND));
     }
 
-    public void sendDialog(View view){
+    public void sendDialog(View view) {
         //优先级heigh（4）应用内通知，弹出框
         new NotificationHelper(this)
                 .setTitle("QQ")
@@ -106,7 +106,7 @@ public class NotificationActivity extends BaseActivity {
                 .notifyShow();
     }
 
-    public void sendCustom(View view){
+    public void sendCustom(View view) {
         RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.notification_custom_layout);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, Intent.createChooser(new Intent(NotificationActivity.this, DialogActivity.class), "标题"),
                 PendingIntent.FLAG_UPDATE_CURRENT);
@@ -119,11 +119,11 @@ public class NotificationActivity extends BaseActivity {
                 .notifyShow();
     }
 
-    public void cancelAll(View view){
+    public void cancelAll(View view) {
         NotificationHelper.cancelAll(this);
     }
 
-    public void intent(View view){
+    public void intent(View view) {
         startActivity(new Intent(this, DialogActivity.class));
     }
 

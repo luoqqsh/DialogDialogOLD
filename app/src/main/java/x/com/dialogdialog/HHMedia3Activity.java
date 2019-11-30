@@ -6,7 +6,6 @@ import android.widget.FrameLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatSeekBar;
 
 import com.xing.hhplayer.common.HHPlayer3;
@@ -41,9 +40,12 @@ public class HHMedia3Activity extends BaseActivity {
     private TvData tvUrl;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mediaview);
+    public int getLayoutId() {
+        return R.layout.activity_mediaview;
+    }
+
+    @Override
+    public void initUI(Bundle savedInstanceState) {
         initList();
         initUI();
         hhview = findViewById(R.id.hhPlayerView);

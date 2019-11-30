@@ -3,11 +3,10 @@ package x.com.dialogdialog;
 import android.Manifest;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.JavascriptInterface;
 import android.widget.LinearLayout;
-
-import androidx.annotation.Nullable;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -23,14 +22,17 @@ public class H5Activity extends BaseActivity {
     private x5WebView webView;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public View getLayoutView() {
         LinearLayout mLayout = new LinearLayout(getApplicationContext());
         ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         webView = new x5WebView(this);
         webView.setLayoutParams(params);
         mLayout.addView(webView);
-        setContentView(mLayout);
+        return mLayout;
+    }
+
+    @Override
+    public void initUI(Bundle savedInstanceState) {
         String[] permission = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE, Manifest.permission.ACCESS_NETWORK_STATE, Manifest.permission.ACCESS_FINE_LOCATION};
         hl_permissions.applyPermission(this, permission, null);
 //        x5Manager.getInstance().init(this);

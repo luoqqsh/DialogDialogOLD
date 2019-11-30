@@ -1,5 +1,6 @@
 package com.jiujie.glide.target;
 
+
 import android.graphics.drawable.Drawable;
 
 import androidx.annotation.NonNull;
@@ -10,7 +11,6 @@ import com.bumptech.glide.request.target.SizeReadyCallback;
 import com.bumptech.glide.request.target.Target;
 
 import java.io.File;
-
 
 /**
  * @author SummerSoft.Lgr

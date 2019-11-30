@@ -1,5 +1,6 @@
 package com.jiujie.glide.transform;
 
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -14,7 +15,6 @@ import com.jiujie.glide.blur.FastBlur;
 import com.jiujie.glide.blur.RSBlur;
 
 import java.security.MessageDigest;
-
 
 /**
  * author:ChenJiaLiang

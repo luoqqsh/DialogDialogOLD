@@ -56,7 +56,10 @@
             android:value="DYZBZ-UQFRW-WJ7RE-O6BRH-P5HFE-HJBT5" />
 
 
-        <activity android:name=".DialogMainActivity">
+        <activity
+            android:name=".DialogMainActivity"
+            android:screenOrientation="nosensor"
+            android:theme="@style/Slide.trans">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -65,24 +68,60 @@
         </activity>
 
 
-        <activity android:name=".NotificationActivity" />
-        <activity android:name=".DialogActivity" />
-        <activity android:name=".H5Activity" />
-        <activity android:name=".LogActivity" />
-        <activity android:name=".GLActivity" />
-        <activity android:name=".DialogMainJavaActivity" />
-        <activity android:name=".HHMedia3Activity" />
-        <activity android:name=".MappingActivity" />
-        <activity android:name=".Viewpager2.ViewActivity" />
-        <activity android:name=".HHMapActivity" />
-        <activity android:name=".MediaCodecActivity" />
-        <activity android:name=".HHCameraActivity" />
-        <activity android:name=".Demo.DemoActivity" />
+        <activity
+            android:name=".NotificationActivity"
+            android:screenOrientation="nosensor"
+            android:theme="@style/Slide.trans" />
+        <activity
+            android:name=".DialogActivity"
+            android:screenOrientation="nosensor"
+            android:theme="@style/Slide.trans" />
+        <activity
+            android:name=".H5Activity"
+            android:screenOrientation="nosensor"
+            android:theme="@style/Slide.trans" />
+        <activity
+            android:name=".LogActivity"
+            android:screenOrientation="nosensor"
+            android:theme="@style/Slide.trans" />
+        <activity
+            android:name=".GLActivity"
+            android:screenOrientation="nosensor"
+            android:theme="@style/Slide.trans" />
+        <activity
+            android:name=".DialogMainJavaActivity"
+            android:screenOrientation="nosensor"
+            android:theme="@style/Slide.trans" />
+        <activity
+            android:name=".HHMedia3Activity"
+            android:screenOrientation="nosensor"
+            android:theme="@style/Slide.trans" />
+        <activity
+            android:name=".MappingActivity"
+            android:screenOrientation="nosensor"
+            android:theme="@style/Slide.trans" />
+        <activity
+            android:name=".Viewpager2.ViewActivity"
+            android:screenOrientation="nosensor"
+            android:theme="@style/Slide.trans" />
+        <activity
+            android:name=".HHMapActivity"
+            android:screenOrientation="nosensor"
+            android:theme="@style/Slide.trans" />
+        <activity
+            android:name=".MediaCodecActivity"
+            android:screenOrientation="nosensor"
+            android:theme="@style/Slide.trans" />
+        <activity
+            android:name=".HHCameraActivity"
+            android:screenOrientation="nosensor"
+            android:theme="@style/Slide.trans" />
+        <activity
+            android:name=".Demo.DemoActivity"
+            android:screenOrientation="nosensor"
+            android:theme="@style/Slide.trans" />
 
 
-        <service
-            android:name="x.com.dialogdialog.MyPushIntentService"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
     </application>
 
 </manifest>

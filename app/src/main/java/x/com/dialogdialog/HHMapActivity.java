@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import androidx.annotation.Nullable;
-
 import com.example.xxing.amap.AmapLocation;
 import com.example.xxing.map_bamap.BmapController;
 import com.example.xxing.map_bamap.BmapSearch;
@@ -31,11 +29,8 @@ public class HHMapActivity extends BaseActivity {
     private HHmap hHmap;
     private HHLocation hhLocation;
     private Object marker;
-
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mapview);
+    public void initUI(Bundle savedInstanceState) {
         LinearLayout ll_mapview = findViewById(R.id.ll_mapview);
         hHmap = new HHmap(this, new BmapController());
         hHmap.addMapView(ll_mapview, savedInstanceState, new OnCameraChangeListener() {
@@ -84,6 +79,11 @@ public class HHMapActivity extends BaseActivity {
         });
         hhLocation.startLocation();
         hHmap.addGoogleMap(false);
+    }
+
+    @Override
+    public int getLayoutId() {
+        return R.layout.activity_mapview;
     }
 
     @Override

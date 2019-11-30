@@ -7,8 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
-import androidx.annotation.Nullable;
-
 import com.jiujie.glide.GlideUtil;
 import com.xing.hhplayer.common.TvListBean.TvData;
 import com.xing.hhplayer.common.TvListBean.TvDataList;
@@ -22,7 +20,7 @@ import java.util.Map;
 
 import x.com.dialogdialog.BaseApp.BaseActivity;
 import x.com.hl_base.DtmfSendService;
-import x.com.hl_base.HOnListener;
+import x.com.hl_base.hl_interface.HOnListener;
 import x.com.hl_dialog.DFListFileDialog;
 import x.com.hl_log.ViseLog;
 import x.com.hl_rx.TaskDelayBManager;
@@ -35,16 +33,24 @@ import x.com.hl_tools.hl_permissions;
 import x.com.hl_tools.hl_wallpaper;
 
 public class DialogMainJavaActivity extends BaseActivity {
+
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        getWindow().setBackgroundDrawableResource(R.color.brown);
+    public int getLayoutId() {
+        return R.layout.activity_main;
+    }
+
+    @Override
+    protected int getBackgroundColorResource() {
+        return R.color.brown;
+    }
+
+    @Override
+    public void initUI(Bundle savedInstanceState) {
         init();
         initTvList();
 
         startService(new Intent(this, DtmfSendService.class));
-        hl_permissions.applyPermission(mContext, new String[]{Manifest.permission.READ_PHONE_STATE}, new hl_permissions.RequestPermissionCallBack() {
+        hl_permissions.applyPermission(mActivity, new String[]{Manifest.permission.READ_PHONE_STATE}, new hl_permissions.RequestPermissionCallBack() {
             @Override
             public void requestPermissionSuccess() {
 
@@ -61,7 +67,7 @@ public class DialogMainJavaActivity extends BaseActivity {
         new TaskManager<Bitmap>() {
             @Override
             public Bitmap runOnBackgroundThread() {
-                return GlideUtil.instance().getImageBitmap(mContext, "http://s.bizhijingling.com/uploadfile/coustom/2019/1735/20191029090827981.jpg");
+                return GlideUtil.instance().getImageBitmap(mActivity, "http://s.bizhijingling.com/uploadfile/coustom/2019/1735/20191029090827981.jpg");
 
             }
 
@@ -99,20 +105,20 @@ public class DialogMainJavaActivity extends BaseActivity {
 
     private void init() {
         findViewById(R.id.java).setVisibility(View.GONE);
-        findViewById(R.id.tongzhi).setOnClickListener(view -> startActivity(new Intent(mContext, NotificationActivity.class)));
-        findViewById(R.id.media).setOnClickListener(view -> startActivity(new Intent(mContext, HHMedia3Activity.class)));
-        findViewById(R.id.x5web).setOnClickListener(v -> startActivity(new Intent(mContext, H5Activity.class)));
-        findViewById(R.id.log).setOnClickListener(v -> startActivity(new Intent(mContext, LogActivity.class)));
-        findViewById(R.id.open).setOnClickListener(v -> startActivity(new Intent(mContext, GLActivity.class)));
-        findViewById(R.id.mapping).setOnClickListener(v -> startActivity(new Intent(mContext, MappingActivity.class)));
+        findViewById(R.id.tongzhi).setOnClickListener(view -> startActivity(new Intent(mActivity, NotificationActivity.class)));
+        findViewById(R.id.media).setOnClickListener(view -> startActivity(new Intent(mActivity, HHMedia3Activity.class)));
+        findViewById(R.id.x5web).setOnClickListener(v -> startActivity(new Intent(mActivity, H5Activity.class)));
+        findViewById(R.id.log).setOnClickListener(v -> startActivity(new Intent(mActivity, LogActivity.class)));
+        findViewById(R.id.open).setOnClickListener(v -> startActivity(new Intent(mActivity, GLActivity.class)));
+        findViewById(R.id.mapping).setOnClickListener(v -> startActivity(new Intent(mActivity, MappingActivity.class)));
         findViewById(R.id.wallpaperset).setOnClickListener(v -> {
             ViseLog.d("asd");
             new TaskDelayBManager() {
                 @Override
                 public void onListen(Long index) {
-                    Bitmap imageBitmap = GlideUtil.instance().getImageBitmap(mContext, "http://s.bizhijingling.com/uploadfile/2019/1107/thumb_show_20191107171530891.jpg");
+                    Bitmap imageBitmap = GlideUtil.instance().getImageBitmap(mActivity, "http://s.bizhijingling.com/uploadfile/2019/1107/thumb_show_20191107171530891.jpg");
                     ViseLog.d(imageBitmap);
-                    hl_wallpaper.setSystemPicWallpaper(mContext, imageBitmap);
+                    hl_wallpaper.setSystemPicWallpaper(mActivity, imageBitmap);
                 }
             }.start();
         });
@@ -131,7 +137,7 @@ public class DialogMainJavaActivity extends BaseActivity {
                         ViseLog.d(file.getAbsolutePath());
                     }
                 });
-                df.showFDialog(mContext);
+                df.showFDialog(mActivity);
             }
         });
     }

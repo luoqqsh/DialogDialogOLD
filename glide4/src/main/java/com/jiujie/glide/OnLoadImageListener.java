@@ -5,7 +5,8 @@ package com.jiujie.glide;
  * Email:576507648@qq.com
  */
 
-public interface OnLoadImageListener <T>{
+public interface OnLoadImageListener<T> {
     void onSuccess(T t);
+
     void onFail();
 }

@@ -12,14 +12,19 @@ import x.com.hl_tools.DialogTest.myObjectPool
 import x.com.hl_tools.hl_permissions
 
 class DialogMainActivity : BaseActivity() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+    override fun initUI(savedInstanceState: Bundle?) {
         window.setBackgroundDrawableResource(R.color.blue1)
         init()
         permissions()
         test()
+    }
+
+    override fun isOpenSlideBack(): Boolean {
+        return false
+    }
+
+    override fun getLayoutId(): Int {
+        return R.layout.activity_main
     }
 
     private fun test() {
@@ -27,17 +32,17 @@ class DialogMainActivity : BaseActivity() {
     }
 
     private fun init() {
-        java.setOnClickListener { startActivity(Intent(mContext, DialogMainJavaActivity::class.java)) }
-        tongzhi.setOnClickListener { startActivity(Intent(mContext, NotificationActivity::class.java)) }
-        media.setOnClickListener { startActivity(Intent(mContext, HHMedia3Activity::class.java)) }
-        x5web.setOnClickListener { startActivity(Intent(mContext, H5Activity::class.java)) }
-        log.setOnClickListener { startActivity(Intent(mContext, LogActivity::class.java)) }
-        open.setOnClickListener { startActivity(Intent(mContext, GLActivity::class.java)) }
-        mapping.setOnClickListener { startActivity(Intent(mContext, MappingActivity::class.java)) }
-        view.setOnClickListener { startActivity(Intent(mContext, ViewActivity::class.java)) }
-        camera.setOnClickListener { startActivity(Intent(mContext, HHCameraActivity::class.java)) }
-        mediacodec.setOnClickListener { startActivity(Intent(mContext, MediaCodecActivity::class.java)) }
-        map.setOnClickListener { startActivity(Intent(mContext, HHMapActivity::class.java)) }
+        java.setOnClickListener { startActivity(Intent(mActivity, DialogMainJavaActivity::class.java)) }
+        tongzhi.setOnClickListener { startActivity(Intent(mActivity, NotificationActivity::class.java)) }
+        media.setOnClickListener { startActivity(Intent(mActivity, HHMedia3Activity::class.java)) }
+        x5web.setOnClickListener { startActivity(Intent(mActivity, H5Activity::class.java)) }
+        log.setOnClickListener { startActivity(Intent(mActivity, LogActivity::class.java)) }
+        open.setOnClickListener { startActivity(Intent(mActivity, GLActivity::class.java)) }
+        mapping.setOnClickListener { startActivity(Intent(mActivity, MappingActivity::class.java)) }
+        view.setOnClickListener { startActivity(Intent(mActivity, ViewActivity::class.java)) }
+        camera.setOnClickListener { startActivity(Intent(mActivity, HHCameraActivity::class.java)) }
+        mediacodec.setOnClickListener { startActivity(Intent(mActivity, MediaCodecActivity::class.java)) }
+        map.setOnClickListener { startActivity(Intent(mActivity, HHMapActivity::class.java)) }
         close.setOnClickListener {
             //            val orientation = hl_orientation()
 //            orientation.orientationEnable(this, null)
@@ -48,12 +53,12 @@ class DialogMainActivity : BaseActivity() {
         dialog.setOnClickListener {
             //            val b = DFNDialog.newInstance()
 //            b.setMessage("dddddddddd", 4)
-//            b.showFDialog(mContext)
+//            b.showFDialog(mActivity)
 
 //            val df = DFListFileDialog.newInstance(hl_file.QQFILE)
 //            df.setOnSelectFileListener { file -> ViseLog.d(file.absolutePath) }
-//            df.showFDialog(mContext)
-            startActivity(Intent(mContext, DialogActivity::class.java))
+//            df.showFDialog(mActivity)
+            startActivity(Intent(mActivity, DialogActivity::class.java))
         }
     }
 
@@ -73,7 +78,7 @@ class DialogMainActivity : BaseActivity() {
     private fun permissions() {
         //检查权限
         //需要在activity重写onRequestPermissionsResult回调方法。不处理回调不写
-        hl_permissions.applyWriteStoragePermission(mContext, object : hl_permissions.RequestPermissionCallBack {
+        hl_permissions.applyWriteStoragePermission(mActivity, object : hl_permissions.RequestPermissionCallBack {
             override fun requestPermissionSuccess() {
             }
 
@@ -81,7 +86,7 @@ class DialogMainActivity : BaseActivity() {
                 ViseLog.d(failPermission)
             }
         })
-        hl_permissions.applyLocationPermission(mContext, object : hl_permissions.RequestPermissionCallBack {
+        hl_permissions.applyLocationPermission(mActivity, object : hl_permissions.RequestPermissionCallBack {
             override fun requestPermissionSuccess() {
             }
 
@@ -89,7 +94,7 @@ class DialogMainActivity : BaseActivity() {
                 ViseLog.d(failPermission)
             }
         })
-        hl_permissions.applyPermission(mContext, arrayOf(Manifest.permission.CAMERA), object : hl_permissions.RequestPermissionCallBack {
+        hl_permissions.applyPermission(mActivity, arrayOf(Manifest.permission.CAMERA), object : hl_permissions.RequestPermissionCallBack {
             override fun requestPermissionSuccess() {
 
             }

@@ -3,7 +3,6 @@ package x.com.dialogdialog.Demo;
 import android.os.Bundle;
 import android.widget.LinearLayout;
 
-import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -16,9 +15,12 @@ public class DemoActivity extends BaseActivity {
     private ViewPager2 vp_add2;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_demo);
+    public int getLayoutId() {
+        return R.layout.activity_demo;
+    }
+
+    @Override
+    public void initUI(Bundle savedInstanceState) {
         ll_add = findViewById(R.id.ll_add);
         vp_add = findViewById(R.id.vp_add);
         vp_add2 = findViewById(R.id.vp_add2);

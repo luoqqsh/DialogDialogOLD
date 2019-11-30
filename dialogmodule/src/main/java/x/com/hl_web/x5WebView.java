@@ -13,7 +13,6 @@ import java.util.Map;
 
 import x.com.hl_log.ViseLog;
 
-
 public class x5WebView extends WebView {
     private Context mContext;
 
@@ -88,8 +87,8 @@ public class x5WebView extends WebView {
         // 把图片加载放在最后来加载渲染
         webSettings.setBlockNetworkImage(false);
         // 特征标记
-        webSettings.setUserAgentString(webSettings.getUserAgentString() + "3500game");
-        ViseLog.d("hl-x5web", "UserAgent:" + webSettings.getUserAgentString());
+//        webSettings.setUserAgentString(webSettings.getUserAgentString() + "3500game");
+//        ViseLog.d("hl-x5web", "UserAgent:" + webSettings.getUserAgentString());
         webSettings.setBlockNetworkImage(false);
         webSettings.setBlockNetworkLoads(false);
         //String cacheDirPath = "路径";

@@ -3,8 +3,6 @@ package x.com.dialogdialog;
 import android.os.Bundle;
 import android.view.View;
 
-import androidx.annotation.Nullable;
-
 import java.util.Collection;
 
 import io.github.lizhangqu.retrace.ClassMapping;
@@ -17,9 +15,12 @@ public class MappingActivity extends BaseActivity {
     private String mappingFile = "";
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(new View(this));
+    public View getLayoutView() {
+        return new View(this);
+    }
+
+    @Override
+    public void initUI(Bundle savedInstanceState) {
         TaskDelayBManager task = new TaskDelayBManager() {
             @Override
             public void onListen(Long index) {

@@ -27,8 +27,6 @@
   **[] $VALUES;
   public *;
 }
--keep class com.bumptech.glide.GeneratedAppGlideModuleImpl { *; }
-
 # for DexGuard only
 #-keepresourcexmlelements manifest/application/meta-data@value=GlideModule
 #Glide  end

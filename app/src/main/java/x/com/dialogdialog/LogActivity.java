@@ -29,9 +29,12 @@ public class LogActivity extends BaseActivity implements View.OnClickListener {
     private Button mPrint_xml_message;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_log);
+    public int getLayoutId() {
+        return R.layout.activity_log;
+    }
+
+    @Override
+    public void initUI(Bundle savedInstanceState) {
         init();
     }
 

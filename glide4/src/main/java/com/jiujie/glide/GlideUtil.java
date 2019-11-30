@@ -149,8 +149,16 @@ public class GlideUtil implements ImageLoader {
         setImage(contextObject, url, imageView, defaultId, isCenterCropDefault(), isShowAnimDefault(), isCircleDefault(), isUseCacheDefault(), conner, getRadioDefault(), getSimplingDefault(), getWidthDefault(), getHeightDefault(), null);
     }
 
+    public <T> void setConnerImage(Object contextObject, T url, ImageView imageView, int conner, int defaultId, boolean isShowAnim) {
+        setImage(contextObject, url, imageView, defaultId, isCenterCropDefault(), isShowAnim, isCircleDefault(), isUseCacheDefault(), conner, getRadioDefault(), getSimplingDefault(), getWidthDefault(), getHeightDefault(), null);
+    }
+
     public <T> void setConnerImage(Object contextObject, T url, ImageView imageView, int conner, int defaultId, int width, int height) {
         setImage(contextObject, url, imageView, defaultId, isCenterCropDefault(), isShowAnimDefault(), isCircleDefault(), isUseCacheDefault(), conner, getRadioDefault(), getSimplingDefault(), width, height, null);
+    }
+
+    public <T> void setConnerImage(Object contextObject, T url, ImageView imageView, int conner, int defaultId, int width, int height, boolean isShowAnim) {
+        setImage(contextObject, url, imageView, defaultId, isCenterCropDefault(), isShowAnim, isCircleDefault(), isUseCacheDefault(), conner, getRadioDefault(), getSimplingDefault(), width, height, null);
     }
 
     public <T> void setConnerNoCacheImage(Object contextObject, T url, ImageView imageView, int conner) {
@@ -163,6 +171,10 @@ public class GlideUtil implements ImageLoader {
 
     public <T> void setSimpleBlur(Object contextObject, T url, ImageView imageView) {
         setImage(contextObject, url, imageView, normalDefaultId, isCenterCropDefault(), isShowAnimDefault(), isCircleDefault(), isUseCacheDefault(), getConnerDefault(), 15, 1, getWidthDefault(), getHeightDefault(), null);
+    }
+
+    public <T> void setSimpleBlur(Object contextObject, T url, ImageView imageView, boolean isCenterCrop) {
+        setImage(contextObject, url, imageView, normalDefaultId, isCenterCrop, isShowAnimDefault(), isCircleDefault(), isUseCacheDefault(), getConnerDefault(), 15, 1, getWidthDefault(), getHeightDefault(), null);
     }
 
     public <T> void setSimpleBlur(Object contextObject, T url, ImageView imageView, int defaultId) {
@@ -179,6 +191,10 @@ public class GlideUtil implements ImageLoader {
 
     public <T> void setSimpleBlur(Object contextObject, T url, ImageView imageView, int defaultId, boolean isShowAnim) {
         setImage(contextObject, url, imageView, defaultId, isCenterCropDefault(), isShowAnim, isCircleDefault(), isUseCacheDefault(), getConnerDefault(), 15, 1, getWidthDefault(), getHeightDefault(), null);
+    }
+
+    public <T> void setSimpleBlur(Object contextObject, T url, ImageView imageView, int defaultId, boolean isShowAnim, boolean isCenterCrop) {
+        setImage(contextObject, url, imageView, defaultId, isCenterCrop, isShowAnim, isCircleDefault(), isUseCacheDefault(), getConnerDefault(), 15, 1, getWidthDefault(), getHeightDefault(), null);
     }
 
     public <T> void setSimpleBlurNoCache(Object contextObject, T url, ImageView imageView) {
@@ -423,6 +439,7 @@ public class GlideUtil implements ImageLoader {
         try {
             final GlideRequestM glideRequestM = new GlideRequestM(contextObject, imageView).init();
             if (glideRequestM.isShouldReturn()) {
+                Log.e("Glide", "contextObject error");
                 if (listener != null) listener.onFail();
                 return;
             }
@@ -476,16 +493,16 @@ public class GlideUtil implements ImageLoader {
                 load = load.addListener(new RequestListener<Drawable>() {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                        Log.e("Glide Exception", "" + e);
+                        Log.e("Glide", "Exception " + e);
 //                        if (listener != null)
-                            listener.onFail();
+                        listener.onFail();
                         return false;
                     }
 
                     @Override
                     public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
 //                        if (listener != null)
-                            listener.onSuccess(resource);
+                        listener.onSuccess(resource);
 //                        imageView.setBackground(null);
                         return false;
                     }

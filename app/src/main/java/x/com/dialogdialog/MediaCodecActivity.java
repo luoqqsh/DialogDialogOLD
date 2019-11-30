@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
-
 import java.nio.ByteBuffer;
 
 import x.com.dialogdialog.BaseApp.BaseActivity;
@@ -18,9 +16,12 @@ public class MediaCodecActivity extends BaseActivity {
     private TextView tv_path;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mediacodec);
+    public int getLayoutId() {
+        return R.layout.activity_mediacodec;
+    }
+
+    @Override
+    public void initUI(Bundle savedInstanceState) {
         tv_path = findViewById(R.id.path);
         tv_path.setText(videoPath);
 

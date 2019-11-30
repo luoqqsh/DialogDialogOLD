@@ -4,6 +4,7 @@ package x.com.dialogdialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import x.com.dialogdialog.BaseApp.BaseActivity;
@@ -16,14 +17,32 @@ import x.com.hl_log.ViseLog;
 import x.com.hl_tools.hl_permissionsOther;
 
 public class DialogActivity extends BaseActivity {
+
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dialogtools);
-        updates();
+    public int getLayoutId() {
+        return R.layout.activity_dialogtools;
     }
 
-//    private void downloads() {
+    @Override
+    public void initUI(Bundle savedInstanceState) {
+        mTitle.setTitleText("dialog");
+        setLoadingEnd();
+        mTitle.setTitle2Text("aaaaaa");
+        mTitle.setRightButtonText("aaasss", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ViseLog.d("qawd");
+            }
+        });
+//        updates();
+    }
+
+    @Override
+    protected boolean isOpenSlideBack() {
+        return false;
+    }
+
+    //    private void downloads() {
 //        //下载工具,不支持断点续传
 //        new DownloadHelper(this,
 //                "http://imtt.dd.qq.com/16891/337A49BBE7A8A0B42E2312893903BBB3.apk?fsname=com.coolsnow.screenshot_5.6.0_56000.apk",
@@ -63,7 +82,7 @@ public class DialogActivity extends BaseActivity {
 
     private void updates() {
         //检查更新框样式
-//        Dialog g = new NDialog(mContext, NDialog.nDialog_Update, 1, true)
+//        Dialog g = new NDialog(mActivity, NDialog.nDialog_Update, 1, true)
 //                .setTouchOutSideCancelable(false, false)
 //                .setMessage("111", Gravity.LEFT)
 //                .setBtnClickListener(true, "下次再说", "立即更新", new NDialog.onDialogbtnClickListener() {
@@ -96,7 +115,7 @@ public class DialogActivity extends BaseActivity {
         a.dismiss();
 
         //透明弹窗
-        new NDialog(mContext, NDialog.ndialog_Trans, 0, false).createTrans(150);
+        new NDialog(mActivity, NDialog.ndialog_Trans, 0, false).createTrans(150);
 
         //显示普通弹窗
         DFNDialog b = DFNDialog.newInstance();
@@ -105,7 +124,7 @@ public class DialogActivity extends BaseActivity {
             b.show(getSupportFragmentManager(), "normalDialog");
         }
         //显示iPhone样式弹窗
-        Dialog c = new NDialog(mContext, NDialog.nDialog_Iphone, 0.8f)
+        Dialog c = new NDialog(mActivity, NDialog.nDialog_Iphone, 0.8f)
                 .setTouchOutSideCancelable(false, false)
                 .setMessage("我是鬼，我来抓你了！", NDialog.MSG_LAYOUT_CENTER)
                 .setBtnClickListener(true, "好", "不好", new NDialog.onDialogbtnClickListener() {
@@ -124,7 +143,7 @@ public class DialogActivity extends BaseActivity {
         c.show();
 
         //sex性别选择样式
-        Dialog d = new NDialog(mContext, NDialog.nDialog_Sex, 1.0f)
+        Dialog d = new NDialog(mActivity, NDialog.nDialog_Sex, 1.0f)
                 .setDialoglocation(NDialog.DIALOG_LOCATION_BOTTOM)
                 .setDialogAnimation(NDialog.DIALOG_ANIM_SLID_BOTTOM)
                 .setTouchOutSideCancelable(false, false)
@@ -144,7 +163,7 @@ public class DialogActivity extends BaseActivity {
         d.show();
 
         //share分享样式
-        Dialog e = new NDialog(mContext, R.layout.dialog_select, 1)
+        Dialog e = new NDialog(mActivity, R.layout.dialog_select, 1)
                 .setBtnClickListener(true, "微信", "朋友圈", new NDialog.onDialogbtnClickListener() {
                     @Override
                     public void onDialogbtnClick(Context context, Dialog dialog, int whichBtn) {
@@ -161,7 +180,7 @@ public class DialogActivity extends BaseActivity {
         e.show();
 
         //拍照选项样式
-        Dialog f = new NDialog(mContext, NDialog.nDialog_Photo, 1)
+        Dialog f = new NDialog(mActivity, NDialog.nDialog_Photo, 1)
                 .setDialoglocation(NDialog.DIALOG_LOCATION_BOTTOM)
                 .setDialogAnimation(NDialog.DIALOG_ANIM_SLID_BOTTOM)
                 .setTouchOutSideCancelable(false, false)
