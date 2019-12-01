@@ -23,7 +23,6 @@ public abstract class HLBaseActivity extends HLSlideActivity {
     private LinearLayout base_loading;
     private RotateImageView loading_view;
 
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         doBeforeCreate();
@@ -50,7 +49,6 @@ public abstract class HLBaseActivity extends HLSlideActivity {
         initUI(savedInstanceState);
         initData();
     }
-
 
     private void initTitleView() {
         if (isShowTitle()) {

@@ -92,6 +92,25 @@ public class hl_time {
     }
 
     /**
+     * 指定日期转时间戳
+     *
+     * @param dateString 指定日期
+     * @param pattern    日期格式
+     * @return 时间戳
+     */
+    public static long getStringToDate(String dateString, String pattern) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(pattern, Locale.CHINA);
+        Date date = new Date();
+        try {
+            return dateFormat.parse(dateString).getTime();
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return date.getTime();
+    }
+
+    /**
      * 获取几天后日期
      *
      * @param timeType 日期格式，例如yyyy-MM-dd HH:mm:ss SSS
