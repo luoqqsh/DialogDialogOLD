@@ -87,10 +87,10 @@ public class HHijkPlayer extends HHPlayerCore {
             mediaPlayer.setOnErrorListener(new IjkMediaPlayer.OnErrorListener() {
                 @Override
                 public boolean onError(IMediaPlayer mp, int what, int extra) {
-                    ViseLog.e(TAG, "监听到错误。  " + mPlayerState);
+                    ViseLog.showLog(TAG, "监听到错误。  " + mPlayerState);
                     mPlayerState = PlayerStateType.ERROR;
                     playerPrePareState = PlayerPrePareStateType.ERROR;
-                    ViseLog.e(TAG, what + "  " + extra + "\n" + "播放出错：" + mediaPath);
+                    ViseLog.showLog(TAG, what + "  " + extra + "\n" + "播放出错：" + mediaPath);
                     if (onErrorListener != null) {
                         String err = "ijk播放出错：" + what + " " + extra + " " + mPlayerState;
                         onErrorListener.onListen(err);

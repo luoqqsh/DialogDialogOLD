@@ -13,7 +13,6 @@ import x.com.hl_tools.hl_permissions
 
 class DialogMainActivity : BaseActivity() {
     override fun initUI(savedInstanceState: Bundle?) {
-        window.setBackgroundDrawableResource(R.color.blue1)
         init()
         permissions()
         test()

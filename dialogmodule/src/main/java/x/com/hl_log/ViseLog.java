@@ -44,6 +44,15 @@ public class ViseLog {
         TREE_OF_SOULS.e(object);
     }
 
+    public static void showLog(Object object) {
+        TREE_OF_SOULS.showLog(object);
+    }
+
+    public static void showLog(String tag, Object object) {
+        setTag(tag);
+        TREE_OF_SOULS.showLog(object);
+    }
+
     public static void w(String message, Object... args) {
         TREE_OF_SOULS.w(message, args);
     }

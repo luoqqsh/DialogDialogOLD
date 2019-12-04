@@ -30,6 +30,8 @@ public abstract class Tree implements ITree {
 
     private LogDefaultConfig mLogConfig;
     private final ThreadLocal<String> localTags = new ThreadLocal<>();
+    private boolean isDefaultBolder = true;//是否默认边框设置，否则强制不带边框
+
 
     protected Tree() {
         mLogConfig = LogDefaultConfig.getInstance();
@@ -45,61 +47,79 @@ public abstract class Tree implements ITree {
 
     @Override
     public void wtf(String message, Object... args) {
+        isDefaultBolder = true;
         logString(Log.ASSERT, message, args);
     }
 
     @Override
     public void wtf(Object object) {
+        isDefaultBolder = true;
         logObject(Log.ASSERT, object);
     }
 
     @Override
     public void e(String message, Object... args) {
+        isDefaultBolder = true;
         logString(Log.ERROR, message, args);
     }
 
     @Override
     public void e(Object object) {
+        isDefaultBolder = true;
+        logObject(Log.ERROR, object);
+    }
+
+    @Override
+    public void showLog(Object object) {
+        isDefaultBolder = false;
         logObject(Log.ERROR, object);
     }
 
     @Override
     public void w(String message, Object... args) {
+        isDefaultBolder = true;
         logString(Log.WARN, message, args);
     }
 
     @Override
     public void w(Object object) {
+        isDefaultBolder = true;
         logObject(Log.WARN, object);
     }
 
     @Override
     public void d(String message, Object... args) {
+        isDefaultBolder = true;
         logString(Log.DEBUG, message, args);
     }
 
     @Override
     public void d(Object object) {
+        isDefaultBolder = true;
         logObject(Log.DEBUG, object);
     }
 
     @Override
     public void i(String message, Object... args) {
+        isDefaultBolder = true;
         logString(Log.INFO, message, args);
     }
 
     @Override
     public void i(Object object) {
+        isDefaultBolder = true;
         logObject(Log.INFO, object);
     }
 
     @Override
     public void v(String message, Object... args) {
+        isDefaultBolder = true;
         logString(Log.VERBOSE, message, args);
     }
 
     @Override
     public void v(Object object) {
+        isDefaultBolder = true;
         logObject(Log.VERBOSE, object);
     }
 
@@ -190,7 +210,7 @@ public abstract class Tree implements ITree {
             msg = msgBuilder.toString();
         }
         //判断是否显示排版线条
-        if (mLogConfig.isShowBorder()) {//显示排版线条
+        if (mLogConfig.isShowBorder() && isDefaultBolder) {//显示排版线条
             //判定是否需要分段显示
             if (isPart) {//需要分段显示
                 for (String sub : msg.split(LogConstant.BR)) {
@@ -291,7 +311,7 @@ public abstract class Tree implements ITree {
      * @param msg
      */
     private void printLog(int type, String tag, String msg) {
-        if (!mLogConfig.isShowBorder()) {
+        if (!mLogConfig.isShowBorder() || !isDefaultBolder) {
             msg = getTopStackInfo() + ": " + msg;
         }
         log(type, tag, msg);

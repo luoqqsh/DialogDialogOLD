@@ -23,12 +23,8 @@ public class H5Activity extends BaseActivity {
 
     @Override
     public View getLayoutView() {
-        LinearLayout mLayout = new LinearLayout(getApplicationContext());
-        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         webView = new x5WebView(this);
-        webView.setLayoutParams(params);
-        mLayout.addView(webView);
-        return mLayout;
+        return webView;
     }
 
     @Override
