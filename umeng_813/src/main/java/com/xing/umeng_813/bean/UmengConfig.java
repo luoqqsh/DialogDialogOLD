@@ -9,7 +9,7 @@ public class UmengConfig {
     public int sessionContinueMillis = 30000;//退出应用，再过多长时间进来表示不同的启动
 
     public String APPKEY = "";
-    public final String CHANNEL = "Umeng";
+    public String CHANNEL = "Umeng";
     public String WX_ID = "";
     public String WX_SECRET = "";
     public String QQ_ID = "";

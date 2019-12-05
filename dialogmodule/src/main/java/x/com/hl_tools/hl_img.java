@@ -72,6 +72,7 @@ public class hl_img {
         return Color.parseColor(color);
     }
 
+
     /**
      * 保存图片到相册目录下
      *
@@ -153,7 +154,7 @@ public class hl_img {
     }
 
     //把imageview的图片保存到文件，相册目录
-    public static void ImgViewToCamera(ImageView imageView, Context context) throws IOException {
+    public static void imgViewToCamera(ImageView imageView, Context context) throws IOException {
         imageView.setDrawingCacheEnabled(true);//开启catch，开启之后才能获取ImageView中的bitmap
         Bitmap bitmap = imageView.getDrawingCache();//获取imageView中的图像
         bitmapToCamera(bitmap, context);
