@@ -41,17 +41,17 @@ class DialogMainActivity : BaseActivity() {
         mediacodec.setOnClickListener { startActivity(Intent(mActivity, MediaCodecActivity::class.java)) }
         map.setOnClickListener { startActivity(Intent(mActivity, HHMapActivity::class.java)) }
         close.setOnClickListener {
-            //            val orientation = hl_orientation()
+//            val orientation = hl_orientation()
 //            orientation.orientationEnable(this, null)
             animation_view4.playAnimation()
 
         }
 
         dialog.setOnClickListener {
-            //            val b = DFNDialog.newInstance()
+//            val b = DFNDialog.newInstance()
 //            b.setMessage("dddddddddd", 4)
 //            b.showFDialog(mActivity)
-
+//
 //            val df = DFListFileDialog.newInstance(hl_file.QQFILE)
 //            df.setOnSelectFileListener { file -> ViseLog.d(file.absolutePath) }
 //            df.showFDialog(mActivity)
