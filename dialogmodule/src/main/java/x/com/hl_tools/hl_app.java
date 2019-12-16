@@ -8,6 +8,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.text.TextUtils;
 
 import androidx.core.content.FileProvider;
@@ -39,6 +40,10 @@ public class hl_app {
     /**
      * 通过APK地址获取此APP的包名和版本等信息
      */
+    public static String getCurrentPackageName(Context context) {
+        return getPackageName(context, context.getPackageName());
+    }
+
     public static String getPackageName(Context context, String FilePath) {
         PackageManager pm = context.getPackageManager();
         PackageInfo info = pm.getPackageArchiveInfo(FilePath, PackageManager.GET_ACTIVITIES);
@@ -88,7 +93,35 @@ public class hl_app {
         }
     }
 
-    public static String getPackageName(Context context) {
-        return getPackageName(context, context.getPackageName());
+    public static Object getMetaData(Context context, String metaName, Object defaultName) {
+        try {
+            Bundle applicationInfo = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA).metaData;
+            if (defaultName instanceof String) {
+                return applicationInfo.getString(metaName, (String) defaultName);
+            } else if (defaultName instanceof Integer) {
+                return applicationInfo.getInt(metaName, (int) defaultName);
+            } else if (defaultName instanceof Boolean) {
+                return applicationInfo.getBoolean(metaName, (boolean) defaultName);
+            } else if (defaultName instanceof Float) {
+                return applicationInfo.getFloat(metaName, (float) defaultName);
+            } else if (defaultName instanceof Long) {
+                return applicationInfo.getLong(metaName, (long) defaultName);
+            } else {
+                return defaultName;
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            return defaultName;
+        }
+    }
+
+    public static String getAppName(Context context) {
+        try {
+            ApplicationInfo appInfo = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
+            return appInfo.loadLabel(context.getPackageManager()) + "";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
     }
 }
