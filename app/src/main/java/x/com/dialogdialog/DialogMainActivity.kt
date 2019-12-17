@@ -8,6 +8,7 @@ import x.com.dialogdialog.BaseApp.BaseActivity
 import x.com.dialogdialog.Viewpager2.ViewActivity
 import x.com.hl_log.ViseLog
 import x.com.hl_tools.DialogTest.myObjectPool
+import x.com.hl_tools.animation.ToolAnimation
 import x.com.hl_tools.hl_permissions
 
 class DialogMainActivity : BaseActivity() {
@@ -21,11 +22,16 @@ class DialogMainActivity : BaseActivity() {
         return false
     }
 
+    override fun isShowTitle(): Boolean {
+        return false
+    }
+
     override fun getLayoutId(): Int {
         return R.layout.activity_main
     }
 
     private fun test() {
+        hideStatusBar()
     }
 
     private fun init() {
@@ -43,8 +49,8 @@ class DialogMainActivity : BaseActivity() {
         close.setOnClickListener {
 //            val orientation = hl_orientation()
 //            orientation.orientationEnable(this, null)
-            animation_view4.playAnimation()
-
+//            animation_view4.playAnimation()
+            showStatusBar()
         }
 
         dialog.setOnClickListener {
@@ -56,6 +62,7 @@ class DialogMainActivity : BaseActivity() {
 //            df.setOnSelectFileListener { file -> ViseLog.d(file.absolutePath) }
 //            df.showFDialog(mActivity)
             startActivity(Intent(mActivity, DialogActivity::class.java))
+            ToolAnimation.addTouchDrak(dialog, true)
         }
     }
 

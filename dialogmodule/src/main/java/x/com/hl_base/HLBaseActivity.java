@@ -1,5 +1,6 @@
 package x.com.hl_base;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +13,8 @@ import androidx.fragment.app.FragmentActivity;
 import x.com.hl_dialog.R;
 import x.com.hl_tools.hl_device;
 import x.com.hl_tools.hl_leak;
-import x.com.hl_view.HLTitleView;
+import x.com.hl_tools.hl_screen;
+import x.com.hl_tools.hl_statusbar;
 import x.com.hl_view.RotateImageView;
 
 public abstract class HLBaseActivity extends HLSlideActivity {
@@ -22,6 +24,7 @@ public abstract class HLBaseActivity extends HLSlideActivity {
     private LinearLayout base_loading_no_data;
     private LinearLayout base_loading;
     private RotateImageView loading_view;
+    private int titleHeight = 0;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,10 +37,7 @@ public abstract class HLBaseActivity extends HLSlideActivity {
         } else {
             setContentView(R.layout.activity_base);
         }
-        base_loading_fail = findViewById(R.id.base_loading_fail);
-        base_loading_no_data = findViewById(R.id.base_loading_no_data);
-        base_loading = findViewById(R.id.base_loading);
-        ViewGroup base_layout = findViewById(R.id.base_layout);
+        ViewGroup base_layout = findViewById(R.id.base_content_layout);
         int backgroundColor = getBackgroundColor();
         if (backgroundColor != 0) {
             base_layout.setBackgroundColor(backgroundColor);
@@ -46,6 +46,10 @@ public abstract class HLBaseActivity extends HLSlideActivity {
         }
         initTitleView();//加载标题
         initContentView();//加载内容
+        //加载状态
+        base_loading_fail = findViewById(R.id.base_loading_fail);
+        base_loading_no_data = findViewById(R.id.base_loading_no_data);
+        base_loading = findViewById(R.id.base_loading);
         initUI(savedInstanceState);
         initData();
     }
@@ -78,6 +82,32 @@ public abstract class HLBaseActivity extends HLSlideActivity {
         } else if (getLayoutView() != null) {
             baseContentLayout.addView(getLayoutView());
         }
+        if (!isShowTitle() && isShowStatusBar()) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                baseContentLayout.setPadding(0, hl_screen.getStatusBarHeight(mActivity), 0, 0);
+            }
+        }
+        if (!isShowStatusBar()) {
+            hideStatusBar();
+        }
+    }
+
+    public void hideStatusBar() {
+//        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);//纯隐藏
+//        getWindow().getDecorView().setSystemUiVisibility(View.INVISIBLE);//隐藏并拉伸
+//        hl_statusbar.setStatusBarDarkTheme(this,false);
+//        hl_statusbar.setTranslucentStatus(this);
+//        hl_statusbar.setStatusBarColor(this, getResources().getColor(R.color.red));
+    }
+
+    public void showStatusBar() {
+//        hl_statusbar.setStatusBarDarkTheme(this,true);
+        hl_statusbar.setStatusBarColor(this, R.color.trans);
+//        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+    }
+
+    public boolean isShowStatusBar() {
+        return true;
     }
 
     public boolean isShowTitle() {
@@ -182,4 +212,6 @@ public abstract class HLBaseActivity extends HLSlideActivity {
     public int getLoadingNoDataId() {
         return R.layout.base_loading_nodata;
     }
+
+
 }

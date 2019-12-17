@@ -14,14 +14,19 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 
 import androidx.annotation.RequiresApi;
+import androidx.core.content.FileProvider;
+import androidx.fragment.app.FragmentActivity;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
+
+import x.com.hl_dialog.BuildConfig;
 
 public class hl_system {
     //返回键设为home键
@@ -220,5 +225,25 @@ public class hl_system {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 调用系统的分享面板
+     *
+     * @param context 上下文
+     * @param path    要分享文件的路径
+     */
+    public static void showSystemShareDialog(Context context, String path) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Uri contentUri = FileProvider.getUriForFile(context.getApplicationContext(), context.getPackageName() + ".fileProvider", new File(path));
+            intent.putExtra(Intent.EXTRA_STREAM, contentUri);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        } else {
+            intent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + new File(path)));
+        }
+        intent.setType("*/*");
+        context.startActivity(Intent.createChooser(intent, "分享"));
     }
 }

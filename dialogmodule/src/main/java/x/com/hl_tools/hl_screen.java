@@ -16,6 +16,7 @@ import android.view.WindowManager;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import x.com.hl_dialog.R;
@@ -134,6 +135,23 @@ public class hl_screen {
     public static int getStatusBarHeight(Context context) {
         int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
         return context.getResources().getDimensionPixelSize(resourceId);
+    }
+
+    public static int getStatusBarHeightByReadR(Context context) {
+        Class<?> c;
+        Object obj;
+        Field field;
+        int x;
+        try {
+            c = Class.forName("com.android.internal.R$dimen");
+            obj = c.newInstance();
+            field = c.getField("status_bar_height");
+            x = Integer.parseInt(field.get(obj).toString());
+            return context.getResources().getDimensionPixelSize(x);
+        } catch (Exception e1) {
+            e1.printStackTrace();
+            return 75;
+        }
     }
 
     //获取屏幕密度dpi

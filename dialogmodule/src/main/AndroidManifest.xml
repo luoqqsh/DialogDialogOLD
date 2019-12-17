@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!--    闪光灯-->
     <uses-permission android:name="android.permission.FLASHLIGHT" />
     <!--设置壁纸相关权限-->
     <uses-permission android:name="android.permission.SET_WALLPAPER" />
@@ -19,9 +20,10 @@
             android:name="x.com.hl_tools.permissions.ApplyPermissionActivity"
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
+
         <!--7.0以上 安装apk-->
         <provider
-            android:name="x.com.hl_dialog.Provider.CheckProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileProvider"
             android:exported="false"
             android:grantUriPermissions="true">
@@ -52,7 +54,8 @@
             android:name="android.vendor.full_screen"
             android:value="true" />
         <!-- 腾讯X5内核初始化 -->
-        <service android:name="com.tencent.smtt.export.external.DexClassLoaderProviderService"
+        <service
+            android:name="com.tencent.smtt.export.external.DexClassLoaderProviderService"
             android:label="dexopt"
             android:process=":dexopt" />
     </application>

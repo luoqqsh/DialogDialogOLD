@@ -1,5 +1,7 @@
-package x.com.hl_view;
+package x.com.hl_base;
 
+import android.content.Context;
+import android.os.Build;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -7,6 +9,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import x.com.hl_dialog.R;
+import x.com.hl_tools.hl_screen;
+import x.com.hl_tools.hl_view;
 
 public class HLTitleView {
     private View titleView;
@@ -19,6 +23,8 @@ public class HLTitleView {
     private TextView title_right_text;
     private ImageView title_right_btn_image;
     private ImageView title_left_btn_image;
+    private int titleHeight;
+    private Context mContext;
 
     public HLTitleView(View titleView) {
         this.titleView = titleView;
@@ -27,6 +33,7 @@ public class HLTitleView {
 
     private void init() {
         if (titleView != null) {
+            mContext = titleView.getContext();
             mDefaultTitle = titleView.findViewById(R.id.base_default_title);
             title_text = titleView.findViewById(R.id.title_text);
             title_text2 = titleView.findViewById(R.id.title_text2);
@@ -40,6 +47,9 @@ public class HLTitleView {
             //右边图
             title_right_btn_image = titleView.findViewById(R.id.title_right_btn_image);
             title_right_image_btn = titleView.findViewById(R.id.title_right_btn);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                hl_view.setViewHeight(titleView, getTitleHeight(mContext) + hl_screen.getStatusBarHeight(mContext));
+            }
         }
     }
 
@@ -113,5 +123,16 @@ public class HLTitleView {
 
     public void setHideTitle(boolean isHideTitle) {
         titleView.setVisibility(isHideTitle ? View.GONE : View.VISIBLE);
+    }
+
+    public int getTitleHeight(Context context) {
+//                getDimension 获取绝对尺寸（"像素"单位，只是float）,
+//                getDimensionPixelSize是将getDimension获取的小数部分四舍五入，
+//                getDimensionPixelOffset是强制转换成int，即舍去小数部分
+        if (titleHeight != 0) {
+            return titleHeight;
+        }
+        titleHeight = context.getResources().getDimensionPixelOffset(R.dimen.height_of_title);
+        return titleHeight;
     }
 }

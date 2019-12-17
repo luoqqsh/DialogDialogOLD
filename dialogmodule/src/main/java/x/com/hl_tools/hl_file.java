@@ -80,6 +80,7 @@ public class hl_file {
     }
     ////////////////存在判断////////////
 
+
     /**
      * 判断文件是否存在
      *
@@ -511,6 +512,27 @@ public class hl_file {
         }
         BigInteger bigInt = new BigInteger(1, digest.digest());
         return bigInt.toString(16);
+    }
+
+    /**
+     * 递归取得文件夹大小
+     *
+     * @param file
+     * @return long
+     */
+    public static long getFileSize(File file) {
+        long size = 0;
+        if (file != null && file.exists() && file.isDirectory()) {
+            File files[] = file.listFiles();
+            for (int i = 0; i < files.length; i++) {
+                if (files[i].isDirectory()) {
+                    size = size + getFileSize(files[i]);
+                } else {
+                    size = size + files[i].length();
+                }
+            }
+        }
+        return size;
     }
 
     /**

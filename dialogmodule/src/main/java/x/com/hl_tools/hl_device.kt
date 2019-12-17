@@ -188,7 +188,8 @@ object hl_device {
                 "系统ROM:" + hl_rom.getName() + "\n" +
                 "ROM版本:" + hl_rom.getVersion() + "\n" +
                 "支持的CPU架构:" + getsupportedAbis() + "\n" +
-                "SSAID:" + hl_id.getSSAID(context) + "\n"
+                "SSAID:" + hl_id.getSSAID(context) + "\n" +
+                "Root权限:" + if (hl_root.isRoot()) "已获得Root权限" else "未获得Root权限" + "\n"
     }
 
     fun getDeviceInfoDetail(context: Context): String {

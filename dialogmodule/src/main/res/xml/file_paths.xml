@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <paths>
-    <external-path path="Android/data/x.com.dialogmobile/" name="files_root" />
-    <external-path path="." name="external_storage_root" />
+    <!--    <files-path/>代表的根目录： Context.getFilesDir()-/data/user/0/com.xing.newtv/files-->
+    <!--    <external-path/>代表的根目录: Environment.getExternalStorageDirectory()安卓q之前的根目录-->
+    <!--    <cache-path/>代表的根目录: getCacheDir()-/data/user/0/com.xing.newtv/cache-->
+
+    <!--    要允许授权的目录-->
+    <external-path
+        name="external_storage_root"
+        path="." />
 </paths>

@@ -201,4 +201,18 @@ public class hl_view {
         }
         hl_context.scanForActivity(context).getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
+
+    /**
+     * 设置view高度
+     *
+     * @param view   view
+     * @param height 高度
+     */
+    public static void setViewHeight(View view, int height) {
+        ViewGroup.LayoutParams lp = view.getLayoutParams();
+        if (lp != null) {
+            lp.height = height;
+            view.setLayoutParams(lp);
+        }
+    }
 }
