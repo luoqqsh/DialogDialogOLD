@@ -3,6 +3,7 @@ package com.xing.hhplayer.common;
 import android.app.Activity;
 import android.graphics.SurfaceTexture;
 import android.provider.Settings;
+import android.text.TextUtils;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -34,7 +35,6 @@ import java.util.List;
 import java.util.Map;
 
 import x.com.hl_log.ViseLog;
-import x.com.hl_tools.hl_file;
 import x.com.hl_tools.hl_screen;
 
 /**
@@ -279,7 +279,7 @@ public class HHPlayer3 {
     }
 
     public void restart() {
-        if (hl_file.isFileExist(hhPlayerCore.getMediaPath().toString())) {
+        if (!TextUtils.isEmpty(hhPlayerCore.getMediaPath().toString())) {
             hhPlayerCore.prepare(hhPlayerCore.getMediaPath().toString());
             hhPlayerCore.getCurrentStart();
             hhPlayerCore.mPlayerState = PlayerStateType.IDLE;
