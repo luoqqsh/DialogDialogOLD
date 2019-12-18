@@ -26,12 +26,16 @@ class DialogMainActivity : BaseActivity() {
         return false
     }
 
+    override fun isTitleBarTextDark(): Boolean {
+        return true
+    }
+
     override fun getLayoutId(): Int {
         return R.layout.activity_main
     }
 
     private fun test() {
-        hideStatusBar()
+        hideBar()
     }
 
     private fun init() {
@@ -50,7 +54,7 @@ class DialogMainActivity : BaseActivity() {
 //            val orientation = hl_orientation()
 //            orientation.orientationEnable(this, null)
 //            animation_view4.playAnimation()
-            showStatusBar()
+            showNavigationBar()
         }
 
         dialog.setOnClickListener {

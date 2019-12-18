@@ -35,7 +35,7 @@
         <!-- 适配全面屏 Android O vivo&oppo-->
         <meta-data
             android:name="android.max_aspect"
-            android:value="2.2" />
+            android:value="2.4" />
         <!-- 适配刘海屏、水滴屏 Android O 小米 -->
         <!-- "none" 横竖屏都不绘制耳朵区-->
         <!-- "portrait" 竖屏绘制到耳朵区-->

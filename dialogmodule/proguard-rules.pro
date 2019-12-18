@@ -302,3 +302,7 @@
 -keep public class com.tencent.smtt.gamesdk.internal.TBSGameServiceClient {
     public *;
 }
+
+#沉浸式
+ -keep class com.gyf.immersionbar.* {*;}
+ -dontwarn com.gyf.immersionbar.**

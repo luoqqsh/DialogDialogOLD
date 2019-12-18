@@ -10,11 +10,14 @@ import android.widget.LinearLayout;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 
+import com.gyf.immersionbar.BarHide;
+import com.gyf.immersionbar.BarParams;
+import com.gyf.immersionbar.ImmersionBar;
+
 import x.com.hl_dialog.R;
 import x.com.hl_tools.hl_device;
 import x.com.hl_tools.hl_leak;
 import x.com.hl_tools.hl_screen;
-import x.com.hl_tools.hl_statusbar;
 import x.com.hl_view.RotateImageView;
 
 public abstract class HLBaseActivity extends HLSlideActivity {
@@ -24,7 +27,6 @@ public abstract class HLBaseActivity extends HLSlideActivity {
     private LinearLayout base_loading_no_data;
     private LinearLayout base_loading;
     private RotateImageView loading_view;
-    private int titleHeight = 0;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,6 +52,14 @@ public abstract class HLBaseActivity extends HLSlideActivity {
         base_loading_fail = findViewById(R.id.base_loading_fail);
         base_loading_no_data = findViewById(R.id.base_loading_no_data);
         base_loading = findViewById(R.id.base_loading);
+        //沉浸式
+        ImmersionBar immersionBar = ImmersionBar.with(mActivity);
+        immersionBar.fitsSystemWindows(false).statusBarDarkFont(isTitleBarTextDark()).transparentBar();
+        onStatusBarMoreSetting(immersionBar);
+        immersionBar.init();
+        if (!isShowStatusBar()) {
+            hideNavigationBar();
+        }
         initUI(savedInstanceState);
         initData();
     }
@@ -87,23 +97,44 @@ public abstract class HLBaseActivity extends HLSlideActivity {
                 baseContentLayout.setPadding(0, hl_screen.getStatusBarHeight(mActivity), 0, 0);
             }
         }
-        if (!isShowStatusBar()) {
-            hideStatusBar();
-        }
+    }
+
+    protected void onStatusBarMoreSetting(ImmersionBar immersionBar) {
+
     }
 
     public void hideStatusBar() {
-//        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);//纯隐藏
-//        getWindow().getDecorView().setSystemUiVisibility(View.INVISIBLE);//隐藏并拉伸
-//        hl_statusbar.setStatusBarDarkTheme(this,false);
-//        hl_statusbar.setTranslucentStatus(this);
-//        hl_statusbar.setStatusBarColor(this, getResources().getColor(R.color.red));
+        ImmersionBar.with(this).hideBar(BarHide.FLAG_HIDE_STATUS_BAR).init();
     }
 
-    public void showStatusBar() {
-//        hl_statusbar.setStatusBarDarkTheme(this,true);
-        hl_statusbar.setStatusBarColor(this, R.color.trans);
-//        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+
+    public void hideBar() {
+        ImmersionBar.with(this).hideBar(BarHide.FLAG_HIDE_BAR).init();
+    }
+
+    public void showBar() {
+        ImmersionBar.with(this).hideBar(BarHide.FLAG_SHOW_BAR).init();
+    }
+
+    public void hideNavigationBar() {
+        if (ImmersionBar.hasNavigationBar(this)) {
+            ImmersionBar.with(this).hideBar(BarHide.FLAG_HIDE_NAVIGATION_BAR).init();
+        } else {
+//            Toast.makeText(this, "当前设备没有导航栏或者导航栏已经被隐藏或者低于4.4系统", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void showNavigationBar() {
+        if (ImmersionBar.hasNavigationBar(this)) {
+            BarParams barParams = ImmersionBar.with(this).getBarParams();
+            if (barParams.fullScreen) {
+                ImmersionBar.with(this).fullScreen(false).navigationBarColor(R.color.colorPrimary).init();
+            } else {
+                ImmersionBar.with(this).fullScreen(true).transparentNavigationBar().init();
+            }
+        } else {
+//            Toast.makeText(this, "当前设备没有导航栏或者导航栏已经被隐藏或者低于4.4系统", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public boolean isShowStatusBar() {
@@ -112,6 +143,10 @@ public abstract class HLBaseActivity extends HLSlideActivity {
 
     public boolean isShowTitle() {
         return true;
+    }
+
+    public boolean isTitleBarTextDark() {
+        return false;
     }
 
     public boolean isOverlap() {
@@ -212,6 +247,4 @@ public abstract class HLBaseActivity extends HLSlideActivity {
     public int getLoadingNoDataId() {
         return R.layout.base_loading_nodata;
     }
-
-
 }

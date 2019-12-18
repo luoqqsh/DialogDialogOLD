@@ -207,7 +207,7 @@ public class hl_screen {
     }
 
     /**
-     * 判断普通机型是否显示导航栏
+     * 判断普通机型是否显示导航栏(不适合刘海屏手机)
      *
      * @param context 上下文
      * @return 是否显示导航栏
