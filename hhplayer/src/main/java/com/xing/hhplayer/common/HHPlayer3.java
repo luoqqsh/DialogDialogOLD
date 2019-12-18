@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 
 import x.com.hl_log.ViseLog;
+import x.com.hl_tools.hl_file;
 import x.com.hl_tools.hl_screen;
 
 /**
@@ -278,10 +279,12 @@ public class HHPlayer3 {
     }
 
     public void restart() {
-        hhPlayerCore.prepare(hhPlayerCore.getMediaPath().toString());
-        hhPlayerCore.getCurrentStart();
-        hhPlayerCore.mPlayerState = PlayerStateType.IDLE;
-        isReStart = true;
+        if (hl_file.isFileExist(hhPlayerCore.getMediaPath().toString())) {
+            hhPlayerCore.prepare(hhPlayerCore.getMediaPath().toString());
+            hhPlayerCore.getCurrentStart();
+            hhPlayerCore.mPlayerState = PlayerStateType.IDLE;
+            isReStart = true;
+        }
     }
 
     public void pause() {
