@@ -25,5 +25,5 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation project(':dialogmodule')
     implementation files('libs/tencent-mapsdk-library-MainRelease-4.2.7.7a87b45d.jar')
-    implementation files('libs/TencentLocationSdk_v7.1.7_r02c4bb5a_20190523_115148.jar')
+    implementation files('libs/TencentLocationSdk_v7.2.4_r3f64968c_20190828_105426.jar')
 }
