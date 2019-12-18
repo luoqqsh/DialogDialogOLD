@@ -4,8 +4,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.example.xxing.amap.AmapController;
 import com.example.xxing.amap.AmapLocation;
-import com.example.xxing.map_bamap.BmapController;
 import com.example.xxing.map_bamap.BmapSearch;
 
 import x.com.dialogdialog.BaseApp.BaseActivity;
@@ -32,7 +32,7 @@ public class HHMapActivity extends BaseActivity {
     @Override
     public void initUI(Bundle savedInstanceState) {
         LinearLayout ll_mapview = findViewById(R.id.ll_mapview);
-        hHmap = new HHmap(this, new BmapController());
+        hHmap = new HHmap(this, new AmapController());
         hHmap.addMapView(ll_mapview, savedInstanceState, new OnCameraChangeListener() {
             @Override
             public void onCameraChange(LocationBean latLngs) {
