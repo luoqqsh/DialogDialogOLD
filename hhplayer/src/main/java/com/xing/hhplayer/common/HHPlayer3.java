@@ -279,7 +279,7 @@ public class HHPlayer3 {
     }
 
     public void restart() {
-        if (!TextUtils.isEmpty(hhPlayerCore.getMediaPath().toString())) {
+        if (!TextUtils.isEmpty(hhPlayerCore.getMediaPath().toString()) && hhPlayerCore.isPlayControl()) {
             hhPlayerCore.prepare(hhPlayerCore.getMediaPath().toString());
             hhPlayerCore.getCurrentStart();
             hhPlayerCore.mPlayerState = PlayerStateType.IDLE;
