@@ -105,12 +105,20 @@ public class DialogMainJavaActivity extends BaseActivity {
 
     private void init() {
         findViewById(R.id.java).setVisibility(View.GONE);
-        findViewById(R.id.tongzhi).setOnClickListener(view -> startActivity(new Intent(mActivity, NotificationActivity.class)));
+//        findViewById(R.id.tongzhi).setOnClickListener(view -> startActivity(new Intent(mActivity, NotificationActivity.class)));
         findViewById(R.id.media).setOnClickListener(view -> startActivity(new Intent(mActivity, HHMedia3Activity.class)));
         findViewById(R.id.x5web).setOnClickListener(v -> startActivity(new Intent(mActivity, H5Activity.class)));
         findViewById(R.id.log).setOnClickListener(v -> startActivity(new Intent(mActivity, LogActivity.class)));
         findViewById(R.id.open).setOnClickListener(v -> startActivity(new Intent(mActivity, GLActivity.class)));
         findViewById(R.id.mapping).setOnClickListener(v -> startActivity(new Intent(mActivity, MappingActivity.class)));
+        findViewById(R.id.tongzhi).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mActivity, NotificationActivity.class);
+                intent.putExtra("aaa", true);
+                startActivity(intent);
+            }
+        });
         findViewById(R.id.wallpaperset).setOnClickListener(v -> {
             ViseLog.d("asd");
             new TaskDelayBManager() {

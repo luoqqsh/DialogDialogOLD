@@ -113,6 +113,7 @@ public class HHPlayer3 {
             @Override
             public void onListen(Object o) {
                 hhPlayerCore.setScalingMode(0);
+                hhPlayerCore.isLive = hhPlayerCore.getMediaDuration() == 0;
                 if (cvInterface != null) {
                     cvInterface.getPrePareState(PlayerPrePareStateType.PREPARED);
                 }
@@ -120,7 +121,6 @@ public class HHPlayer3 {
                     isReStart = false;
                     start();
                 }
-                hhPlayerCore.isLive = hhPlayerCore.getMediaDuration() == 0;
                 if (preparedListener != null) {
                     preparedListener.onListen(o);
                 }
