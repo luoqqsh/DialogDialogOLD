@@ -4,7 +4,9 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.text.TextUtils
+import java.io.File
 import java.util.*
+import java.util.regex.Pattern
 
 object hl_device {
 
@@ -166,6 +168,8 @@ object hl_device {
         return android.os.Build.VERSION.RELEASE
     }
 
+
+
     fun getsupportedAbis(): String {
         var abis = ""
         for (i in if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -177,7 +181,19 @@ object hl_device {
         }
         return abis
     }
-
+    /**
+     * 获取Cpu内核数
+     * @return
+     */
+    val numCores: Int
+        get() = try {
+            val dir = File("/sys/devices/system/cpu/")
+            val files = dir.listFiles { pathname -> Pattern.matches("cpu[0-9]", pathname.name) }
+            files.size
+        } catch (e: Exception) {
+            e.printStackTrace()
+            1
+        }
     fun getDeviceInfo(context: Context): String {
         return "BRAND-品牌:" + Build.BRAND + "\n" +
                 "MANUFACTURER-制造商:" + Build.MANUFACTURER + "\n" +
@@ -188,6 +204,7 @@ object hl_device {
                 "系统ROM:" + hl_rom.getName() + "\n" +
                 "ROM版本:" + hl_rom.getVersion() + "\n" +
                 "支持的CPU架构:" + getsupportedAbis() + "\n" +
+                "CPU核数:" + numCores + "\n" +
                 "SSAID:" + hl_id.getSSAID(context) + "\n" +
                 "Root权限:" + if (hl_root.isRoot()) "已获得Root权限" else "未获得Root权限" + "\n"
     }

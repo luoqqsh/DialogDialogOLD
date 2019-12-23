@@ -11,11 +11,6 @@ import java.lang.reflect.Method;
 
 import x.com.hl_log.ViseLog;
 
-/**
- * author:ChenJiaLiang
- * Date:2019/4/2
- * Description:
- */
 public class DefaultPhoneUtils {
 
     private static final String TAG = "DefaultPhoneUtils";

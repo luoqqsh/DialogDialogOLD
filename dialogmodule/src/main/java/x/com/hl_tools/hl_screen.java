@@ -7,7 +7,6 @@ import android.content.res.Resources;
 import android.graphics.Point;
 import android.os.Build;
 import android.util.DisplayMetrics;
-
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.ViewGroup;
@@ -16,8 +15,11 @@ import android.view.WindowManager;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 
+import java.io.File;
+import java.io.FileFilter;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.regex.Pattern;
 
 import x.com.hl_dialog.R;
 import x.com.hl_log.ViseLog;
@@ -291,5 +293,26 @@ public class hl_screen {
                 "状态栏(上方):" + getStatusBarHeight(context) + "\n" +
                 "是否全面屏手机（纵横比）:" + (isAllScreenDevice(context) ? "是全面屏" : "非全面屏") + "\n" +
                 "res分辨率:" + context.getResources().getString(R.string.fenbianlv) + "\n";
+    }
+
+    /**
+     * 获取Cpu内核数
+     * @return
+     */
+    public static int getNumCores() {
+        try {
+            File dir = new File("/sys/devices/system/cpu/");
+            File[] files = dir.listFiles(new FileFilter() {
+                @Override
+                public boolean accept(File pathname) {
+                    return Pattern.matches("cpu[0-9]", pathname.getName());
+                }
+
+            });
+            return files.length;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 1;
+        }
     }
 }

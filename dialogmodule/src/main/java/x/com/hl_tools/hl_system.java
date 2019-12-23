@@ -67,6 +67,52 @@ public class hl_system {
     }
 
     /**
+     * 停止服务
+     *
+     * @param context
+     * @param className
+     * @return
+     */
+    public static boolean stopRunningService(Context context, String className) {
+        Intent intent_service = null;
+        boolean ret = false;
+        try {
+            intent_service = new Intent(context, Class.forName(className));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (intent_service != null) {
+            ret = context.stopService(intent_service);
+        }
+        return ret;
+    }
+
+    /**
+     * 结束进程
+     *
+     * @param context
+     * @param pid
+     * @param processName
+     */
+    public static void killProcesses(Context context, int pid, String processName) {
+        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        String packageName;
+        try {
+            if (!processName.contains(":")) {
+                packageName = processName;
+            } else {
+                packageName = processName.split(":")[0];
+            }
+            activityManager.killBackgroundProcesses(packageName);
+            Method forceStopPackage = activityManager.getClass().getDeclaredMethod("forceStopPackage", String.class);
+            forceStopPackage.setAccessible(true);
+            forceStopPackage.invoke(activityManager, packageName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * 是否开启GPS
      */
     public static boolean isOpenGPS(Context context) {

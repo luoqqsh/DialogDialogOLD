@@ -14,12 +14,13 @@ import android.text.TextUtils;
 import androidx.core.content.FileProvider;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import x.com.hl_log.ViseLog;
 
 public class hl_app {
-
-
     //安装
     public static void installAPK(final Activity activity, final File apkFile) {
         Intent intent = new Intent();
@@ -35,6 +36,91 @@ public class hl_app {
         }
         intent.setDataAndType(uri, "application/vnd.android.package-archive");
         activity.startActivity(intent);
+    }
+
+    /**
+     * 安装应用
+     *
+     * @param context
+     * @param filePath
+     * @return
+     */
+    public static boolean installApk(Context context, String filePath) {
+        File file = new File(filePath);
+        if (!file.exists() || !file.isFile() || file.length() <= 0) {
+            return false;
+        }
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setDataAndType(Uri.parse("file://" + filePath), "application/vnd.android.package-archive");
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(i);
+        return true;
+    }
+
+    /**
+     * 卸载应用
+     *
+     * @param context
+     * @param packageName
+     * @return
+     */
+    public static boolean uninstallApk(Context context, String packageName) {
+        if (TextUtils.isEmpty(packageName)) {
+            return false;
+        }
+        Intent i = new Intent(Intent.ACTION_DELETE, Uri.parse("package:" + packageName));
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(i);
+        return true;
+    }
+
+    /**
+     * 启动应用
+     *
+     * @param context
+     * @param packagename
+     */
+    public static void runApp(Context context, String packagename) {
+        context.startActivity(new Intent(context.getPackageManager().getLaunchIntentForPackage(packagename)));
+    }
+
+    /**
+     * 获得应用申明的所有权限列表
+     *
+     * @param context 上下文
+     * @return 获得应用申明的所有权限列表
+     */
+    public static List<String> getPermissions(Context context) {
+        List<String> permissions = new ArrayList<>();
+        try {
+            PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), PackageManager.GET_PERMISSIONS);
+            permissions.addAll(Arrays.asList(packageInfo.requestedPermissions));
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return permissions;
+    }
+
+    /**
+     * 是否是系统应用
+     *
+     * @param context
+     * @param packageName
+     * @return
+     */
+    public static boolean isSystemApp(Context context, String packageName) {
+        boolean isSys = false;
+        PackageManager pm = context.getPackageManager();
+        try {
+            ApplicationInfo applicationInfo = pm.getApplicationInfo(packageName, 0);
+            if (applicationInfo != null && (applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) > 0) {
+                isSys = true;
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            isSys = false;
+        }
+        return isSys;
     }
 
     /**
@@ -123,5 +209,70 @@ public class hl_app {
             e.printStackTrace();
             return "";
         }
+    }
+
+    /**
+     * 获取应用第一次安装日期
+     *
+     * @param context
+     * @param packageName
+     * @return
+     */
+    public static long getAppFirstInstallTime(Context context, String packageName) {
+        long lastUpdateTime = 0;
+        try {
+            PackageInfo packageInfo = context.getPackageManager().getPackageInfo(packageName, 0);
+            lastUpdateTime = packageInfo.firstInstallTime;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return lastUpdateTime;
+    }
+
+    /**
+     * 获取应用更新日期
+     *
+     * @param context
+     * @param packageName
+     * @return
+     */
+    public static long getAppLastUpdateTime(Context context, String packageName) {
+        long lastUpdateTime = 0;
+        try {
+            PackageInfo packageInfo = context.getPackageManager().getPackageInfo(packageName, 0);
+            lastUpdateTime = packageInfo.lastUpdateTime;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return lastUpdateTime;
+    }
+
+    /**
+     * 获取应用大小
+     *
+     * @param context
+     * @param packageName
+     * @return
+     */
+    public static long getAppSize(Context context, String packageName) {
+        long appSize = 0;
+        try {
+            ApplicationInfo applicationInfo = context.getPackageManager().getApplicationInfo(packageName, 0);
+            appSize = new File(applicationInfo.sourceDir).length();
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return appSize;
+    }
+
+    /**
+     * 获取应用的安装市场
+     *
+     * @param context
+     * @param packageName
+     * @return
+     */
+    public static String getAppInstaller(Context context, String packageName) {
+        return context.getPackageManager().getInstallerPackageName(packageName);
     }
 }
