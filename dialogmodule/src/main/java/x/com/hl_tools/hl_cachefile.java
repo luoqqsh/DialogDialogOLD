@@ -23,14 +23,12 @@ public class hl_cachefile {
         // /storage/emulated/0/Android/data/x.com.dialogdialog/cache
     }
 
-
     public static hl_cachefile instance(Context context) {
         if (cachefile == null) {
             cachefile = new hl_cachefile(context);
         }
         return cachefile;
     }
-
 
     public <T> T readObject(String key) {
         return readObject(key, null);
