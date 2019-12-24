@@ -1,4 +1,4 @@
-package com.xing.hhplayer.common.base;
+package x.com.hl_base.hl_interface;
 
 import android.view.View;
 
@@ -22,20 +22,20 @@ public class OnDoubleClickListener implements View.OnClickListener {
         if (1 == count) {
             firstClick = System.currentTimeMillis();//记录第一次点击时间
             if (mCallback != null) {
-                mCallback.onOneClick(0);
+                mCallback.onOneClick();
             }
 
         } else if (2 == count) {
             secondClick = System.currentTimeMillis();//记录第二次点击时间
             if (secondClick - firstClick < totalTime) {//判断二次点击时间间隔是否在设定的间隔时间之内
                 if (mCallback != null) {
-                    mCallback.onDoubleClick(0);
+                    mCallback.onDoubleClick();
                 }
                 count = 0;
                 firstClick = 0;
             } else {
                 if (mCallback != null) {
-                    mCallback.onOneClick(0);
+                    mCallback.onOneClick();
                 }
                 firstClick = secondClick;
                 count = 1;
@@ -45,9 +45,9 @@ public class OnDoubleClickListener implements View.OnClickListener {
     }
 
     public interface DoubleClickCallback {
-        void onDoubleClick(int position);
+        void onDoubleClick();
 
-        void onOneClick(int position);
+        void onOneClick();
     }
 
     public OnDoubleClickListener(DoubleClickCallback callback) {

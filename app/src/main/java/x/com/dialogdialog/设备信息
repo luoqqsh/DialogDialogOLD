@@ -65,3 +65,24 @@ SSAID:4e90b50d566ae505
  ROM版本:V11
  支持的CPU架构:arm64-v8a armeabi-v7a armeabi
  SSAID:d60db892ca6b8dc1
+
+ ═══════════════════════════════════════════════
+ 屏幕(不含导航栏):1080,2236
+ 设备(物理分辨率):1080,2280
+ 导航栏(下方):44,显示导航栏
+ 状态栏(上方):83
+ 是否全面屏手机（纵横比）:是全面屏
+ res分辨率:xxhdpi
+
+ BRAND-品牌:google
+ MANUFACTURER-制造商:Google
+ MODEL-型号:Pixel 4
+ 当前语言:zh
+ Android系统版本:10
+ Android系统SDK:29
+ 系统ROM:GOOGLE
+ ROM版本:unknown
+ 支持的CPU架构:arm64-v8a armeabi-v7a armeabi
+ CPU核数:8
+ SSAID:17eaa8a954c295c0
+ Root权限:未获得Root权限

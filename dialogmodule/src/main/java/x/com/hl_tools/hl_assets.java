@@ -42,12 +42,12 @@ public class hl_assets {
                 }
                 return true;
             } else {
-                ViseLog.e("请检查文件或目录名是否正确！");
+                ViseLog.showLog("请检查文件或目录名是否正确！");
                 return false;
             }
         } catch (Exception e) {
             e.printStackTrace();
-            ViseLog.e("复制文件出现异常！\n" + e);
+            ViseLog.showLog("复制文件出现异常！\n" + e);
             return false;
         }
     }
@@ -59,8 +59,7 @@ public class hl_assets {
      */
     public static boolean copyFileFromAssets(Context context, String assetsName, String newPath) {
         if (!hl_file.isFolderExist(newPath)) {
-            File dirFile = new File(newPath);
-            dirFile.mkdirs();
+            hl_file.createFileFolder(newPath);
         }
         try {
             InputStream is = context.getAssets().open(assetsName);

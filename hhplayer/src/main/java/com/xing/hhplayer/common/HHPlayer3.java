@@ -36,7 +36,6 @@ import java.util.Map;
 
 import x.com.hl_log.ViseLog;
 import x.com.hl_tools.hl_screen;
-
 /**
  * 播放器控制类，也就是我们的使用类
  */
@@ -72,8 +71,10 @@ public class HHPlayer3 {
 
     //使用NEWSURFACE、NEWTEXTURE必须传viewGroup
     public HHPlayer3(FragmentActivity mActivity, final HHPlayerCore hhPlayerCore, TvView playerView, final ViewGroup viewGroup, Surface surface) {
-        this.mActivity = mActivity;
         hhPlayerCore.setContext(mActivity);
+        hhPlayerCore.TAG = playerView.toString();
+        this.hhPlayerCore = hhPlayerCore;
+        this.mActivity = mActivity;
         this.viewGroup = viewGroup;
         if (viewGroup != null) {
             //给viewGroup设置宽高
@@ -81,8 +82,6 @@ public class HHPlayer3 {
             layoutParams.height = hl_screen.getHeightFromWidth(mActivity);
             viewGroup.setLayoutParams(layoutParams);
         }
-        this.hhPlayerCore = hhPlayerCore;
-        hhPlayerCore.TAG = playerView.toString();
         switch (playerView) {
             case NEWSURFACE:
                 initSurfaceView();

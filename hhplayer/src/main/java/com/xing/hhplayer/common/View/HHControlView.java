@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import x.com.hl_base.OnDoubleClickListener;
+import x.com.hl_base.hl_interface.OnDoubleClickListener;
 import x.com.hl_tools.hl_time;
 import x.com.hl_view.RotateImageView;
 
@@ -96,7 +96,7 @@ public class HHControlView extends FrameLayout implements View.OnClickListener, 
         playlist = findViewById(R.id.playlist);
         playlist.setOnClickListener(this);
         mStartButton.setOnClickListener(this);
-        contentPanel.setOnTouchListener(new OnDoubleClickListener(new OnDoubleClickListener.DoubleClickCallback() {
+        contentPanel.setOnClickListener(new OnDoubleClickListener(new OnDoubleClickListener.DoubleClickCallback() {
             @Override
             public void onDoubleClick() {
                 playControl();

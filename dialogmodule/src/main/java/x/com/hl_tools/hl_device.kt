@@ -169,7 +169,6 @@ object hl_device {
     }
 
 
-
     fun getsupportedAbis(): String {
         var abis = ""
         for (i in if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -181,6 +180,7 @@ object hl_device {
         }
         return abis
     }
+
     /**
      * 获取Cpu内核数
      * @return
@@ -194,6 +194,7 @@ object hl_device {
             e.printStackTrace()
             1
         }
+
     fun getDeviceInfo(context: Context): String {
         return "BRAND-品牌:" + Build.BRAND + "\n" +
                 "MANUFACTURER-制造商:" + Build.MANUFACTURER + "\n" +
@@ -227,6 +228,5 @@ object hl_device {
                 "TIME-手机时间:" + android.os.Build.TIME + "\n" +
                 "UNKNOWN:" + android.os.Build.UNKNOWN + "\n" +
                 "TYPE:" + android.os.Build.TYPE + "\n"
-
     }
 }

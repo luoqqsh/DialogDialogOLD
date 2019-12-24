@@ -20,3 +20,4 @@
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
         //输入框没有被顶上去，在输入框的父布局中加入android:fitsSystemWindows="true"，待验证。
+

@@ -20,7 +20,7 @@ import com.xing.hhplayer.common.base.ControlViewInterface;
 
 import java.util.List;
 
-import x.com.hl_base.OnDoubleClickListener;
+import x.com.hl_base.hl_interface.OnDoubleClickListener;
 import x.com.hl_view.RotateImageView;
 
 public class HHLoadingView extends FrameLayout implements View.OnClickListener, ControlViewInterface {
@@ -62,7 +62,7 @@ public class HHLoadingView extends FrameLayout implements View.OnClickListener, 
         mStartButton = findViewById(R.id.loadingMidPause);
         mStartButton.setOnClickListener(this);
         contentPanel.setOnClickListener(this);
-        contentPanel.setOnTouchListener(new OnDoubleClickListener(new OnDoubleClickListener.DoubleClickCallback() {
+        contentPanel.setOnClickListener(new OnDoubleClickListener(new OnDoubleClickListener.DoubleClickCallback() {
             @Override
             public void onDoubleClick() {
                 playControl();

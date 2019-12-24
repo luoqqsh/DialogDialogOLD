@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import x.com.hl_base.OnDoubleClickListener;
+import x.com.hl_base.hl_interface.OnDoubleClickListener;
 import x.com.hl_tools.hl_time;
 import x.com.hl_tools.hl_volume;
 import x.com.hl_view.RotateImageView;
@@ -87,7 +87,7 @@ public class HHTVView extends FrameLayout implements View.OnClickListener, Contr
         loading = findViewById(R.id.loadingView);
         mStartButton = findViewById(R.id.loadingMidPause);
         mStartButton.setOnClickListener(this);
-        contentPanel.setOnTouchListener(new OnDoubleClickListener(new OnDoubleClickListener.DoubleClickCallback() {
+        contentPanel.setOnClickListener(new OnDoubleClickListener(new OnDoubleClickListener.DoubleClickCallback() {
             @Override
             public void onDoubleClick() {
                 playControl();
@@ -99,7 +99,6 @@ public class HHTVView extends FrameLayout implements View.OnClickListener, Contr
                 showPlayControl(isPanelShow);
             }
         }));
-
     }
 
     private int getLayoutId() {
