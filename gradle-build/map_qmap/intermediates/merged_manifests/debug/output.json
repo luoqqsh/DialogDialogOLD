@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "applicationId": "com.example.xxing.map_qmap",
+  "variantType": "LIBRARY",
+  "elements": [
+    {
+      "outputType": {
+        "type": "MERGED_MANIFESTS"
+      },
+      "apkData": {
+        "type": "MAIN",
+        "splits": [],
+        "versionCode": -1,
+        "outputFile": "map_qmap-debug.aar",
+        "fullName": "debug",
+        "baseName": "debug",
+        "dirName": ""
+      },
+      "path": "../../library_manifest/debug/AndroidManifest.xml",
+      "properties": {
+        "packageId": "com.example.xxing.map_qmap",
+        "split": ""
+      }
+    }
+  ]
+}

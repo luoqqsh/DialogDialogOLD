@@ -1,0 +1,91 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:2:1-55:12
+INJECTED from /Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:2:1-55:12
+INJECTED from /Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:2:1-55:12
+	package
+		ADDED from /Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:3:5-30
+		INJECTED from /Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml
+		INJECTED from /Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:2:11-69
+uses-permission#android.permission.INTERNET
+ADDED from /Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:5:5-67
+	android:name
+		ADDED from /Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:5:22-64
+uses-permission#android.permission.REQUEST_INSTALL_PACKAGES
+ADDED from /Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:6:5-83
+	android:name
+		ADDED from /Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:6:22-80
+application
+ADDED from /Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:8:5-54:19
+	android:sharedUserId
+		ADDED from /Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:11:9-49
+	android:label
+		ADDED from /Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:9:9-41
+	android:resizeableActivity
+		ADDED from /Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:10:9-42
+activity#x.com.hl_tools.permissions.ApplyPermissionActivity
+ADDED from /Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:12:9-15:86
+	android:launchMode
+		ADDED from /Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:14:13-43
+	android:theme
+		ADDED from /Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:15:13-83
+	android:name
+		ADDED from /Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:13:13-78
+provider#androidx.core.content.FileProvider
+ADDED from /Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:18:9-26:20
+	android:grantUriPermissions
+		ADDED from /Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:22:13-47
+	android:authorities
+		ADDED from /Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:20:13-64
+	android:exported
+		ADDED from /Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:21:13-37
+	android:name
+		ADDED from /Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:19:13-62
+meta-data#android.support.FILE_PROVIDER_PATHS
+ADDED from /Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:23:13-25:54
+	android:resource
+		ADDED from /Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:25:17-51
+	android:name
+		ADDED from /Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:24:17-67
+meta-data#android.max_aspect
+ADDED from /Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:29:9-31:35
+	android:value
+		ADDED from /Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:31:13-32
+	android:name
+		ADDED from /Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:30:13-46
+meta-data#notch.config
+ADDED from /Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:37:9-39:50
+	android:value
+		ADDED from /Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:39:13-47
+	android:name
+		ADDED from /Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:38:13-40
+meta-data#android.notch_support
+ADDED from /Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:41:9-43:36
+	android:value
+		ADDED from /Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:43:13-33
+	android:name
+		ADDED from /Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:42:13-49
+meta-data#android.vendor.full_screen
+ADDED from /Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:46:9-48:36
+	android:value
+		ADDED from /Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:48:13-33
+	android:name
+		ADDED from /Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:47:13-54
+service#com.tencent.smtt.export.external.DexClassLoaderProviderService
+ADDED from /Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:50:9-53:41
+	android:process
+		ADDED from /Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:53:13-38
+	android:label
+		ADDED from /Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:52:13-35
+	android:name
+		ADDED from /Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:51:13-90
+uses-sdk
+INJECTED from /Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml
+INJECTED from /Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml
+		ADDED from /Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml
+		INJECTED from /Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml

@@ -1,0 +1,28 @@
+{
+    "logs": [
+        {
+            "outputFile": "/Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/app/intermediates/incremental/mergeDebugResources/merged.dir/values-v19/values-v19.xml",
+            "map": [
+                {
+                    "source": "/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/res/values-v19/styles.xml",
+                    "from": {
+                        "startLines": "5",
+                        "startColumns": "4",
+                        "startOffsets": "126",
+                        "endLines": "8",
+                        "endColumns": "12",
+                        "endOffsets": "345"
+                    },
+                    "to": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endLines": "5",
+                        "endColumns": "12",
+                        "endOffsets": "274"
+                    }
+                }
+            ]
+        }
+    ]
+}

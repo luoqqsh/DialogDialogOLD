@@ -22,6 +22,8 @@ allprojects {
         jcenter()
         maven { url "https://jitpack.io" }
     }
+    //指定编译生成路径
+    buildDir = new File(rootDir, "gradle-build/${path.replaceAll(':', '/')}")
 }
 
 task clean(type: Delete) {

@@ -1,0 +1,95 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="x.com.hl_dialog" >
+4
+5    <uses-sdk android:minSdkVersion="16" />
+5-->/Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml
+6
+7    <uses-permission android:name="android.permission.INTERNET" />
+7-->/Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:5:5-67
+7-->/Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:5:22-64
+8    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+8-->/Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:6:5-83
+8-->/Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:6:22-80
+9    <!-- resizeableActivity分屏模式需要安卓7.0以上 -->
+10    <application
+10-->/Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:8:5-54:19
+11        android:label="@string/app_name"
+11-->/Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:9:9-41
+12        android:resizeableActivity="true"
+12-->/Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:10:9-42
+13        android:sharedUserId="android.uid.phone" >
+13-->/Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:11:9-49
+14        <activity
+14-->/Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:12:9-15:86
+15            android:name="x.com.hl_tools.permissions.ApplyPermissionActivity"
+15-->/Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:13:13-78
+16            android:launchMode="singleTop"
+16-->/Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:14:13-43
+17            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
+17-->/Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:15:13-83
+18
+19        <!-- 7.0以上 安装apk -->
+20        <provider
+20-->/Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:18:9-26:20
+21            android:name="androidx.core.content.FileProvider"
+21-->/Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:19:13-62
+22            android:authorities="${applicationId}.fileProvider"
+22-->/Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:20:13-64
+23            android:exported="false"
+23-->/Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:21:13-37
+24            android:grantUriPermissions="true" >
+24-->/Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:22:13-47
+25            <meta-data
+25-->/Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:23:13-25:54
+26                android:name="android.support.FILE_PROVIDER_PATHS"
+26-->/Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:24:17-67
+27                android:resource="@xml/file_paths" />
+27-->/Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:25:17-51
+28        </provider>
+29
+30        <!-- 适配全面屏 Android O vivo&oppo -->
+31        <meta-data
+31-->/Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:29:9-31:35
+32            android:name="android.max_aspect"
+32-->/Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:30:13-46
+33            android:value="2.4" />
+33-->/Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:31:13-32
+34        <!-- 适配刘海屏、水滴屏 Android O 小米 -->
+35        <!-- "none" 横竖屏都不绘制耳朵区 -->
+36        <!-- "portrait" 竖屏绘制到耳朵区 -->
+37        <!-- "landscape" 横屏绘制到耳朵区 -->
+38        <!-- "portrait|landscape" 横竖屏都绘制到耳朵区 -->
+39        <meta-data
+39-->/Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:37:9-39:50
+40            android:name="notch.config"
+40-->/Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:38:13-40
+41            android:value="portrait|landscape" />
+41-->/Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:39:13-47
+42        <!-- 适配刘海屏、水滴屏 Android O 华为 -->
+43        <meta-data
+43-->/Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:41:9-43:36
+44            android:name="android.notch_support"
+44-->/Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:42:13-49
+45            android:value="true" />
+45-->/Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:43:13-33
+46
+47        <!-- 适配刘海屏、水滴屏 Android P 谷歌 -->
+48        <meta-data
+48-->/Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:46:9-48:36
+49            android:name="android.vendor.full_screen"
+49-->/Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:47:13-54
+50            android:value="true" />
+50-->/Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:48:13-33
+51        <!-- 腾讯X5内核初始化 -->
+52        <service
+52-->/Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:50:9-53:41
+53            android:name="com.tencent.smtt.export.external.DexClassLoaderProviderService"
+53-->/Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:51:13-90
+54            android:label="dexopt"
+54-->/Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:52:13-35
+55            android:process=":dexopt" />
+55-->/Users/xrxing/Android/zuoye/demo/DialogDialog/dialogmodule/src/main/AndroidManifest.xml:53:13-38
+56    </application>
+57
+58</manifest>

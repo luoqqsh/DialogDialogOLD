@@ -1,0 +1,18 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.jiujie.glide" >
+4
+5    <uses-sdk android:minSdkVersion="16" />
+5-->/Users/xrxing/Android/zuoye/demo/DialogDialog/glide4/src/main/AndroidManifest.xml
+6
+7    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+7-->/Users/xrxing/Android/zuoye/demo/DialogDialog/glide4/src/main/AndroidManifest.xml:4:5-81
+7-->/Users/xrxing/Android/zuoye/demo/DialogDialog/glide4/src/main/AndroidManifest.xml:4:22-78
+8    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+8-->/Users/xrxing/Android/zuoye/demo/DialogDialog/glide4/src/main/AndroidManifest.xml:5:5-80
+8-->/Users/xrxing/Android/zuoye/demo/DialogDialog/glide4/src/main/AndroidManifest.xml:5:22-77
+9    <uses-permission android:name="android.permission.INTERNET" />
+9-->/Users/xrxing/Android/zuoye/demo/DialogDialog/glide4/src/main/AndroidManifest.xml:6:5-67
+9-->/Users/xrxing/Android/zuoye/demo/DialogDialog/glide4/src/main/AndroidManifest.xml:6:22-64
+10
+11</manifest>

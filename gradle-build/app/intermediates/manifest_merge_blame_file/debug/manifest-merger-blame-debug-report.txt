@@ -1,0 +1,545 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="x.com.dialogdialog"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="16"
+8-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml
+9        android:targetSdkVersion="29" />
+9-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml
+10
+11    <uses-permission android:name="android.permission.INTERNET" />
+11-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:6:5-67
+11-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:6:22-64
+12    <!-- 存储 -->
+13    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+13-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:8:5-81
+13-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:8:22-78
+14    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+14-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:9:5-80
+14-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:9:22-77
+15    <!-- 闪光灯 -->
+16    <uses-permission android:name="android.permission.FLASHLIGHT" />
+16-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:11:5-69
+16-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:11:22-66
+17    <!-- 设置壁纸相关权限 -->
+18    <uses-permission android:name="android.permission.SET_WALLPAPER" />
+18-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:13:5-72
+18-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:13:22-69
+19    <uses-permission android:name="android.permission.SET_WALLPAPER_HINTS" />
+19-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:14:5-78
+19-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:14:22-75
+20    <!-- 锁屏解锁、唤醒权限 -->
+21    <uses-permission android:name="android.permission.WAKE_LOCK" />
+21-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:16:5-68
+21-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:16:22-65
+22    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+22-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:17:5-75
+22-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:17:22-72
+23    <!-- 手机信息、联系人等 -->
+24    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+24-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:19:5-75
+24-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:19:22-72
+25    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+25-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:20:5-71
+25-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:20:22-68
+26    <uses-permission android:name="android.permission.READ_CONTACTS" />
+26-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:21:5-72
+26-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:21:22-69
+27    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+27-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:22:5-73
+27-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:22:22-70
+28    <uses-permission android:name="android.permission.READ_CALL_LOG" />
+28-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:23:5-72
+28-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:23:22-69
+29    <!-- 悬浮窗 -->
+30    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+30-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:25:5-78
+30-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:25:22-75
+31    <!-- 调用安装权限 -->
+32    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+32-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:27:5-83
+32-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:27:22-80
+33    <!-- 杀死后台进程 -->
+34    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
+34-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:29:5-84
+34-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:29:22-81
+35    <!-- 安卓9.0开始的前台服务权限 -->
+36    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+36-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:31:5-77
+36-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:31:22-74
+37    <!-- 获取网络状态、位置等信息 -->
+38    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+38-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:33:5-85
+38-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:33:22-82
+39    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+39-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:34:5-79
+39-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:34:22-76
+40    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+40-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:35:5-79
+40-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:35:22-76
+41    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+41-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:36:5-76
+41-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:36:22-73
+42    <!-- 相机、麦克风、录音权限 -->
+43    <uses-permission android:name="android.permission.CAMERA" />
+43-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:38:5-65
+43-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:38:22-62
+44    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+44-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:39:5-71
+44-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:39:22-68
+45
+46    <!-- 有权查看使用情况的应用 -->
+47    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" />
+47-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:42:5-44:47
+47-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:43:9-62
+48    <!-- 用于进行网络定位 -->
+49    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- 用于获取wifi的获取权限，wifi信息会用来进行网络定位 -->
+49-->[:map_amap] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/map_amap/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-81
+49-->[:map_amap] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/map_amap/intermediates/library_manifest/debug/AndroidManifest.xml:7:22-78
+50    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" /> <!-- 用于申请调用A-GPS模块 -->
+50-->[:map_amap] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/map_amap/intermediates/library_manifest/debug/AndroidManifest.xml:15:5-76
+50-->[:map_amap] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/map_amap/intermediates/library_manifest/debug/AndroidManifest.xml:15:22-73
+51    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" /> <!-- 用于申请获取蓝牙信息进行室内定位 -->
+51-->[:map_amap] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/map_amap/intermediates/library_manifest/debug/AndroidManifest.xml:23:5-89
+51-->[:map_amap] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/map_amap/intermediates/library_manifest/debug/AndroidManifest.xml:23:22-86
+52    <uses-permission android:name="android.permission.BLUETOOTH" />
+52-->[:map_amap] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/map_amap/intermediates/library_manifest/debug/AndroidManifest.xml:25:5-68
+52-->[:map_amap] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/map_amap/intermediates/library_manifest/debug/AndroidManifest.xml:25:22-65
+53    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" /> <!-- //读取系统信息，包含系统版本等信息，用作统计 -->
+53-->[:map_amap] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/map_amap/intermediates/library_manifest/debug/AndroidManifest.xml:26:5-74
+53-->[:map_amap] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/map_amap/intermediates/library_manifest/debug/AndroidManifest.xml:26:22-71
+54    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" /> <!-- 获取日志读取权限，帮助我们提高地图 sdk 稳定性 -->
+54-->[:map_bmap] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/map_bmap/intermediates/library_manifest/debug/AndroidManifest.xml:13:5-85
+54-->[:map_bmap] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/map_bmap/intermediates/library_manifest/debug/AndroidManifest.xml:13:22-82
+55    <uses-permission android:name="android.permission.READ_LOGS" /> <!-- 访问网络的变化, 需要某些信息用于网络定位 -->
+55-->[:map_qmap] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/map_qmap/intermediates/library_manifest/debug/AndroidManifest.xml:18:5-68
+55-->[:map_qmap] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/map_qmap/intermediates/library_manifest/debug/AndroidManifest.xml:18:22-65
+56    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" /> <!-- Maps API needs OpenGL ES 2.0. -->
+56-->[:map_qmap] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/map_qmap/intermediates/library_manifest/debug/AndroidManifest.xml:35:5-79
+56-->[:map_qmap] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/map_qmap/intermediates/library_manifest/debug/AndroidManifest.xml:35:22-76
+57    <uses-feature
+57-->[:maps-sdk-3.0.0-beta:] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/58d80c36eee2deff0ac0cc076b39f62f/jetified-maps-sdk-3.0.0-beta/AndroidManifest.xml:15:3-17:30
+58        android:glEsVersion="0x00020000"
+58-->[:maps-sdk-3.0.0-beta:] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/58d80c36eee2deff0ac0cc076b39f62f/jetified-maps-sdk-3.0.0-beta/AndroidManifest.xml:16:5-37
+59        android:required="true" />
+59-->[:maps-sdk-3.0.0-beta:] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/58d80c36eee2deff0ac0cc076b39f62f/jetified-maps-sdk-3.0.0-beta/AndroidManifest.xml:17:5-28
+60
+61    <application
+61-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:45:5-140:19
+62        android:name="x.com.dialogdialog.BaseApp.DialogApplication"
+62-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:46:9-50
+63        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+63-->[androidx.core:core:1.1.0] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/0f5cd45d165fab708bc653599ff58fb0/core-1.1.0/AndroidManifest.xml:24:18-86
+64        android:debuggable="true"
+65        android:icon="@mipmap/ic_launcher"
+65-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:47:9-43
+66        android:label="@string/app_name"
+66-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:48:9-41
+67        android:resizeableActivity="true"
+67-->[:dialogmodule] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/dialogmodule/intermediates/library_manifest/debug/AndroidManifest.xml:12:9-42
+68        android:roundIcon="@mipmap/ic_launcher_round"
+68-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:49:9-54
+69        android:sharedUserId="android.uid.phone"
+69-->[:dialogmodule] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/dialogmodule/intermediates/library_manifest/debug/AndroidManifest.xml:13:9-49
+70        android:supportsRtl="true"
+70-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:50:9-35
+71        android:testOnly="true"
+72        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+72-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:51:9-65
+73        android:usesCleartextTraffic="true" >
+73-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:52:9-44
+74
+75        <!-- 高德地图 -->
+76        <meta-data
+76-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:56:9-58:64
+77            android:name="com.amap.api.v2.apikey"
+77-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:57:13-50
+78            android:value="bc0a5f96b7eba08c50f6fd21e42a1eb4" />
+78-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:58:13-61
+79        <!-- 定位服务 -->
+80
+81
+82        <!-- 百度地图key -->
+83        <meta-data
+83-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:62:9-64:64
+84            android:name="com.baidu.lbsapi.API_KEY"
+84-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:63:13-52
+85            android:value="f3mk8HXVjwnngwtC5XINDRGjdXZiViF5" />
+85-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:64:13-61
+86
+87        <!-- 谷歌地图 -->
+88        <meta-data
+88-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:67:9-69:71
+89            android:name="com.google.android.geo.API_KEY"
+89-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:68:13-58
+90            android:value="AIzaSyCK8jFSQ5kSCbcAHd9OB-pkHjrTJmXPz3A" />
+90-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:69:13-68
+91
+92        <!-- 腾讯地图 -->
+93        <meta-data
+93-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:72:9-74:67
+94            android:name="TencentMapSDK"
+94-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:73:13-41
+95            android:value="DYZBZ-UQFRW-WJ7RE-O6BRH-P5HFE-HJBT5" />
+95-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:74:13-64
+96
+97        <activity
+97-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:76:9-85:20
+98            android:name="x.com.dialogdialog.DialogMainActivity"
+98-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:77:13-47
+99            android:screenOrientation="nosensor"
+99-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:78:13-49
+100            android:theme="@style/Slide.trans" >
+100-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:79:13-47
+101            <intent-filter>
+101-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:80:13-84:29
+102                <action android:name="android.intent.action.MAIN" />
+102-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:81:17-69
+102-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:81:25-66
+103
+104                <category android:name="android.intent.category.LAUNCHER" />
+104-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:83:17-77
+104-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:83:27-74
+105            </intent-filter>
+106        </activity>
+107        <activity
+107-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:87:9-90:50
+108            android:name="x.com.dialogdialog.NotificationActivity"
+108-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:88:13-49
+109            android:screenOrientation="nosensor"
+109-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:89:13-49
+110            android:theme="@style/Slide.trans" />
+110-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:90:13-47
+111        <activity
+111-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:91:9-94:50
+112            android:name="x.com.dialogdialog.DialogActivity"
+112-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:92:13-43
+113            android:screenOrientation="nosensor"
+113-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:93:13-49
+114            android:theme="@style/Slide.trans" />
+114-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:94:13-47
+115        <activity
+115-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:95:9-98:50
+116            android:name="x.com.dialogdialog.H5Activity"
+116-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:96:13-39
+117            android:screenOrientation="nosensor"
+117-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:97:13-49
+118            android:theme="@style/Slide.trans" />
+118-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:98:13-47
+119        <activity
+119-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:99:9-102:50
+120            android:name="x.com.dialogdialog.LogActivity"
+120-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:100:13-40
+121            android:screenOrientation="nosensor"
+121-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:101:13-49
+122            android:theme="@style/Slide.trans" />
+122-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:102:13-47
+123        <activity
+123-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:103:9-106:50
+124            android:name="x.com.dialogdialog.GLActivity"
+124-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:104:13-39
+125            android:screenOrientation="nosensor"
+125-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:105:13-49
+126            android:theme="@style/Slide.trans" />
+126-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:106:13-47
+127        <activity
+127-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:107:9-110:50
+128            android:name="x.com.dialogdialog.DialogMainJavaActivity"
+128-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:108:13-51
+129            android:screenOrientation="nosensor"
+129-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:109:13-49
+130            android:theme="@style/Slide.trans" />
+130-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:110:13-47
+131        <activity
+131-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:111:9-114:50
+132            android:name="x.com.dialogdialog.HHMedia3Activity"
+132-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:112:13-45
+133            android:screenOrientation="nosensor"
+133-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:113:13-49
+134            android:theme="@style/Slide.trans" />
+134-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:114:13-47
+135        <activity
+135-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:115:9-118:50
+136            android:name="x.com.dialogdialog.MappingActivity"
+136-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:116:13-44
+137            android:screenOrientation="nosensor"
+137-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:117:13-49
+138            android:theme="@style/Slide.trans" />
+138-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:118:13-47
+139        <activity
+139-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:119:9-122:50
+140            android:name="x.com.dialogdialog.Viewpager2.ViewActivity"
+140-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:120:13-52
+141            android:screenOrientation="nosensor"
+141-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:121:13-49
+142            android:theme="@style/Slide.trans" />
+142-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:122:13-47
+143        <activity
+143-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:123:9-126:50
+144            android:name="x.com.dialogdialog.HHMapActivity"
+144-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:124:13-42
+145            android:screenOrientation="nosensor"
+145-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:125:13-49
+146            android:theme="@style/Slide.trans" />
+146-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:126:13-47
+147        <activity
+147-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:127:9-130:50
+148            android:name="x.com.dialogdialog.MediaCodecActivity"
+148-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:128:13-47
+149            android:screenOrientation="nosensor"
+149-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:129:13-49
+150            android:theme="@style/Slide.trans" />
+150-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:130:13-47
+151        <activity
+151-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:131:9-134:50
+152            android:name="x.com.dialogdialog.HHCameraActivity"
+152-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:132:13-45
+153            android:screenOrientation="nosensor"
+153-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:133:13-49
+154            android:theme="@style/Slide.trans" />
+154-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:134:13-47
+155        <activity
+155-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:135:9-138:50
+156            android:name="x.com.dialogdialog.Demo.DemoActivity"
+156-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:136:13-46
+157            android:screenOrientation="nosensor"
+157-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:137:13-49
+158            android:theme="@style/Slide.trans" />
+158-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:138:13-47
+159
+160        <service
+160-->[com.squareup.leakcanary:leakcanary-android:2.0-beta-3] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/2dc40e55378dceef0d3af85a0bb7fcc9/jetified-leakcanary-android-2.0-beta-3/AndroidManifest.xml:23:9-29:19
+161            android:name="leakcanary.internal.HeapAnalyzerService"
+161-->[com.squareup.leakcanary:leakcanary-android:2.0-beta-3] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/2dc40e55378dceef0d3af85a0bb7fcc9/jetified-leakcanary-android-2.0-beta-3/AndroidManifest.xml:24:13-67
+162            android:exported="false" >
+162-->[com.squareup.leakcanary:leakcanary-android:2.0-beta-3] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/2dc40e55378dceef0d3af85a0bb7fcc9/jetified-leakcanary-android-2.0-beta-3/AndroidManifest.xml:25:13-37
+163            <intent-filter>
+163-->[com.squareup.leakcanary:leakcanary-android:2.0-beta-3] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/2dc40e55378dceef0d3af85a0bb7fcc9/jetified-leakcanary-android-2.0-beta-3/AndroidManifest.xml:26:13-28:29
+164                <action android:name="leakcanary.ANALYSIS_ACTION" />
+164-->[com.squareup.leakcanary:leakcanary-android:2.0-beta-3] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/2dc40e55378dceef0d3af85a0bb7fcc9/jetified-leakcanary-android-2.0-beta-3/AndroidManifest.xml:27:17-69
+164-->[com.squareup.leakcanary:leakcanary-android:2.0-beta-3] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/2dc40e55378dceef0d3af85a0bb7fcc9/jetified-leakcanary-android-2.0-beta-3/AndroidManifest.xml:27:25-66
+165            </intent-filter>
+166        </service> <!-- 定位服务 -->
+167        <service android:name="com.amap.api.location.APSService" /> <!-- 地图key -->
+167-->[:map_amap] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/map_amap/intermediates/library_manifest/debug/AndroidManifest.xml:31:9-68
+167-->[:map_amap] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/map_amap/intermediates/library_manifest/debug/AndroidManifest.xml:31:18-65
+168        <service
+168-->[:map_bmap] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/map_bmap/intermediates/library_manifest/debug/AndroidManifest.xml:32:9-35:41
+169            android:name="com.baidu.location.f"
+169-->[:map_bmap] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/map_bmap/intermediates/library_manifest/debug/AndroidManifest.xml:33:13-48
+170            android:enabled="true"
+170-->[:map_bmap] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/map_bmap/intermediates/library_manifest/debug/AndroidManifest.xml:34:13-35
+171            android:process=":remote" />
+171-->[:map_bmap] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/map_bmap/intermediates/library_manifest/debug/AndroidManifest.xml:35:13-38
+172
+173        <activity
+173-->[:dialogmodule] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/dialogmodule/intermediates/library_manifest/debug/AndroidManifest.xml:14:9-17:86
+174            android:name="x.com.hl_tools.permissions.ApplyPermissionActivity"
+174-->[:dialogmodule] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/dialogmodule/intermediates/library_manifest/debug/AndroidManifest.xml:15:13-78
+175            android:launchMode="singleTop"
+175-->[:dialogmodule] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/dialogmodule/intermediates/library_manifest/debug/AndroidManifest.xml:16:13-43
+176            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" /> <!-- 7.0以上 安装apk -->
+176-->[:dialogmodule] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/dialogmodule/intermediates/library_manifest/debug/AndroidManifest.xml:17:13-83
+177        <provider
+177-->[:dialogmodule] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/dialogmodule/intermediates/library_manifest/debug/AndroidManifest.xml:20:9-28:20
+178            android:name="androidx.core.content.FileProvider"
+178-->[:dialogmodule] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/dialogmodule/intermediates/library_manifest/debug/AndroidManifest.xml:21:13-62
+179            android:authorities="x.com.dialogdialog.fileProvider"
+179-->[:dialogmodule] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/dialogmodule/intermediates/library_manifest/debug/AndroidManifest.xml:22:13-64
+180            android:exported="false"
+180-->[:dialogmodule] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/dialogmodule/intermediates/library_manifest/debug/AndroidManifest.xml:23:13-37
+181            android:grantUriPermissions="true" >
+181-->[:dialogmodule] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/dialogmodule/intermediates/library_manifest/debug/AndroidManifest.xml:24:13-47
+182            <meta-data
+182-->[:dialogmodule] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/dialogmodule/intermediates/library_manifest/debug/AndroidManifest.xml:25:13-27:54
+183                android:name="android.support.FILE_PROVIDER_PATHS"
+183-->[:dialogmodule] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/dialogmodule/intermediates/library_manifest/debug/AndroidManifest.xml:26:17-67
+184                android:resource="@xml/file_paths" />
+184-->[:dialogmodule] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/dialogmodule/intermediates/library_manifest/debug/AndroidManifest.xml:27:17-51
+185        </provider> <!-- 适配全面屏 Android O vivo&oppo -->
+186        <meta-data
+186-->[:dialogmodule] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/dialogmodule/intermediates/library_manifest/debug/AndroidManifest.xml:31:9-33:35
+187            android:name="android.max_aspect"
+187-->[:dialogmodule] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/dialogmodule/intermediates/library_manifest/debug/AndroidManifest.xml:32:13-46
+188            android:value="2.4" /> <!-- 适配刘海屏、水滴屏 Android O 小米 -->
+188-->[:dialogmodule] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/dialogmodule/intermediates/library_manifest/debug/AndroidManifest.xml:33:13-32
+189        <!-- "none" 横竖屏都不绘制耳朵区 -->
+190        <!-- "portrait" 竖屏绘制到耳朵区 -->
+191        <!-- "landscape" 横屏绘制到耳朵区 -->
+192        <!-- "portrait|landscape" 横竖屏都绘制到耳朵区 -->
+193        <meta-data
+193-->[:dialogmodule] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/dialogmodule/intermediates/library_manifest/debug/AndroidManifest.xml:39:9-41:50
+194            android:name="notch.config"
+194-->[:dialogmodule] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/dialogmodule/intermediates/library_manifest/debug/AndroidManifest.xml:40:13-40
+195            android:value="portrait|landscape" /> <!-- 适配刘海屏、水滴屏 Android O 华为 -->
+195-->[:dialogmodule] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/dialogmodule/intermediates/library_manifest/debug/AndroidManifest.xml:41:13-47
+196        <meta-data
+196-->[:dialogmodule] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/dialogmodule/intermediates/library_manifest/debug/AndroidManifest.xml:43:9-45:36
+197            android:name="android.notch_support"
+197-->[:dialogmodule] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/dialogmodule/intermediates/library_manifest/debug/AndroidManifest.xml:44:13-49
+198            android:value="true" /> <!-- 适配刘海屏、水滴屏 Android P 谷歌 -->
+198-->[:dialogmodule] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/dialogmodule/intermediates/library_manifest/debug/AndroidManifest.xml:45:13-33
+199        <meta-data
+199-->[:dialogmodule] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/dialogmodule/intermediates/library_manifest/debug/AndroidManifest.xml:48:9-50:36
+200            android:name="android.vendor.full_screen"
+200-->[:dialogmodule] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/dialogmodule/intermediates/library_manifest/debug/AndroidManifest.xml:49:13-54
+201            android:value="true" /> <!-- 腾讯X5内核初始化 -->
+201-->[:dialogmodule] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/dialogmodule/intermediates/library_manifest/debug/AndroidManifest.xml:50:13-33
+202        <service
+202-->[:dialogmodule] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/dialogmodule/intermediates/library_manifest/debug/AndroidManifest.xml:52:9-55:41
+203            android:name="com.tencent.smtt.export.external.DexClassLoaderProviderService"
+203-->[:dialogmodule] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/dialogmodule/intermediates/library_manifest/debug/AndroidManifest.xml:53:13-90
+204            android:label="dexopt"
+204-->[:dialogmodule] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/dialogmodule/intermediates/library_manifest/debug/AndroidManifest.xml:54:13-35
+205            android:process=":dexopt" />
+205-->[:dialogmodule] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/dialogmodule/intermediates/library_manifest/debug/AndroidManifest.xml:55:13-38
+206
+207        <activity
+207-->[com.google.android.gms:play-services-base:17.1.0] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/deffc1d36633c49d40c1cf10ecaa30cd/jetified-play-services-base-17.1.0/AndroidManifest.xml:23:9-26:75
+208            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+208-->[com.google.android.gms:play-services-base:17.1.0] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/deffc1d36633c49d40c1cf10ecaa30cd/jetified-play-services-base-17.1.0/AndroidManifest.xml:24:13-79
+209            android:exported="false"
+209-->[com.google.android.gms:play-services-base:17.1.0] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/deffc1d36633c49d40c1cf10ecaa30cd/jetified-play-services-base-17.1.0/AndroidManifest.xml:25:13-37
+210            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+210-->[com.google.android.gms:play-services-base:17.1.0] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/deffc1d36633c49d40c1cf10ecaa30cd/jetified-play-services-base-17.1.0/AndroidManifest.xml:26:13-72
+211
+212        <meta-data
+212-->[com.google.android.gms:play-services-basement:17.0.0] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/e564bc7962dedf45b560f982db82a935/jetified-play-services-basement-17.0.0/AndroidManifest.xml:23:9-25:69
+213            android:name="com.google.android.gms.version"
+213-->[com.google.android.gms:play-services-basement:17.0.0] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/e564bc7962dedf45b560f982db82a935/jetified-play-services-basement-17.0.0/AndroidManifest.xml:24:13-58
+214            android:value="@integer/google_play_services_version" />
+214-->[com.google.android.gms:play-services-basement:17.0.0] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/e564bc7962dedf45b560f982db82a935/jetified-play-services-basement-17.0.0/AndroidManifest.xml:25:13-66
+215
+216        <provider
+216-->[androidx.lifecycle:lifecycle-process:2.1.0] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/46a5d464b3388a0e9296b6e02ad813a8/jetified-lifecycle-process-2.1.0/AndroidManifest.xml:23:9-27:43
+217            android:name="androidx.lifecycle.ProcessLifecycleOwnerInitializer"
+217-->[androidx.lifecycle:lifecycle-process:2.1.0] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/46a5d464b3388a0e9296b6e02ad813a8/jetified-lifecycle-process-2.1.0/AndroidManifest.xml:24:13-79
+218            android:authorities="x.com.dialogdialog.lifecycle-process"
+218-->[androidx.lifecycle:lifecycle-process:2.1.0] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/46a5d464b3388a0e9296b6e02ad813a8/jetified-lifecycle-process-2.1.0/AndroidManifest.xml:25:13-69
+219            android:exported="false"
+219-->[androidx.lifecycle:lifecycle-process:2.1.0] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/46a5d464b3388a0e9296b6e02ad813a8/jetified-lifecycle-process-2.1.0/AndroidManifest.xml:26:13-37
+220            android:multiprocess="true" />
+220-->[androidx.lifecycle:lifecycle-process:2.1.0] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/46a5d464b3388a0e9296b6e02ad813a8/jetified-lifecycle-process-2.1.0/AndroidManifest.xml:27:13-40
+221        <provider
+221-->[com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/2bd9090475677e1a6965758ada1d5d1a/jetified-leakcanary-android-core-2.0-beta-3/AndroidManifest.xml:29:9-37:20
+222            android:name="leakcanary.internal.LeakCanaryFileProvider"
+222-->[com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/2bd9090475677e1a6965758ada1d5d1a/jetified-leakcanary-android-core-2.0-beta-3/AndroidManifest.xml:30:13-70
+223            android:authorities="com.squareup.leakcanary.fileprovider.x.com.dialogdialog"
+223-->[com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/2bd9090475677e1a6965758ada1d5d1a/jetified-leakcanary-android-core-2.0-beta-3/AndroidManifest.xml:31:13-88
+224            android:exported="false"
+224-->[com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/2bd9090475677e1a6965758ada1d5d1a/jetified-leakcanary-android-core-2.0-beta-3/AndroidManifest.xml:32:13-37
+225            android:grantUriPermissions="true" >
+225-->[com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/2bd9090475677e1a6965758ada1d5d1a/jetified-leakcanary-android-core-2.0-beta-3/AndroidManifest.xml:33:13-47
+226            <meta-data
+226-->[:dialogmodule] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/dialogmodule/intermediates/library_manifest/debug/AndroidManifest.xml:25:13-27:54
+227                android:name="android.support.FILE_PROVIDER_PATHS"
+227-->[:dialogmodule] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/dialogmodule/intermediates/library_manifest/debug/AndroidManifest.xml:26:17-67
+228                android:resource="@xml/leak_canary_file_paths" />
+228-->[:dialogmodule] /Users/xrxing/Android/zuoye/demo/DialogDialog/gradle-build/dialogmodule/intermediates/library_manifest/debug/AndroidManifest.xml:27:17-51
+229        </provider>
+230
+231        <activity
+231-->[com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/2bd9090475677e1a6965758ada1d5d1a/jetified-leakcanary-android-core-2.0-beta-3/AndroidManifest.xml:39:9-44:66
+232            android:name="leakcanary.internal.activity.LeakActivity"
+232-->[com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/2bd9090475677e1a6965758ada1d5d1a/jetified-leakcanary-android-core-2.0-beta-3/AndroidManifest.xml:40:13-69
+233            android:icon="@mipmap/leak_canary_icon"
+233-->[com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/2bd9090475677e1a6965758ada1d5d1a/jetified-leakcanary-android-core-2.0-beta-3/AndroidManifest.xml:41:13-52
+234            android:label="@string/leak_canary_display_activity_label"
+234-->[com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/2bd9090475677e1a6965758ada1d5d1a/jetified-leakcanary-android-core-2.0-beta-3/AndroidManifest.xml:42:13-71
+235            android:taskAffinity="com.squareup.leakcanary.x.com.dialogdialog"
+235-->[com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/2bd9090475677e1a6965758ada1d5d1a/jetified-leakcanary-android-core-2.0-beta-3/AndroidManifest.xml:43:13-76
+236            android:theme="@style/leak_canary_LeakCanary.Base" />
+236-->[com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/2bd9090475677e1a6965758ada1d5d1a/jetified-leakcanary-android-core-2.0-beta-3/AndroidManifest.xml:44:13-63
+237
+238        <activity-alias
+238-->[com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/2bd9090475677e1a6965758ada1d5d1a/jetified-leakcanary-android-core-2.0-beta-3/AndroidManifest.xml:46:9-59:26
+239            android:name="leakcanary.internal.activity.LeakLauncherActivity"
+239-->[com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/2bd9090475677e1a6965758ada1d5d1a/jetified-leakcanary-android-core-2.0-beta-3/AndroidManifest.xml:47:13-77
+240            android:enabled="@bool/leak_canary_add_launcher_icon"
+240-->[com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/2bd9090475677e1a6965758ada1d5d1a/jetified-leakcanary-android-core-2.0-beta-3/AndroidManifest.xml:48:13-66
+241            android:icon="@mipmap/leak_canary_icon"
+241-->[com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/2bd9090475677e1a6965758ada1d5d1a/jetified-leakcanary-android-core-2.0-beta-3/AndroidManifest.xml:49:13-52
+242            android:label="@string/leak_canary_display_activity_label"
+242-->[com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/2bd9090475677e1a6965758ada1d5d1a/jetified-leakcanary-android-core-2.0-beta-3/AndroidManifest.xml:50:13-71
+243            android:targetActivity="leakcanary.internal.activity.LeakActivity"
+243-->[com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/2bd9090475677e1a6965758ada1d5d1a/jetified-leakcanary-android-core-2.0-beta-3/AndroidManifest.xml:51:13-79
+244            android:taskAffinity="com.squareup.leakcanary.x.com.dialogdialog"
+244-->[com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/2bd9090475677e1a6965758ada1d5d1a/jetified-leakcanary-android-core-2.0-beta-3/AndroidManifest.xml:52:13-76
+245            android:theme="@style/leak_canary_LeakCanary.Base" >
+245-->[com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/2bd9090475677e1a6965758ada1d5d1a/jetified-leakcanary-android-core-2.0-beta-3/AndroidManifest.xml:53:13-63
+246            <intent-filter>
+246-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:80:13-84:29
+247                <action android:name="android.intent.action.MAIN" />
+247-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:81:17-69
+247-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:81:25-66
+248
+249                <category android:name="android.intent.category.LAUNCHER" />
+249-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:83:17-77
+249-->/Users/xrxing/Android/zuoye/demo/DialogDialog/app/src/main/AndroidManifest.xml:83:27-74
+250            </intent-filter>
+251        </activity-alias>
+252
+253        <activity
+253-->[com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/2bd9090475677e1a6965758ada1d5d1a/jetified-leakcanary-android-core-2.0-beta-3/AndroidManifest.xml:61:9-67:68
+254            android:name="leakcanary.internal.RequestStoragePermissionActivity"
+254-->[com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/2bd9090475677e1a6965758ada1d5d1a/jetified-leakcanary-android-core-2.0-beta-3/AndroidManifest.xml:62:13-80
+255            android:excludeFromRecents="true"
+255-->[com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/2bd9090475677e1a6965758ada1d5d1a/jetified-leakcanary-android-core-2.0-beta-3/AndroidManifest.xml:63:13-46
+256            android:icon="@mipmap/leak_canary_icon"
+256-->[com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/2bd9090475677e1a6965758ada1d5d1a/jetified-leakcanary-android-core-2.0-beta-3/AndroidManifest.xml:64:13-52
+257            android:label="@string/leak_canary_storage_permission_activity_label"
+257-->[com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/2bd9090475677e1a6965758ada1d5d1a/jetified-leakcanary-android-core-2.0-beta-3/AndroidManifest.xml:65:13-82
+258            android:taskAffinity="com.squareup.leakcanary.x.com.dialogdialog"
+258-->[com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/2bd9090475677e1a6965758ada1d5d1a/jetified-leakcanary-android-core-2.0-beta-3/AndroidManifest.xml:66:13-76
+259            android:theme="@style/leak_canary_Theme.Transparent" />
+259-->[com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/2bd9090475677e1a6965758ada1d5d1a/jetified-leakcanary-android-core-2.0-beta-3/AndroidManifest.xml:67:13-65
+260
+261        <receiver android:name="leakcanary.internal.NotificationReceiver" />
+261-->[com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/2bd9090475677e1a6965758ada1d5d1a/jetified-leakcanary-android-core-2.0-beta-3/AndroidManifest.xml:69:9-77
+261-->[com.squareup.leakcanary:leakcanary-android-core:2.0-beta-3] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/2bd9090475677e1a6965758ada1d5d1a/jetified-leakcanary-android-core-2.0-beta-3/AndroidManifest.xml:69:19-74
+262
+263        <provider
+263-->[com.squareup.leakcanary:leakcanary-object-watcher-android:2.0-beta-3] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/43732610bcf2a68beadb4beaf1f941ee/jetified-leakcanary-object-watcher-android-2.0-beta-3/AndroidManifest.xml:8:9-11:40
+264            android:name="leakcanary.internal.AppWatcherInstaller"
+264-->[com.squareup.leakcanary:leakcanary-object-watcher-android:2.0-beta-3] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/43732610bcf2a68beadb4beaf1f941ee/jetified-leakcanary-object-watcher-android-2.0-beta-3/AndroidManifest.xml:9:13-67
+265            android:authorities="x.com.dialogdialog.leakcanary-installer"
+265-->[com.squareup.leakcanary:leakcanary-object-watcher-android:2.0-beta-3] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/43732610bcf2a68beadb4beaf1f941ee/jetified-leakcanary-object-watcher-android-2.0-beta-3/AndroidManifest.xml:10:13-72
+266            android:exported="false" />
+266-->[com.squareup.leakcanary:leakcanary-object-watcher-android:2.0-beta-3] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/43732610bcf2a68beadb4beaf1f941ee/jetified-leakcanary-object-watcher-android-2.0-beta-3/AndroidManifest.xml:11:13-37
+267
+268        <service android:name="com.liulishuo.filedownloader.services.FileDownloadService$SharedMainProcessService" />
+268-->[com.liulishuo.filedownloader:library:1.7.6] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/46c3f3b06966f76975a30228d8059a66/jetified-library-1.7.6/AndroidManifest.xml:12:9-118
+268-->[com.liulishuo.filedownloader:library:1.7.6] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/46c3f3b06966f76975a30228d8059a66/jetified-library-1.7.6/AndroidManifest.xml:12:18-115
+269        <service
+269-->[com.liulishuo.filedownloader:library:1.7.6] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/46c3f3b06966f76975a30228d8059a66/jetified-library-1.7.6/AndroidManifest.xml:13:9-15:49
+270            android:name="com.liulishuo.filedownloader.services.FileDownloadService$SeparateProcessService"
+270-->[com.liulishuo.filedownloader:library:1.7.6] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/46c3f3b06966f76975a30228d8059a66/jetified-library-1.7.6/AndroidManifest.xml:14:13-108
+271            android:process=":filedownloader" /> <!-- Required for Android P onwards. -->
+271-->[com.liulishuo.filedownloader:library:1.7.6] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/46c3f3b06966f76975a30228d8059a66/jetified-library-1.7.6/AndroidManifest.xml:15:13-46
+272        <uses-library
+272-->[:maps-sdk-3.0.0-beta:] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/58d80c36eee2deff0ac0cc076b39f62f/jetified-maps-sdk-3.0.0-beta/AndroidManifest.xml:20:7-86
+273            android:name="org.apache.http.legacy"
+273-->[:maps-sdk-3.0.0-beta:] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/58d80c36eee2deff0ac0cc076b39f62f/jetified-maps-sdk-3.0.0-beta/AndroidManifest.xml:20:21-58
+274            android:required="false" /> <!-- Autocomplete -->
+274-->[:maps-sdk-3.0.0-beta:] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/58d80c36eee2deff0ac0cc076b39f62f/jetified-maps-sdk-3.0.0-beta/AndroidManifest.xml:20:59-83
+275        <activity
+275-->[:places-maps-sdk-3.0.0-beta:] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/819cd1ec2f84ff86bdbbf41425f0e99f/jetified-places-maps-sdk-3.0.0-beta/AndroidManifest.xml:16:9-23:20
+276            android:name="com.google.android.libraries.places.widget.AutocompleteActivity"
+276-->[:places-maps-sdk-3.0.0-beta:] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/819cd1ec2f84ff86bdbbf41425f0e99f/jetified-places-maps-sdk-3.0.0-beta/AndroidManifest.xml:17:13-91
+277            android:exported="false"
+277-->[:places-maps-sdk-3.0.0-beta:] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/819cd1ec2f84ff86bdbbf41425f0e99f/jetified-places-maps-sdk-3.0.0-beta/AndroidManifest.xml:18:13-37
+278            android:hardwareAccelerated="true"
+278-->[:places-maps-sdk-3.0.0-beta:] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/819cd1ec2f84ff86bdbbf41425f0e99f/jetified-places-maps-sdk-3.0.0-beta/AndroidManifest.xml:19:13-47
+279            android:label="@string/places_autocomplete_label"
+279-->[:places-maps-sdk-3.0.0-beta:] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/819cd1ec2f84ff86bdbbf41425f0e99f/jetified-places-maps-sdk-3.0.0-beta/AndroidManifest.xml:20:13-62
+280            android:theme="@style/PlacesAutocompleteThemeOverlay"
+280-->[:places-maps-sdk-3.0.0-beta:] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/819cd1ec2f84ff86bdbbf41425f0e99f/jetified-places-maps-sdk-3.0.0-beta/AndroidManifest.xml:21:13-66
+281            android:windowSoftInputMode="stateAlwaysVisible|adjustPan" >
+281-->[:places-maps-sdk-3.0.0-beta:] /Users/xrxing/.gradle/caches/transforms-2/files-2.1/819cd1ec2f84ff86bdbbf41425f0e99f/jetified-places-maps-sdk-3.0.0-beta/AndroidManifest.xml:22:13-71
+282        </activity>
+283    </application>
+284
+285</manifest>

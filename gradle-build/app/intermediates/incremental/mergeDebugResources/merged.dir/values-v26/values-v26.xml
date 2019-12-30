@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Base.Theme.AppCompat" parent="Base.V26.Theme.AppCompat"/>
+    <style name="Base.Theme.AppCompat.Light" parent="Base.V26.Theme.AppCompat.Light"/>
+    <style name="Base.V26.Theme.AppCompat" parent="Base.V23.Theme.AppCompat">
+        <!-- We can use the platform styles on API 26+ -->
+        <item name="colorError">?android:attr/colorError</item>
+    </style>
+    <style name="Base.V26.Theme.AppCompat.Light" parent="Base.V23.Theme.AppCompat.Light">
+        <!-- We can use the platform styles on API 26+ -->
+        <item name="colorError">?android:attr/colorError</item>
+    </style>
+    <style name="Base.V26.Widget.AppCompat.Toolbar" parent="Base.V7.Widget.AppCompat.Toolbar">
+        <item name="android:touchscreenBlocksFocus">true</item>
+        <item name="android:keyboardNavigationCluster">true</item>
+    </style>
+    <style name="Base.Widget.AppCompat.Toolbar" parent="Base.V26.Widget.AppCompat.Toolbar"/>
+    <style name="Slide.trans" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <!--<item name="android:windowAnimationStyle">@style/Slide.anim</item>-->
+        <!--<item name="android:backgroundDimEnabled">true</item>--><!--背景是否模糊显示-->
+    </style>
+</resources>

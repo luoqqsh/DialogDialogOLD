@@ -42,7 +42,7 @@ public class hl_permissions {
     }
 
     public static void applyCameraPermission(Context context, RequestPermissionCallBack permissionCallBack) {
-        String[] q = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        String[] q = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO};
         applyPermission(context, q, permissionCallBack);
     }
 

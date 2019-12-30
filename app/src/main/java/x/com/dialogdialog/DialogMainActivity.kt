@@ -1,8 +1,8 @@
 package x.com.dialogdialog
 
-import android.Manifest
 import android.content.Intent
 import android.os.Bundle
+import com.example.ffmpeg_opencv.testUtil
 import kotlinx.android.synthetic.main.activity_main.*
 import x.com.dialogdialog.BaseApp.BaseActivity
 import x.com.dialogdialog.Viewpager2.ViewActivity
@@ -14,28 +14,14 @@ import x.com.hl_tools.hl_permissions
 class DialogMainActivity : BaseActivity() {
     override fun initUI(savedInstanceState: Bundle?) {
         init()
-        permissions()
-        test()
-    }
-
-    override fun isOpenSlideBack(): Boolean {
-        return false
-    }
-
-    override fun isShowTitle(): Boolean {
-        return false
-    }
-
-    override fun isTitleBarTextDark(): Boolean {
-        return true
+        hl_permissions.applyWriteStoragePermission(mActivity, null)
+        hl_permissions.applyLocationPermission(mActivity, null)
+        hl_permissions.applyCameraPermission(mActivity, null)
+        ViseLog.d(testUtil.stringFromJNI())
     }
 
     override fun getLayoutId(): Int {
         return R.layout.activity_main
-    }
-
-    private fun test() {
-        hideBar()
     }
 
     private fun init() {
@@ -50,21 +36,16 @@ class DialogMainActivity : BaseActivity() {
         camera.setOnClickListener { startActivity(Intent(mActivity, HHCameraActivity::class.java)) }
         mediacodec.setOnClickListener { startActivity(Intent(mActivity, MediaCodecActivity::class.java)) }
         map.setOnClickListener { startActivity(Intent(mActivity, HHMapActivity::class.java)) }
-        close.setOnClickListener {
-//            val orientation = hl_orientation()
-//            orientation.orientationEnable(this, null)
-//            animation_view4.playAnimation()
-            showNavigationBar()
-        }
+        close.setOnClickListener {}
 
         dialog.setOnClickListener {
-//            val b = DFNDialog.newInstance()
-//            b.setMessage("dddddddddd", 4)
-//            b.showFDialog(mActivity)
-//
-//            val df = DFListFileDialog.newInstance(hl_file.QQFILE)
-//            df.setOnSelectFileListener { file -> ViseLog.d(file.absolutePath) }
-//            df.showFDialog(mActivity)
+            //val b = DFNDialog.newInstance()
+            //b.setMessage("dddddddddd", 4)
+            //b.showFDialog(mActivity)
+
+            //val df = DFListFileDialog.newInstance(hl_file.QQFILE)
+            //df.setOnSelectFileListener { file -> ViseLog.d(file.absolutePath) }
+            //df.showFDialog(mActivity)
             startActivity(Intent(mActivity, DialogActivity::class.java))
             ToolAnimation.addTouchDrak(dialog, true)
         }
@@ -81,35 +62,5 @@ class DialogMainActivity : BaseActivity() {
         ViseLog.d(o2!!.hashCode())
         ViseLog.d(o3!!.hashCode())
         ViseLog.d(o4!!.hashCode())
-    }
-
-    private fun permissions() {
-        //检查权限
-        //需要在activity重写onRequestPermissionsResult回调方法。不处理回调不写
-        hl_permissions.applyWriteStoragePermission(mActivity, object : hl_permissions.RequestPermissionCallBack {
-            override fun requestPermissionSuccess() {
-            }
-
-            override fun requestPermissionFail(failPermission: Map<String, Boolean>) {
-                ViseLog.d(failPermission)
-            }
-        })
-        hl_permissions.applyLocationPermission(mActivity, object : hl_permissions.RequestPermissionCallBack {
-            override fun requestPermissionSuccess() {
-            }
-
-            override fun requestPermissionFail(failPermission: Map<String, Boolean>) {
-                ViseLog.d(failPermission)
-            }
-        })
-        hl_permissions.applyPermission(mActivity, arrayOf(Manifest.permission.CAMERA), object : hl_permissions.RequestPermissionCallBack {
-            override fun requestPermissionSuccess() {
-
-            }
-
-            override fun requestPermissionFail(failPermission: Map<String, Boolean>) {
-
-            }
-        })
     }
 }

@@ -111,6 +111,21 @@ public class hl_file {
         return file.exists() && file.isDirectory();
     }
 
+    /**
+     * 判断文件夹是否是空文件夹
+     *
+     * @param path 文件路径
+     * @return 是否是空文件夹
+     */
+    public static boolean isFolderNull(String path) {
+        if (isFolderExist(path)) {
+            File file = new File(path);
+            String[] list = file.list();
+            return list == null || list.length == 0;
+        }
+        return false;
+    }
+
     ////////////////新建/////////////////
     //创建文件夹-文件路径
     public static boolean createFolder(String filePath) {

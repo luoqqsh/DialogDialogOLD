@@ -28,7 +28,6 @@ android {
     buildTypes {
         debug {
             minifyEnabled false
-            multiDexEnabled true
             shrinkResources false// 移除无用的resource文件
             zipAlignEnabled true // Zipalign优化
             signingConfig signingConfigs.release
@@ -38,7 +37,6 @@ android {
             zipAlignEnabled true
             shrinkResources true
             minifyEnabled true
-            multiDexEnabled true
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -89,6 +87,7 @@ dependencies {
     implementation project(':map_gmap')
     implementation project(':map_qmap')
     implementation project(':map_kmap')
+    implementation project(':ffmpeg_opencv')
 
     implementation('com.airbnb.android:lottie:3.3.1') {
         exclude group: 'com.google.guava', module: 'listenablefuture'

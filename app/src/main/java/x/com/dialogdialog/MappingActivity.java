@@ -25,7 +25,7 @@ public class MappingActivity extends BaseActivity {
             @Override
             public void onListen(Long index) {
 //                a();
-//                b();
+//                佛祖保佑();
                 c();
             }
         }.delay(1);
@@ -55,7 +55,7 @@ public class MappingActivity extends BaseActivity {
      */
     private void b() {
         Retrace retrace = Retrace.createRetrace(mappingFile, false);
-        ClassMapping retraceClass = retrace.getClassMapping("a.a.a.b.n");
+        ClassMapping retraceClass = retrace.getClassMapping("a.a.a.佛祖保佑.n");
         String obfuscatedName = retraceClass.getObfuscatedName();
         String originalName = retraceClass.getOriginalName();
 

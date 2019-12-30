@@ -1,3 +1,4 @@
+include ':ffmpeg_opencv'
 include ':app', ':dialogmodule', ':map_amap', ':map_bmap', ':umeng_813', ':glide4'
 include ':map_gmap'
 include ':map_qmap'

@@ -1,0 +1,19 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/xrxing/Android/zuoye/demo/DialogDialog/map_kmap/src/main/AndroidManifest.xml:1:1-2:35
+INJECTED from /Users/xrxing/Android/zuoye/demo/DialogDialog/map_kmap/src/main/AndroidManifest.xml:1:1-2:35
+INJECTED from /Users/xrxing/Android/zuoye/demo/DialogDialog/map_kmap/src/main/AndroidManifest.xml:1:1-2:35
+	package
+		ADDED from /Users/xrxing/Android/zuoye/demo/DialogDialog/map_kmap/src/main/AndroidManifest.xml:2:5-32
+		INJECTED from /Users/xrxing/Android/zuoye/demo/DialogDialog/map_kmap/src/main/AndroidManifest.xml
+		INJECTED from /Users/xrxing/Android/zuoye/demo/DialogDialog/map_kmap/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /Users/xrxing/Android/zuoye/demo/DialogDialog/map_kmap/src/main/AndroidManifest.xml:1:11-69
+uses-sdk
+INJECTED from /Users/xrxing/Android/zuoye/demo/DialogDialog/map_kmap/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/xrxing/Android/zuoye/demo/DialogDialog/map_kmap/src/main/AndroidManifest.xml
+INJECTED from /Users/xrxing/Android/zuoye/demo/DialogDialog/map_kmap/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /Users/xrxing/Android/zuoye/demo/DialogDialog/map_kmap/src/main/AndroidManifest.xml
+		ADDED from /Users/xrxing/Android/zuoye/demo/DialogDialog/map_kmap/src/main/AndroidManifest.xml
+		INJECTED from /Users/xrxing/Android/zuoye/demo/DialogDialog/map_kmap/src/main/AndroidManifest.xml

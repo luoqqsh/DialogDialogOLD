@@ -1,0 +1,73 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.example.xxing.map_qmap" >
+4
+5    <uses-sdk android:minSdkVersion="1" />
+5-->/Users/xrxing/Android/zuoye/demo/DialogDialog/map_qmap/src/main/AndroidManifest.xml
+6    <!-- 腾讯地图 SDK 要求的权限(开始) -->
+7    <!-- 访问网络获取地图服务 -->
+8    <uses-permission android:name="android.permission.INTERNET" />
+8-->/Users/xrxing/Android/zuoye/demo/DialogDialog/map_qmap/src/main/AndroidManifest.xml:10:5-67
+8-->/Users/xrxing/Android/zuoye/demo/DialogDialog/map_qmap/src/main/AndroidManifest.xml:10:22-64
+9    <!-- 检查网络可用性 -->
+10    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+10-->/Users/xrxing/Android/zuoye/demo/DialogDialog/map_qmap/src/main/AndroidManifest.xml:12:5-79
+10-->/Users/xrxing/Android/zuoye/demo/DialogDialog/map_qmap/src/main/AndroidManifest.xml:12:22-76
+11    <!-- 访问WiFi状态 -->
+12    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+12-->/Users/xrxing/Android/zuoye/demo/DialogDialog/map_qmap/src/main/AndroidManifest.xml:14:5-76
+12-->/Users/xrxing/Android/zuoye/demo/DialogDialog/map_qmap/src/main/AndroidManifest.xml:14:22-73
+13    <!-- 需要外部存储写权限用于保存地图缓存 -->
+14    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+14-->/Users/xrxing/Android/zuoye/demo/DialogDialog/map_qmap/src/main/AndroidManifest.xml:16:5-81
+14-->/Users/xrxing/Android/zuoye/demo/DialogDialog/map_qmap/src/main/AndroidManifest.xml:16:22-78
+15    <!-- 获取 device id 辨别设备 -->
+16    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+16-->/Users/xrxing/Android/zuoye/demo/DialogDialog/map_qmap/src/main/AndroidManifest.xml:18:5-75
+16-->/Users/xrxing/Android/zuoye/demo/DialogDialog/map_qmap/src/main/AndroidManifest.xml:18:22-72
+17    <!-- 获取日志读取权限，帮助我们提高地图 sdk 稳定性 -->
+18    <uses-permission android:name="android.permission.READ_LOGS" />
+18-->/Users/xrxing/Android/zuoye/demo/DialogDialog/map_qmap/src/main/AndroidManifest.xml:20:5-68
+18-->/Users/xrxing/Android/zuoye/demo/DialogDialog/map_qmap/src/main/AndroidManifest.xml:20:22-65
+19    <!-- 腾讯地图 SDK 要求的权限(结束) -->
+20
+21
+22    <!-- 通过GPS得到精确位置 -->
+23    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+23-->/Users/xrxing/Android/zuoye/demo/DialogDialog/map_qmap/src/main/AndroidManifest.xml:24:5-79
+23-->/Users/xrxing/Android/zuoye/demo/DialogDialog/map_qmap/src/main/AndroidManifest.xml:24:22-76
+24    <!-- 通过网络得到粗略位置 -->
+25    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+25-->/Users/xrxing/Android/zuoye/demo/DialogDialog/map_qmap/src/main/AndroidManifest.xml:26:5-81
+25-->/Users/xrxing/Android/zuoye/demo/DialogDialog/map_qmap/src/main/AndroidManifest.xml:26:22-78
+26    <!-- 访问网络，某些位置信息需要从网络服务器获取 -->
+27    <uses-permission android:name="android.permission.INTERNET" />
+27-->/Users/xrxing/Android/zuoye/demo/DialogDialog/map_qmap/src/main/AndroidManifest.xml:10:5-67
+27-->/Users/xrxing/Android/zuoye/demo/DialogDialog/map_qmap/src/main/AndroidManifest.xml:10:22-64
+28    <!-- 访问WiFi状态，需要WiFi信息用于网络定位 -->
+29    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+29-->/Users/xrxing/Android/zuoye/demo/DialogDialog/map_qmap/src/main/AndroidManifest.xml:14:5-76
+29-->/Users/xrxing/Android/zuoye/demo/DialogDialog/map_qmap/src/main/AndroidManifest.xml:14:22-73
+30    <!-- 修改WiFi状态，发起WiFi扫描, 需要WiFi信息用于网络定位 -->
+31    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+31-->/Users/xrxing/Android/zuoye/demo/DialogDialog/map_qmap/src/main/AndroidManifest.xml:32:5-76
+31-->/Users/xrxing/Android/zuoye/demo/DialogDialog/map_qmap/src/main/AndroidManifest.xml:32:22-73
+32    <!-- 访问网络状态, 检测网络的可用性，需要网络运营商相关信息用于网络定位 -->
+33    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+33-->/Users/xrxing/Android/zuoye/demo/DialogDialog/map_qmap/src/main/AndroidManifest.xml:12:5-79
+33-->/Users/xrxing/Android/zuoye/demo/DialogDialog/map_qmap/src/main/AndroidManifest.xml:12:22-76
+34    <!-- 访问网络的变化, 需要某些信息用于网络定位 -->
+35    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+35-->/Users/xrxing/Android/zuoye/demo/DialogDialog/map_qmap/src/main/AndroidManifest.xml:36:5-79
+35-->/Users/xrxing/Android/zuoye/demo/DialogDialog/map_qmap/src/main/AndroidManifest.xml:36:22-76
+36    <!-- 访问手机当前状态, 需要某些信息用于网络定位 -->
+37    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+37-->/Users/xrxing/Android/zuoye/demo/DialogDialog/map_qmap/src/main/AndroidManifest.xml:18:5-75
+37-->/Users/xrxing/Android/zuoye/demo/DialogDialog/map_qmap/src/main/AndroidManifest.xml:18:22-72
+38
+39    <application android:label="@string/app_name" >
+39-->/Users/xrxing/Android/zuoye/demo/DialogDialog/map_qmap/src/main/AndroidManifest.xml:4:5-7:19
+39-->/Users/xrxing/Android/zuoye/demo/DialogDialog/map_qmap/src/main/AndroidManifest.xml:5:9-41
+40    </application>
+41
+42</manifest>

@@ -7,24 +7,36 @@
     <!--存储-->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
+    <!--闪光灯-->
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <!--设置壁纸相关权限-->
+    <uses-permission android:name="android.permission.SET_WALLPAPER" />
+    <uses-permission android:name="android.permission.SET_WALLPAPER_HINTS" />
+    <!--锁屏解锁、唤醒权限-->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+    <!--手机信息、联系人等-->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <!--联系人-->
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
     <!--悬浮窗-->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <!--读取电话日志-来电记录-->
-    <uses-permission android:name="android.permission.READ_CALL_LOG" />
+    <!--调用安装权限-->
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <!--杀死后台进程-->
     <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
-    <!--安卓Q后台定位权限-->
+    <!--安卓9.0开始的前台服务权限-->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <!--获取网络状态、位置等信息-->
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!--相机、麦克风、录音权限-->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <!--有权查看使用情况的应用-->
     <uses-permission

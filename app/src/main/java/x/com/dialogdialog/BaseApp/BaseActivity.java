@@ -16,4 +16,20 @@ public abstract class BaseActivity extends HLBaseActivity {
     protected int getBackgroundColorResource() {
         return R.color.yellow;
     }
+
+    @Override
+    protected boolean isOpenSlideBack() {
+        return false;
+    }
+
+    @Override
+    public boolean isShowTitle() {
+        return false;
+    }
+
+    @Override
+    public boolean isTitleBarTextDark() {
+        return true;
+    }
+
 }
