@@ -23,7 +23,7 @@ out/
 .gradle/
 .idea/
 .cxx/
-/gradle-build/
+gradle-build/
 build/
 
 # Local configuration file (sdk path, etc)
