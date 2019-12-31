@@ -34,6 +34,19 @@ public class OpenGLUtils {
     }
 
     /**
+     * 打印3x3矩阵
+     *
+     * @param tag               tag
+     * @param mProjectionMatrix 矩阵数组
+     */
+    private void logMatrix33(String tag, float[] mProjectionMatrix) {
+        ViseLog.setTag(tag);
+        ViseLog.w(mProjectionMatrix[0] + "  " + mProjectionMatrix[1] + "  " + mProjectionMatrix[2] + "\n" +
+                mProjectionMatrix[3] + "  " + mProjectionMatrix[4] + "  " + mProjectionMatrix[5] + "\n" +
+                mProjectionMatrix[6] + "  " + mProjectionMatrix[7] + "  " + mProjectionMatrix[8] + "\n");
+    }
+
+    /**
      * 打印4x4矩阵
      *
      * @param tag               tag
