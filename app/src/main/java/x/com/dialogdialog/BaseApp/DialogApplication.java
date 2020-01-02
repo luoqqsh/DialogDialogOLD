@@ -24,7 +24,8 @@ public class DialogApplication extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        HlApp.init(this, true);
+        HlApp.init(this);
+        HlApp.setShowLog(true);
         HlApp.printInformation();
 
         FileDownloader.setup(getApplicationContext());

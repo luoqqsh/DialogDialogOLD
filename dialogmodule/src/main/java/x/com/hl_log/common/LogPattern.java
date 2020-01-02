@@ -2,10 +2,8 @@ package x.com.hl_log.common;
 
 import android.annotation.SuppressLint;
 
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -76,7 +74,8 @@ public abstract class LogPattern {
 
         @Override
         protected String doApply(StackTraceElement caller) {
-            return dateFormat.format(new Date());
+            return "";
+//            return dateFormat.format(new Date());
         }
 
     }

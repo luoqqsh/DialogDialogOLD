@@ -16,16 +16,14 @@ public class HlApp {
      * 初始化
      *
      * @param context 上下文
-     * @param isDebug debug
      */
-    private HlApp(Context context, boolean isDebug) {
+    private HlApp(Context context) {
         mContext = context.getApplicationContext();
-        setShowLog(isDebug);
     }
 
-    public static HlApp init(Context context, boolean isDebug) {
+    public static HlApp init(Context context) {
         if (hlApp == null) {
-            hlApp = new HlApp(context, isDebug);
+            hlApp = new HlApp(context);
         }
         return hlApp;
     }
@@ -49,11 +47,15 @@ public class HlApp {
      * @param isDebug debug
      */
     public static void setShowLog(boolean isDebug) {
+        setShowLog(isDebug, 3);
+    }
+
+    public static void setShowLog(boolean isDebug, int tagCount) {
         ViseLog.getLogConfig()
                 .configAllowLog(isDebug)//是否输出日志
                 .configShowBorders(true)//是否排版显示
                 .configTagPrefix("ViseLog")//设置标签前缀
-                .configFormatTag("%d{HH:mm:ss:SSS} %t %c{-4} ")//个性化设置标签，默认显示包名
+                .configFormatTag("%d{HH:mm:ss:SSS} %t %c{-" + tagCount + "} ")//个性化设置标签，默认显示包名
                 .configLevel(Log.VERBOSE);//设置日志最小输出级别，默认Log.VERBOSE
         ViseLog.plant(new LogcatTree());//添加打印日志信息到Logcat的树
     }
