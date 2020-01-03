@@ -87,6 +87,8 @@ public class HHMedia3Activity extends BaseActivity {
         TvDataList tvDataList4 = new TvDataList(TypeClass.厦门台, "厦门电视台4", "http://cstvpull.live.wscdns.com/live/xiamen4.flv", TypeClarity.H4k, TypeState.流畅);
         TvDataList tvDataList5 = new TvDataList(TypeClass.厦门台, "厦门卫视", "http://cstvpull.live.wscdns.com/live/xiamen.flv", TypeClarity.H4k, TypeState.流畅);
         TvDataList tvDataList6 = new TvDataList(TypeClass.厦门台, "厦门移动电视", "http://cstvpull.live.wscdns.com/live/xiamenyidong.flv", TypeClarity.H4k, TypeState.流畅);
+        TvDataList tvDataList7 = new TvDataList(TypeClass.厦门台, "厦门移动电视", "http://s.bizhijingling.com/uploadfile/userload/vedio/2019/1211/20191211210157758.mp4", TypeClarity.H4k, TypeState.流畅);
+        TvDataList tvDataList8 = new TvDataList(TypeClass.厦门台, "厦门移动电视", "http://s.bizhijingling.com/uploadfile/userload/vedio/2019/1210/20191210225519498.mp4", TypeClarity.H4k, TypeState.流畅);
         ArrayList<TvDataList> tvDataLists = new ArrayList<>();
         tvDataLists.add(tvDataList);
         tvDataLists.add(tvDataList2);
@@ -94,6 +96,8 @@ public class HHMedia3Activity extends BaseActivity {
         tvDataLists.add(tvDataList4);
         tvDataLists.add(tvDataList5);
         tvDataLists.add(tvDataList6);
+        tvDataLists.add(tvDataList7);
+        tvDataLists.add(tvDataList8);
         tvUrl = new TvData(1, "20190719", "itv", tvDataLists);
     }
 
