@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
+import android.os.FileUtils;
 import android.provider.MediaStore;
 
 import java.io.File;
@@ -15,9 +16,8 @@ import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.List;
 
-import x.com.hl_tools.DialogTest.phone.FileUtils;
-import x.com.hl_tools.DialogTest.phone.bean.ImgFolderBean;
-import x.com.hl_tools.DialogTest.phone.bean.MediaFileBean;
+import x.com.hl_model.ImgFolderBean;
+import x.com.hl_model.MediaFileBean;
 import x.com.hl_tools.model.AppInfo;
 
 public class hl_medialist {
@@ -258,12 +258,12 @@ public class hl_medialist {
                 while (c.moveToNext()) {
                     String path = c.getString(dataindex);
 
-                    if (FileUtils.getFileType(path) == fileType) {
-                        if (!FileUtils.isExists(path)) {
+                    if (hl_file.getFileType(path) == fileType) {
+                        if (!hl_file.isFileExist(path)) {
                             continue;
                         }
                         long size = c.getLong(sizeindex);
-                        MediaFileBean fileBean = new MediaFileBean(path, FileUtils.getFileIconByPath(path));
+                        MediaFileBean fileBean = new MediaFileBean(path, hl_file.getFileIconByPath(path));
                         files.add(fileBean);
                     }
                 }
@@ -344,7 +344,7 @@ public class hl_medialist {
         if (files != null) {
             for (File file : files) {
                 String path = file.getAbsolutePath();
-                if (FileUtils.isPicFile(path)) {
+                if (hl_file.isPicFile(path)) {
                     imgPaths.add(path);
                 }
             }

@@ -2,7 +2,7 @@ package com.xing.hhplayer.common.TvListBean
 
 import java.util.*
 
-class TvData(val version: Int//版本
-             , val date: String//日期，格式yyyyMMddHHmmss
-             , val name: String//名称
-             , val links: ArrayList<TvDataList>)
+class TvData(var version: Int//版本
+             , var date: String//日期，格式yyyyMMddHHmmss
+             , var name: String//名称
+             , var links: ArrayList<TvDataList>)

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Environment;
 import android.text.TextUtils;
 
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,7 +14,10 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.math.BigInteger;
 import java.security.MessageDigest;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
+import x.com.hl_dialog.R;
 import x.com.hl_log.ViseLog;
 import x.com.hl_tools.DialogTools.EncodingDetect;
 
@@ -47,6 +49,9 @@ public class hl_file {
     public static final String DIALOG = SDROOT + File.separator + "dialog";
     public static final String QQFILE = SDROOT + File.separator + "Tencent" + File.separator + "QQfile_recv";
 
+    public static final int TYPE_DOC = 0;
+    public static final int TYPE_APK = 1;
+    public static final int TYPE_ZIP = 2;
 
     /**
      * 安卓Q获取沙盒目录
@@ -588,5 +593,92 @@ public class hl_file {
      */
     public static String getEncode(String path) {
         return EncodingDetect.getJavaEncode(path);
+    }
+    
+////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    public static int getFileType(String path) {
+        path = path.toLowerCase();
+        if (path.endsWith(".doc") || path.endsWith(".docx") || path.endsWith(".xls") || path.endsWith(".xlsx")
+                || path.endsWith(".ppt") || path.endsWith(".pptx")) {
+            return TYPE_DOC;
+        } else if (path.endsWith(".apk")) {
+            return TYPE_APK;
+        } else if (path.endsWith(".zip") || path.endsWith(".rar") || path.endsWith(".tar") || path.endsWith(".gz")) {
+            return TYPE_ZIP;
+        } else {
+            return -1;
+        }
+    }
+    
+    /**
+     * 通过文件名获取文件图标
+     */
+    public static int getFileIconByPath(String path) {
+        path = path.toLowerCase();
+        int iconId = R.mipmap.icon_error;
+        if (path.endsWith(".txt")) {
+            iconId = R.mipmap.icon_error;
+        } else if (path.endsWith(".doc") || path.endsWith(".docx")) {
+            iconId = R.mipmap.icon_error;
+        } else if (path.endsWith(".xls") || path.endsWith(".xlsx")) {
+            iconId = R.mipmap.icon_error;
+        } else if (path.endsWith(".ppt") || path.endsWith(".pptx")) {
+            iconId = R.mipmap.icon_error;
+        } else if (path.endsWith(".xml")) {
+            iconId = R.mipmap.icon_error;
+        } else if (path.endsWith(".htm") || path.endsWith(".html")) {
+            iconId = R.mipmap.icon_error;
+        }
+        return iconId;
+    }
+
+    /**
+     * 是否是图片文件
+     */
+    public static boolean isPicFile(String path) {
+        path = path.toLowerCase();
+        if (path.toLowerCase().endsWith(".jpg") || path.toLowerCase().endsWith(".jpeg") || path.toLowerCase().endsWith(".png")) {
+            return true;
+        }
+        return false;
+    }
+
+
+    /**
+     * 判断SD卡是否挂载
+     */
+    public static boolean isSDCardAvailable() {
+        return Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState());
+    }
+
+    /**
+     * 从文件的全名得到文件的拓展名
+     *
+     * @param filename
+     * @return
+     */
+    public static String getExtFromFilename(String filename) {
+        int dotPosition = filename.lastIndexOf('.');
+        if (dotPosition != -1) {
+            return filename.substring(dotPosition + 1, filename.length());
+        }
+        return "";
+    }
+
+    /**
+     * 读取文件的修改时间
+     *
+     * @param f
+     * @return
+     */
+    public static String getModifiedTime(File f) {
+        Calendar cal = Calendar.getInstance();
+        long time = f.lastModified();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        cal.setTimeInMillis(time);
+        // System.out.println("修改时间[2] " + formatter.format(cal.getTime()));
+        // 输出：修改时间[2] 2009-08-17 10:32:38
+        return formatter.format(cal.getTime());
     }
 }

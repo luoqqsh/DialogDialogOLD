@@ -36,6 +36,7 @@ import java.util.Map;
 
 import x.com.hl_log.ViseLog;
 import x.com.hl_tools.hl_screen;
+
 /**
  * 播放器控制类，也就是我们的使用类
  */
@@ -243,6 +244,7 @@ public class HHPlayer3 {
             cvInterface.getPrePareState(PlayerPrePareStateType.PREPARING);
         }
         hhPlayerCore.prepare(path);
+        ViseLog.showLog("开始加载" + path);
     }
 
     //刷新播放列表，刷新后自动播放当前列表第一个

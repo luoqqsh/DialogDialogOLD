@@ -1,11 +1,25 @@
-package x.com.hl_tools.DialogTest.phone.bean;
+package x.com.hl_model;
+
+import android.os.Build;
+import android.provider.MediaStore;
+import android.text.TextUtils;
+
+
+import androidx.annotation.RequiresApi;
 
 import java.io.File;
+import java.io.Serializable;
+import java.util.Objects;
 
-public class MediaFileBean {
+public class MediaFileBean implements Serializable, Comparable<MediaFileBean> {
+
     public MediaFileBean() {
     }
 
+    //列表操作
+    private boolean isCheck = false;//是否选中，列表选择状态用
+    private int tag;//视频标记
+    //文件
     private String mediaPath;//路径
     private String thumbPath;//封面
     private String mediaPathUri;//路径uri
@@ -14,15 +28,16 @@ public class MediaFileBean {
     private long duration = 0;//时长
     private long date = 0;//文件修改日期
     private int iconId;//文件图片资源的id，drawable或mipmap文件中已经存放doc、xml、xls等文件的图片
-    private String fileName;//歌曲文件名
+    private String fileName;//文件名
+    private String mimeType;//文件类型
 
     //通过文件类型得到相应文件的集合
     public MediaFileBean(String mediaPath, int iconId) {
         this.mediaPath = mediaPath;
         this.iconId = iconId;
-        this.fileName = new File(mediaPath).getName();
     }
 
+    //音乐
     private String title;//歌曲名
     private String album;//所属专辑
     private int albumId;//所属专辑id
@@ -31,8 +46,11 @@ public class MediaFileBean {
     private String year;//发行日期
     private String pinyin;
 
+    //视频
     private String resolution;// 分辨率
 
+    //其他控制
+    private boolean playing = false;//是否正在播放
 
     //获取视频列表
     public MediaFileBean(int mediaId, String mediaPath, String resolution, long size, long date, long duration) {
@@ -42,7 +60,26 @@ public class MediaFileBean {
         this.size = size;
         this.date = date;
         this.duration = duration;
-        this.fileName = new File(mediaPath).getName();
+    }
+
+    //获取系统视频库里的列表
+    public MediaFileBean(int mediaId, String title, String album, String artist, String mimeType, String mediaPath, long size, long duration) {
+        this.mediaId = mediaId;
+        this.title = title;
+        this.album = album;
+        this.artist = artist;
+        this.mimeType = mimeType;
+        this.mediaPath = mediaPath;
+        this.size = size;
+        this.duration = duration;
+    }
+
+    //本地视频列表中使用
+    public MediaFileBean(String mediaPath, long size, long duration, int tag) {
+        this.mediaPath = mediaPath;
+        this.size = size;
+        this.duration = duration;
+        this.tag = tag;
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -56,7 +93,7 @@ public class MediaFileBean {
     }
 
     public String getMediaPathUri() {
-        return mediaPathUri;
+        return MediaStore.Video.Media.EXTERNAL_CONTENT_URI.buildUpon().appendPath(String.valueOf(mediaId)).build().toString();
     }
 
     public void setMediaPathUri(String mediaPathUri) {
@@ -104,6 +141,9 @@ public class MediaFileBean {
     }
 
     public String getFileName() {
+        if (TextUtils.isEmpty(fileName)) {
+            fileName = new File(mediaPath).getName();
+        }
         return fileName;
     }
 
@@ -181,5 +221,62 @@ public class MediaFileBean {
 
     public void setThumbPath(String thumbPath) {
         this.thumbPath = thumbPath;
+    }
+
+    public String getSizeStr() {
+        if (size > 1024 * 1024) {
+            return size / 1024 / 1024 + "M";
+        } else if (size > 1024) {
+            return size / 1024 + "KB";
+        } else if (size > 0) {
+            return size + "B";
+        } else {
+            return "未知";
+        }
+    }
+
+    public boolean isPlaying() {
+        return playing;
+    }
+
+    public void setPlaying(boolean playing) {
+        this.playing = playing;
+    }
+
+    public boolean isCheck() {
+        return isCheck;
+    }
+
+    public void setCheck(boolean check) {
+        isCheck = check;
+    }
+
+    public int getTag() {
+        return tag;
+    }
+
+    @Override
+    public int compareTo(MediaFileBean o) {
+        return 0;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MediaFileBean that = (MediaFileBean) o;
+        return duration == that.duration &&
+                Objects.equals(mediaPath, that.mediaPath) &&
+                Objects.equals(thumbPath, that.thumbPath) &&
+                Objects.equals(mediaPathUri, that.mediaPathUri) &&
+                Objects.equals(fileName, that.fileName) &&
+                Objects.equals(title, that.title);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @Override
+    public int hashCode() {
+        return Objects.hash(mediaPath, thumbPath, mediaPathUri, duration, fileName, title);
     }
 }

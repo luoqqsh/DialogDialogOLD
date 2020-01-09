@@ -1,4 +1,4 @@
-package x.com.hl_tools.DialogTest.phone.bean;
+package x.com.hl_model;
 
 public class ImgFolderBean {
     /**当前文件夹的路径*/
