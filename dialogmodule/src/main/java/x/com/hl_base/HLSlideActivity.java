@@ -18,7 +18,7 @@ public abstract class HLSlideActivity extends AppCompatActivity {
     private SlideLayout swipeBackLayout;
 
     protected boolean isOpenSlideBack() {
-        return true;
+        return false;
     }
 
     @Override
