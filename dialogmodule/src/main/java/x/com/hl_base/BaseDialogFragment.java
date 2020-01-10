@@ -7,6 +7,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
@@ -20,6 +21,7 @@ import java.util.Objects;
 
 public class BaseDialogFragment extends DialogFragment {
     private OnDismissListener onDismissListener;
+    private OnCancelListener onCancelListener;
 
     public void showFDialog(FragmentActivity mActivity) {
         if (!isAdded()) {
@@ -46,6 +48,15 @@ public class BaseDialogFragment extends DialogFragment {
     }
 
     @Override
+    public void onCancel(@NonNull DialogInterface dialog) {
+        super.onCancel(dialog);
+        if (onCancelListener != null) {
+            onCancelListener.OnCancel();
+            onCancelListener = null;
+        }
+    }
+
+    @Override
     public void show(@NotNull FragmentManager manager, String tag) {
         if (!isAdded()) {
             super.show(manager, tag);
@@ -67,8 +78,16 @@ public class BaseDialogFragment extends DialogFragment {
         }
     }
 
+    public void setOnCancelListener(OnCancelListener onCancelListener) {
+        this.onCancelListener = onCancelListener;
+    }
+
     public interface OnDismissListener {
         void OnDismiss();
+    }
+
+    public interface OnCancelListener {
+        void OnCancel();
     }
 
     public void setOnDismissListener(OnDismissListener onDismissListener) {

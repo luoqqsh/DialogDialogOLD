@@ -1,6 +1,5 @@
 package x.com.hl_dialog;
 
-
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Gravity;

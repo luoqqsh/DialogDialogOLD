@@ -94,10 +94,13 @@ public class hl_file {
      */
     public static boolean isFileExist(String path) {
         if (TextUtils.isEmpty(path)) {
-            ViseLog.showLog("hl_error", "文件路径为空");
+            ViseLog.e("hl_error", path + " 文件路径为空");
             return false;
         }
         File file = new File(path);
+        if (file.length() == 0) {
+            ViseLog.e("hl_error", path + " 文件存在，但大小为0");
+        }
         return file.exists() && file.isFile();
     }
 
@@ -594,9 +597,9 @@ public class hl_file {
     public static String getEncode(String path) {
         return EncodingDetect.getJavaEncode(path);
     }
-    
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-    
+
     public static int getFileType(String path) {
         path = path.toLowerCase();
         if (path.endsWith(".doc") || path.endsWith(".docx") || path.endsWith(".xls") || path.endsWith(".xlsx")
@@ -610,7 +613,7 @@ public class hl_file {
             return -1;
         }
     }
-    
+
     /**
      * 通过文件名获取文件图标
      */
