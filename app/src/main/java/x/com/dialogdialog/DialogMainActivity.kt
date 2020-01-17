@@ -3,6 +3,9 @@ package x.com.dialogdialog
 import android.content.Intent
 import android.os.Bundle
 import com.example.ffmpeg_opencv.testUtil
+import com.xing.hhplayer.common.TvListBean.TypeClarity
+import com.xing.hhplayer.common.TvListBean.TypeState
+import com.xing.hhplayer.common.TvListBean.UrlData
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -26,10 +29,12 @@ class DialogMainActivity : BaseActivity() {
 
     private fun test() {
 
-
+        var a = UrlData("", TypeClarity.H8k, TypeState.不可用)
+        ViseLog.d(a.getUrlDetail())
         ViseLog.d("aaaaaaaaa ${Thread.currentThread().name}")
 
-        runBlocking(Dispatchers.IO) { // 注意这里
+        runBlocking(Dispatchers.IO) {
+            // 注意这里
             for (i in 0..10) {
                 ViseLog.showLog("$i ${Thread.currentThread().name}")
                 delay(100)

@@ -48,7 +48,7 @@ public class DialogMainJavaActivity extends BaseActivity {
     public void initUI(Bundle savedInstanceState) {
         init();
         initTvList();
-
+        TvDataList a=new TvDataList(TypeClass.中央台,"");
         startService(new Intent(this, DtmfSendService.class));
         hl_permissions.applyPermission(mActivity, new String[]{Manifest.permission.READ_PHONE_STATE}, new hl_permissions.RequestPermissionCallBack() {
             @Override
