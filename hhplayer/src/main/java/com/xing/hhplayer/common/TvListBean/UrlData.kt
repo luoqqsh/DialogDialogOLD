@@ -11,11 +11,11 @@ class UrlData(var channelURL: String, urlClarity: TypeClarity, urlState: TypeSta
 
     }
 
-    fun getUrlDetail(): UrlDetail? {
+    fun getUrlDetail(): UrlDetail {
         if (channelDetail == null) {
             channelDetail = UrlDetail()
         }
-        return channelDetail
+        return channelDetail as UrlDetail
     }
 
     fun getClarity(): TypeClarity {
