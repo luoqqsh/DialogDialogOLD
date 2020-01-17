@@ -1,6 +1,5 @@
 package x.com.hl_tools;
 
-
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -8,7 +7,6 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
-import android.os.FileUtils;
 import android.provider.MediaStore;
 
 import java.io.File;
@@ -57,9 +55,9 @@ public class hl_medialist {
                     if (hl_media.isContentUriExists(context, Uri.parse(fileUri))) {
                         MediaFileBean mediaFileBean = new MediaFileBean();
                         mediaFileBean.setMediaId(id);
-                        mediaFileBean.setMediaPath(mCursor.getString(pathIndex));
-                        mediaFileBean.setDate(date);
-                        mediaFileBean.setMediaPathUri(fileUri);
+                        mediaFileBean.setFilePath(mCursor.getString(pathIndex));
+                        mediaFileBean.setFileDate(date);
+                        mediaFileBean.setFilePathUri(fileUri);
                         list.add(mediaFileBean);
                     }
                 } else {
@@ -69,10 +67,10 @@ public class hl_medialist {
                     if (hl_file.isFileExist(fileUri)) {
                         MediaFileBean mediaFileBean = new MediaFileBean();
                         mediaFileBean.setMediaId(id);
-                        mediaFileBean.setMediaPath(fileUri);
+                        mediaFileBean.setFilePath(fileUri);
                         mediaFileBean.setThumbPath(thumbPath);
-                        mediaFileBean.setDate(date);
-                        mediaFileBean.setMediaPathUri(hl_uri.getPhotoUri(mCursor).toString());
+                        mediaFileBean.setFileDate(date);
+                        mediaFileBean.setFilePathUri(hl_uri.getPhotoUri(mCursor).toString());
                         list.add(mediaFileBean);
                     }
                 }
@@ -145,14 +143,14 @@ public class hl_medialist {
                         fileIsExists = hl_media.isContentUriExists(context, Uri.parse(path));
                         if (fileIsExists) {
                             MediaFileBean mediaFileBean = new MediaFileBean(videoId, path, resolution, size, date, duration);
-                            mediaFileBean.setMediaPathUri(hl_uri.getVideoUri(mCursor).toString());
+                            mediaFileBean.setFilePathUri(hl_uri.getVideoUri(mCursor).toString());
                             videoList.add(mediaFileBean);
                         }
                     } else {
                         fileIsExists = hl_file.isFileExist(path);
                         if (fileIsExists) {
                             MediaFileBean mediaFileBean = new MediaFileBean(videoId, path, resolution, size, date, duration);
-                            mediaFileBean.setMediaPathUri(hl_uri.getVideoUri(mCursor).toString());
+                            mediaFileBean.setFilePathUri(hl_uri.getVideoUri(mCursor).toString());
                             videoList.add(mediaFileBean);
                         }
                     }
@@ -181,14 +179,14 @@ public class hl_medialist {
                 while (c.moveToNext()) {
                     MediaFileBean music = new MediaFileBean();
                     music.setFileName(c.getString(c.getColumnIndexOrThrow(MediaStore.Audio.Media.DISPLAY_NAME)));
-                    music.setTitle(c.getString(c.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE)));
-                    music.setAlbum(c.getString(c.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM)));
+                    music.setMusicName(c.getString(c.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE)));
+                    music.setMusicAlbum(c.getString(c.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM)));
                     music.setArtist(c.getString(c.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST)));
-                    music.setSize(c.getLong(c.getColumnIndexOrThrow(MediaStore.Audio.Media.SIZE)));
-                    music.setDuration(c.getInt(c.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)));
+                    music.setFileSize(c.getLong(c.getColumnIndexOrThrow(MediaStore.Audio.Media.SIZE)));
+                    music.setMediaDuration(c.getInt(c.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)));
                     music.setMediaId(c.getInt(c.getColumnIndexOrThrow(MediaStore.Audio.Media._ID)));
-                    music.setAlbumId(c.getInt(c.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID)));
-                    music.setMediaPath(c.getString(c.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)));
+                    music.setMusicAlbumId(c.getInt(c.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID)));
+                    music.setFilePath(c.getString(c.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)));
                     music.setType(c.getString(c.getColumnIndexOrThrow(MediaStore.Audio.Media.MIME_TYPE)));
                     music.setYear(c.getString(c.getColumnIndexOrThrow(MediaStore.Audio.Media.YEAR)));
                     musics.add(music);
@@ -219,13 +217,13 @@ public class hl_medialist {
                 while (c.moveToNext()) {
                     MediaFileBean video = new MediaFileBean();
                     //注意，DATA 数据在 Android Q 以前代表了文件的路径，但在 Android Q上该路径无法被访问，因此没有意义。
-                    video.setMediaPath(c.getString(c.getColumnIndexOrThrow(MediaStore.Video.Media.DATA)));
+                    video.setFilePath(c.getString(c.getColumnIndexOrThrow(MediaStore.Video.Media.DATA)));
                     video.setMediaId(c.getInt(c.getColumnIndexOrThrow(MediaStore.Video.Media._ID)));// 视频的id
                     video.setFileName(c.getString(c.getColumnIndexOrThrow(MediaStore.Video.Media.DISPLAY_NAME))); // 视频名称
                     video.setResolution(c.getString(c.getColumnIndexOrThrow(MediaStore.Video.Media.RESOLUTION))); //分辨率
-                    video.setSize(c.getLong(c.getColumnIndexOrThrow(MediaStore.Video.Media.SIZE)));// 大小
-                    video.setDuration(c.getLong(c.getColumnIndexOrThrow(MediaStore.Video.Media.DURATION)));// 时长
-                    video.setDate(c.getLong(c.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_MODIFIED)));//修改时间
+                    video.setFileSize(c.getLong(c.getColumnIndexOrThrow(MediaStore.Video.Media.SIZE)));// 大小
+                    video.setMediaDuration(c.getLong(c.getColumnIndexOrThrow(MediaStore.Video.Media.DURATION)));// 时长
+                    video.setFileDate(c.getLong(c.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_MODIFIED)));//修改时间
                     videos.add(video);
                 }
             }
