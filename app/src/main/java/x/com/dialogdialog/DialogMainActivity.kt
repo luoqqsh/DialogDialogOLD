@@ -25,6 +25,8 @@ class DialogMainActivity : BaseActivity() {
     }
 
     private fun test() {
+
+
         ViseLog.d("aaaaaaaaa ${Thread.currentThread().name}")
 
         runBlocking(Dispatchers.IO) { // 注意这里
