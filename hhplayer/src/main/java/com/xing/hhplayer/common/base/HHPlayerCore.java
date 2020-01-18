@@ -35,7 +35,7 @@ public abstract class HHPlayerCore {
     private Map<String, String> mHeaders;
     private Timer timer;
     public boolean isLive = false;//是否实时直播
-    private long times = 0;
+    private long timeMs = 0;
     public int videoScalingMode;//缩放模式,0为默认大小，1为填充
 
     public abstract void prepare(String mediaPath);
@@ -56,9 +56,9 @@ public abstract class HHPlayerCore {
 
     public abstract void setSpeed(float speed);
 
-    public abstract long getCurrentPosition();
+    public abstract long getCurrentPositionMS();
 
-    public abstract long getMediaDuration();
+    public abstract long getMediaDurationMS();
 
     public abstract boolean isPlaying();
 
@@ -126,11 +126,11 @@ public abstract class HHPlayerCore {
                     if (onProgessListener != null) {
                         if (isLive) {
                             if (isMediaPlaying()) {
-                                times += 1000;
-                                onProgessListener.onListen(times);
+                                timeMs += 1000;
+                                onProgessListener.onListen(timeMs);
                             }
                         } else {
-                            onProgessListener.onListen(getCurrentPosition());
+                            onProgessListener.onListen(getCurrentPositionMS());
                         }
                     }
                 }

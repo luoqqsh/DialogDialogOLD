@@ -57,9 +57,6 @@ public class HHijkPlayer extends HHPlayerCore {
                     videoHeight = mediaPlayer.getVideoHeight();
                     mediaPlayer.setVolume(volume, volume);
                     mediaPlayer.setLooping(isLooping);
-                    if (onPreparedListener != null) {
-                        onPreparedListener.onListen(mp);
-                    }
                     StringBuilder videoInfoLog = new StringBuilder("Prepared OK\n");
                     videoInfoLog.append("path: ").append(mediaPath).append("\n");
                     videoInfoLog.append("width: ").append(mediaPlayer.getVideoWidth()).append("\n");
@@ -67,6 +64,9 @@ public class HHijkPlayer extends HHPlayerCore {
                     videoInfoLog.append("duration: ").append(mediaPlayer.getDuration()).append("\n");
                     videoInfoLog.append("tag: ").append(TAG);
                     ViseLog.d(videoInfoLog);
+                    if (onPreparedListener != null) {
+                        onPreparedListener.onListen(mp);
+                    }
                 }
             });
             mediaPlayer.setOnSeekCompleteListener(new IjkMediaPlayer.OnSeekCompleteListener() {
@@ -141,10 +141,10 @@ public class HHijkPlayer extends HHPlayerCore {
     }
 
     @Override
-    public long getCurrentPosition() {
+    public long getCurrentPositionMS() {
         if (mediaPlayer != null) {
-            if (mediaPlayer.getCurrentPosition() > getMediaDuration()) {
-                return getMediaDuration();
+            if (mediaPlayer.getCurrentPosition() > getMediaDurationMS()) {
+                return getMediaDurationMS();
             }
             return mediaPlayer.getCurrentPosition();
         }
@@ -152,7 +152,7 @@ public class HHijkPlayer extends HHPlayerCore {
     }
 
     @Override
-    public long getMediaDuration() {
+    public long getMediaDurationMS() {
         if (mediaPlayer != null) {
             return mediaPlayer.getDuration();
         }

@@ -8,14 +8,6 @@ class UrlData(var channelURL: String, urlClarity: TypeClarity, urlState: TypeSta
     init {
         this.channelClarity = urlClarity.value
         this.channelState = urlState.value
-
-    }
-
-    fun getUrlDetail(): UrlDetail {
-        if (channelDetail == null) {
-            channelDetail = UrlDetail()
-        }
-        return channelDetail as UrlDetail
     }
 
     fun getClarity(): TypeClarity {
@@ -24,5 +16,12 @@ class UrlData(var channelURL: String, urlClarity: TypeClarity, urlState: TypeSta
 
     fun getState(): TypeState {
         return TypeState.values()[channelState + 1]
+    }
+
+    fun getUrlDetail(): UrlDetail {
+        if (channelDetail == null) {
+            channelDetail = UrlDetail()
+        }
+        return channelDetail as UrlDetail
     }
 }

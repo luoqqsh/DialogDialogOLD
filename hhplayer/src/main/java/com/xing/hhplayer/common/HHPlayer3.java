@@ -113,7 +113,7 @@ public class HHPlayer3 {
             @Override
             public void onListen(Object o) {
                 hhPlayerCore.setScalingMode(0);
-                hhPlayerCore.isLive = hhPlayerCore.getMediaDuration() == 0;
+                hhPlayerCore.isLive = hhPlayerCore.getMediaDurationMS() == 0;
                 if (cvInterface != null) {
                     cvInterface.getPrePareState(PlayerPrePareStateType.PREPARED);
                 }
@@ -395,7 +395,7 @@ public class HHPlayer3 {
     //获取当前播放进度，-1为获取失败
     public long getCurrentPosition() {
         if (hhPlayerCore.isPlayControl()) {
-            return hhPlayerCore.getCurrentPosition();
+            return hhPlayerCore.getCurrentPositionMS();
         }
         return -1;
     }
@@ -419,7 +419,7 @@ public class HHPlayer3 {
     //获取媒体总时长，-1为获取失败
     public long getMediaDuration() {
         if (hhPlayerCore.isPlayControl()) {
-            return hhPlayerCore.getMediaDuration();
+            return hhPlayerCore.getMediaDurationMS();
         }
         return -1;
     }

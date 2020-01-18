@@ -141,10 +141,10 @@ public class HHMediaPlayer extends HHPlayerCore {
     }
 
     @Override
-    public long getCurrentPosition() {
+    public long getCurrentPositionMS() {
         if (mediaPlayer != null) {
-            if (mediaPlayer.getCurrentPosition() > getMediaDuration()) {
-                return getMediaDuration();
+            if (mediaPlayer.getCurrentPosition() > getMediaDurationMS()) {
+                return getMediaDurationMS();
             }
             return mediaPlayer.getCurrentPosition();
         }
@@ -152,7 +152,7 @@ public class HHMediaPlayer extends HHPlayerCore {
     }
 
     @Override
-    public long getMediaDuration() {
+    public long getMediaDurationMS() {
         if (mediaPlayer != null) {
             return mediaPlayer.getDuration();
         }

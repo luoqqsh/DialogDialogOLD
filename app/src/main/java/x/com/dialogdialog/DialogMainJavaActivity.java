@@ -53,7 +53,6 @@ public class DialogMainJavaActivity extends BaseActivity {
         hl_permissions.applyPermission(mActivity, new String[]{Manifest.permission.READ_PHONE_STATE}, new hl_permissions.RequestPermissionCallBack() {
             @Override
             public void requestPermissionSuccess() {
-
             }
 
             @Override
