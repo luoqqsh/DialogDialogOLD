@@ -239,6 +239,8 @@ public class HHControlView extends FrameLayout implements View.OnClickListener, 
             case NONE:
             case ERROR:
                 cancelDismissTimer();
+                loading_layout.setVisibility(GONE);
+                loading.stop();
                 break;
         }
     }

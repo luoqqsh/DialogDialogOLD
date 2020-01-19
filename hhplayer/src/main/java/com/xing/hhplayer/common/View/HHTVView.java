@@ -202,6 +202,8 @@ public class HHTVView extends FrameLayout implements View.OnClickListener, Contr
             case NONE:
             case ERROR:
                 cancelDismissTimer();
+                loadingLayout.setVisibility(GONE);
+                loading.stop();
                 break;
         }
     }
