@@ -92,7 +92,7 @@ public class HHijkPlayer extends HHPlayerCore {
                     playerPrePareState = PlayerPrePareStateType.ERROR;
                     ViseLog.showLog(TAG, what + "  " + extra + "\n" + "播放出错：" + mediaPath);
                     if (onErrorListener != null) {
-                        String err = "ijk播放出错：" + what + " " + extra + " " + mPlayerState;
+                        String err = "ijk播放出错：" + what + " " + extra + " " + mPlayerState + "\n" + mediaPath;
                         onErrorListener.onListen(err);
                     }
                     return false;
@@ -237,6 +237,7 @@ public class HHijkPlayer extends HHPlayerCore {
             videoScalingMode = scalingMode;
         }
     }
+
     private void dealError() {
         doPrepare(mediaPath, false);
     }

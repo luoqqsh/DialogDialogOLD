@@ -22,6 +22,13 @@ class TvDataList {
         this.channelClass = typeClass.value
     }
 
+    constructor(channelName: String, channelUrl: String) {
+        val url = UrlData(channelUrl, TypeClarity.未知, TypeState.未知)
+        this.channelURLs.add(url)
+        this.channelName = channelName
+        this.channelClass = TypeClass.测试频道.value
+    }
+
     fun addUrl(channelUrl: String, clarity: TypeClarity, state: TypeState) {
         channelURLs.add(UrlData(channelUrl, clarity, state))
     }

@@ -53,6 +53,7 @@ public class HHPlayer3 {
     private List<TvDataList> tvLists;//播放列表
     private OnPlayerListener<Object> preparedListener;
     private OnPlayerListener<PlayerStateType> stateChangeListener;
+    private int currentPlayIndex = -1;
 
     /***********************************初始化播放器部分**************************************************************/
     //播放音乐
@@ -234,6 +235,7 @@ public class HHPlayer3 {
     //准备-地址，标题为空
     public void prepare(String path) {
         prepare(path, "");
+        currentPlayIndex = -1;
     }
 
     //准备-地址，标题
@@ -252,13 +254,15 @@ public class HHPlayer3 {
         if (cvInterface != null) {
             cvInterface.refreshPlayList(tvLists);
         }
-        prepare(tvLists, 0);
+        currentPlayIndex = 0;
+        prepare(tvLists, currentPlayIndex);
     }
 
     //准备-列表，第几个
     public void prepare(List<TvDataList> tvLists, int position) {
         if (tvLists != null && tvLists.size() > 0 && tvLists.size() > position) {
             this.tvLists = tvLists;
+            currentPlayIndex = position;
             if (tvLists.get(position) != null) {
                 prepare(tvLists.get(position).getChannelURLs().get(0).getChannelURL(), tvLists.get(position).getChannelName());
             } else {
@@ -267,6 +271,13 @@ public class HHPlayer3 {
         } else {
             ViseLog.e(hhPlayerCore.ETAG, "播放列表为空，或不存在");
         }
+    }
+
+    public int getPlayIndex() {
+        if (tvLists != null) {
+            return currentPlayIndex;
+        }
+        return -1;
     }
 
     public void start() {
