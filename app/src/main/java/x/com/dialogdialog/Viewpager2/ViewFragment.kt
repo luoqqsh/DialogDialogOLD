@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import kotlinx.android.synthetic.main.fragment_viewpager2.*
 import x.com.dialogdialog.R
-import x.com.hl_base.LazyLoadFragment
+import x.com.hl_base.hl_fragment.LazyLoadFragment
 import java.util.*
 
 class ViewFragment : LazyLoadFragment() {

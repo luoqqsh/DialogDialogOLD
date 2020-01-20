@@ -10,7 +10,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import x.com.hl_base.BaseDialogFragment;
+import x.com.hl_base.hl_fragment.BaseDialogFragment;
 
 public class DFNDialog extends BaseDialogFragment {
     private String aa = "DFNDialog";

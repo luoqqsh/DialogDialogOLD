@@ -2,7 +2,7 @@ package x.com.dialogdialog.Viewpager2
 
 import kotlinx.android.synthetic.main.item_video_fragment.*
 import x.com.dialogdialog.R
-import x.com.hl_base.LazyLoadFragment
+import x.com.hl_base.hl_fragment.LazyLoadFragment
 import x.com.hl_log.ViseLog
 
 class ItemVideoFragment(private val list: String,val position: Int) : LazyLoadFragment() {

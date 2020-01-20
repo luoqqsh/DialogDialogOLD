@@ -1,4 +1,4 @@
-package x.com.hl_base;
+package x.com.hl_base.hl_fragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment;
 import x.com.hl_log.ViseLog;
 
 /**
- * Created by gxxing on 2017/8/15.
+ * 旧的懒加载方式，已过时
  */
 
 public abstract class LazyLoadFragment extends Fragment {

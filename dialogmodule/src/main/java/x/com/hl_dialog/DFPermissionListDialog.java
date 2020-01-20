@@ -8,18 +8,18 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
-import x.com.hl_base.BaseDialogFragment;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
+import x.com.hl_base.hl_fragment.BaseDialogFragment;
 import x.com.hl_tools.hl_permissions;
 import x.com.hl_tools.hl_permissionsOther;
 import x.com.hl_tools.model.PermissionModel;

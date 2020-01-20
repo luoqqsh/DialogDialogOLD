@@ -36,4 +36,9 @@ class TvDataList {
     fun getClassific(): TypeClass {
         return TypeClass.values()[channelClass]
     }
+
+    override fun equals(other: Any?): Boolean {
+        val that = other as TvDataList
+        return that.channelName == channelName
+    }
 }

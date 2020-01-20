@@ -1,4 +1,4 @@
-package x.com.hl_base;
+package x.com.hl_base.hl_fragment;
 
 
 import android.app.Dialog;
@@ -26,6 +26,7 @@ import x.com.hl_rx.TaskDelayManager;
 
 /**
  * 是以Fragment为基础的，所以不要在构造方法里传参
+ * 佳亮封装
  */
 public abstract class BaseDialogFragment2 extends DialogFragment implements DialogInterface.OnShowListener {
 

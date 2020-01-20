@@ -1,4 +1,4 @@
-package x.com.hl_base;
+package x.com.hl_base.hl_fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,6 +14,9 @@ import androidx.fragment.app.FragmentActivity;
 import x.com.hl_dialog.R;
 import x.com.hl_view.RotateImageView;
 
+/**
+ * 新的base类
+ */
 public abstract class HLBaseFragment extends Fragment {
     public FragmentActivity mActivity;
     public View mView;
