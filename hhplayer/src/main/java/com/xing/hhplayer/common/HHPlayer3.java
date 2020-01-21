@@ -263,7 +263,7 @@ public class HHPlayer3 {
         if (tvLists != null && tvLists.size() > 0 && tvLists.size() > position) {
             this.tvLists = tvLists;
             currentPlayIndex = position;
-            if (tvLists.get(position) != null) {
+            if (tvLists.get(position) != null && tvLists.get(position).getChannelURLs().size() != 0) {
                 prepare(tvLists.get(position).getChannelURLs().get(0).getChannelURL(), tvLists.get(position).getChannelName());
             } else {
                 ViseLog.e(hhPlayerCore.ETAG, "播放列表为空，或不存在");
