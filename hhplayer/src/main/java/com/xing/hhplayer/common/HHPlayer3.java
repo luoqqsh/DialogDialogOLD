@@ -267,9 +267,17 @@ public class HHPlayer3 {
                 prepare(tvLists.get(position).getChannelURLs().get(0).getChannelURL(), tvLists.get(position).getChannelName());
             } else {
                 ViseLog.e(hhPlayerCore.ETAG, "播放列表为空，或不存在");
+                if (hhPlayerCore.onErrorListener != null) {
+                    hhPlayerCore.onErrorListener.onListen("播放列表为空，或不存在");
+                }
+                currentPlayIndex = -1;
             }
         } else {
             ViseLog.e(hhPlayerCore.ETAG, "播放列表为空，或不存在");
+            if (hhPlayerCore.onErrorListener != null) {
+                hhPlayerCore.onErrorListener.onListen("播放列表为空，或不存在");
+            }
+            currentPlayIndex = -1;
         }
     }
 
