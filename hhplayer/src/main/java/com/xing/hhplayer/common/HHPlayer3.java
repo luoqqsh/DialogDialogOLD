@@ -266,11 +266,10 @@ public class HHPlayer3 {
             if (tvLists.get(position) != null && tvLists.get(position).getChannelURLs().size() != 0) {
                 prepare(tvLists.get(position).getChannelURLs().get(0).getChannelURL(), tvLists.get(position).getChannelName());
             } else {
-                ViseLog.e(hhPlayerCore.ETAG, "播放列表为空，或不存在");
+                ViseLog.e(hhPlayerCore.ETAG, "播放频道为空数据");
                 if (hhPlayerCore.onErrorListener != null) {
-                    hhPlayerCore.onErrorListener.onListen("播放列表为空，或不存在");
+                    hhPlayerCore.onErrorListener.onListen("播放频道为空数据");
                 }
-                currentPlayIndex = -1;
             }
         } else {
             ViseLog.e(hhPlayerCore.ETAG, "播放列表为空，或不存在");
@@ -303,7 +302,7 @@ public class HHPlayer3 {
     }
 
     public void restart() {
-        if (!TextUtils.isEmpty(hhPlayerCore.getMediaPath().toString()) && hhPlayerCore.isPlayControl()) {
+        if (!TextUtils.isEmpty((CharSequence) hhPlayerCore.getMediaPath()) && hhPlayerCore.isPlayControl()) {
             hhPlayerCore.prepare(hhPlayerCore.getMediaPath().toString());
             hhPlayerCore.getCurrentStart();
             hhPlayerCore.mPlayerState = PlayerStateType.IDLE;
