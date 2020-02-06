@@ -82,6 +82,22 @@ public class HHControlView extends FrameLayout implements View.OnClickListener, 
         contentPanel = findViewById(R.id.contentPanel);
         mTotalTimeTextView = findViewById(R.id.total);
         mProgressBar = findViewById(R.id.seek);
+        mProgressBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                hhPlayer3.seekTo(progress * 1000);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
 
         findViewById(R.id.play).setOnClickListener(this);
         scaleView = findViewById(R.id.scaleView);

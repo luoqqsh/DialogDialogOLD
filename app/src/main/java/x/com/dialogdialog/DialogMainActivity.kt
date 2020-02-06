@@ -2,14 +2,7 @@ package x.com.dialogdialog
 
 import android.content.Intent
 import android.os.Bundle
-import com.example.ffmpeg_opencv.testUtil
-import com.xing.hhplayer.common.TvListBean.TypeClarity
-import com.xing.hhplayer.common.TvListBean.TypeState
-import com.xing.hhplayer.common.TvListBean.UrlData
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.runBlocking
 import x.com.dialogdialog.BaseApp.BaseActivity
 import x.com.dialogdialog.Viewpager2.ViewActivity
 import x.com.hl_log.ViseLog
@@ -23,25 +16,22 @@ class DialogMainActivity : BaseActivity() {
         hl_permissions.applyWriteStoragePermission(mActivity, null)
         hl_permissions.applyLocationPermission(mActivity, null)
         hl_permissions.applyCameraPermission(mActivity, null)
-        ViseLog.d(testUtil.stringFromJNI())
+//        ViseLog.d(testUtil.stringFromJNI())
         test()
     }
 
     private fun test() {
 
-        var a = UrlData("", TypeClarity.H8k, TypeState.不可用)
-        ViseLog.d(a.getUrlDetail())
-        ViseLog.d("aaaaaaaaa ${Thread.currentThread().name}")
 
-        runBlocking(Dispatchers.IO) {
-            // 注意这里
-            for (i in 0..10) {
-                ViseLog.showLog("$i ${Thread.currentThread().name}")
-                delay(100)
-            }
-        }
-
-        ViseLog.d("bbbbbbbbb ${Thread.currentThread().name}")
+//        runBlocking(Dispatchers.IO) {
+//            // 注意这里
+//            for (i in 0..10) {
+//                ViseLog.showLog("$i ${Thread.currentThread().name}")
+//                delay(100)
+//            }
+//        }
+//
+//        ViseLog.d("bbbbbbbbb ${Thread.currentThread().name}")
     }
 
     override fun getLayoutId(): Int {

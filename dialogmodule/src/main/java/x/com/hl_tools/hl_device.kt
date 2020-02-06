@@ -207,6 +207,7 @@ object hl_device {
                 "支持的CPU架构:" + getsupportedAbis() + "\n" +
                 "CPU核数:" + numCores + "\n" +
                 "SSAID:" + hl_id.getSSAID(context) + "\n" +
+                "IMEI:" + hl_id.getImei(context) + "\n" +
                 "Root权限:" + if (hl_root.isRoot()) "已获得Root权限" else "未获得Root权限" + "\n"
     }
 

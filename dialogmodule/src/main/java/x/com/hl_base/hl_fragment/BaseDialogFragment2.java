@@ -22,7 +22,6 @@ import androidx.fragment.app.FragmentTransaction;
 
 import x.com.hl_dialog.R;
 import x.com.hl_log.ViseLog;
-import x.com.hl_rx.TaskDelayManager;
 
 /**
  * 是以Fragment为基础的，所以不要在构造方法里传参
@@ -37,7 +36,7 @@ public abstract class BaseDialogFragment2 extends DialogFragment implements Dial
     private DialogInterface.OnCancelListener onCancelListener;
     private DialogInterface.OnKeyListener onKeyListener;
     private boolean isNoDismissByTouchAndBackPress;
-    private TaskDelayManager taskDelayManager;
+//    private TaskDelayManager taskDelayManager;
     protected FragmentActivity mActivity;
     protected Context mContext;
     private boolean isNeedShowing;
@@ -318,17 +317,17 @@ public abstract class BaseDialogFragment2 extends DialogFragment implements Dial
             show(fragmentManager, getClass().getSimpleName() + hashCode());
         }
         if (dismissDelayTime > 0) {
-            if (taskDelayManager != null) {
-                taskDelayManager.cancel();
-                taskDelayManager = null;
-            }
-            taskDelayManager = new TaskDelayManager() {
-                @Override
-                public void onListen(Long index) {
-                    dismiss();
-                }
-            };
-            taskDelayManager.delay(dismissDelayTime);
+//            if (taskDelayManager != null) {
+//                taskDelayManager.cancel();
+//                taskDelayManager = null;
+//            }
+//            taskDelayManager = new TaskDelayManager() {
+//                @Override
+//                public void onListen(Long index) {
+//                    dismiss();
+//                }
+//            };
+//            taskDelayManager.delay(dismissDelayTime);
         }
     }
 
@@ -371,10 +370,10 @@ public abstract class BaseDialogFragment2 extends DialogFragment implements Dial
             if (isShowLog) ViseLog.d("dismiss return !isAdded");
             return;
         }
-        if (taskDelayManager != null) {
-            taskDelayManager.cancel();
-            taskDelayManager = null;
-        }
+//        if (taskDelayManager != null) {
+//            taskDelayManager.cancel();
+//            taskDelayManager = null;
+//        }
         super.dismiss();
     }
 

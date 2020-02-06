@@ -2,6 +2,8 @@ package x.com.dialogdialog;
 
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -15,12 +17,13 @@ import com.xing.hhplayer.common.TvListBean.TvView;
 import com.xing.hhplayer.common.TvListBean.TypeClarity;
 import com.xing.hhplayer.common.TvListBean.TypeClass;
 import com.xing.hhplayer.common.TvListBean.TypeState;
+import com.xing.hhplayer.common.base.HHMediaPlayer;
 import com.xing.hhplayer.common.base.OnPlayerListener;
-import com.xing.hhplayer.ijk.HHijkPlayer;
 
 import java.util.ArrayList;
 
 import x.com.dialogdialog.BaseApp.BaseActivity;
+import x.com.hl_log.ViseLog;
 import x.com.hl_tools.hl_time;
 
 public class HHMedia3Activity extends BaseActivity {
@@ -49,8 +52,8 @@ public class HHMedia3Activity extends BaseActivity {
         initList();
         initUI();
         hhview = findViewById(R.id.hhPlayerView);
-        hhPlayer3 = new HHPlayer3(this, new HHijkPlayer(), TvView.NEWSURFACE, hhview);
-        hhPlayer3.addTVView();
+        hhPlayer3 = new HHPlayer3(this, new HHMediaPlayer(), TvView.NEWTEXTURE, hhview);
+        hhPlayer3.addControlView();
         hhPlayer3.setPreparedListener(new OnPlayerListener<Object>() {
             @Override
             public void onListen(Object o) {
@@ -58,6 +61,8 @@ public class HHMedia3Activity extends BaseActivity {
                 seekbar_volume.setProgress((int) (hhPlayer3.getVolume() * 10));
                 totaltime.setText(" / " + hl_time.formatTime(hhPlayer3.getMediaDuration()));
                 seekBar.setMax((int) (hhPlayer3.getMediaDuration() / 1000));
+                setViewSize(hhview, 601, 500);
+                ViseLog.d(hhview.getWidth() + " " + hhview.getHeight());
             }
         });
         hhPlayer3.setProgessListener(new OnPlayerListener<Long>() {
@@ -78,6 +83,15 @@ public class HHMedia3Activity extends BaseActivity {
                 seekBar.setSecondaryProgress(integer);
             }
         });
+    }
+
+    protected void setViewSize(View view, int width, int height) {
+        ViewGroup.LayoutParams lp = view.getLayoutParams();
+        if (lp != null) {
+            lp.height = height;
+            lp.width = width;
+            view.setLayoutParams(lp);
+        }
     }
 
     private void initList() {
@@ -110,8 +124,8 @@ public class HHMedia3Activity extends BaseActivity {
         seekbar_volume.setMax(10);
 
         findViewById(R.id.testSelect).setOnClickListener(v -> {
-            hhPlayer3.prepare(tvUrl.getLinks(), 0);
-//            hhPlayer3.prepare("http://vp.bizhijingling.com/uploadfile/userload/vedio/2019/0911/20190911221853403.mp4");
+//            hhPlayer3.prepare(tvUrl.getLinks(), 0);
+            hhPlayer3.prepare("https://aldirect.hls.huya.com/huyalive/29141112-2691519968-11559990239090966528-3049003118-10057-A-0-1_1200.m3u8");
 //            List<MediaFileBean> imgList = hl_medialist.getVideoList(mContext);
 //            hhPlayer3.prepare("content://media/external/video/media/27", "");
         });

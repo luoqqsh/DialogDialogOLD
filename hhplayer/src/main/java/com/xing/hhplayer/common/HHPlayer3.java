@@ -52,6 +52,7 @@ public class HHPlayer3 {
     private String title;
     private List<TvDataList> tvLists;//播放列表
     private OnPlayerListener<Object> preparedListener;
+    private OnPlayerListener<Long> progessListener;
     private OnPlayerListener<PlayerStateType> stateChangeListener;
     private int currentPlayIndex = -1;
 
@@ -114,6 +115,7 @@ public class HHPlayer3 {
             @Override
             public void onListen(Object o) {
                 hhPlayerCore.setScalingMode(0);
+                setVideoSize((int) getMediaWidth(), (int) getMediaHeight());
                 hhPlayerCore.isLive = hhPlayerCore.getMediaDurationMS() == 0;
                 if (cvInterface != null) {
                     cvInterface.getPrePareState(PlayerPrePareStateType.PREPARED);
@@ -124,6 +126,17 @@ public class HHPlayer3 {
                 }
                 if (preparedListener != null) {
                     preparedListener.onListen(o);
+                }
+            }
+        });
+        hhPlayerCore.setProgessListener(new OnPlayerListener<Long>() {
+            @Override
+            public void onListen(Long aLong) {
+                if (progessListener != null) {
+                    progessListener.onListen(aLong);
+                }
+                if (cvInterface != null) {
+                    cvInterface.changeProgress(aLong);
                 }
             }
         });
@@ -215,7 +228,7 @@ public class HHPlayer3 {
     }
 
     //设置视频大小
-    public void setVideoSize(int width, int height) {
+    private void setVideoSize(int width, int height) {
         if (hhPlayerView != null) {
             hhPlayerView.setVideoSize(width, height);
         }
@@ -610,17 +623,7 @@ public class HHPlayer3 {
 
     //播放器播放进度监听//当前是timer线程
     public void setProgessListener(final OnPlayerListener<Long> progessListener) {
-        hhPlayerCore.setProgessListener(new OnPlayerListener<Long>() {
-            @Override
-            public void onListen(Long aLong) {
-                if (progessListener != null) {
-                    progessListener.onListen(aLong);
-                }
-                if (cvInterface != null) {
-                    cvInterface.changeProgress(aLong);
-                }
-            }
-        });
+        this.progessListener = progessListener;
     }
 
     //播放器缓存进度监听

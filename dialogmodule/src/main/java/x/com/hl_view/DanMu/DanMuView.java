@@ -105,7 +105,7 @@ public class DanMuView extends SurfaceView implements SurfaceHolder.Callback {
             danMuController.setOnCompleteListener(onSimpleListener);
         }
     }
-    
+
     @Override
     public void surfaceCreated(final SurfaceHolder holder) {
         danMuController = new DanMuController();

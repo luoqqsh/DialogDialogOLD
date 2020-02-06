@@ -1,4 +1,4 @@
-package x.com.dialogdialog.BaseApp;
+package x.com.hl_base;
 
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleObserver;

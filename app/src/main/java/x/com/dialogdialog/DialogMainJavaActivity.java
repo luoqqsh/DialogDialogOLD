@@ -2,12 +2,10 @@ package x.com.dialogdialog;
 
 import android.Manifest;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.jiujie.glide.GlideUtil;
 import com.xing.hhplayer.common.TvListBean.TvData;
 import com.xing.hhplayer.common.TvListBean.TvDataList;
 import com.xing.hhplayer.common.TvListBean.TypeClarity;
@@ -23,14 +21,11 @@ import x.com.hl_base.DtmfSendService;
 import x.com.hl_base.hl_interface.HOnListener;
 import x.com.hl_dialog.DFListFileDialog;
 import x.com.hl_log.ViseLog;
-import x.com.hl_rx.TaskDelayBManager;
-import x.com.hl_rx.TaskManager;
 import x.com.hl_tools.hl_drawable;
 import x.com.hl_tools.hl_file;
 import x.com.hl_tools.hl_gson;
 import x.com.hl_tools.hl_img;
 import x.com.hl_tools.hl_permissions;
-import x.com.hl_tools.hl_wallpaper;
 
 public class DialogMainJavaActivity extends BaseActivity {
 
@@ -63,18 +58,7 @@ public class DialogMainJavaActivity extends BaseActivity {
     }
 
     private void test() {
-        new TaskManager<Bitmap>() {
-            @Override
-            public Bitmap runOnBackgroundThread() {
-                return GlideUtil.instance().getImageBitmap(mActivity, "http://s.bizhijingling.com/uploadfile/coustom/2019/1735/20191029090827981.jpg");
-
-            }
-
-            @Override
-            public void runOnUIThread(Bitmap bitmap) {
-                ViseLog.d(bitmap);
-            }
-        }.start();
+      
     }
 
     private void initTvList() {
@@ -120,14 +104,14 @@ public class DialogMainJavaActivity extends BaseActivity {
         });
         findViewById(R.id.wallpaperset).setOnClickListener(v -> {
             ViseLog.d("asd");
-            new TaskDelayBManager() {
-                @Override
-                public void onListen(Long index) {
-                    Bitmap imageBitmap = GlideUtil.instance().getImageBitmap(mActivity, "http://s.bizhijingling.com/uploadfile/2019/1107/thumb_show_20191107171530891.jpg");
-                    ViseLog.d(imageBitmap);
-                    hl_wallpaper.setSystemPicWallpaper(mActivity, imageBitmap);
-                }
-            }.start();
+//            new TaskDelayBManager() {
+//                @Override
+//                public void onListen(Long index) {
+//                    Bitmap imageBitmap = GlideUtil.instance().getImageBitmap(mActivity, "http://s.bizhijingling.com/uploadfile/2019/1107/thumb_show_20191107171530891.jpg");
+//                    ViseLog.d(imageBitmap);
+//                    hl_wallpaper.setSystemPicWallpaper(mActivity, imageBitmap);
+//                }
+//            }.start();
         });
         findViewById(R.id.close).setOnClickListener(v -> {
             test();

@@ -7,6 +7,14 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+    
+    <style name="Slide.trans" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <!--<item name="android:windowAnimationStyle">@style/Slide.anim</item>-->
+        <!--<item name="android:backgroundDimEnabled">true</item>--><!--背景是否模糊显示-->
+    </style>
     <!--dialogfragment风格调整-->
     <!--<style name="Base_AlertDialog" parent="Base.Theme.AppCompat.Light.Dialog">-->
         <!--不设置在6.0以上会出现，宽度不充满屏幕的情况-->

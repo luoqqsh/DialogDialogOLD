@@ -6,6 +6,12 @@
 
     <!--    要允许授权的目录-->
     <external-path
+        name="files_root"
+        path="Android/data/${applicationId}/" />
+    <cache-path
+        name="cache_path"
+        path="." />
+    <external-path
         name="external_storage_root"
         path="." />
 </paths>

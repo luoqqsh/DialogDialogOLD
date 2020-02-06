@@ -1,6 +1,5 @@
 package x.com.hl_view;
 
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -29,7 +28,6 @@ import java.util.List;
 
 import x.com.hl_base.hl_interface.NoInterceptTouchView;
 import x.com.hl_dialog.R;
-import x.com.hl_log.ViseLog;
 
 /**
  * 需求透明主题，只能在清单里设置，Activity里设置无效！

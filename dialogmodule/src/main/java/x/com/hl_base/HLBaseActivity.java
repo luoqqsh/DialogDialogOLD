@@ -54,12 +54,15 @@ public abstract class HLBaseActivity extends HLSlideActivity {
         base_loading = findViewById(R.id.base_loading);
         //沉浸式
         ImmersionBar immersionBar = ImmersionBar.with(mActivity);
-        immersionBar.fitsSystemWindows(false).statusBarDarkFont(isTitleBarTextDark()).transparentBar();
+        immersionBar.fitsSystemWindows(false);
+        immersionBar.statusBarDarkFont(isTitleBarTextDark());
+//        immersionBar.transparentBar();//加了这个，导航栏会和布局内容重叠
         onStatusBarMoreSetting(immersionBar);
         immersionBar.init();
         if (!isShowStatusBar()) {
             hideNavigationBar();
         }
+        getLifecycle().addObserver(new MyLifeObserver8(getClass().getSimpleName()));
         initUI(savedInstanceState);
         initData();
     }
@@ -68,7 +71,7 @@ public abstract class HLBaseActivity extends HLSlideActivity {
         if (isShowTitle()) {
             ViewGroup baseTitleLayout = findViewById(R.id.base_title_layout);
             if (getTitleLayoutId() == 0) {//没有加载默认的
-                View baseTitleLayoutInside = View.inflate(mActivity, R.layout.view_title, null);
+                View baseTitleLayoutInside = View.inflate(mActivity, R.layout.activity_view_title, null);
                 baseTitleLayout.addView(baseTitleLayoutInside, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
                 mTitle = new HLTitleView(baseTitleLayoutInside);
             } else {
@@ -81,11 +84,10 @@ public abstract class HLBaseActivity extends HLSlideActivity {
     private void initContentView() {
         ViewGroup baseContentLayout = findViewById(R.id.base_content_layout);
         if (getLayoutId() != 0) {
+            View contentView = LayoutInflater.from(this).inflate(getLayoutId(), null);
             LinearLayout.LayoutParams lpContent = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.MATCH_PARENT);
-
-            View contentView = LayoutInflater.from(this).inflate(getLayoutId(), null);
             lpContent.weight = 1;
             contentView.setLayoutParams(lpContent);
             baseContentLayout.addView(contentView);

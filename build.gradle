@@ -6,6 +6,7 @@ buildscript {
         google()
         jcenter()
         maven { url "https://jitpack.io" }
+        maven { url "https://oss.jfrog.org/libs-snapshot" }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.0.0-alpha09'
@@ -21,6 +22,7 @@ allprojects {
         google()
         jcenter()
         maven { url "https://jitpack.io" }
+        maven { url "https://oss.jfrog.org/libs-snapshot" }
     }
     //指定编译生成路径
     buildDir = new File(rootDir, "gradle-build/${path.replaceAll(':', '/')}")

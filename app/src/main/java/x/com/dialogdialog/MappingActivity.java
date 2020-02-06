@@ -9,7 +9,6 @@ import io.github.lizhangqu.retrace.ClassMapping;
 import io.github.lizhangqu.retrace.MethodMapping;
 import io.github.lizhangqu.retrace.Retrace;
 import x.com.dialogdialog.BaseApp.BaseActivity;
-import x.com.hl_rx.TaskDelayBManager;
 
 public class MappingActivity extends BaseActivity {
     private String mappingFile = "";
@@ -21,14 +20,14 @@ public class MappingActivity extends BaseActivity {
 
     @Override
     public void initUI(Bundle savedInstanceState) {
-        TaskDelayBManager task = new TaskDelayBManager() {
-            @Override
-            public void onListen(Long index) {
-//                a();
-//                佛祖保佑();
-                c();
-            }
-        }.delay(1);
+//        TaskDelayBManager task = new TaskDelayBManager() {
+//            @Override
+//            public void onListen(Long index) {
+////                a();
+////                佛祖保佑();
+//                c();
+//            }
+//        }.delay(1);
     }
 
     /**

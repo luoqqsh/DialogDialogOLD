@@ -9,7 +9,6 @@ public abstract class BaseActivity extends HLBaseActivity {
 
     @Override
     public void initUI(Bundle savedInstanceState) {
-        getLifecycle().addObserver(new MyLifeObserver8(getClass().getSimpleName()));
     }
 
     @Override

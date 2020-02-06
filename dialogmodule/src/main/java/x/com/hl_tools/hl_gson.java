@@ -23,6 +23,7 @@ public class hl_gson {
         if (mGson == null) {
             mGson = new GsonBuilder()
                     .setLenient()
+                    .disableHtmlEscaping()//禁止html转义，不然对url地址会转成unicode编码
                     .create();
         }
         return mGson;

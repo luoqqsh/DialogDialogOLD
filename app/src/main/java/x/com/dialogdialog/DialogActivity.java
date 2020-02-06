@@ -11,7 +11,6 @@ import x.com.dialogdialog.BaseApp.BaseActivity;
 import x.com.hl_dialog.DFLoadingDialog;
 import x.com.hl_dialog.DFNDialog;
 import x.com.hl_dialog.DFPermissionListDialog;
-import x.com.hl_dialog.DFUpdateDialog;
 import x.com.hl_dialog.NDialog;
 import x.com.hl_log.ViseLog;
 import x.com.hl_tools.hl_permissionsOther;
@@ -101,9 +100,9 @@ public class DialogActivity extends BaseActivity {
 //        g.show();
 
         //检查更新样式2
-        DFUpdateDialog.newInstance("版本更新内容", 1,
-                "http://imtt.dd.qq.com/16891/337A49BBE7A8A0B42E2312893903BBB3.apk?fsname=com.coolsnow.screenshot_5.6.0_56000.apk"
-        ).show(getSupportFragmentManager(), "checkUpNew");
+//        DFUpdateDialog.newInstance("版本更新内容", 1,
+//                "http://imtt.dd.qq.com/16891/337A49BBE7A8A0B42E2312893903BBB3.apk?fsname=com.coolsnow.screenshot_5.6.0_56000.apk"
+//        ).show(getSupportFragmentManager(), "checkUpNew");
     }
 
     private void dialogs() {
