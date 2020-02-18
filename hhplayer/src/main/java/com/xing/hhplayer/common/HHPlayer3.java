@@ -205,11 +205,12 @@ public class HHPlayer3 {
     public void setVolume(float volume) {
         if (volume >= 0 && volume <= 1) {
             hhPlayerCore.volume = volume;
-            hhPlayerCore.setVolume(volume);
         } else {
             hhPlayerCore.volume = 1;
-            hhPlayerCore.setVolume(1);
             ViseLog.e(hhPlayerCore.ETAG, "volume超范围：" + volume);
+        }
+        if (hhPlayerCore.mPlayerState != PlayerStateType.NONE) {
+            hhPlayerCore.setVolume(hhPlayerCore.volume);
         }
     }
 

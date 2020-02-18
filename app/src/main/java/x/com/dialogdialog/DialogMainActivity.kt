@@ -3,6 +3,7 @@ package x.com.dialogdialog
 import android.content.Intent
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.*
 import x.com.dialogdialog.BaseApp.BaseActivity
 import x.com.dialogdialog.Viewpager2.ViewActivity
 import x.com.hl_log.ViseLog
@@ -22,6 +23,33 @@ class DialogMainActivity : BaseActivity() {
 
     private fun test() {
 
+        //一般情况下不适用
+        GlobalScope.launch {
+            // 在后台启动一个新的协程并继续
+            delay(10000L)
+            println("World!")
+            ViseLog.d("good")
+        }
+
+        //在所有子协程完成其任务并不阻塞当前线程
+        CoroutineScope(Dispatchers.IO).launch {
+            delay(3000L)
+            ViseLog.d("aaa")
+            withContext(Dispatchers.Main) {
+                ViseLog.d("goodhappy")
+            }
+        }
+
+        runBlocking {
+            launch {
+                delay(5000L)
+                ViseLog.d("adsf")
+            }
+        
+            ViseLog.d("协程结束")
+
+
+        }
 
 //        runBlocking(Dispatchers.IO) {
 //            // 注意这里

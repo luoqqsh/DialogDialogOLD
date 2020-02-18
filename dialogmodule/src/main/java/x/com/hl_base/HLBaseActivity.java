@@ -20,7 +20,7 @@ import x.com.hl_tools.hl_leak;
 import x.com.hl_tools.hl_screen;
 import x.com.hl_view.RotateImageView;
 
-public abstract class HLBaseActivity extends HLSlideActivity {
+public abstract class HLBaseActivity extends KBaseActivity {
     public FragmentActivity mActivity;
     public HLTitleView mTitle;
     private LinearLayout base_loading_fail;

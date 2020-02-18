@@ -8,7 +8,6 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
 import x.com.hl_dialog.R;
@@ -17,7 +16,7 @@ import x.com.hl_view.RotateImageView;
 /**
  * 新的base类
  */
-public abstract class HLBaseFragment extends Fragment {
+public abstract class HLBaseFragment extends KBaseFragment {
     public FragmentActivity mActivity;
     public View mView;
     private LinearLayout base_loading_fail;

@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import x.com.hl_base.hl_fragment.BaseDialogFragment2;
 import x.com.hl_view.CircleProgressBar;
-import x.com.hl_view.DanMu.OnSimpleListener;
+import x.com.hl_base.hl_interface.OnSimpleListener;
 
 public class DFProgressDialog extends BaseDialogFragment2 {
     private CircleProgressBar roundProgressBar;

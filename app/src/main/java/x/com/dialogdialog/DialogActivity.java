@@ -7,15 +7,18 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import x.com.dialogdialog.BaseApp.BaseActivity;
+import x.com.hl_base.HLBaseActivity;
+import x.com.hl_base.hl_interface.OnSimpleListener;
+import x.com.hl_base.hl_interface.OnTSimpleListener;
 import x.com.hl_dialog.DFLoadingDialog;
 import x.com.hl_dialog.DFNDialog;
 import x.com.hl_dialog.DFPermissionListDialog;
 import x.com.hl_dialog.NDialog;
 import x.com.hl_log.ViseLog;
+import x.com.hl_model.MediaFileBean;
 import x.com.hl_tools.hl_permissionsOther;
 
-public class DialogActivity extends BaseActivity {
+public class DialogActivity extends HLBaseActivity {
 
     @Override
     public int getLayoutId() {
@@ -34,11 +37,35 @@ public class DialogActivity extends BaseActivity {
             }
         });
 //        updates();
+
+        KTaskManager(new OnTSimpleListener<Object>() {
+            @Override
+            public Object onBackGround() {
+                ViseLog.d("asdas");
+                return new MediaFileBean();
+            }
+
+            @Override
+            public void onUI(Object o) {
+                ViseLog.d(o);
+            }
+        });
+        KTaskManagerB(new OnSimpleListener() {
+            @Override
+            public void onListen() {
+                ViseLog.d("afafafaf");
+            }
+        });
     }
 
     @Override
     protected boolean isOpenSlideBack() {
         return false;
+    }
+
+    @Override
+    public boolean isShowTitle() {
+        return true;
     }
 
     //    private void downloads() {

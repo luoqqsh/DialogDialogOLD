@@ -1,4 +1,4 @@
-package x.com.hl_rx;
+package x.com.hl_rx.task;
 
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -9,30 +9,26 @@ import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-/**
- * runOnBackgroundThread 返回不能是 null
- * 线程切换使用
- */
-public abstract class TaskManager<T> {
+public abstract class TaskSimpleManager {
 
     private Disposable mDisposable;
 
-    public TaskManager() {
+    public TaskSimpleManager() {
     }
 
-    public TaskManager<T> start() {
+    public TaskSimpleManager start() {
         getObservable()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<T>() {
+                .subscribe(new Observer<String>() {
                     @Override
                     public void onSubscribe(Disposable disposable) {
                         mDisposable = disposable;
                     }
 
                     @Override
-                    public void onNext(T t) {
-                        runOnUIThread(t);
+                    public void onNext(String s) {
+                        runOnUIThread();
                         cancel();
                     }
 
@@ -57,30 +53,18 @@ public abstract class TaskManager<T> {
         }
     }
 
-    private Observable<T> getObservable() {
-        return Observable.create(new ObservableOnSubscribe<T>() {
+    private Observable<String> getObservable() {
+        return Observable.create(new ObservableOnSubscribe<String>() {
             @Override
-            public void subscribe(final ObservableEmitter<T> observableEmitter) {
-                T t = runOnBackgroundThread();
-                if (t == null) {
-                    // t == null 时，observableEmitter.onNext会调用失败，Error
-                    new TaskDelayManager() {
-                        @Override
-                        public void onListen(Long index) {
-                            runOnUIThread(null);
-                            observableEmitter.onComplete();
-                            cancel();
-                        }
-                    }.start();
-                } else {
-                    observableEmitter.onNext(t);
-                    observableEmitter.onComplete();
-                }
+            public void subscribe(ObservableEmitter<String> observableEmitter) {
+                runOnBackgroundThread();
+                observableEmitter.onNext("");
+                observableEmitter.onComplete();
             }
         });
     }
 
-    public abstract T runOnBackgroundThread();
+    public abstract void runOnBackgroundThread();
 
-    public abstract void runOnUIThread(T t);
+    public abstract void runOnUIThread();
 }
