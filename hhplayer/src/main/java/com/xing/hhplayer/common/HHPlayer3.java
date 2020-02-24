@@ -235,6 +235,17 @@ public class HHPlayer3 {
         }
     }
 
+    public void setLayoutSize(int width, int height) {
+        if (viewGroup == null) {
+            ViseLog.e(hhPlayerCore.ETAG, "必须要有viewGroup才能执行此操作");
+            return;
+        }
+        ViewGroup.LayoutParams layoutParams = viewGroup.getLayoutParams();
+        layoutParams.width = width;
+        layoutParams.height = height;
+        viewGroup.setLayoutParams(layoutParams);
+    }
+
     //设置添加view的交互
     public void setCvInterface(ControlViewInterface cvInterface) {
         this.cvInterface = cvInterface;
