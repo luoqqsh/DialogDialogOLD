@@ -65,4 +65,3 @@ dependencies {
 //    // 如果你使用java8开发，可以添加这个依赖，里面只有一个类
     implementation 'androidx.lifecycle:lifecycle-common-java8:2.2.0'
 }
-

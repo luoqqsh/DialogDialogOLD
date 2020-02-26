@@ -98,6 +98,7 @@
             android:name=".Demo.DemoActivity"
             android:screenOrientation="nosensor"
             android:theme="@style/Slide.trans" />
+        <activity android:name=".ListPlayerActivity" />
 
     </application>
 

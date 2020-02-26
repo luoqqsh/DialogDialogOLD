@@ -45,7 +45,7 @@ class DialogMainActivity : BaseActivity() {
                 delay(5000L)
                 ViseLog.d("adsf")
             }
-        
+
             ViseLog.d("协程结束")
 
 
@@ -78,7 +78,7 @@ class DialogMainActivity : BaseActivity() {
         camera.setOnClickListener { startActivity(Intent(mActivity, HHCameraActivity::class.java)) }
         mediacodec.setOnClickListener { startActivity(Intent(mActivity, MediaCodecActivity::class.java)) }
         map.setOnClickListener { startActivity(Intent(mActivity, HHMapActivity::class.java)) }
-        close.setOnClickListener {}
+        close.setOnClickListener {startActivity(Intent(mActivity, ListPlayerActivity::class.java))}
 
         dialog.setOnClickListener {
             //val b = DFNDialog.newInstance()
