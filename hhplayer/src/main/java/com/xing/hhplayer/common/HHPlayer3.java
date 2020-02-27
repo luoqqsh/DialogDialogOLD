@@ -56,8 +56,8 @@ public class HHPlayer3 {
     private OnPlayerListener<Long> progressListener;
     private OnPlayerListener<PlayerStateType> stateChangeListener;
     private OnPlayerListener<Object> completionListener;
-    private OnPlayerListener<Integer> onBufferingUpdateListener;
-    private int currentPlayIndex = -1;
+    private OnPlayerListener<Integer> bufferingUpdateListener;
+    private int currentPlayIndex = -1;//列表中播放第几个，没列表时为-1
 
     private OnPlayerListener<Long> coreProgressListener = new OnPlayerListener<Long>() {
         @Override
@@ -97,12 +97,23 @@ public class HHPlayer3 {
             if (isChangeBrightness) {//播放完恢复原来的亮度，没设置亮度则不启用
                 setScreenBrigtness(getSystemScreenBrightness());
             }
-            completionListener.onListen(o);
+            if (completionListener != null) {
+                completionListener.onListen(o);
+            }
+        }
+    };
+    private OnPlayerListener<Integer> coreBufferingUpdateListener = new OnPlayerListener<Integer>() {
+        @Override
+        public void onListen(Integer integer) {
+            if (bufferingUpdateListener != null) {
+                bufferingUpdateListener.onListen(integer);
+            }
         }
     };
     private OnPlayerListener<Object> coreErrorListener = new OnPlayerListener<Object>() {
         @Override
         public void onListen(Object o) {
+            ViseLog.e(o);
             if (cvInterface != null) {
                 cvInterface.getPrePareState(PlayerPrePareStateType.ERROR);
             }
@@ -111,7 +122,6 @@ public class HHPlayer3 {
             }
         }
     };
-
 
     /***********************************初始化播放器部分**************************************************************/
     //播放音乐
@@ -133,6 +143,7 @@ public class HHPlayer3 {
     public HHPlayer3(FragmentActivity mActivity, final HHPlayerCore hhPlayerCore, TvView playerView, final ViewGroup viewGroup, Surface surface) {
         hhPlayerCore.setContext(mActivity);
         hhPlayerCore.TAG = playerView.toString();
+        hhPlayerCore.setContext(this.mActivity);
         this.hhPlayerCore = hhPlayerCore;
         this.mActivity = mActivity;
         this.viewGroup = viewGroup;
@@ -172,7 +183,7 @@ public class HHPlayer3 {
         hhPlayerCore.setCoreProgressListener(coreProgressListener);
         hhPlayerCore.setCoreErrorListener(coreErrorListener);
         hhPlayerCore.setCoreCompletionListener(coreCompletionListener);
-        hhPlayerCore.setCoreBufferingUpdateListener(onBufferingUpdateListener);
+        hhPlayerCore.setCoreBufferingUpdateListener(coreBufferingUpdateListener);
     }
 
     public void addControlView() {
@@ -215,18 +226,18 @@ public class HHPlayer3 {
         this.isPlayWhenPrepared = isPlayWhenPrepared;
     }
 
+    //设置是否循环播放
+    public void setLooping(boolean looping) {
+        hhPlayerCore.setLooping(looping);
+    }
+
     //设置屏幕亮度
     public void setScreenBrigtness(int brightness) {
-        Window localWindow = ((Activity) mActivity).getWindow();
+        Window localWindow = (mActivity).getWindow();
         WindowManager.LayoutParams localLayoutParams = localWindow.getAttributes();
         localLayoutParams.screenBrightness = (float) brightness / 100.0F;
         localWindow.setAttributes(localLayoutParams);
         isChangeBrightness = true;
-    }
-
-    //设置是否循环播放
-    public void setLooping(boolean looping) {
-        hhPlayerCore.setLooping(looping);
     }
 
     //设置静音
@@ -251,6 +262,7 @@ public class HHPlayer3 {
     public void setSpeed(float speed) {
         if (hhPlayerCore.isPlayControl()) {
             hhPlayerCore.setSpeed(speed);
+            start();//?
         }
     }
 
@@ -292,8 +304,8 @@ public class HHPlayer3 {
     /***********************************播放控制部分**************************************************************/
     //准备-地址，标题为空
     public void prepare(String path) {
-        prepare(path, "");
         currentPlayIndex = -1;
+        prepare(path, "");
     }
 
     //准备-地址，标题
@@ -304,7 +316,7 @@ public class HHPlayer3 {
             cvInterface.getPrePareState(PlayerPrePareStateType.PREPARING);
         }
         hhPlayerCore.prepare(path);
-        ViseLog.showLog("开始加载" + path);
+        ViseLog.showLog("开始加载:" + path);
     }
 
     //刷新播放列表，刷新后自动播放当前列表第一个
@@ -365,6 +377,8 @@ public class HHPlayer3 {
             hhPlayerCore.getCurrentStart();
             hhPlayerCore.mPlayerState = PlayerStateType.IDLE;
             isReStart = true;
+        } else {
+            hhPlayerCore.onCoreErrorListener.onListen(hhPlayerCore.getMediaPath() + " " + hhPlayerCore.mPlayerState);
         }
     }
 
@@ -405,6 +419,11 @@ public class HHPlayer3 {
         if (hhPlayerCore.isPlayControl()) {
             hhPlayerCore.seekTo(position);
         }
+    }
+
+    public void resetPlayer() {
+        hhPlayerCore.stop();
+        hhPlayerCore.resetPlayer();
     }
 
     //全屏
@@ -464,6 +483,10 @@ public class HHPlayer3 {
         return hhPlayerCore.isMediaPlaying();
     }
 
+    public boolean isPrepared() {
+        return hhPlayerCore != null && hhPlayerCore.isPrepared();
+    }
+
     public String getTitle() {
         return title;
     }
@@ -477,7 +500,7 @@ public class HHPlayer3 {
     }
 
     //获取视频宽，需要在prepare完成之后执行
-    public long getMediaWidth() {
+    public int getMediaWidth() {
         if (hhPlayerCore.isPlayControl()) {
             return hhPlayerCore.videoWidth;
         }
@@ -485,7 +508,7 @@ public class HHPlayer3 {
     }
 
     //获取视频高，需要在prepare完成之后执行
-    public long getMediaHeight() {
+    public int getMediaHeight() {
         if (hhPlayerCore.isPlayControl()) {
             return hhPlayerCore.videoHeight;
         }
@@ -653,8 +676,8 @@ public class HHPlayer3 {
     }
 
     //播放器缓存进度监听
-    public void setOnBufferingUpdateListener(OnPlayerListener<Integer> onBufferingUpdateListener) {
-        this.onBufferingUpdateListener = onBufferingUpdateListener;
+    public void setBufferingUpdateListener(OnPlayerListener<Integer> bufferingUpdateListener) {
+        this.bufferingUpdateListener = bufferingUpdateListener;
     }
 
     //播放器状态改变监听

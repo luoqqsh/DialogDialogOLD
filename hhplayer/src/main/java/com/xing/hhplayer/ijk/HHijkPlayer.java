@@ -24,6 +24,7 @@ import x.com.hl_tools.hl_uri;
 public class HHijkPlayer extends HHPlayerCore {
     private IjkMediaPlayer mediaPlayer;
     private Surface surface;
+    private SurfaceHolder surfaceHolder;
 
     public HHijkPlayer() {
         mediaPlayer = new IjkMediaPlayer();
@@ -35,6 +36,7 @@ public class HHijkPlayer extends HHPlayerCore {
         if (surface.isValid() && mediaPlayer != null) {
             this.surface = surface;
             mediaPlayer.setSurface(surface);
+            ViseLog.showLog(TAG, "surface设置成功");
         }
     }
 
@@ -43,6 +45,7 @@ public class HHijkPlayer extends HHPlayerCore {
         if (mediaPlayer != null) {
             this.surface = surfaceHolder.getSurface();
             mediaPlayer.setSurface(surface);
+            ViseLog.showLog(TAG, "surfaceHolder设置成功");
         }
     }
 
@@ -57,6 +60,7 @@ public class HHijkPlayer extends HHPlayerCore {
                     videoHeight = mediaPlayer.getVideoHeight();
                     mediaPlayer.setVolume(volume, volume);
                     mediaPlayer.setLooping(isLooping);
+                    onCorePreparedListener.onListen(mp);
                     StringBuilder videoInfoLog = new StringBuilder("Prepared OK\n");
                     videoInfoLog.append("path: ").append(mediaPath).append("\n");
                     videoInfoLog.append("width: ").append(mediaPlayer.getVideoWidth()).append("\n");
@@ -64,79 +68,38 @@ public class HHijkPlayer extends HHPlayerCore {
                     videoInfoLog.append("duration: ").append(mediaPlayer.getDuration()).append("\n");
                     videoInfoLog.append("tag: ").append(TAG);
                     ViseLog.d(videoInfoLog);
-                    if (onCorePreparedListener != null) {
-                        onCorePreparedListener.onListen(mp);
-                    }
                 }
             });
             mediaPlayer.setOnSeekCompleteListener(new IjkMediaPlayer.OnSeekCompleteListener() {
                 @Override
                 public void onSeekComplete(IMediaPlayer mp) {
                     start();
-                    ViseLog.d(TAG, "Seek Complete");
+                    ViseLog.showLog(TAG, "Seek Complete");
                 }
             });
             mediaPlayer.setOnCompletionListener(new IjkMediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(IMediaPlayer mp) {
-                    if (onCoreCompletionListener != null) {
-                        onCoreCompletionListener.onListen(mp);
-                    }
+                    onCoreCompletionListener.onListen(mp);
                 }
             });
             mediaPlayer.setOnErrorListener(new IjkMediaPlayer.OnErrorListener() {
                 @Override
                 public boolean onError(IMediaPlayer mp, int what, int extra) {
-                    ViseLog.showLog(TAG, "监听到错误。  " + mPlayerState);
                     mPlayerState = PlayerStateType.ERROR;
                     playerPrePareState = PlayerPrePareStateType.ERROR;
-                    ViseLog.showLog(TAG, what + "  " + extra + "\n" + "播放出错：" + mediaPath);
-                    if (onCoreErrorListener != null) {
-                        String err = "ijk播放出错：" + what + " " + extra + " " + mPlayerState + "\n" + mediaPath;
-                        onCoreErrorListener.onListen(err);
-                    }
+                    String err = "ijk播放出错：" + what + " " + extra + " " + mPlayerState + "\n" + mediaPath;
+                    onCoreErrorListener.onListen(err);
                     return false;
                 }
             });
             mediaPlayer.setOnBufferingUpdateListener(new IjkMediaPlayer.OnBufferingUpdateListener() {
                 @Override
                 public void onBufferingUpdate(IMediaPlayer mp, int percent) {
-                    if (onCoreBufferingUpdateListener != null) {
-                        onCoreBufferingUpdateListener.onListen(percent);
-                    }
+                    onCoreBufferingUpdateListener.onListen(percent);
                 }
             });
             initSetting();
-        }
-    }
-
-    private void doPrepare(Object mediaPath, boolean isFirst) {
-        this.mediaPath = (String) mediaPath;
-        if (surface != null) {
-            stop();
-            reset();//ijkplayer调用reset会连画布一起重置，画布不会销毁
-            mediaPlayer.setSurface(surface);
-        }
-        try {
-            playerPrePareState = PlayerPrePareStateType.PREPARING;
-            Uri uri = Uri.parse((String) mediaPath);
-            if (uri.getScheme() != null && uri.getScheme().equals(ContentResolver.SCHEME_ANDROID_RESOURCE)) {
-                AssetFileDescriptor fileDescriptor = context.getApplicationContext().getContentResolver().openAssetFileDescriptor(hl_uri.str2Uri(String.valueOf(this.mediaPath)), "r");
-                mediaPlayer.setDataSource(new RawDataSourceProvider(fileDescriptor));
-            } else if (getHeaders() != null) {//url with headers
-                Class<MediaPlayer> clazz = MediaPlayer.class;
-                Method method = clazz.getDeclaredMethod("setDataSource", String.class, Map.class);
-                method.invoke(mediaPlayer, mediaPath, getHeaders());
-            } else {
-                mediaPlayer.setDataSource(String.valueOf(mediaPath));
-            }
-            mediaPlayer.prepareAsync();//异步
-        } catch (Exception e) {
-            e.printStackTrace();
-            mPlayerState = PlayerStateType.ERROR;
-            playerPrePareState = PlayerPrePareStateType.ERROR;
-            ViseLog.e(TAG, "Prepare失败。  " + this.mediaPath);
-            if (isFirst) dealError();
         }
     }
 
@@ -160,18 +123,44 @@ public class HHijkPlayer extends HHPlayerCore {
     }
 
     @Override
-    public void prepare(String mediaPath) {
-        if ("HHPlayerCore".equals(TAG)) {
+    public void prepare(String path) {
+        if (path == null) {
+            onCoreErrorListener.onListen("地址为空或不支持！");
+            return;
+        }
+        if ("HHPlayer3".equals(TAG)) {
             TAG = "HH-IJKPlayer-Music";
         }
-        this.mediaPath = mediaPath;
-        doPrepare(mediaPath, true);
+        this.mediaPath = path;
+        stop();
+        reset();//ijkplayer调用reset会连画布一起重置，画布不会销毁
+        try {
+            playerPrePareState = PlayerPrePareStateType.PREPARING;
+            Uri uri = Uri.parse((String) mediaPath);
+            if (uri.getScheme() != null && uri.getScheme().equals(ContentResolver.SCHEME_ANDROID_RESOURCE)) {
+                AssetFileDescriptor fileDescriptor = context.getApplicationContext().getContentResolver().openAssetFileDescriptor(hl_uri.str2Uri(String.valueOf(this.mediaPath)), "r");
+                mediaPlayer.setDataSource(new RawDataSourceProvider(fileDescriptor));
+            } else if (getHeaders() != null) {//url with headers
+                Class<MediaPlayer> clazz = MediaPlayer.class;
+                Method method = clazz.getDeclaredMethod("setDataSource", String.class, Map.class);
+                method.invoke(mediaPlayer, mediaPath, getHeaders());
+            } else {
+                mediaPlayer.setDataSource(String.valueOf(mediaPath));
+            }
+            mediaPlayer.prepareAsync();//异步
+        } catch (Exception e) {
+            e.printStackTrace();
+            mPlayerState = PlayerStateType.ERROR;
+            playerPrePareState = PlayerPrePareStateType.ERROR;
+            onCoreErrorListener.onListen("Prepare异常");
+        }
     }
 
     @Override
     public void start() {
         if (mediaPlayer != null) {
             mediaPlayer.start();
+            ViseLog.showLog(TAG, "开始");
         }
     }
 
@@ -179,6 +168,7 @@ public class HHijkPlayer extends HHPlayerCore {
     public void pause() {
         if (mediaPlayer != null) {
             mediaPlayer.pause();
+            ViseLog.showLog(TAG, "暂停");
         }
     }
 
@@ -196,6 +186,7 @@ public class HHijkPlayer extends HHPlayerCore {
             mediaPlayer.stop();
             playerPrePareState = PlayerPrePareStateType.NONE;
             mPlayerState = PlayerStateType.IDLE;
+            ViseLog.showLog(TAG, "停止");
         }
     }
 
@@ -203,6 +194,17 @@ public class HHijkPlayer extends HHPlayerCore {
     public void reset() {
         if (mediaPlayer != null) {
             mediaPlayer.reset();
+            if (surface != null) {
+                if (surface.isValid()) {
+                    mediaPlayer.setSurface(surface);
+                    ViseLog.showLog(TAG, "surface设置成功");
+                }
+            }
+            if (surfaceHolder != null) {
+                mediaPlayer.setDisplay(surfaceHolder);
+                ViseLog.showLog(TAG, "surfaceHolder设置成功");
+            }
+            ViseLog.showLog(TAG, "重置");
         }
     }
 
@@ -212,6 +214,8 @@ public class HHijkPlayer extends HHPlayerCore {
         if (mediaPlayer != null) {
             mediaPlayer.release();
             mediaPlayer = null;
+            context = null;
+            ViseLog.showLog(TAG, "释放");
         }
     }
 
@@ -219,6 +223,7 @@ public class HHijkPlayer extends HHPlayerCore {
     public void setVolume(float volume) {
         if (mediaPlayer != null) {
             mediaPlayer.setVolume(volume, volume);
+            ViseLog.showLog(TAG, "设置音量:" + volume);
         }
     }
 
@@ -238,8 +243,14 @@ public class HHijkPlayer extends HHPlayerCore {
         }
     }
 
-    private void dealError() {
-        doPrepare(mediaPath, false);
+    @Override
+    public void resetPlayer() {
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+        mediaPlayer = new IjkMediaPlayer();
+        initListener();
     }
 
     @Override

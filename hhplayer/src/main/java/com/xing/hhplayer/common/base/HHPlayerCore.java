@@ -17,8 +17,8 @@ import java.util.TimerTask;
 public abstract class HHPlayerCore {
     public PlayerStateType mPlayerState = PlayerStateType.IDLE;
     public PlayerPrePareStateType playerPrePareState = PlayerPrePareStateType.NONE;
-    public String TAG = "HHPlayerCore";
-    public String ETAG = "hh_error";
+    public String TAG = "HHPlayer3";
+    public String ETAG = "HHPlayer3_error";
 
     public Object mediaPath;
     public int videoWidth;
@@ -35,7 +35,7 @@ public abstract class HHPlayerCore {
     private Map<String, String> mHeaders;
     private Timer timer;
     public boolean isLive = false;//是否实时直播
-    private long timeMs = 0;
+    private long timeMs = 0;//时间计数
     public int videoScalingMode;//缩放模式,0为默认大小，1为填充
 
     public abstract void prepare(String mediaPath);
@@ -68,6 +68,8 @@ public abstract class HHPlayerCore {
 
     public abstract void setScalingMode(int videoScalingMode);
 
+    public abstract void resetPlayer();
+
     public void setLooping(boolean looping) {
         isLooping = looping;
     }
@@ -88,20 +90,20 @@ public abstract class HHPlayerCore {
         this.onCorePreparedListener = preparedListener;
     }
 
-    public void setCoreProgressListener(OnPlayerListener<Long> progessListener) {
-        this.onCoreProgressListener = progessListener;
+    public void setCoreProgressListener(OnPlayerListener<Long> progressListener) {
+        this.onCoreProgressListener = progressListener;
     }
 
-    public void setCoreErrorListener(OnPlayerListener<Object> onCoreErrorListener) {
-        this.onCoreErrorListener = onCoreErrorListener;
+    public void setCoreErrorListener(OnPlayerListener<Object> errorListener) {
+        this.onCoreErrorListener = errorListener;
     }
 
     public void setCoreCompletionListener(OnPlayerListener<Object> completionListener) {
         this.onCoreCompletionListener = completionListener;
     }
 
-    public void setCoreBufferingUpdateListener(OnPlayerListener<Integer> OnBufferingUpdateListener) {
-        this.onCoreBufferingUpdateListener = OnBufferingUpdateListener;
+    public void setCoreBufferingUpdateListener(OnPlayerListener<Integer> bufferingUpdateListener) {
+        this.onCoreBufferingUpdateListener = bufferingUpdateListener;
     }
 
     //是否可以进行播放暂停等控制操作

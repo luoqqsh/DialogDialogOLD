@@ -77,7 +77,7 @@ public class HHMedia3Activity extends BaseActivity {
                 });
             }
         });
-        hhPlayer3.setOnBufferingUpdateListener(new OnPlayerListener<Integer>() {
+        hhPlayer3.setBufferingUpdateListener(new OnPlayerListener<Integer>() {
             @Override
             public void onListen(Integer integer) {
                 seekBar.setSecondaryProgress(integer);
@@ -101,8 +101,6 @@ public class HHMedia3Activity extends BaseActivity {
         TvDataList tvDataList4 = new TvDataList(TypeClass.厦门台, "厦门电视台4", "http://cstvpull.live.wscdns.com/live/xiamen4.flv", TypeClarity.H4k, TypeState.流畅);
         TvDataList tvDataList5 = new TvDataList(TypeClass.厦门台, "厦门卫视", "http://cstvpull.live.wscdns.com/live/xiamen.flv", TypeClarity.H4k, TypeState.流畅);
         TvDataList tvDataList6 = new TvDataList(TypeClass.厦门台, "厦门移动电视", "http://cstvpull.live.wscdns.com/live/xiamenyidong.flv", TypeClarity.H4k, TypeState.流畅);
-        TvDataList tvDataList7 = new TvDataList(TypeClass.厦门台, "厦门移动电视", "http://s.bizhijingling.com/uploadfile/userload/vedio/2019/1211/20191211210157758.mp4", TypeClarity.H4k, TypeState.流畅);
-        TvDataList tvDataList8 = new TvDataList(TypeClass.厦门台, "厦门移动电视", "http://s.bizhijingling.com/uploadfile/userload/vedio/2019/1210/20191210225519498.mp4", TypeClarity.H4k, TypeState.流畅);
         ArrayList<TvDataList> tvDataLists = new ArrayList<>();
         tvDataLists.add(tvDataList);
         tvDataLists.add(tvDataList2);
@@ -110,8 +108,6 @@ public class HHMedia3Activity extends BaseActivity {
         tvDataLists.add(tvDataList4);
         tvDataLists.add(tvDataList5);
         tvDataLists.add(tvDataList6);
-        tvDataLists.add(tvDataList7);
-        tvDataLists.add(tvDataList8);
         tvUrl = new TvData(1, "20190719", "itv", tvDataLists);
     }
 
@@ -125,7 +121,8 @@ public class HHMedia3Activity extends BaseActivity {
 
         findViewById(R.id.testSelect).setOnClickListener(v -> {
 //            hhPlayer3.prepare(tvUrl.getLinks(), 0);
-            hhPlayer3.prepare("https://aldirect.hls.huya.com/huyalive/29141112-2691519968-11559990239090966528-3049003118-10057-A-0-1_1200.m3u8");
+//            hhPlayer3.prepare("http://cstvpull.live.wscdns.com/live/xiamen1.flv");
+            hhPlayer3.prepare("http://s.bizhijingling.com/uploadfile/coustom/2019/309/20190613170125729.mp4");
 //            List<MediaFileBean> imgList = hl_medialist.getVideoList(mContext);
 //            hhPlayer3.prepare("content://media/external/video/media/27", "");
         });
@@ -133,7 +130,10 @@ public class HHMedia3Activity extends BaseActivity {
         findViewById(R.id.testPlay).setOnClickListener(v -> hhPlayer3.start());
         findViewById(R.id.testPause).setOnClickListener(v -> hhPlayer3.pause());
         findViewById(R.id.testStop).setOnClickListener(v -> hhPlayer3.stop());
-        findViewById(R.id.testReset).setOnClickListener(v -> hhPlayer3.reset());
+        findViewById(R.id.testReset).setOnClickListener(v -> {
+            hhPlayer3.resetPlayer();
+            hhPlayer3.prepare("http://s.bizhijingling.com/uploadfile/coustom/2019//309/20190613170125729.mp4");
+        });
         findViewById(R.id.testFull).setOnClickListener(v -> hhPlayer3.fullScreen());
         findViewById(R.id.testMute).setOnClickListener(v -> hhPlayer3.setMute(!ismute));
         findViewById(R.id.testFast).setOnClickListener(v -> hhPlayer3.setSpeed(2));

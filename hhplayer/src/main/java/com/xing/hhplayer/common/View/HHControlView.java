@@ -85,7 +85,9 @@ public class HHControlView extends FrameLayout implements View.OnClickListener, 
         mProgressBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                hhPlayer3.seekTo(progress * 1000);
+                if (fromUser) {
+                    hhPlayer3.seekTo(progress * 1000);
+                }
             }
 
             @Override
