@@ -51,8 +51,8 @@ public class HHMediaPlayer extends HHPlayerCore {
                     videoHeight = mediaPlayer.getVideoHeight();
                     mediaPlayer.setVolume(volume, volume);
                     mediaPlayer.setLooping(isLooping);
-                    if (onPreparedListener != null) {
-                        onPreparedListener.onListen(mp);
+                    if (onCorePreparedListener != null) {
+                        onCorePreparedListener.onListen(mp);
                     }
                     StringBuilder videoInfoLog = new StringBuilder("Prepared OK\n");
                     videoInfoLog.append("path: ").append(mediaPath).append("\n");
@@ -74,8 +74,8 @@ public class HHMediaPlayer extends HHPlayerCore {
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
-                    if (onCompletionListener != null) {
-                        onCompletionListener.onListen(mp);
+                    if (onCoreCompletionListener != null) {
+                        onCoreCompletionListener.onListen(mp);
                     }
                 }
             });
@@ -86,9 +86,9 @@ public class HHMediaPlayer extends HHPlayerCore {
                     mPlayerState = PlayerStateType.ERROR;
                     playerPrePareState = PlayerPrePareStateType.ERROR;
                     ViseLog.e(ETAG, what + "  " + extra + "\n" + "播放出错：" + mediaPath);
-                    if (onErrorListener != null) {
+                    if (onCoreErrorListener != null) {
                         String err = "mediaplayer播放出错：" + what + " " + extra + " " + mPlayerState;
-                        onErrorListener.onListen(err);
+                        onCoreErrorListener.onListen(err);
                     }
                     return false;
                 }
@@ -96,8 +96,8 @@ public class HHMediaPlayer extends HHPlayerCore {
             mediaPlayer.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
                 @Override
                 public void onBufferingUpdate(MediaPlayer mp, int percent) {
-                    if (onBufferingUpdateListener != null) {
-                        onBufferingUpdateListener.onListen(percent);
+                    if (onCoreBufferingUpdateListener != null) {
+                        onCoreBufferingUpdateListener.onListen(percent);
                     }
                 }
             });

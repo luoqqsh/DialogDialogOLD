@@ -234,11 +234,11 @@ public class HHControlView extends FrameLayout implements View.OnClickListener, 
                 //隐藏加载转圈
                 loading_layout.setVisibility(GONE);
                 loading.stop();
-                if (hhPlayer3.getMediaDuration() != 0) {
+                if (hhPlayer3.getMediaDurationMS() != 0) {
                     isShowSeekBar = true;
                     seekbarlayout.setVisibility(VISIBLE);
-                    mProgressBar.setMax((int) (hhPlayer3.getMediaDuration() / 1000));
-                    mTotalTimeTextView.setText(hl_time.formatTime(hhPlayer3.getMediaDuration()));
+                    mProgressBar.setMax((int) (hhPlayer3.getMediaDurationMS() / 1000));
+                    mTotalTimeTextView.setText(hl_time.formatTime(hhPlayer3.getMediaDurationMS()));
                 } else {
                     isShowSeekBar = false;
                     seekbarlayout.setVisibility(INVISIBLE);

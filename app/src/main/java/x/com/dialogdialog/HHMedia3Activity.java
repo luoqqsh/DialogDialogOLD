@@ -59,13 +59,13 @@ public class HHMedia3Activity extends BaseActivity {
             public void onListen(Object o) {
                 hhPlayer3.start();
                 seekbar_volume.setProgress((int) (hhPlayer3.getVolume() * 10));
-                totaltime.setText(" / " + hl_time.formatTime(hhPlayer3.getMediaDuration()));
-                seekBar.setMax((int) (hhPlayer3.getMediaDuration() / 1000));
+                totaltime.setText(" / " + hl_time.formatTime(hhPlayer3.getMediaDurationMS()));
+                seekBar.setMax((int) (hhPlayer3.getMediaDurationMS() / 1000));
                 setViewSize(hhview, 601, 500);
                 ViseLog.d(hhview.getWidth() + " " + hhview.getHeight());
             }
         });
-        hhPlayer3.setProgessListener(new OnPlayerListener<Long>() {
+        hhPlayer3.setProgressListener(new OnPlayerListener<Long>() {
             @Override
             public void onListen(Long time) {//当前是timer线程
                 runOnUiThread(new Runnable() {
@@ -140,14 +140,14 @@ public class HHMedia3Activity extends BaseActivity {
         findViewById(R.id.testSlow).setOnClickListener(v -> hhPlayer3.setSpeed(0.5f));
         findViewById(R.id.testRelease).setOnClickListener(v -> hhPlayer3.release());
         findViewById(R.id.testGo5).setOnClickListener(v -> {
-            if (hhPlayer3.getCurrentPosition() + 5000 < hhPlayer3.getMediaDuration()) {
-                hhPlayer3.seekTo(hhPlayer3.getCurrentPosition() + 5000);
+            if (hhPlayer3.getCurrentPositionMS() + 5000 < hhPlayer3.getMediaDurationMS()) {
+                hhPlayer3.seekTo(hhPlayer3.getCurrentPositionMS() + 5000);
             }
         });
         TextView tvback5 = findViewById(R.id.testBack5);
         tvback5.setOnClickListener(v -> {
-            if (hhPlayer3.getCurrentPosition() > 5000) {
-                hhPlayer3.seekTo(hhPlayer3.getCurrentPosition() - 5000);
+            if (hhPlayer3.getCurrentPositionMS() > 5000) {
+                hhPlayer3.seekTo(hhPlayer3.getCurrentPositionMS() - 5000);
             }
         });
         findViewById(R.id.testGet).setOnClickListener(v -> {

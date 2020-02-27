@@ -27,11 +27,11 @@ public abstract class HHPlayerCore {
     public float volume = 1;
     public Context context;//有的播放器需要context
     public boolean isLooping = false; //是否循环播放
-    public OnPlayerListener<Object> onPreparedListener;
-    public OnPlayerListener<Long> onProgessListener;
-    public OnPlayerListener<Object> onCompletionListener;
-    public OnPlayerListener<Object> onErrorListener;
-    public OnPlayerListener<Integer> onBufferingUpdateListener;
+    public OnPlayerListener<Object> onCorePreparedListener;
+    public OnPlayerListener<Long> onCoreProgressListener;
+    public OnPlayerListener<Object> onCoreCompletionListener;
+    public OnPlayerListener<Object> onCoreErrorListener;
+    public OnPlayerListener<Integer> onCoreBufferingUpdateListener;
     private Map<String, String> mHeaders;
     private Timer timer;
     public boolean isLive = false;//是否实时直播
@@ -84,24 +84,24 @@ public abstract class HHPlayerCore {
         return mediaPath;
     }
 
-    public void setPreparedListener(OnPlayerListener<Object> preparedListener) {
-        this.onPreparedListener = preparedListener;
+    public void setCorePreparedListener(OnPlayerListener<Object> preparedListener) {
+        this.onCorePreparedListener = preparedListener;
     }
 
-    public void setProgessListener(OnPlayerListener<Long> progessListener) {
-        this.onProgessListener = progessListener;
+    public void setCoreProgressListener(OnPlayerListener<Long> progessListener) {
+        this.onCoreProgressListener = progessListener;
     }
 
-    public void setOnErrorListener(OnPlayerListener<Object> onErrorListener) {
-        this.onErrorListener = onErrorListener;
+    public void setCoreErrorListener(OnPlayerListener<Object> onCoreErrorListener) {
+        this.onCoreErrorListener = onCoreErrorListener;
     }
 
-    public void setCompletionListener(OnPlayerListener<Object> completionListener) {
-        this.onCompletionListener = completionListener;
+    public void setCoreCompletionListener(OnPlayerListener<Object> completionListener) {
+        this.onCoreCompletionListener = completionListener;
     }
 
-    public void setOnBufferingUpdateListener(OnPlayerListener<Integer> OnBufferingUpdateListener) {
-        this.onBufferingUpdateListener = OnBufferingUpdateListener;
+    public void setCoreBufferingUpdateListener(OnPlayerListener<Integer> OnBufferingUpdateListener) {
+        this.onCoreBufferingUpdateListener = OnBufferingUpdateListener;
     }
 
     //是否可以进行播放暂停等控制操作
@@ -123,14 +123,14 @@ public abstract class HHPlayerCore {
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    if (onProgessListener != null) {
+                    if (onCoreProgressListener != null) {
                         if (isLive) {
                             if (isMediaPlaying()) {
                                 timeMs += 1000;
-                                onProgessListener.onListen(timeMs);
+                                onCoreProgressListener.onListen(timeMs);
                             }
                         } else {
-                            onProgessListener.onListen(getCurrentPositionMS());
+                            onCoreProgressListener.onListen(getCurrentPositionMS());
                         }
                     }
                 }

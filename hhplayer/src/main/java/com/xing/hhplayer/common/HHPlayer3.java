@@ -52,9 +52,66 @@ public class HHPlayer3 {
     private String title;
     private List<TvDataList> tvLists;//播放列表
     private OnPlayerListener<Object> preparedListener;
-    private OnPlayerListener<Long> progessListener;
+    private OnPlayerListener<Object> errorListener;
+    private OnPlayerListener<Long> progressListener;
     private OnPlayerListener<PlayerStateType> stateChangeListener;
+    private OnPlayerListener<Object> completionListener;
+    private OnPlayerListener<Integer> onBufferingUpdateListener;
     private int currentPlayIndex = -1;
+
+    private OnPlayerListener<Long> coreProgressListener = new OnPlayerListener<Long>() {
+        @Override
+        public void onListen(Long aLong) {
+            if (progressListener != null) {
+                progressListener.onListen(aLong);
+            }
+            if (cvInterface != null) {
+                cvInterface.changeProgress(aLong);
+            }
+        }
+    };
+
+    private OnPlayerListener<Object> corePreparedListener = new OnPlayerListener<Object>() {
+        @Override
+        public void onListen(Object o) {
+            hhPlayerCore.setScalingMode(0);
+            setVideoSize((int) getMediaWidth(), (int) getMediaHeight());
+            hhPlayerCore.isLive = hhPlayerCore.getMediaDurationMS() == 0;
+            if (cvInterface != null) {
+                cvInterface.getPrePareState(PlayerPrePareStateType.PREPARED);
+            }
+            if (isPlayWhenPrepared || isReStart) {
+                isReStart = false;
+                start();
+            }
+            if (preparedListener != null) {
+                preparedListener.onListen(o);
+            }
+        }
+    };
+
+    private OnPlayerListener<Object> coreCompletionListener = new OnPlayerListener<Object>() {
+        @Override
+        public void onListen(Object o) {
+            hhPlayerCore.mPlayerState = PlayerStateType.PLAYBACK_COMPLETED;
+            if (isChangeBrightness) {//播放完恢复原来的亮度，没设置亮度则不启用
+                setScreenBrigtness(getSystemScreenBrightness());
+            }
+            completionListener.onListen(o);
+        }
+    };
+    private OnPlayerListener<Object> coreErrorListener = new OnPlayerListener<Object>() {
+        @Override
+        public void onListen(Object o) {
+            if (cvInterface != null) {
+                cvInterface.getPrePareState(PlayerPrePareStateType.ERROR);
+            }
+            if (errorListener != null) {
+                errorListener.onListen(o);
+            }
+        }
+    };
+
 
     /***********************************初始化播放器部分**************************************************************/
     //播放音乐
@@ -111,35 +168,11 @@ public class HHPlayer3 {
             case MUSIC:
                 break;
         }
-        hhPlayerCore.setPreparedListener(new OnPlayerListener<Object>() {
-            @Override
-            public void onListen(Object o) {
-                hhPlayerCore.setScalingMode(0);
-                setVideoSize((int) getMediaWidth(), (int) getMediaHeight());
-                hhPlayerCore.isLive = hhPlayerCore.getMediaDurationMS() == 0;
-                if (cvInterface != null) {
-                    cvInterface.getPrePareState(PlayerPrePareStateType.PREPARED);
-                }
-                if (isPlayWhenPrepared || isReStart) {
-                    isReStart = false;
-                    start();
-                }
-                if (preparedListener != null) {
-                    preparedListener.onListen(o);
-                }
-            }
-        });
-        hhPlayerCore.setProgessListener(new OnPlayerListener<Long>() {
-            @Override
-            public void onListen(Long aLong) {
-                if (progessListener != null) {
-                    progessListener.onListen(aLong);
-                }
-                if (cvInterface != null) {
-                    cvInterface.changeProgress(aLong);
-                }
-            }
-        });
+        hhPlayerCore.setCorePreparedListener(corePreparedListener);
+        hhPlayerCore.setCoreProgressListener(coreProgressListener);
+        hhPlayerCore.setCoreErrorListener(coreErrorListener);
+        hhPlayerCore.setCoreCompletionListener(coreCompletionListener);
+        hhPlayerCore.setCoreBufferingUpdateListener(onBufferingUpdateListener);
     }
 
     public void addControlView() {
@@ -292,14 +325,14 @@ public class HHPlayer3 {
                 prepare(tvLists.get(position).getChannelURLs().get(0).getChannelURL(), tvLists.get(position).getChannelName());
             } else {
                 ViseLog.e(hhPlayerCore.ETAG, "播放频道为空数据");
-                if (hhPlayerCore.onErrorListener != null) {
-                    hhPlayerCore.onErrorListener.onListen("播放频道为空数据");
+                if (hhPlayerCore.onCoreErrorListener != null) {
+                    hhPlayerCore.onCoreErrorListener.onListen("播放频道为空数据");
                 }
             }
         } else {
             ViseLog.e(hhPlayerCore.ETAG, "播放列表为空，或不存在");
-            if (hhPlayerCore.onErrorListener != null) {
-                hhPlayerCore.onErrorListener.onListen("播放列表为空，或不存在");
+            if (hhPlayerCore.onCoreErrorListener != null) {
+                hhPlayerCore.onCoreErrorListener.onListen("播放列表为空，或不存在");
             }
             currentPlayIndex = -1;
         }
@@ -436,7 +469,7 @@ public class HHPlayer3 {
     }
 
     //获取当前播放进度，-1为获取失败
-    public long getCurrentPosition() {
+    public long getCurrentPositionMS() {
         if (hhPlayerCore.isPlayControl()) {
             return hhPlayerCore.getCurrentPositionMS();
         }
@@ -460,7 +493,7 @@ public class HHPlayer3 {
     }
 
     //获取媒体总时长，-1为获取失败
-    public long getMediaDuration() {
+    public long getMediaDurationMS() {
         if (hhPlayerCore.isPlayControl()) {
             return hhPlayerCore.getMediaDurationMS();
         }
@@ -606,41 +639,22 @@ public class HHPlayer3 {
 
     //播放器播放完成监听
     public void setCompletionListener(final OnPlayerListener<Object> completionListener) {
-        hhPlayerCore.setCompletionListener(new OnPlayerListener<Object>() {
-            @Override
-            public void onListen(Object o) {
-                hhPlayerCore.mPlayerState = PlayerStateType.PLAYBACK_COMPLETED;
-                if (isChangeBrightness) {//播放完恢复原来的亮度，没设置亮度则不启用
-                    setScreenBrigtness(getSystemScreenBrightness());
-                }
-                completionListener.onListen(o);
-            }
-        });
+        this.completionListener = completionListener;
     }
 
     //播放器错误监听
     public void setOnErrorListener(OnPlayerListener<Object> errorListener) {
-        hhPlayerCore.setOnErrorListener(new OnPlayerListener<Object>() {
-            @Override
-            public void onListen(Object o) {
-                if (cvInterface != null) {
-                    cvInterface.getPrePareState(PlayerPrePareStateType.ERROR);
-                }
-                if (errorListener != null) {
-                    errorListener.onListen(o);
-                }
-            }
-        });
+        this.errorListener = errorListener;
     }
 
     //播放器播放进度监听//当前是timer线程
-    public void setProgessListener(final OnPlayerListener<Long> progessListener) {
-        this.progessListener = progessListener;
+    public void setProgressListener(final OnPlayerListener<Long> progressListener) {
+        this.progressListener = progressListener;
     }
 
     //播放器缓存进度监听
     public void setOnBufferingUpdateListener(OnPlayerListener<Integer> onBufferingUpdateListener) {
-        hhPlayerCore.setOnBufferingUpdateListener(onBufferingUpdateListener);
+        this.onBufferingUpdateListener = onBufferingUpdateListener;
     }
 
     //播放器状态改变监听
@@ -653,124 +667,4 @@ public class HHPlayer3 {
             cvInterface.receiveKeyDown(keyCode);
         }
     }
-/*
-
-    public void fullScreen() {
-//        if (mTarget.getWindowType() != VideoView.WindowType.FULLSCREEN) {
-//            //new VideoView
-//            VideoView videoView = new VideoView(getContext());
-//            //set parent
-//            videoView.setParentVideoView(mTarget);
-//            videoView.setUp(mTarget.getDataSourceObject(), VideoView.WindowType.FULLSCREEN, mTarget.getData());
-//            videoView.setControlPanel(new ControlPanel(getContext()));
-//            //start fullscreen0
-//            videoView.startFullscreen(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
-//            //MediaPlayerManager.instance().startFullscreen(videoView, ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
-//        }
-    }
-
-    */
-/**
- * 全屏，将mContainer(内部包含mTextureView和mController)从当前容器中移除，并添加到android.R.content中.
- * 切换横屏时需要在manifest的activity标签下添加android:configChanges="orientation|keyboardHidden|screenSize"配置，
- * 以避免Activity重新走生命周期
- *//*
-
-    public void enterFullScreen(Context mContext) {
-        if (mCurrentMode == PlayerMode.MODE_FULL_SCREEN) return;
-
-        // 隐藏ActionBar、状态栏，并横屏
-        hl_view.hideActionBar(mContext);
-        hl_context.scanForActivity(mContext)
-                .setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-
-        ViewGroup contentView = hl_context.scanForActivity(mContext)
-                .findViewById(android.R.id.content);
-        if (mCurrentMode == PlayerMode.MODE_TINY_WINDOW) {
-            contentView.removeView(mContainer);
-        } else {
-//            this.removeView(mContainer);
-        }
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT);
-        contentView.addView(mContainer, params);
-
-        mCurrentMode = PlayerMode.MODE_FULL_SCREEN;
-    }
-
-    */
-/**
- * 退出全屏，移除mTextureView和mController，并添加到非全屏的容器中。
- * 切换竖屏时需要在manifest的activity标签下添加android:configChanges="orientation|keyboardHidden|screenSize"配置，
- * 以避免Activity重新走生命周期.
- *
- * @return true退出全屏.
- *//*
-
-    public boolean exitFullScreen(Context mContext) {
-        if (mCurrentMode == PlayerMode.MODE_FULL_SCREEN) {
-            hl_view.showActionBar(mContext);
-            hl_context.scanForActivity(mContext)
-                    .setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
-            ViewGroup contentView = hl_context.scanForActivity(mContext)
-                    .findViewById(android.R.id.content);
-            contentView.removeView(mContainer);
-            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT);
-//            this.addView(mContainer, params);
-
-            mCurrentMode = PlayerMode.MODE_NORMAL;
-            return true;
-        }
-        return false;
-    }
-
-    */
-/**
- * 进入小窗口播放，小窗口播放的实现原理与全屏播放类似。
- *//*
-
-    public void enterTinyWindow(Context mContext) {
-        if (mCurrentMode == PlayerMode.MODE_TINY_WINDOW) return;
-//        this.removeView(mContainer);
-
-        ViewGroup contentView = hl_context.scanForActivity(mContext)
-                .findViewById(android.R.id.content);
-        // 小窗口的宽度为屏幕宽度的60%，长宽比默认为16:9，右边距、下边距为8dp。
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-                (int) (hl_screen.getScreenWidth(mContext) * 0.6f),
-                (int) (hl_screen.getScreenWidth(mContext) * 0.6f * 9f / 16f));
-        params.gravity = Gravity.BOTTOM | Gravity.END;
-        params.rightMargin = (int) hl_screen.dp2Px(mContext, 8f);
-        params.bottomMargin = (int) hl_screen.dp2Px(mContext, 8f);
-
-        contentView.addView(mContainer, params);
-
-        mCurrentMode = PlayerMode.MODE_TINY_WINDOW;
-    }
-
-    */
-/**
- * 退出小窗口播放
- *//*
-
-    public boolean exitTinyWindow(Context mContext) {
-        if (mCurrentMode == PlayerMode.MODE_TINY_WINDOW) {
-            ViewGroup contentView = hl_context.scanForActivity(mContext)
-                    .findViewById(android.R.id.content);
-            contentView.removeView(mContainer);
-            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT);
-//            this.addView(mContainer, params);
-
-            mCurrentMode = PlayerMode.MODE_NORMAL;
-            return true;
-        }
-        return false;
-    }
-*/
 }

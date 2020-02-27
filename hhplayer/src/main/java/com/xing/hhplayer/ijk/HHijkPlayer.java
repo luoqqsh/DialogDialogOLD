@@ -64,8 +64,8 @@ public class HHijkPlayer extends HHPlayerCore {
                     videoInfoLog.append("duration: ").append(mediaPlayer.getDuration()).append("\n");
                     videoInfoLog.append("tag: ").append(TAG);
                     ViseLog.d(videoInfoLog);
-                    if (onPreparedListener != null) {
-                        onPreparedListener.onListen(mp);
+                    if (onCorePreparedListener != null) {
+                        onCorePreparedListener.onListen(mp);
                     }
                 }
             });
@@ -79,8 +79,8 @@ public class HHijkPlayer extends HHPlayerCore {
             mediaPlayer.setOnCompletionListener(new IjkMediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(IMediaPlayer mp) {
-                    if (onCompletionListener != null) {
-                        onCompletionListener.onListen(mp);
+                    if (onCoreCompletionListener != null) {
+                        onCoreCompletionListener.onListen(mp);
                     }
                 }
             });
@@ -91,9 +91,9 @@ public class HHijkPlayer extends HHPlayerCore {
                     mPlayerState = PlayerStateType.ERROR;
                     playerPrePareState = PlayerPrePareStateType.ERROR;
                     ViseLog.showLog(TAG, what + "  " + extra + "\n" + "播放出错：" + mediaPath);
-                    if (onErrorListener != null) {
+                    if (onCoreErrorListener != null) {
                         String err = "ijk播放出错：" + what + " " + extra + " " + mPlayerState + "\n" + mediaPath;
-                        onErrorListener.onListen(err);
+                        onCoreErrorListener.onListen(err);
                     }
                     return false;
                 }
@@ -101,8 +101,8 @@ public class HHijkPlayer extends HHPlayerCore {
             mediaPlayer.setOnBufferingUpdateListener(new IjkMediaPlayer.OnBufferingUpdateListener() {
                 @Override
                 public void onBufferingUpdate(IMediaPlayer mp, int percent) {
-                    if (onBufferingUpdateListener != null) {
-                        onBufferingUpdateListener.onListen(percent);
+                    if (onCoreBufferingUpdateListener != null) {
+                        onCoreBufferingUpdateListener.onListen(percent);
                     }
                 }
             });
