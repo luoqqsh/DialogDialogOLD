@@ -32,6 +32,7 @@ public abstract class HHPlayerCore {
     public OnPlayerListener<Object> onCoreCompletionListener;
     public OnPlayerListener<Object> onCoreErrorListener;
     public OnPlayerListener<Integer> onCoreBufferingUpdateListener;
+    public OnPlayerListener<Integer> onCoreInfoListener;
     private Map<String, String> mHeaders;
     private Timer timer;
     public boolean isLive = false;//是否实时直播
@@ -104,6 +105,10 @@ public abstract class HHPlayerCore {
 
     public void setCoreBufferingUpdateListener(OnPlayerListener<Integer> bufferingUpdateListener) {
         this.onCoreBufferingUpdateListener = bufferingUpdateListener;
+    }
+
+    public void setCoreInfoListener(OnPlayerListener<Integer> onCoreInfoListener) {
+        this.onCoreInfoListener = onCoreInfoListener;
     }
 
     //是否可以进行播放暂停等控制操作

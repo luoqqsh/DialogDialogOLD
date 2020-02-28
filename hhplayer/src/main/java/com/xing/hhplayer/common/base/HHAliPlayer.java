@@ -122,6 +122,27 @@
 //                ViseLog.showLog(TAG, "Seek Complete");
 //            }
 //        });
+//        mAliyunVodPlayer.setOnInfoListener(new IAliyunVodPlayer.OnInfoListener() {
+//            @Override
+//            public void onInfo(int arg0, int arg1) {
+//                int arg = 0;
+//                switch (arg0) {
+//                    case 101://开始缓冲
+//                        arg = 1;
+//                        break;
+//                    case 102:
+//                        arg = 100;
+//                        break;
+//                    case 105:
+//                        arg = arg1;
+//                        ViseLog.showLog("加载缓冲" + arg1);
+//                        break;
+//                    case 4://error
+//                        break;
+//                }
+//                onCoreInfoListener.onListen(arg);
+//            }
+//        });
 //    }
 //
 //    @Override

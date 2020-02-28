@@ -134,6 +134,19 @@ public class HHLoadingView extends FrameLayout implements View.OnClickListener, 
     }
 
     @Override
+    public void getPlayBuffer(int progress) {
+        if (progress > 0 && progress < 100) {
+            loading.setVisibility(VISIBLE);
+            loading_layout.setVisibility(VISIBLE);
+            loading.start();
+        } else {
+            loading.setVisibility(GONE);
+            loading_layout.setVisibility(GONE);
+            loading.stop();
+        }
+    }
+
+    @Override
     public void changeProgress(final long time) {
 
     }

@@ -17,4 +17,7 @@ public interface ControlViewInterface {
 
     void refreshPlayList(List<TvDataList> tvDataLists);//刷新播放列表
 
+    //缓冲状态（进度）
+    void getPlayBuffer(int progress);
+
 }

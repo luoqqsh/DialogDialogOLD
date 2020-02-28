@@ -57,8 +57,20 @@ public class HHPlayer3 {
     private OnPlayerListener<PlayerStateType> stateChangeListener;
     private OnPlayerListener<Object> completionListener;
     private OnPlayerListener<Integer> bufferingUpdateListener;
+    private OnPlayerListener<Integer> infoListener;
     private int currentPlayIndex = -1;//列表中播放第几个，没列表时为-1
 
+    private OnPlayerListener<Integer> coreInfoListener = new OnPlayerListener<Integer>() {
+        @Override
+        public void onListen(Integer arg) {
+            if (cvInterface != null) {
+                cvInterface.getPlayBuffer(arg);
+            }
+            if (infoListener != null) {
+                infoListener.onListen(arg);
+            }
+        }
+    };
     private OnPlayerListener<Long> coreProgressListener = new OnPlayerListener<Long>() {
         @Override
         public void onListen(Long aLong) {
@@ -184,6 +196,7 @@ public class HHPlayer3 {
         hhPlayerCore.setCoreErrorListener(coreErrorListener);
         hhPlayerCore.setCoreCompletionListener(coreCompletionListener);
         hhPlayerCore.setCoreBufferingUpdateListener(coreBufferingUpdateListener);
+        hhPlayerCore.setCoreInfoListener(coreInfoListener);
     }
 
     public void addControlView() {
@@ -656,12 +669,12 @@ public class HHPlayer3 {
     }
 
     /***********************************设置监听部分**************************************************************/
-    public void setPreparedListener(final OnPlayerListener<Object> preparedListener) {
+    public void setOnPreparedListener(final OnPlayerListener<Object> preparedListener) {
         this.preparedListener = preparedListener;
     }
 
     //播放器播放完成监听
-    public void setCompletionListener(final OnPlayerListener<Object> completionListener) {
+    public void setOnCompletionListener(final OnPlayerListener<Object> completionListener) {
         this.completionListener = completionListener;
     }
 
@@ -671,18 +684,22 @@ public class HHPlayer3 {
     }
 
     //播放器播放进度监听//当前是timer线程
-    public void setProgressListener(final OnPlayerListener<Long> progressListener) {
+    public void setOnProgressListener(final OnPlayerListener<Long> progressListener) {
         this.progressListener = progressListener;
     }
 
     //播放器缓存进度监听
-    public void setBufferingUpdateListener(OnPlayerListener<Integer> bufferingUpdateListener) {
+    public void setOnBufferingUpdateListener(OnPlayerListener<Integer> bufferingUpdateListener) {
         this.bufferingUpdateListener = bufferingUpdateListener;
     }
 
     //播放器状态改变监听
-    public void setStateChangeListener(OnPlayerListener<PlayerStateType> stateChangeListener) {
+    public void setOnStateChangeListener(OnPlayerListener<PlayerStateType> stateChangeListener) {
         this.stateChangeListener = stateChangeListener;
+    }
+
+    public void setOnInfoListener(OnPlayerListener<Integer> infoListener) {
+        this.infoListener = infoListener;
     }
 
     public void sendKeyDown(int keyCode) {

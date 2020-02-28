@@ -164,6 +164,17 @@ public class HHTVView extends FrameLayout implements View.OnClickListener, Contr
     }
 
     @Override
+    public void getPlayBuffer(int progress) {
+        if (progress > 0 && progress < 100) {
+            loading.setVisibility(VISIBLE);
+            loading.start();
+        } else {
+            loading.setVisibility(GONE);
+            loading.stop();
+        }
+    }
+
+    @Override
     public void getPrePareState(PlayerPrePareStateType playerPrePareStateType) {
         switch (playerPrePareStateType) {
             case PREPARING:

@@ -291,6 +291,19 @@ public class HHControlView extends FrameLayout implements View.OnClickListener, 
         hhListView.refreshList(tvDataLists);
     }
 
+    @Override
+    public void getPlayBuffer(int progress) {
+        if (progress > 0 && progress < 100) {
+            loading.setVisibility(VISIBLE);
+            loading_layout.setVisibility(VISIBLE);
+            loading.start();
+        } else {
+            loading.setVisibility(GONE);
+            loading_layout.setVisibility(GONE);
+            loading.stop();
+        }
+    }
+
     private void startDismissTimer() {
         cancelDismissTimer();
         mDismissControlViewTimer = new Timer();

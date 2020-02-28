@@ -54,7 +54,7 @@ public class HHMedia3Activity extends BaseActivity {
         hhview = findViewById(R.id.hhPlayerView);
         hhPlayer3 = new HHPlayer3(this, new HHMediaPlayer(), TvView.NEWTEXTURE, hhview);
         hhPlayer3.addControlView();
-        hhPlayer3.setPreparedListener(new OnPlayerListener<Object>() {
+        hhPlayer3.setOnPreparedListener(new OnPlayerListener<Object>() {
             @Override
             public void onListen(Object o) {
                 hhPlayer3.start();
@@ -65,7 +65,7 @@ public class HHMedia3Activity extends BaseActivity {
                 ViseLog.d(hhview.getWidth() + " " + hhview.getHeight());
             }
         });
-        hhPlayer3.setProgressListener(new OnPlayerListener<Long>() {
+        hhPlayer3.setOnProgressListener(new OnPlayerListener<Long>() {
             @Override
             public void onListen(Long time) {//当前是timer线程
                 runOnUiThread(new Runnable() {
@@ -77,7 +77,7 @@ public class HHMedia3Activity extends BaseActivity {
                 });
             }
         });
-        hhPlayer3.setBufferingUpdateListener(new OnPlayerListener<Integer>() {
+        hhPlayer3.setOnBufferingUpdateListener(new OnPlayerListener<Integer>() {
             @Override
             public void onListen(Integer integer) {
                 seekBar.setSecondaryProgress(integer);

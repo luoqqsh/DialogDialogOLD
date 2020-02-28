@@ -69,4 +69,9 @@ public class HHThumbView extends FrameLayout implements ControlViewInterface {
     public void refreshPlayList(List<TvDataList> tvDataLists) {
 
     }
+
+    @Override
+    public void getPlayBuffer(int progress) {
+
+    }
 }

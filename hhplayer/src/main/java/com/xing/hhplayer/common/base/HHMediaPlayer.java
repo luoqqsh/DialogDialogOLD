@@ -108,7 +108,20 @@ public class HHMediaPlayer extends HHPlayerCore {
             });
             mediaPlayer.setOnInfoListener(new MediaPlayer.OnInfoListener() {
                 @Override
-                public boolean onInfo(MediaPlayer mediaPlayer, int i, int i1) {
+                public boolean onInfo(MediaPlayer mediaPlayer, int arg0, int arg1) {
+                    int arg = 0;
+                    switch (arg0) {
+                        case MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START:
+                            //第一次播放刚渲染完
+                            break;
+                        case MediaPlayer.MEDIA_INFO_BUFFERING_START://开始缓冲
+                            arg = 1;
+                            break;
+                        case MediaPlayer.MEDIA_INFO_BUFFERING_END://结束缓冲
+                            arg = 100;
+                            break;
+                    }
+                    onCoreInfoListener.onListen(arg);
                     return false;
                 }
             });
