@@ -36,7 +36,7 @@ public class HHijkPlayer extends HHPlayerCore {
         if (surface.isValid() && mediaPlayer != null) {
             this.surface = surface;
             mediaPlayer.setSurface(surface);
-            ViseLog.showLog(TAG, "surface设置成功");
+            ViseLog.showInfo(TAG, "surface设置成功");
         }
     }
 
@@ -45,7 +45,7 @@ public class HHijkPlayer extends HHPlayerCore {
         if (mediaPlayer != null) {
             this.surface = surfaceHolder.getSurface();
             mediaPlayer.setSurface(surface);
-            ViseLog.showLog(TAG, "surfaceHolder设置成功");
+            ViseLog.showInfo(TAG, "surfaceHolder设置成功");
         }
     }
 
@@ -74,7 +74,7 @@ public class HHijkPlayer extends HHPlayerCore {
                 @Override
                 public void onSeekComplete(IMediaPlayer mp) {
                     start();
-                    ViseLog.showLog(TAG, "Seek Complete");
+                    ViseLog.showInfo(TAG, "Seek Complete");
                 }
             });
             mediaPlayer.setOnCompletionListener(new IjkMediaPlayer.OnCompletionListener() {
@@ -157,10 +157,34 @@ public class HHijkPlayer extends HHPlayerCore {
     }
 
     @Override
+    public void prepare(Uri mediaUri) {
+        if (mediaUri == null) {
+            onCoreErrorListener.onListen("地址为空或不支持！");
+            return;
+        }
+        if ("HHPlayer3".equals(TAG)) {
+            TAG = "HH-IJKPlayer-Music";
+        }
+        this.mediaUri = mediaUri;
+        stop();
+        reset();//ijkplayer调用reset会连画布一起重置，画布不会销毁
+        try {
+            playerPrePareState = PlayerPrePareStateType.PREPARING;
+            mediaPlayer.setDataSource(context, mediaUri);
+            mediaPlayer.prepareAsync();//异步
+        } catch (Exception e) {
+            e.printStackTrace();
+            mPlayerState = PlayerStateType.ERROR;
+            playerPrePareState = PlayerPrePareStateType.ERROR;
+            onCoreErrorListener.onListen("Prepare异常");
+        }
+    }
+
+    @Override
     public void start() {
         if (mediaPlayer != null) {
             mediaPlayer.start();
-            ViseLog.showLog(TAG, "开始");
+            ViseLog.showInfo(TAG, "开始");
         }
     }
 
@@ -168,7 +192,7 @@ public class HHijkPlayer extends HHPlayerCore {
     public void pause() {
         if (mediaPlayer != null) {
             mediaPlayer.pause();
-            ViseLog.showLog(TAG, "暂停");
+            ViseLog.showInfo(TAG, "暂停");
         }
     }
 
@@ -186,7 +210,7 @@ public class HHijkPlayer extends HHPlayerCore {
             mediaPlayer.stop();
             playerPrePareState = PlayerPrePareStateType.NONE;
             mPlayerState = PlayerStateType.IDLE;
-            ViseLog.showLog(TAG, "停止");
+            ViseLog.showInfo(TAG, "停止");
         }
     }
 
@@ -197,14 +221,14 @@ public class HHijkPlayer extends HHPlayerCore {
             if (surface != null) {
                 if (surface.isValid()) {
                     mediaPlayer.setSurface(surface);
-                    ViseLog.showLog(TAG, "surface设置成功");
+                    ViseLog.showInfo(TAG, "surface设置成功");
                 }
             }
             if (surfaceHolder != null) {
                 mediaPlayer.setDisplay(surfaceHolder);
-                ViseLog.showLog(TAG, "surfaceHolder设置成功");
+                ViseLog.showInfo(TAG, "surfaceHolder设置成功");
             }
-            ViseLog.showLog(TAG, "重置");
+            ViseLog.showInfo(TAG, "重置");
         }
     }
 
@@ -215,7 +239,7 @@ public class HHijkPlayer extends HHPlayerCore {
             mediaPlayer.release();
             mediaPlayer = null;
             context = null;
-            ViseLog.showLog(TAG, "释放");
+            ViseLog.showInfo(TAG, "释放");
         }
     }
 
@@ -223,7 +247,7 @@ public class HHijkPlayer extends HHPlayerCore {
     public void setVolume(float volume) {
         if (mediaPlayer != null) {
             mediaPlayer.setVolume(volume, volume);
-            ViseLog.showLog(TAG, "设置音量:" + volume);
+            ViseLog.showInfo(TAG, "设置音量:" + volume);
         }
     }
 

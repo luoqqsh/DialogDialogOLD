@@ -1,6 +1,5 @@
 package x.com.hl_tools;
 
-import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -8,9 +7,15 @@ import android.content.res.AssetFileDescriptor;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaMetadataRetriever;
+import android.media.MediaPlayer;
 import android.media.MediaScannerConnection;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.text.TextUtils;
+
+import androidx.fragment.app.FragmentActivity;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -19,6 +24,7 @@ import java.net.FileNameMap;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Formatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -161,12 +167,32 @@ public class hl_media {
     /**
      * intent跳转到图库页面，需要处理onActivityResult回调
      *
-     * @param context 上下文
+     * @param mActivity 上下文
      */
-    public static void intentToGallery(Activity context, int requestCode) {
+    public static void intentToImgGallery(FragmentActivity mActivity, int requestCode) {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        context.startActivityForResult(intent, requestCode);
+        mActivity.startActivityForResult(intent, requestCode);
     }
+
+    public static void intentToVideoGallery(FragmentActivity mActivity, int requestCode) {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
+        mActivity.startActivityForResult(intent, requestCode);
+    }
+
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (requestCode == 100 && resultCode == RESULT_OK && null != data) {
+//            Uri selectedVideo = data.getData();
+//            String[] filePathColumn = {MediaStore.Video.Media.DATA};
+//            Cursor cursor = mActivity.getContentResolver().query(selectedVideo, filePathColumn, null, null, null);
+//            cursor.moveToFirst();
+//            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+//            String videoPath = cursor.getString(columnIndex);
+//            cursor.close();
+//            ViseLog.d(videoPath);
+//        }
+//    }
 
     public static String getUriStringById(int id) {
         return MediaStore.Video.Media
@@ -200,5 +226,83 @@ public class hl_media {
         return true;
     }
 
+    /**
+     * 获取网络mp4视频第一帧，不支持本地视频
+     *
+     * @param videoUrl 视频地址
+     * @return bitmap
+     */
+    public static Bitmap getNetVideoBitmap(String videoUrl) {
+        Bitmap bitmap = null;
+        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+        try {
+            //根据url获取缩略图
+            retriever.setDataSource(videoUrl, new HashMap());
+            //获得第一帧图片
+            bitmap = retriever.getFrameAtTime();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            retriever.release();
+        }
+        return bitmap;
+    }
 
+    /**
+     * 获取本地mp4视频第一帧，不支持网络视频
+     *
+     * @param uri uri
+     * @return bitmap
+     */
+    public static Bitmap getVideoThumb(Context context, Uri uri) {
+        MediaMetadataRetriever media = new MediaMetadataRetriever();
+        media.setDataSource(context, uri);
+        return media.getFrameAtTime();
+    }
+
+    //获取到的图片很小
+    public static Bitmap getVideoThumb(String videoPath) {
+        return ThumbnailUtils.createVideoThumbnail(videoPath, MediaStore.Video.Thumbnails.MICRO_KIND);
+    }
+
+    /**
+     * 获取视频/音频的时长
+     *
+     * @param filePath 文件路径
+     * @return 时长
+     */
+    public static long getMediaTimeMs(String filePath) {
+        int duration = 0;
+        try {
+            MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+            retriever.setDataSource(filePath); //在获取前，设置文件路径（应该只能是本地路径）
+            String durationStr = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+//            int originWidth = Integer.parseInt(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH));//视频宽
+//            int originHeight = Integer.parseInt(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT));//视频高
+//            int bitrate = Integer.parseInt(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_BITRATE));//码率
+            retriever.release(); //释放
+            if (!TextUtils.isEmpty(durationStr)) {
+                duration = Integer.parseInt(durationStr);
+            }
+        } catch (Exception e) {
+            return duration;
+        }
+        return duration;
+    }
+
+    private int getMediaTimeMs(Context context, Uri uri) {
+        MediaPlayer mediaPlayer = new MediaPlayer();
+        try {
+            mediaPlayer.setDataSource(context, uri);
+            mediaPlayer.prepare();
+            int duration = mediaPlayer.getDuration();
+            mediaPlayer.release();
+            return duration;
+        } catch (IOException e) {
+            e.printStackTrace();
+            mediaPlayer.release();
+        }
+        return 0;
+    }
 }

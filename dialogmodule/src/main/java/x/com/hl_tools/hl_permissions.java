@@ -16,7 +16,6 @@ import x.com.hl_tools.permissions.ApplyPermissionActivity;
  * 动态权限申请
  */
 public class hl_permissions {
-    private static Map<String, Boolean> failPermission;
 
     public interface RequestPermissionCallBack {
         void requestPermissionSuccess();
@@ -52,7 +51,6 @@ public class hl_permissions {
     }
 
     public static void applyPermission(Context context, String[] permissionList, RequestPermissionCallBack permissionCallBack) {
-        failPermission = new HashMap<>();
         mPermissionCallBack = permissionCallBack;
         //6.0及以上 申请权限
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null) {
@@ -82,6 +80,7 @@ public class hl_permissions {
 
     public static void requestPermissionsResult(String[] permissions, int[] grantResults, boolean[] isNoTip) {
         boolean isApplyFail = false;
+        Map<String, Boolean> failPermission = new HashMap<>();
         for (int i = 0; i < permissions.length; i++) {
             if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
                 //存在权限申请被拒绝

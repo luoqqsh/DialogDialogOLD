@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,6 +17,7 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 import x.com.hl_dialog.R;
 import x.com.hl_log.ViseLog;
@@ -112,7 +114,7 @@ public class hl_file {
      */
     public static boolean isFolderExist(String path) {
         if (TextUtils.isEmpty(path)) {
-            ViseLog.showLog("hl_error", "path为空");
+            ViseLog.e("hl_error", "path为空");
             return false;
         }
         File file = new File(path);
@@ -163,7 +165,7 @@ public class hl_file {
         if (!(file.exists() && file.isDirectory())) {
             return (file.mkdirs());
         } else {
-            ViseLog.showLog("hl_error", file.getAbsolutePath() + "该文件夹已存在");
+            ViseLog.e("hl_error", file.getAbsolutePath() + "该文件夹已存在");
         }
         return false;
     }
@@ -177,7 +179,7 @@ public class hl_file {
                 return false;
             }
         } else {
-            ViseLog.showLog("hl_error", file.getAbsolutePath() + "该文件夹已存在");
+            ViseLog.e("hl_error", file.getAbsolutePath() + "该文件夹已存在");
             return false;
         }
     }
@@ -195,7 +197,7 @@ public class hl_file {
             File dirFile = new File(parentPath);
             if (!dirFile.exists()) {
                 if (!dirFile.mkdirs()) {
-                    ViseLog.showLog("hl_error", "创建目录失败");
+                    ViseLog.e("hl_error", "创建目录失败");
                     return null;
                 }
             }
@@ -203,14 +205,14 @@ public class hl_file {
                 if (dirFile.delete()) {
                     return createFile(parentPath, dirName, isReplace);
                 } else {
-                    ViseLog.showLog("hl_error", "删除旧文件失败");
+                    ViseLog.e("hl_error", "删除旧文件失败");
                     return null;
                 }
             }
             File file = new File(parentPath, dirName);
             if (!file.exists()) {
                 if (!file.createNewFile()) {
-                    ViseLog.showLog("hl_error", "新建文件失败");
+                    ViseLog.e("hl_error", "新建文件失败");
                     return null;
                 }
             } else {
@@ -219,20 +221,20 @@ public class hl_file {
                         if (file.createNewFile()) {
                             return file;
                         } else {
-                            ViseLog.showLog("hl_error", "删除后新建文件失败");
+                            ViseLog.e("hl_error", "删除后新建文件失败");
                             return null;
                         }
                     } else {
-                        ViseLog.showLog("hl_error", "文件已存在且无法删除");
+                        ViseLog.e("hl_error", "文件已存在且无法删除");
                     }
                 } else {
-                    ViseLog.showLog("hl_info", "文件已存在");
+                    ViseLog.e("hl_info", "文件已存在");
                     return null;
                 }
             }
             return file;
         } catch (Exception e) {
-            ViseLog.showLog("hl_error", "新建文件失败" + e.getMessage());
+            ViseLog.e("hl_error", "新建文件失败" + e.getMessage());
             e.printStackTrace();
             return null;
         }
@@ -249,7 +251,7 @@ public class hl_file {
         if (isFileExist(filePath)) {
             return deleteFile(new File(filePath));
         }
-        ViseLog.showLog("hl_error", filePath + "文件不存在");
+        ViseLog.e("hl_error", filePath + "文件不存在");
         return false;
     }
 
@@ -263,7 +265,7 @@ public class hl_file {
         if (isFolderExist(filePath)) {
             return deleteFile(new File(filePath));
         }
-        ViseLog.showLog("hl_error", filePath + "文件夹不存在");
+        ViseLog.e("hl_error", filePath + "文件夹不存在");
         return false;
     }
 
@@ -277,7 +279,7 @@ public class hl_file {
         if (isFolderExist(filePath)) {
             return deleteFile(new File(filePath), true);
         }
-        ViseLog.showLog("hl_error", filePath + "文件夹不存在");
+        ViseLog.e("hl_error", filePath + "文件夹不存在");
         return false;
     }
 
@@ -287,7 +289,7 @@ public class hl_file {
 
     public static boolean deleteFile(File file, boolean isClear) {
         if (file == null || !file.exists()) {
-            ViseLog.showLog("hl_error", "文件不存在");
+            ViseLog.e("hl_error", "文件不存在");
             return false;
         }
         if (file.isDirectory()) {
@@ -295,7 +297,7 @@ public class hl_file {
             if (fileList != null) {
                 for (File f : fileList) {
                     if (!deleteFile(f)) {
-                        ViseLog.showLog("hl_error", f.getName() + "删除失败");
+                        ViseLog.e("hl_error", f.getName() + "删除失败");
                     }
                 }
             }
@@ -320,7 +322,7 @@ public class hl_file {
     public static boolean copyFile(String inputFilePath, String outputFilePath, boolean isReplace) {
         try {
             if (!isFileExist(inputFilePath)) {
-                ViseLog.showLog("hl_error", inputFilePath + "源文件不存在");
+                ViseLog.e("hl_error", inputFilePath + "源文件不存在");
                 return false;
             }
             File file = new File(outputFilePath);
@@ -331,11 +333,11 @@ public class hl_file {
                     if (file.delete()) {
                         createFile(file.getParent(), file.getName(), true);
                     } else {
-                        ViseLog.showLog("hl_error", "文件删除失败");
+                        ViseLog.e("hl_error", "文件删除失败");
                         return false;
                     }
                 } else {
-                    ViseLog.showLog("hl_error", "目标文件已存在，请使用强制复制");
+                    ViseLog.e("hl_error", "目标文件已存在，请使用强制复制");
                     return false;
                 }
             }
@@ -397,7 +399,7 @@ public class hl_file {
     private static boolean copyFolder(String inputFilePath, String outputFilePath, boolean isReplace) {
         try {
             if (!isFolderExist(inputFilePath)) {
-                ViseLog.showLog("hl_error", inputFilePath + "源文件夹不存在");
+                ViseLog.e("hl_error", inputFilePath + "源文件夹不存在");
                 return false;
             }
             File in = new File(inputFilePath);
@@ -470,7 +472,7 @@ public class hl_file {
 
     public static String readStringFromFile(String filePath, String code) {
         if (TextUtils.isEmpty(filePath)) {
-            ViseLog.showLog("hl_error", "路径不可为空");
+            ViseLog.e("hl_error", "路径不可为空");
             return null;
         }
         File file = new File(filePath);
@@ -489,7 +491,7 @@ public class hl_file {
 
     public static String readStringFromFile(File file, String code) {
         if (!file.exists()) {
-            ViseLog.showLog("hl_error", file.getAbsolutePath() + "读取的文件不存在");
+            ViseLog.e("hl_error", file.getAbsolutePath() + "读取的文件不存在");
             return null;
         }
         try {
@@ -516,7 +518,7 @@ public class hl_file {
      */
     public static boolean renameFile(String path, String newName) {
         if (!isFileExist(path)) {
-            ViseLog.showLog("hl_error", "文件不存在");
+            ViseLog.e("hl_error", "文件不存在");
             return false;
         }
         File newFile = new File(path);
@@ -525,7 +527,7 @@ public class hl_file {
 
     public static boolean renameFile(File file, String newName) {
         if (!file.exists()) {
-            ViseLog.showLog("hl_error", "文件不存在");
+            ViseLog.e("hl_error", "文件不存在");
             return false;
         }
         File newFile = new File(file.getParent(), newName);
@@ -571,18 +573,34 @@ public class hl_file {
      * @param file 文件
      * @return long 大小
      */
-    public static long getFileSize(File file) {
+    public static long getFolderSize(File file) {
         long size = 0;
-        if (file != null && file.exists() && file.isDirectory()) {
+        if (isFolderExist(file.getPath())) {
             File[] files = file.listFiles();
             if (files != null) {
                 for (File value : files) {
                     if (value.isDirectory()) {
-                        size = size + getFileSize(value);
+                        size = size + getFolderSize(value);
                     } else {
                         size = size + value.length();
                     }
                 }
+            }
+        }
+        return size;
+    }
+
+    public static long getFileSize(File file) {
+        long size = 0;
+        if (isFileExist(file.getPath())) {
+            FileInputStream fis;
+            try {
+                fis = new FileInputStream(file);
+                size = fis.available();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
         return size;
@@ -602,12 +620,12 @@ public class hl_file {
 
     public static int getFileType(String path) {
         path = path.toLowerCase();
-        if (path.endsWith(".doc") || path.endsWith(".docx") || path.endsWith(".xls") || path.endsWith(".xlsx")
-                || path.endsWith(".ppt") || path.endsWith(".pptx")) {
+        if (getExtFromFilename(path).equals(".doc") || getExtFromFilename(path).equals(".docx") || getExtFromFilename(path).equals(".xls") || getExtFromFilename(path).equals(".xlsx")
+                || getExtFromFilename(path).equals(".ppt") || getExtFromFilename(path).equals(".pptx")) {
             return TYPE_DOC;
-        } else if (path.endsWith(".apk")) {
+        } else if (getExtFromFilename(path).equals(".apk")) {
             return TYPE_APK;
-        } else if (path.endsWith(".zip") || path.endsWith(".rar") || path.endsWith(".tar") || path.endsWith(".gz")) {
+        } else if (getExtFromFilename(path).equals(".zip") || getExtFromFilename(path).equals(".rar") || getExtFromFilename(path).equals(".tar") || getExtFromFilename(path).equals(".gz")) {
             return TYPE_ZIP;
         } else {
             return -1;
@@ -620,17 +638,18 @@ public class hl_file {
     public static int getFileIconByPath(String path) {
         path = path.toLowerCase();
         int iconId = R.mipmap.icon_error;
-        if (path.endsWith(".txt")) {
+
+        if (getExtFromFilename(path).equals(".txt")) {
             iconId = R.mipmap.icon_error;
-        } else if (path.endsWith(".doc") || path.endsWith(".docx")) {
+        } else if (getExtFromFilename(path).equals(".doc") || getExtFromFilename(path).equals(".docx")) {
             iconId = R.mipmap.icon_error;
-        } else if (path.endsWith(".xls") || path.endsWith(".xlsx")) {
+        } else if (getExtFromFilename(path).equals(".xls") || getExtFromFilename(path).equals(".xlsx")) {
             iconId = R.mipmap.icon_error;
-        } else if (path.endsWith(".ppt") || path.endsWith(".pptx")) {
+        } else if (getExtFromFilename(path).equals(".ppt") || getExtFromFilename(path).equals(".pptx")) {
             iconId = R.mipmap.icon_error;
-        } else if (path.endsWith(".xml")) {
+        } else if (getExtFromFilename(path).equals(".xml")) {
             iconId = R.mipmap.icon_error;
-        } else if (path.endsWith(".htm") || path.endsWith(".html")) {
+        } else if (getExtFromFilename(path).equals(".htm") || getExtFromFilename(path).equals(".html")) {
             iconId = R.mipmap.icon_error;
         }
         return iconId;
@@ -641,12 +660,8 @@ public class hl_file {
      */
     public static boolean isPicFile(String path) {
         path = path.toLowerCase();
-        if (path.toLowerCase().endsWith(".jpg") || path.toLowerCase().endsWith(".jpeg") || path.toLowerCase().endsWith(".png")) {
-            return true;
-        }
-        return false;
+        return getExtFromFilename(path).equals(".jpg") || getExtFromFilename(path).equals(".jpeg") || getExtFromFilename(path).equals(".png");
     }
-
 
     /**
      * 判断SD卡是否挂载
@@ -664,7 +679,7 @@ public class hl_file {
     public static String getExtFromFilename(String filename) {
         int dotPosition = filename.lastIndexOf('.');
         if (dotPosition != -1) {
-            return filename.substring(dotPosition + 1, filename.length());
+            return filename.substring(dotPosition + 1).toLowerCase();
         }
         return "";
     }
@@ -672,16 +687,14 @@ public class hl_file {
     /**
      * 读取文件的修改时间
      *
-     * @param f
+     * @param file 文件
      * @return
      */
-    public static String getModifiedTime(File f) {
+    public static String getModifiedTime(File file) {
         Calendar cal = Calendar.getInstance();
-        long time = f.lastModified();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        long time = file.lastModified();
+        SimpleDateFormat formatter = new SimpleDateFormat(hl_time.yyyyMMddHHmmss, Locale.CHINA);
         cal.setTimeInMillis(time);
-        // System.out.println("修改时间[2] " + formatter.format(cal.getTime()));
-        // 输出：修改时间[2] 2009-08-17 10:32:38
         return formatter.format(cal.getTime());
     }
 }

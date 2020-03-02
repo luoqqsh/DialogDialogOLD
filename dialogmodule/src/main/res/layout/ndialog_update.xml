@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/dialog_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
@@ -9,12 +8,10 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/warning_frame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:orientation="vertical">
-
 
         <ImageView
             android:layout_width="match_parent"
@@ -23,7 +20,7 @@
         <!-- 对话框消息内容 -->
 
         <TextView
-            android:id="@+id/mdialog_message"
+            android:id="@+id/nDialogMessage"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginLeft="20dp"
@@ -40,18 +37,18 @@
             <!-- 对话框确定/取消按钮 -->
 
             <LinearLayout
-                android:id="@+id/dialog_btnlayout"
+                android:id="@+id/nDialogBtnLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:padding="22dp">
 
                 <Button
-                    android:id="@+id/mbtn1"
+                    android:id="@+id/nDialogBtn1"
                     style="@style/kuang_button1"
-                    android:visibility="gone"
                     android:background="@drawable/dialog_button_gray"
-                    android:text="下次再说" />
+                    android:text="下次再说"
+                    android:visibility="gone" />
 
                 <View
                     android:id="@+id/view"
@@ -59,15 +56,15 @@
                     android:layout_height="0dp" />
 
                 <Button
-                    android:id="@+id/mbtn2"
+                    android:id="@+id/nDialogBtn2"
                     style="@style/kuang_button1"
-                    android:visibility="gone"
                     android:text="立即更新"
-                    android:textColor="#ffffffff" />
+                    android:textColor="#ffffffff"
+                    android:visibility="gone" />
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/ll_progress"
+                android:id="@+id/nDialogProgressLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/dialog_background"
@@ -76,7 +73,7 @@
                 android:visibility="gone">
 
                 <ProgressBar
-                    android:id="@+id/progress"
+                    android:id="@+id/nDialogProgress"
                     style="@style/StyleProgressBar"
                     android:layout_width="match_parent"
                     android:layout_height="10dp"
@@ -84,7 +81,7 @@
                     android:progressDrawable="@drawable/layer_pd" />
 
                 <TextView
-                    android:id="@+id/tv_progress"
+                    android:id="@+id/nDialogProgressText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -97,7 +94,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/mdialog_title"
+        android:id="@+id/nDialogTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"

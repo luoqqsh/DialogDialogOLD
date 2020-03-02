@@ -13,7 +13,6 @@ import x.com.hl_log.ViseLog;
 import x.com.hl_tools.hl_leak;
 import x.com.hl_tools.hl_permissions;
 
-
 public class ApplyPermissionActivity extends Activity {
     private final int REQUEST_CODE_PERMISSIONS = 1211;
 
@@ -52,8 +51,7 @@ public class ApplyPermissionActivity extends Activity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case REQUEST_CODE_PERMISSIONS:

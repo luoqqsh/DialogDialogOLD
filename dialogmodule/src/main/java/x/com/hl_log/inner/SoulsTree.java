@@ -50,6 +50,14 @@ public class SoulsTree extends Tree {
     }
 
     @Override
+    public void showInfo(Object object) {
+        Tree[] forest = forestAsArray;
+        for (int i = 0, count = forest.length; i < count; i++) {
+            forest[i].showInfo(object);
+        }
+    }
+
+    @Override
     public void w(String message, Object... args) {
         Tree[] forest = forestAsArray;
         for (int i = 0, count = forest.length; i < count; i++) {

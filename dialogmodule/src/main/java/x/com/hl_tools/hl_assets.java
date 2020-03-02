@@ -42,12 +42,12 @@ public class hl_assets {
                 }
                 return true;
             } else {
-                ViseLog.showLog("请检查文件或目录名是否正确！");
+                ViseLog.e("请检查文件或目录名是否正确！");
                 return false;
             }
         } catch (Exception e) {
             e.printStackTrace();
-            ViseLog.showLog("复制文件出现异常！\n" + e);
+            ViseLog.e("复制文件出现异常！\n" + e);
             return false;
         }
     }

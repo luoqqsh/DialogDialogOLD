@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/mbtn1"
+        android:id="@+id/nDialogBtn1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -24,7 +24,7 @@
         android:background="#fff0f0f0" />
 
     <TextView
-        android:id="@+id/mbtn2"
+        android:id="@+id/nDialogBtn2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -40,7 +40,7 @@
         android:background="#fff0f0f0" />
 
     <TextView
-        android:id="@+id/mbtn3"
+        android:id="@+id/nDialogBtn3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"

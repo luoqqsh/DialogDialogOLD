@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:jiujie="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -11,36 +11,29 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/java"
+            android:id="@+id/mainJava"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="java测试" />
 
         <Button
-            android:id="@+id/tongzhi"
+            android:id="@+id/mainNotice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="通知" />
 
         <Button
-            android:id="@+id/x5web"
+            android:id="@+id/mainWeb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="x5内核" />
+            android:text="web" />
 
         <Button
-            android:id="@+id/camera"
+            android:id="@+id/mainCamera"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="camera" />
+            android:text="相机" />
 
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/animation_view4"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            jiujie:lottie_autoPlay="false"
-            jiujie:lottie_fileName="shan.json"
-            jiujie:lottie_imageAssetsFolder="images/shan/images" />
 
     </LinearLayout>
 
@@ -50,22 +43,22 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/log"
+            android:id="@+id/mainLog"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Log" />
 
         <Button
-            android:id="@+id/dialog"
+            android:id="@+id/mainDialog"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="对话框" />
 
         <Button
-            android:id="@+id/open"
+            android:id="@+id/mainOpenGL"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="opengl" />
+            android:text="openGL" />
 
         <Button
             android:id="@+id/wallpaperset"
@@ -86,16 +79,16 @@
             android:text="close" />
 
         <Button
-            android:id="@+id/media"
+            android:id="@+id/mainPlayer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="media" />
+            android:text="播放器" />
 
         <Button
-            android:id="@+id/mapping"
+            android:id="@+id/mainConfusion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="mapping" />
+            android:text="混淆" />
     </LinearLayout>
 
     <LinearLayout
@@ -104,19 +97,19 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/view"
+            android:id="@+id/mainView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="view" />
 
         <Button
-            android:id="@+id/map"
+            android:id="@+id/mainMap"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="map" />
+            android:text="地图" />
 
         <Button
-            android:id="@+id/mediacodec"
+            android:id="@+id/mainMediaCodec"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="mediacodec" />
@@ -124,24 +117,33 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/imgv_test"
-            android:layout_width="match_parent"
-            android:layout_height="200dp" />
+        <Button
+            android:id="@+id/mainLocal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="本地" />
+
     </LinearLayout>
 
+    <ImageView
+        android:id="@+id/mainImg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="aaa" />
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animation_view4"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        app:lottie_autoPlay="false"
+        app:lottie_fileName="shan.json"
+        app:lottie_imageAssetsFolder="images/shan/images" />
 </LinearLayout>

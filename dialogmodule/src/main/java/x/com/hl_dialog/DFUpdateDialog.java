@@ -65,11 +65,11 @@ public class DFUpdateDialog extends BaseDialogFragment {
             }
         });
         Dialog xdialog = nDialog.create();
-        tv_status = xdialog.findViewById(R.id.tv_progress);
+        tv_status = xdialog.findViewById(R.id.nDialogProgressText);
         View view = xdialog.findViewById(R.id.view);
-        pb_prog = xdialog.findViewById(R.id.progress);
-        dialog_btnlayout = xdialog.findViewById(R.id.dialog_btnlayout);
-        ll_progress = xdialog.findViewById(R.id.ll_progress);
+        pb_prog = xdialog.findViewById(R.id.nDialogProgress);
+        dialog_btnlayout = xdialog.findViewById(R.id.nDialogBtnLayout);
+        ll_progress = xdialog.findViewById(R.id.nDialogProgressLayout);
 
         if (isforce == 1) {
             view.setVisibility(View.GONE);

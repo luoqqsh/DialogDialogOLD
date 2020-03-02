@@ -17,7 +17,7 @@
             android:text="get" />
 
         <Button
-            android:id="@+id/camera"
+            android:id="@+id/mainCamera"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="camera" />

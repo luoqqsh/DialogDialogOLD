@@ -28,7 +28,7 @@ public class HHCameraActivity extends BaseActivity implements View.OnClickListen
         RelativeLayout rl_camera = findViewById(R.id.rl_camera);
         findViewById(R.id.get).setOnClickListener(this);
         findViewById(R.id.video).setOnClickListener(this);
-        findViewById(R.id.camera).setOnClickListener(this);
+        findViewById(R.id.mainCamera).setOnClickListener(this);
         findViewById(R.id.stop).setOnClickListener(this);
         findViewById(R.id.switchcamera).setOnClickListener(this);
         camera1 = new HHCamera(this, new Camera1(), rl_camera);
@@ -40,7 +40,7 @@ public class HHCameraActivity extends BaseActivity implements View.OnClickListen
             case R.id.get:
                 camera1.startPreView();
                 break;
-            case R.id.camera:
+            case R.id.mainCamera:
                 break;
             case R.id.video:
                 break;

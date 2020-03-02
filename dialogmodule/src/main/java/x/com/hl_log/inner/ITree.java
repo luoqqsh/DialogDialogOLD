@@ -16,6 +16,8 @@ public interface ITree {
 
     void showLog(Object object);
 
+    void showInfo(Object object);
+
     void w(String message, Object... args);
 
     void w(Object object);

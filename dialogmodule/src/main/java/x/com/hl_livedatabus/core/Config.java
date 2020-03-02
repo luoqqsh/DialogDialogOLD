@@ -1,0 +1,63 @@
+package x.com.hl_livedatabus.core;
+
+import android.content.Context;
+
+import androidx.annotation.NonNull;
+
+import x.com.hl_livedatabus.ipc.json.JsonConverter;
+
+/**
+ * Created by liaohailiang on 2019-08-28.
+ */
+public class Config {
+
+    /**
+     * lifecycleObserverAlwaysActive
+     * set if then observer can always receive message
+     * true: observer can always receive message
+     * false: observer can only receive message when resumed
+     *
+     * @param active
+     * @return
+     */
+    public final static String TAG = "LiveDataBus";
+
+    public Config lifecycleObserverAlwaysActive(boolean active) {
+        LiveEventBusCore.get().setLifecycleObserverAlwaysActive(active);
+        return this;
+    }
+
+    /**
+     * @param clear
+     * @return true: clear livedata when no observer observe it
+     * false: not clear livedata unless app was killed
+     */
+    public Config autoClear(boolean clear) {
+        LiveEventBusCore.get().setAutoClear(clear);
+        return this;
+    }
+
+    /**
+     * config broadcast
+     * only if you called this method, you can use broadcastValue() to send broadcast message
+     *
+     * @param context
+     * @return
+     */
+    public Config supportBroadcast(Context context) {
+        LiveEventBusCore.get().registerReceiver(context);
+        return this;
+    }
+
+    /**
+     * setJsonConverter
+     * default use gson as json converter
+     *
+     * @param jsonConverter
+     * @return
+     */
+    public Config setJsonConverter(@NonNull JsonConverter jsonConverter) {
+        LiveEventBusCore.get().setJsonConverter(jsonConverter);
+        return this;
+    }
+}

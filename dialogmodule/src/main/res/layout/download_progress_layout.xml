@@ -11,7 +11,7 @@
     <!-- 对话框消息内容 -->
 
     <TextView
-        android:id="@+id/mdialog_message"
+        android:id="@+id/nDialogMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
@@ -22,7 +22,7 @@
 
     <!-- 下载进度% -->
     <TextView
-        android:id="@+id/tv_progress"
+        android:id="@+id/nDialogProgressText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
@@ -33,7 +33,7 @@
     <!-- 下载进度条-->
 
     <ProgressBar
-        android:id="@+id/progress"
+        android:id="@+id/nDialogProgress"
         style="@style/StyleProgressBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

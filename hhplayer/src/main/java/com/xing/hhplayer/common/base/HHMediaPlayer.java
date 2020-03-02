@@ -2,6 +2,7 @@ package com.xing.hhplayer.common.base;
 
 import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Build;
 import android.view.Surface;
 import android.view.SurfaceHolder;
@@ -33,7 +34,7 @@ public class HHMediaPlayer extends HHPlayerCore {
             this.surfaceHolder = surfaceHolder;
             if (mediaPlayer != null) {
                 mediaPlayer.setDisplay(surfaceHolder);
-                ViseLog.showLog(TAG, "surfaceHolder设置成功");
+                ViseLog.showInfo(TAG, "surfaceHolder设置成功");
             }
         } else {
             onCoreErrorListener.onListen("surfaceHolder为空！");
@@ -46,7 +47,7 @@ public class HHMediaPlayer extends HHPlayerCore {
             this.surface = surface;
             if (mediaPlayer != null && surface.isValid()) {
                 mediaPlayer.setSurface(surface);
-                ViseLog.showLog(TAG, "surface设置成功");
+                ViseLog.showInfo(TAG, "surface设置成功");
             }
         } else {
             onCoreErrorListener.onListen("surface为空！");
@@ -79,7 +80,7 @@ public class HHMediaPlayer extends HHPlayerCore {
                 public void onSeekComplete(MediaPlayer mp) {
                     mPlayerState = PlayerStateType.PLAYING;
                     start();
-                    ViseLog.showLog(TAG, "Seek Complete");
+                    ViseLog.showInfo(TAG, "Seek Complete");
                 }
             });
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -148,6 +149,30 @@ public class HHMediaPlayer extends HHPlayerCore {
     }
 
     @Override
+    public void prepare(Uri mediaUri) {
+        if (mediaUri == null) {
+            onCoreErrorListener.onListen("地址为空或不支持！" + mediaUri);
+            return;
+        }
+        if ("HHPlayer3".equals(TAG)) {
+            TAG = "HH-MediaPlayer-Music";
+        }
+        this.mediaUri = mediaUri;
+        stop();
+        reset();
+        try {
+            mediaPlayer.setDataSource(context, mediaUri);
+            mediaPlayer.prepareAsync();//异步
+        } catch (Exception e) {
+            e.printStackTrace();
+            mPlayerState = PlayerStateType.ERROR;
+            playerPrePareState = PlayerPrePareStateType.ERROR;
+            onCoreErrorListener.onListen("Prepare异常");
+        }
+
+    }
+
+    @Override
     public void prepare(String path) {
         if (path == null) {
             onCoreErrorListener.onListen("地址为空或不支持！" + path);
@@ -184,7 +209,7 @@ public class HHMediaPlayer extends HHPlayerCore {
     public void start() {
         if (mediaPlayer != null) {
             mediaPlayer.start();
-            ViseLog.showLog(TAG, "开始");
+            ViseLog.showInfo(TAG, "开始");
         }
     }
 
@@ -192,7 +217,7 @@ public class HHMediaPlayer extends HHPlayerCore {
     public void pause() {
         if (mediaPlayer != null) {
             mediaPlayer.pause();
-            ViseLog.showLog(TAG, "暂停");
+            ViseLog.showInfo(TAG, "暂停");
         }
     }
 
@@ -204,7 +229,7 @@ public class HHMediaPlayer extends HHPlayerCore {
             } else {
                 mediaPlayer.seekTo((int) position);
             }
-            ViseLog.showLog(TAG, "seekTo:" + position);
+            ViseLog.showInfo(TAG, "seekTo:" + position);
         }
     }
 
@@ -215,7 +240,7 @@ public class HHMediaPlayer extends HHPlayerCore {
             mediaPlayer.stop();
             playerPrePareState = PlayerPrePareStateType.NONE;
             mPlayerState = PlayerStateType.IDLE;
-            ViseLog.showLog(TAG, "停止");
+            ViseLog.showInfo(TAG, "停止");
         }
     }
 
@@ -223,7 +248,7 @@ public class HHMediaPlayer extends HHPlayerCore {
     public void reset() {
         if (mediaPlayer != null) {
             mediaPlayer.reset();
-            ViseLog.showLog(TAG, "重置");
+            ViseLog.showInfo(TAG, "重置");
         }
     }
 
@@ -233,7 +258,7 @@ public class HHMediaPlayer extends HHPlayerCore {
             mediaPlayer.release();
             mediaPlayer = null;
             context = null;
-            ViseLog.showLog(TAG, "释放");
+            ViseLog.showInfo(TAG, "释放");
         }
     }
 
@@ -241,7 +266,7 @@ public class HHMediaPlayer extends HHPlayerCore {
     public void setVolume(float volume) {
         if (mediaPlayer != null) {
             mediaPlayer.setVolume(volume, volume);
-            ViseLog.showLog(TAG, "设置音量:" + volume);
+            ViseLog.showInfo(TAG, "设置音量:" + volume);
         }
     }
 
@@ -266,12 +291,12 @@ public class HHMediaPlayer extends HHPlayerCore {
         if (surface != null) {
             if (surface.isValid()) {
                 mediaPlayer.setSurface(surface);
-                ViseLog.showLog(TAG, "surface设置成功");
+                ViseLog.showInfo(TAG, "surface设置成功");
             }
         }
         if (surfaceHolder != null) {
             mediaPlayer.setDisplay(surfaceHolder);
-            ViseLog.showLog(TAG, "surfaceHolder设置成功");
+            ViseLog.showInfo(TAG, "surfaceHolder设置成功");
         }
     }
 
@@ -280,7 +305,7 @@ public class HHMediaPlayer extends HHPlayerCore {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (mediaPlayer != null) {
                 mediaPlayer.setPlaybackParams(mediaPlayer.getPlaybackParams().setSpeed(speed));
-                ViseLog.showLog(TAG, "速度:" + speed);
+                ViseLog.showInfo(TAG, "速度:" + speed);
             }
         } else {
             onCoreErrorListener.onListen("速度设置失败，系统必须大于6.0！");

@@ -188,11 +188,12 @@ public class LogConvert {
             StringBuilder builder = new StringBuilder();
             getClassFields(object.getClass(), builder, object, false, childLevel);
             Class superClass = object.getClass().getSuperclass();
-            while (!superClass.equals(Object.class)) {
-                getClassFields(superClass, builder, object, true, childLevel);
-                superClass = superClass.getSuperclass();
+            if (superClass != null) {
+                while (!superClass.equals(Object.class)) {
+                    getClassFields(superClass, builder, object, true, childLevel);
+                    superClass = superClass.getSuperclass();
+                }
             }
-
             String s = builder.toString();
             return s.replace("]} ,", "]} ,\n------");
         } else {

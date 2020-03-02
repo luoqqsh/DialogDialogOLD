@@ -309,10 +309,7 @@ public class hl_medialist {
                     int count = parentFile.list(new FilenameFilter() {
                         @Override
                         public boolean accept(File dir, String filename) {
-                            if (filename.endsWith(".jpeg") || filename.endsWith(".jpg") || filename.endsWith(".png")) {
-                                return true;
-                            }
-                            return false;
+                            return hl_file.getExtFromFilename(filename).equals(".jpeg") || hl_file.getExtFromFilename(filename).equals(".jpg") || hl_file.getExtFromFilename(filename).equals(".png");
                         }
                     }).length;
                     folderBean.setCount(count);

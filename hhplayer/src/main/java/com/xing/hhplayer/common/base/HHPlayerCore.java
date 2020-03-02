@@ -1,6 +1,7 @@
 package com.xing.hhplayer.common.base;
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 
@@ -21,6 +22,7 @@ public abstract class HHPlayerCore {
     public String ETAG = "HHPlayer3_error";
 
     public Object mediaPath;
+    public Uri mediaUri;
     public int videoWidth;
     public int videoHeight;
 
@@ -40,6 +42,8 @@ public abstract class HHPlayerCore {
     public int videoScalingMode;//缩放模式,0为默认大小，1为填充
 
     public abstract void prepare(String mediaPath);
+
+    public abstract void prepare(Uri mediaUri);
 
     public abstract void start();
 

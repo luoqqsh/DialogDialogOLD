@@ -329,7 +329,7 @@ public class HHPlayer3 {
             cvInterface.getPrePareState(PlayerPrePareStateType.PREPARING);
         }
         hhPlayerCore.prepare(path);
-        ViseLog.showLog("开始加载:" + path);
+        ViseLog.showInfo("开始加载:" + path);
     }
 
     //刷新播放列表，刷新后自动播放当前列表第一个

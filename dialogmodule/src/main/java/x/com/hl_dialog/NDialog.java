@@ -186,7 +186,7 @@ public class NDialog {
      * @return this
      */
     public NDialog setTitle(String title, int layout) {
-        TextView dialogTitle = dialog.findViewById(R.id.mdialog_title);
+        TextView dialogTitle = dialog.findViewById(R.id.nDialogTitle);
         if (dialogTitle == null) {
             ViseLog.e("请检查id是否正确，将标题id设置为mdialog_title");
             return null;
@@ -209,7 +209,7 @@ public class NDialog {
      * @return this
      */
     public NDialog setMessage(String message, int layout) {
-        TextView dialogMsg = dialog.findViewById(R.id.mdialog_message);
+        TextView dialogMsg = dialog.findViewById(R.id.nDialogMessage);
         if (dialogMsg == null) {
             ViseLog.e("请检查id是否正确，将消息内容id设置为mdialog_message");
             return null;
@@ -302,11 +302,11 @@ public class NDialog {
     @SuppressLint("ClickableViewAccessibility")
     private NDialog setClickListener(final boolean isDissmiss, String btn1text, String btn2text, String btn3text,
                                      String btn4text, String btn5text, final onDialogbtnClickListener btnClickListener) {
-        setbtnlistener(btn1text, isDissmiss, btnClickListener, 1, R.id.mbtn1);
-        setbtnlistener(btn2text, isDissmiss, btnClickListener, 2, R.id.mbtn2);
-        setbtnlistener(btn3text, isDissmiss, btnClickListener, 3, R.id.mbtn3);
-        setbtnlistener(btn4text, isDissmiss, btnClickListener, 4, R.id.mbtn4);
-        setbtnlistener(btn5text, isDissmiss, btnClickListener, 5, R.id.mbtn5);
+        setbtnlistener(btn1text, isDissmiss, btnClickListener, 1, R.id.nDialogBtn1);
+        setbtnlistener(btn2text, isDissmiss, btnClickListener, 2, R.id.nDialogBtn2);
+        setbtnlistener(btn3text, isDissmiss, btnClickListener, 3, R.id.nDialogBtn3);
+        setbtnlistener(btn4text, isDissmiss, btnClickListener, 4, R.id.nDialogBtn4);
+        setbtnlistener(btn5text, isDissmiss, btnClickListener, 5, R.id.nDialogBtn5);
         return this;
     }
 

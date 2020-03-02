@@ -16,28 +16,39 @@ public class OpenFileUtil {
         /* 取得扩展名 */
         String end = file.getName().substring(file.getName().lastIndexOf(".") + 1, file.getName().length()).toLowerCase(Locale.getDefault());
         /* 依扩展名的类型决定MimeType */
-        if (end.equals("m4a") || end.equals("mp3") || end.equals("mid") || end.equals("xmf") || end.equals("ogg") || end.equals("wav")) {
-            return getAudioFileIntent(filePath);
-        } else if (end.equals("3gp") || end.equals("mp4")) {
-            return getVideoFileIntent(filePath);
-        } else if (end.equals("jpg") || end.equals("gif") || end.equals("png") || end.equals("jpeg") || end.equals("bmp")) {
-            return getImageFileIntent(filePath);
-        } else if (end.equals("apk")) {
-            return getApkFileIntent(filePath);
-        } else if (end.equals("ppt")) {
-            return getPptFileIntent(filePath);
-        } else if (end.equals("xls")) {
-            return getExcelFileIntent(filePath);
-        } else if (end.equals("doc")) {
-            return getWordFileIntent(filePath);
-        } else if (end.equals("pdf")) {
-            return getPdfFileIntent(filePath);
-        } else if (end.equals("chm")) {
-            return getChmFileIntent(filePath);
-        } else if (end.equals("txt")) {
-            return getTextFileIntent(filePath, false);
-        } else {
-            return getAllIntent(filePath);
+        switch (end) {
+            case "m4a":
+            case "mp3":
+            case "mid":
+            case "xmf":
+            case "ogg":
+            case "wav":
+                return getAudioFileIntent(filePath);
+            case "3gp":
+            case "mp4":
+                return getVideoFileIntent(filePath);
+            case "jpg":
+            case "gif":
+            case "png":
+            case "jpeg":
+            case "bmp":
+                return getImageFileIntent(filePath);
+            case "apk":
+                return getApkFileIntent(filePath);
+            case "ppt":
+                return getPptFileIntent(filePath);
+            case "xls":
+                return getExcelFileIntent(filePath);
+            case "doc":
+                return getWordFileIntent(filePath);
+            case "pdf":
+                return getPdfFileIntent(filePath);
+            case "chm":
+                return getChmFileIntent(filePath);
+            case "txt":
+                return getTextFileIntent(filePath, false);
+            default:
+                return getAllIntent(filePath);
         }
     }
 
