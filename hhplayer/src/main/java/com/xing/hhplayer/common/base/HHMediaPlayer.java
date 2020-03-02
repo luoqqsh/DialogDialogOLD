@@ -72,7 +72,7 @@ public class HHMediaPlayer extends HHPlayerCore {
                     videoInfoLog.append("height: ").append(mediaPlayer.getVideoHeight()).append("\n");
                     videoInfoLog.append("duration: ").append(mediaPlayer.getDuration()).append("\n");
                     videoInfoLog.append("tag: ").append(TAG);
-                    ViseLog.d(videoInfoLog);
+                    ViseLog.d(TAG, videoInfoLog);
                 }
             });
             mediaPlayer.setOnSeekCompleteListener(new MediaPlayer.OnSeekCompleteListener() {
@@ -154,9 +154,6 @@ public class HHMediaPlayer extends HHPlayerCore {
             onCoreErrorListener.onListen("地址为空或不支持！" + mediaUri);
             return;
         }
-        if ("HHPlayer3".equals(TAG)) {
-            TAG = "HH-MediaPlayer-Music";
-        }
         this.mediaUri = mediaUri;
         stop();
         reset();
@@ -177,9 +174,6 @@ public class HHMediaPlayer extends HHPlayerCore {
         if (path == null) {
             onCoreErrorListener.onListen("地址为空或不支持！" + path);
             return;
-        }
-        if ("HHPlayer3".equals(TAG)) {
-            TAG = "HH-MediaPlayer-Music";
         }
         this.mediaPath = path;
         stop();

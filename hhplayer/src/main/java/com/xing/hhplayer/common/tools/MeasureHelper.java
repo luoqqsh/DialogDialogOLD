@@ -19,10 +19,11 @@ package com.xing.hhplayer.common.tools;
 
 import android.view.View;
 
+import com.xing.hhplayer.common.TypeBean.PlayerViewType;
+
 import java.lang.ref.WeakReference;
 
 import x.com.hl_log.ViseLog;
-import com.xing.hhplayer.common.TypeBean.PlayerViewType;
 
 public final class MeasureHelper {
     private WeakReference<View> mWeakView;
@@ -94,9 +95,9 @@ public final class MeasureHelper {
             int heightSpecMode = View.MeasureSpec.getMode(heightMeasureSpec);
             int heightSpecSize = View.MeasureSpec.getSize(heightMeasureSpec);
 
-            ViseLog.d("mVideo:" + mVideoWidth + mVideoHeight);
-            ViseLog.d("widthSpec:" + widthSpecMode + widthSpecSize);
-            ViseLog.d("heightSpec:" + heightSpecMode + heightSpecSize);
+            ViseLog.showInfo("mVideo:" + mVideoWidth + mVideoHeight);
+            ViseLog.showInfo("widthSpec:" + widthSpecMode + widthSpecSize);
+            ViseLog.showInfo("heightSpec:" + heightSpecMode + heightSpecSize);
             if (widthSpecMode == View.MeasureSpec.AT_MOST && heightSpecMode == View.MeasureSpec.AT_MOST) {
                 float specAspectRatio = (float) widthSpecSize / (float) heightSpecSize;
                 float displayAspectRatio;

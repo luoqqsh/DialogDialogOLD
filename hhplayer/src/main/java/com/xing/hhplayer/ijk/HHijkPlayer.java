@@ -67,7 +67,7 @@ public class HHijkPlayer extends HHPlayerCore {
                     videoInfoLog.append("height: ").append(mediaPlayer.getVideoHeight()).append("\n");
                     videoInfoLog.append("duration: ").append(mediaPlayer.getDuration()).append("\n");
                     videoInfoLog.append("tag: ").append(TAG);
-                    ViseLog.d(videoInfoLog);
+                    ViseLog.d(TAG, videoInfoLog);
                 }
             });
             mediaPlayer.setOnSeekCompleteListener(new IjkMediaPlayer.OnSeekCompleteListener() {
@@ -128,9 +128,6 @@ public class HHijkPlayer extends HHPlayerCore {
             onCoreErrorListener.onListen("地址为空或不支持！");
             return;
         }
-        if ("HHPlayer3".equals(TAG)) {
-            TAG = "HH-IJKPlayer-Music";
-        }
         this.mediaPath = path;
         stop();
         reset();//ijkplayer调用reset会连画布一起重置，画布不会销毁
@@ -161,9 +158,6 @@ public class HHijkPlayer extends HHPlayerCore {
         if (mediaUri == null) {
             onCoreErrorListener.onListen("地址为空或不支持！");
             return;
-        }
-        if ("HHPlayer3".equals(TAG)) {
-            TAG = "HH-IJKPlayer-Music";
         }
         this.mediaUri = mediaUri;
         stop();

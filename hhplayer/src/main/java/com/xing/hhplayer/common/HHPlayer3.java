@@ -154,7 +154,6 @@ public class HHPlayer3 {
     //使用NEWSURFACE、NEWTEXTURE必须传viewGroup
     public HHPlayer3(FragmentActivity mActivity, final HHPlayerCore hhPlayerCore, TvView playerView, final ViewGroup viewGroup, Surface surface) {
         hhPlayerCore.setContext(mActivity);
-        hhPlayerCore.TAG = playerView.toString();
         hhPlayerCore.setContext(this.mActivity);
         this.hhPlayerCore = hhPlayerCore;
         this.mActivity = mActivity;
@@ -390,9 +389,7 @@ public class HHPlayer3 {
             hhPlayerCore.getCurrentStart();
             hhPlayerCore.mPlayerState = PlayerStateType.IDLE;
             isReStart = true;
-        } else {
-            hhPlayerCore.onCoreErrorListener.onListen(hhPlayerCore.getMediaPath() + " " + hhPlayerCore.mPlayerState);
-        }
+        } 
     }
 
     public void pause() {

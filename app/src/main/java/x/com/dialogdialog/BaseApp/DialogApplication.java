@@ -12,7 +12,6 @@ import com.liulishuo.filedownloader.FileDownloader;
 
 import x.com.hl_base.HlApp;
 import x.com.hl_base.NeverCrashHelper;
-import x.com.hl_livedatabus.LiveEventBus;
 import x.com.hl_log.ViseLog;
 import x.com.hl_web.x5Manager;
 
@@ -38,9 +37,7 @@ public class DialogApplication extends MultiDexApplication {
         });
         x5Manager.getInstance().init(this);
 
-        LiveEventBus.config()
-                .supportBroadcast(this)//跨进程通过广播
-                .lifecycleObserverAlwaysActive(true);
+//        LiveEventBus.config().supportBroadcast(this);//跨进程通过广播
     }
 
     private void showToast(final String text) {
