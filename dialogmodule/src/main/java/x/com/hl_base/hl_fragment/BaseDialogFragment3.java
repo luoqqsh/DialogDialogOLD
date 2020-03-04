@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -111,6 +110,8 @@ public class BaseDialogFragment3 extends DialogFragment {
                 window.setGravity(Gravity.BOTTOM);
                 window.setWindowAnimations(R.style.bottomMenuAnim);
                 window.setAttributes(lp);
+                //style: 四个选项： STYLE_NORMAL, STYLE_NO_TITLE, STYLE_NO_FRAME, or STYLE_NO_INPUT.
+                setStyle(DialogFragment.STYLE_NO_TITLE, R.style.DialogDim);
 
             }
         }
@@ -190,12 +191,13 @@ public class BaseDialogFragment3 extends DialogFragment {
             }
         }
     }
-    @Override
-    public void onStart()
-    {
-        super.onStart();
-        DisplayMetrics dm = new DisplayMetrics();
-//        getActivity().getWindowManager().getDefaultDisplay().getMetrics( dm );
-//        getDialog().getWindow().setLayout( dm.widthPixels, getDialog().getWindow().getAttributes().height );
-    }
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//        //设置宽度顶满屏幕,无左右留白
+//        DisplayMetrics dm = new DisplayMetrics();
+//        getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
+//        getDialog().getWindow().setLayout(dm.widthPixels, getDialog().getWindow().getAttributes().height);
+//
+//    }
 }
