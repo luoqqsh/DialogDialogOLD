@@ -103,11 +103,11 @@ public class SlideLayout extends FrameLayout {
 
         //处理滑动冲突问题
         List<View> touchViewList = getTouchViewList(mChildViewList, ev);
-//        UIHelper.showLog(TAG, "mChildViewList:" + mChildViewList);
-//        UIHelper.showLog(TAG, "touchViewList:" + touchViewList);
+//        ViseLog.showLog(TAG, "mChildViewList:" + mChildViewList);
+//        ViseLog.showLog(TAG, "touchViewList:" + touchViewList);
         if (touchViewList != null && touchViewList.size() > 0) {
             for (View touchView : touchViewList) {
-//                UIHelper.showLog(TAG, "touchView = " + touchView.getClass().getName());
+//                ViseLog.showLog(TAG, "touchView = " + touchView.getClass().getName());
                 //设置不拦截情况
                 if (touchView instanceof NoInterceptTouchView) {
                     return false;

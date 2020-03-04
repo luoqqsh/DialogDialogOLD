@@ -101,4 +101,5 @@ public class DFPermissionListDialog extends BaseDialogFragment {
         super.onDestroy();
         listener.result(true);
     }
+
 }

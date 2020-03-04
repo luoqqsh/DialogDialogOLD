@@ -2,6 +2,7 @@ package x.com.hl_dialog;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -94,4 +95,6 @@ public class DFListFileDialog extends BaseDialogFragment {
     public void setOnSelectFileListener(HOnListener<File> onSelectFileListener) {
         this.onSelectFileListener = onSelectFileListener;
     }
+
+
 }

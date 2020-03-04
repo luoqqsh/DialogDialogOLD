@@ -153,4 +153,5 @@ public class DFUpdateDialog extends BaseDialogFragment {
             }
         });
     }
+
 }

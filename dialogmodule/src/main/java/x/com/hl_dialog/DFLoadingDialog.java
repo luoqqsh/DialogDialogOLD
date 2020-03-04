@@ -19,4 +19,5 @@ public class DFLoadingDialog extends BaseDialogFragment {
         loadDialog.setCancelable(true);// 设置是否可以取消
         return loadDialog;
     }
+
 }

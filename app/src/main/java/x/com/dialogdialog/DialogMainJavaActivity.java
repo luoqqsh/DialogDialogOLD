@@ -17,8 +17,10 @@ import java.io.File;
 import java.util.Map;
 
 import x.com.dialogdialog.BaseApp.BaseActivity;
+import x.com.hl_base.hl_fragment.MessageDialog;
 import x.com.hl_base.hl_interface.HOnListener;
 import x.com.hl_dialog.DFListFileDialog;
+import x.com.hl_dialog.DFNDialog2;
 import x.com.hl_livedatabus.LiveEventBus;
 import x.com.hl_log.ViseLog;
 import x.com.hl_tools.hl_file;
@@ -101,6 +103,22 @@ public class DialogMainJavaActivity extends BaseActivity {
 
         });
         findViewById(R.id.close).setOnClickListener(v -> {
+            MessageDialog.show(mActivity, "提示321", "这是一条消息123", "确定");
+            DFNDialog2 ensureDialog = new DFNDialog2();
+            ensureDialog.setTitle("title");
+            ensureDialog.setText("text");
+            ensureDialog.setBtn("cancelStr", "ensureStr");
+            ensureDialog.show(mActivity);
+            DFNDialog2 ensureDialog2 = new DFNDialog2();
+            ensureDialog2.setTitle("title2");
+            ensureDialog2.setText("text2");
+            ensureDialog2.setBtn("cancelStr2", "ensureStr2");
+            ensureDialog2.show(mActivity);
+            DFNDialog2 ensureDialog4 = new DFNDialog2();
+            ensureDialog4.setTitle("title4");
+            ensureDialog4.setText("text4");
+            ensureDialog4.setBtn("cancelStr", "ensureStr4");
+            ensureDialog4.show(mActivity);
         });
         ImageView mainImg = findViewById(R.id.mainImg);
         findViewById(R.id.mainLocal).setOnClickListener(v -> {

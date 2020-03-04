@@ -22,7 +22,6 @@ class DialogMainActivity : BaseActivity() {
         hl_permissions.applyCameraPermission(mActivity, null)
         hl_permissions.applyLocationPermission(this, object : hl_permissions.RequestPermissionCallBack {
             override fun requestPermissionSuccess() {
-                ViseLog.d("success")
             }
 
             override fun requestPermissionFail(failPermission: Map<String, Boolean>?) {

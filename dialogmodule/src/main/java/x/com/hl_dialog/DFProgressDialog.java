@@ -3,14 +3,13 @@ package x.com.hl_dialog;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import x.com.hl_base.hl_fragment.BaseDialogFragment2;
-import x.com.hl_view.CircleProgressBar;
 import x.com.hl_base.hl_interface.OnSimpleListener;
+import x.com.hl_view.CircleProgressBar;
 
 public class DFProgressDialog extends BaseDialogFragment2 {
     private CircleProgressBar roundProgressBar;
@@ -50,17 +49,17 @@ public class DFProgressDialog extends BaseDialogFragment2 {
     @Override
     public void onStart() {
         super.onStart();
-        setCanceledOnTouchOutside(false);//触摸不可取消，按返回可以取消
+//        setCanceledOnTouchOutside(false);//触摸不可取消，按返回可以取消
         if (onCancelListener != null) {
-            setOnKeyListener((dialog, keyCode, event) -> {
-                if (keyCode == KeyEvent.KEYCODE_BACK) {
-                    //按返回键时关闭弹窗的同时，取消操作
-                    dismiss();
-                    onCancelListener.onListen();
-                    return true;
-                }
-                return false;
-            });
+//            setOnKeyListener((dialog, keyCode, event) -> {
+//                if (keyCode == KeyEvent.KEYCODE_BACK) {
+//                    //按返回键时关闭弹窗的同时，取消操作
+//                    dismiss();
+//                    onCancelListener.onListen();
+//                    return true;
+//                }
+//                return false;
+//            });
         }
     }
 

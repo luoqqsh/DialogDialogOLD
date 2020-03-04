@@ -6,7 +6,7 @@
 //import com.cll.video.tools.hhplayer.TypeBean.PlayerPrePareStateType;
 //import com.cll.video.tools.hhplayer.TypeBean.PlayerStateType;
 //import com.cll.video.tools.viselog.ViseLog;
-//import com.jiujie.base.util.UIHelper;
+//import com.jiujie.base.util.ViseLog;
 //import com.lansosdk.videoplayer.OnLSOPlayerBufferingUpdateListener;
 //import com.lansosdk.videoplayer.OnLSOPlayerCompletionListener;
 //import com.lansosdk.videoplayer.OnLSOPlayerErrorListener;
@@ -185,7 +185,7 @@
 //    public void seekTo(long position) {
 //        if (player != null) {
 //            player.seekTo(position);
-//            UIHelper.showLog(TAG, "seekTo " + position);
+//            ViseLog.showLog(TAG, "seekTo " + position);
 //        }
 //    }
 //
@@ -222,7 +222,7 @@
 //    public void setVolume(float volume) {
 //        if (player != null) {
 //            player.setVolume(volume, volume);
-//            UIHelper.showLog(TAG, "setVolume " + volume);
+//            ViseLog.showLog(TAG, "setVolume " + volume);
 //        }
 //    }
 //
