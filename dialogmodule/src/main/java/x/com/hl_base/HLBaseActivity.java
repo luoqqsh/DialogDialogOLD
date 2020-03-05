@@ -194,7 +194,7 @@ public abstract class HLBaseActivity extends KBaseActivity {
     public void setLoading() {
         if (base_loading.getChildCount() == 0) {
             View loadingFail = View.inflate(mActivity, getLoadingLayoutId(), null);
-            loading_view = loadingFail.findViewById(R.id.loading_view);
+            loading_view = loadingFail.findViewById(R.id.loadingView);
             base_loading.addView(loadingFail, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         }
         base_loading_fail.setVisibility(View.GONE);

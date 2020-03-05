@@ -1,6 +1,5 @@
 package x.com.hl_view;
 
-
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
@@ -9,11 +8,7 @@ import android.view.View;
 import androidx.appcompat.widget.AppCompatImageView;
 
 import x.com.hl_dialog.R;
-
-/**
- * Created by ChenJiaLiang on 2017/9/14.
- * Email:576507648@qq.com
- */
+import x.com.hl_log.ViseLog;
 
 public class RotateImageView extends AppCompatImageView implements LoadingBaseView {
 
@@ -22,6 +17,7 @@ public class RotateImageView extends AppCompatImageView implements LoadingBaseVi
     private boolean isShun;
     private float singleRotate;
     private boolean isEnable = false;
+    private boolean isShowLog;
 
     public RotateImageView(Context context) {
         super(context);
@@ -36,6 +32,10 @@ public class RotateImageView extends AppCompatImageView implements LoadingBaseVi
     public RotateImageView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context, attrs);
+    }
+
+    public void setShowLog(boolean showLog) {
+        isShowLog = showLog;
     }
 
     public void setNum(int num) {
@@ -65,6 +65,7 @@ public class RotateImageView extends AppCompatImageView implements LoadingBaseVi
         if (isEnable) {
             return;
         }
+        if (isShowLog) ViseLog.showInfo("RotateImageView", "start");
         isEnable = true;
         postDelayed(new Runnable() {
             float currentRotate = 0;
@@ -91,6 +92,7 @@ public class RotateImageView extends AppCompatImageView implements LoadingBaseVi
 
     public void stop() {
         isEnable = false;
+        if (isShowLog) ViseLog.showInfo("RotateImageView", "stop");
     }
 
     private void init(Context context, AttributeSet attrs) {

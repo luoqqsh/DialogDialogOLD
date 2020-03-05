@@ -8,7 +8,7 @@
     android:orientation="vertical">
 
     <x.com.hl_view.RotateImageView
-        android:id="@+id/loading_view"
+        android:id="@+id/loadingView"
         android:layout_width="@dimen/dp50"
         android:layout_height="@dimen/dp50"
         android:layout_gravity="center"

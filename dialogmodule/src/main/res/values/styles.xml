@@ -12,7 +12,6 @@
     <style name="Dialog" parent="@android:style/Theme.Dialog">
         <!-- 去除标题 -->
         <item name="android:windowNoTitle">true</item>
-        <!-- 去除背景 -->
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:backgroundDimAmount">0.4</item>
@@ -25,6 +24,8 @@
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:backgroundDimEnabled">false</item>
     </style>
+
+
 
     <!-- 对话框动画样式 -->
     <style name="DialogAnimation">

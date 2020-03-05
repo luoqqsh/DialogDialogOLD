@@ -20,7 +20,8 @@ import androidx.core.content.ContextCompat;
 import java.io.File;
 import java.util.Map;
 
-import x.com.hl_base.hl_fragment.BaseDialogFragment;
+import x.com.hl_dialog.base.BaseDialogFragment;
+import x.com.hl_dialog.base.NDialog;
 import x.com.hl_tools.hl_app;
 import x.com.hl_tools.hl_file;
 import x.com.hl_tools.hl_interface.DownListener;

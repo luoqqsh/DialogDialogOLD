@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="@dimen/dp90"
+        android:layout_height="@dimen/dp90"
+        android:background="@drawable/bg_waiting_dialog"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <x.com.hl_view.RotateImageView
+            android:id="@+id/loadingView"
+            android:layout_width="@dimen/dp50"
+            android:layout_height="@dimen/dp50"
+            android:layout_gravity="center"
+            android:scaleType="centerInside"
+            android:src="@mipmap/loading"
+            app:r_isShun="false"
+            app:r_num="12"
+            app:r_singleTime="150" />
+
+    </FrameLayout>
+
+</LinearLayout>

@@ -1,6 +1,5 @@
 package x.com.dialogdialog;
 
-
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -8,15 +7,9 @@ import android.view.View;
 import android.widget.Toast;
 
 import x.com.hl_base.HLBaseActivity;
-import x.com.hl_base.hl_interface.OnSimpleListener;
-import x.com.hl_base.hl_interface.OnTSimpleListener;
+import x.com.hl_dialog.CWaitingDialog;
 import x.com.hl_dialog.DFLoadingDialog;
-import x.com.hl_dialog.DFNDialog;
-import x.com.hl_dialog.DFPermissionListDialog;
-import x.com.hl_dialog.NDialog;
-import x.com.hl_log.ViseLog;
-import x.com.hl_model.MediaFileBean;
-import x.com.hl_tools.hl_permissionsOther;
+import x.com.hl_dialog.base.NDialog;
 
 public class DialogActivity extends HLBaseActivity {
 
@@ -33,29 +26,49 @@ public class DialogActivity extends HLBaseActivity {
         mTitle.setRightButtonText("aaasss", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ViseLog.d("qawd");
+//                CTipDialog c = new CTipDialog(mActivity, CTipDialog.nDialog_Iphone)
+//                        .setTouchOutSideCancelable(true, true)
+//                        .setMessage("我是鬼，我来抓你了！", Gravity.CENTER)
+//                        .setBtnClickListener("好", "不好", new CTipDialog.onDialogbtnClickListener() {
+//                            @Override
+//                            public boolean onDialogBtnClick(Context context, String dialog, int whichBtn) {
+//                                switch (whichBtn) {
+//                                    case 1:
+//                                        Toast.makeText(context, "点击了好", Toast.LENGTH_SHORT).show();
+//                                        c.refresh("lajigui", Gravity.LEFT);
+//                                        break;
+//                                    case 2:
+//                                        Toast.makeText(context, "点击了不好", Toast.LENGTH_SHORT).show();
+//                                        break;
+//                                }
+//                                return false;
+//                            }
+//                        });
+//                c.showDialog(mActivity);
+                CWaitingDialog cWaitingDialog = new CWaitingDialog();
+                cWaitingDialog.showDialog(mActivity);
             }
         });
-//        updates();
 
-        KTaskManager(new OnTSimpleListener<Object>() {
-            @Override
-            public Object onBackGround() {
-                ViseLog.d("asdas");
-                return new MediaFileBean();
-            }
 
-            @Override
-            public void onUI(Object o) {
-                ViseLog.d(o);
-            }
-        });
-        KTaskManagerB(new OnSimpleListener() {
-            @Override
-            public void onListen() {
-                ViseLog.d("afafafaf");
-            }
-        });
+//        KTaskManager(new OnTSimpleListener<Object>() {
+//            @Override
+//            public Object onBackGround() {
+//                ViseLog.d("asdas");
+//                return new MediaFileBean();
+//            }
+//
+//            @Override
+//            public void onUI(Object o) {
+//                ViseLog.d(o);
+//            }
+//        });
+//        KTaskManagerB(new OnSimpleListener() {
+//            @Override
+//            public void onListen() {
+//                ViseLog.d("afafafaf");
+//            }
+//        });
     }
 
     @Override
@@ -143,12 +156,6 @@ public class DialogActivity extends HLBaseActivity {
         //透明弹窗
         new NDialog(mActivity, NDialog.ndialog_Trans, 0, false).createTrans(150);
 
-        //显示普通弹窗
-        DFNDialog b = DFNDialog.newInstance();
-        b.setMessage("dddddddddd", 4);
-        if (!b.isAdded()) {
-            b.show(getSupportFragmentManager(), "normalDialog");
-        }
         //显示iPhone样式弹窗
         Dialog c = new NDialog(mActivity, NDialog.nDialog_Iphone, 0.8f)
                 .setTouchOutSideCancelable(false, false)
@@ -227,14 +234,5 @@ public class DialogActivity extends HLBaseActivity {
                     }
                 }).create();
         f.show();
-
-        //权限列表弹窗
-        DFPermissionListDialog i = DFPermissionListDialog.newInstance(new hl_permissionsOther.OnPermissionListener() {
-            @Override
-            public void result(boolean isSuccess) {
-                ViseLog.d(isSuccess);
-            }
-        });
-        i.show(getSupportFragmentManager(), "fff");
     }
 }

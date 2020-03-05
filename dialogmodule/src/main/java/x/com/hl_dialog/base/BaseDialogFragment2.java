@@ -1,4 +1,4 @@
-package x.com.hl_base.hl_fragment;
+package x.com.hl_dialog.base;
 
 
 import android.app.Dialog;
@@ -29,8 +29,6 @@ import x.com.hl_rx.task.TaskDelayManager;
  * 佳亮封装
  */
 public abstract class BaseDialogFragment2 extends DialogFragment implements DialogInterface.OnShowListener {
-
-
     private boolean mCancelable = true;
     private boolean isCanCancelByTouch = true;
     private DialogInterface.OnDismissListener onDismissListener;
@@ -71,9 +69,7 @@ public abstract class BaseDialogFragment2 extends DialogFragment implements Dial
         super.onDestroy();
         isNeedShowing = false;
         if (isShowLog) ViseLog.showLog("onDestroy " + mActivity);
-
     }
-
 
     @Override
     public void onDestroyView() {

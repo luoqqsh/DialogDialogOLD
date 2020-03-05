@@ -1,4 +1,4 @@
-package x.com.hl_dialog;
+package x.com.hl_dialog.base;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -14,6 +14,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import x.com.hl_dialog.R;
 import x.com.hl_log.ViseLog;
 
 public class NDialog {
@@ -66,6 +67,7 @@ public class NDialog {
     private Dialog dialog;
     private Context context;
     private float alpha = 0.8f;//点击透明度
+    private CountDownTimer timer;
 
     /**
      * 构造器
@@ -146,9 +148,9 @@ public class NDialog {
      */
     public NDialog isShowClose(boolean isShowClose) {
         if (isShowClose) {
-            ImageView imgv_close = dialog.findViewById(R.id.imgv_close);
+            ImageView imgv_close = dialog.findViewById(R.id.nDialogClose);
             if (imgv_close == null) {
-                ViseLog.e("请检查id是否正确，将关闭按钮id设置为imgv_close");
+                ViseLog.e("请检查id是否正确，将关闭按钮id设置为nDialogClose");
                 return null;
             }
             imgv_close.setVisibility(View.VISIBLE);
@@ -188,7 +190,7 @@ public class NDialog {
     public NDialog setTitle(String title, int layout) {
         TextView dialogTitle = dialog.findViewById(R.id.nDialogTitle);
         if (dialogTitle == null) {
-            ViseLog.e("请检查id是否正确，将标题id设置为mdialog_title");
+            ViseLog.e("请检查id是否正确，将标题id设置为nDialogTitle");
             return null;
         }
         if (title != null) {
@@ -211,7 +213,7 @@ public class NDialog {
     public NDialog setMessage(String message, int layout) {
         TextView dialogMsg = dialog.findViewById(R.id.nDialogMessage);
         if (dialogMsg == null) {
-            ViseLog.e("请检查id是否正确，将消息内容id设置为mdialog_message");
+            ViseLog.e("请检查id是否正确，将消息内容id设置为nDialogMessage");
             return null;
         }
         if (message != null) {
@@ -296,37 +298,37 @@ public class NDialog {
      * 给按钮设置回调监听
      *
      * @param btnClickListener 按钮的回调监听
-     * @param isDissmiss       点击按钮后是否取消对话框
+     * @param isDismiss        点击按钮后是否取消对话框
      * @return
      */
     @SuppressLint("ClickableViewAccessibility")
-    private NDialog setClickListener(final boolean isDissmiss, String btn1text, String btn2text, String btn3text,
+    private NDialog setClickListener(final boolean isDismiss, String btn1text, String btn2text, String btn3text,
                                      String btn4text, String btn5text, final onDialogbtnClickListener btnClickListener) {
-        setbtnlistener(btn1text, isDissmiss, btnClickListener, 1, R.id.nDialogBtn1);
-        setbtnlistener(btn2text, isDissmiss, btnClickListener, 2, R.id.nDialogBtn2);
-        setbtnlistener(btn3text, isDissmiss, btnClickListener, 3, R.id.nDialogBtn3);
-        setbtnlistener(btn4text, isDissmiss, btnClickListener, 4, R.id.nDialogBtn4);
-        setbtnlistener(btn5text, isDissmiss, btnClickListener, 5, R.id.nDialogBtn5);
+        setBtnListener(btn1text, isDismiss, btnClickListener, 1, R.id.nDialogBtn1);
+        setBtnListener(btn2text, isDismiss, btnClickListener, 2, R.id.nDialogBtn2);
+        setBtnListener(btn3text, isDismiss, btnClickListener, 3, R.id.nDialogBtn3);
+        setBtnListener(btn4text, isDismiss, btnClickListener, 4, R.id.nDialogBtn4);
+        setBtnListener(btn5text, isDismiss, btnClickListener, 5, R.id.nDialogBtn5);
         return this;
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private NDialog setbtnlistener(String btntext, final boolean isDissmiss,
+    private NDialog setBtnListener(String btnText, final boolean isDismiss,
                                    final onDialogbtnClickListener btnClickListener, final int i, int id) {
-        if (btntext != null) {
+        if (btnText != null) {
             // 设置确认按钮
-            final TextView mbtn = dialog.findViewById(id);
-            if (mbtn == null) {
-                ViseLog.e("请检查id是否正确，将第" + i + "个按钮id设置为mbtn" + i);
+            final TextView mBtn = dialog.findViewById(id);
+            if (mBtn == null) {
+                ViseLog.e("请检查id是否正确，将第" + i + "个按钮id设置为nDialogBtn" + i);
                 return null;
             }
-            mbtn.setText(btntext);
-            mbtn.setVisibility(View.VISIBLE);
+            mBtn.setText(btnText);
+            mBtn.setVisibility(View.VISIBLE);
             // 给按钮绑定监听器
-            mbtn.setOnClickListener(new View.OnClickListener() {
+            mBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (isDissmiss) {
+                    if (isDismiss) {
                         dialog.dismiss();
                     }
                     if (btnClickListener != null) {
@@ -334,15 +336,15 @@ public class NDialog {
                     }
                 }
             });
-            mbtn.setOnTouchListener(new View.OnTouchListener() {
+            mBtn.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View view, MotionEvent motionEvent) {
                     switch (motionEvent.getAction()) {
                         case MotionEvent.ACTION_DOWN:
-                            mbtn.setAlpha(alpha);
+                            mBtn.setAlpha(alpha);
                             break;
                         case MotionEvent.ACTION_UP:
-                            mbtn.setAlpha(1f);
+                            mBtn.setAlpha(1f);
                             break;
                     }
                     return false;
@@ -371,13 +373,17 @@ public class NDialog {
             dialog.setOwnerActivity((Activity) context);
         }
         dialog.show();
-        new CountDownTimer(time, 1) {
+        timer = new CountDownTimer(time, 1) {
             public void onTick(long millisUntilFinished) {
             }
 
             public void onFinish() {
                 //显示错误对话框
                 dialog.dismiss();
+                if (timer != null) {
+                    timer.cancel();
+                    timer = null;
+                }
             }
         }.start();
     }

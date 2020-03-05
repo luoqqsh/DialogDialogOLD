@@ -1,4 +1,4 @@
-package x.com.hl_base.hl_fragment;
+package x.com.hl_dialog.base;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -20,7 +20,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
 /**
- * 简单封装
+ * 简单封装废弃
  */
 public class BaseDialogFragment extends DialogFragment {
     private OnDismissListener onDismissListener;

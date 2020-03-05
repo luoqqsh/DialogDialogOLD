@@ -91,12 +91,12 @@ class DialogMainActivity : BaseActivity() {
 
         }
         mainDialog.setOnClickListener {
-            //            startActivity(Intent(mActivity, DialogActivity::class.java))
+            startActivity(Intent(mActivity, DialogActivity::class.java))
 //            ToolAnimation.addTouchDrak(dialog, true)
             //发送不同消息，注意数据类型
-            LiveEventBus.get("KEY_TEST_OBSERVE").post(321)
-            LiveEventBus.get("KEY_TEST_OBSERVE_FOREVER")
-                    .post("Message To ForeverObserver: " + Random().nextInt(100))
+//            LiveEventBus.get("KEY_TEST_OBSERVE").post(321)
+//            LiveEventBus.get("KEY_TEST_OBSERVE_FOREVER")
+//                    .post("Message To ForeverObserver: " + Random().nextInt(100))
         }
     }
 

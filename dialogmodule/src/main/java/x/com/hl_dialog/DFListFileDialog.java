@@ -2,7 +2,6 @@ package x.com.hl_dialog;
 
 import android.app.Dialog;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -10,8 +9,9 @@ import androidx.annotation.Nullable;
 
 import java.io.File;
 
-import x.com.hl_base.hl_fragment.BaseDialogFragment;
+import x.com.hl_dialog.base.BaseDialogFragment;
 import x.com.hl_base.hl_interface.HOnListener;
+import x.com.hl_dialog.base.NDialog;
 import x.com.hl_fileselect.FileSelectorView;
 import x.com.hl_log.ViseLog;
 import x.com.hl_tools.hl_file;

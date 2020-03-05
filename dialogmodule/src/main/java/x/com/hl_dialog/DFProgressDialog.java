@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import x.com.hl_base.hl_fragment.BaseDialogFragment2;
+import x.com.hl_dialog.base.BaseDialogFragment2;
 import x.com.hl_base.hl_interface.OnSimpleListener;
 import x.com.hl_view.CircleProgressBar;
 
