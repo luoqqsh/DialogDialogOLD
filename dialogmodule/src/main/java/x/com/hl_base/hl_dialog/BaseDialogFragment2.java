@@ -1,4 +1,4 @@
-package x.com.hl_dialog.base;
+package x.com.hl_base.hl_dialog;
 
 
 import android.app.Dialog;

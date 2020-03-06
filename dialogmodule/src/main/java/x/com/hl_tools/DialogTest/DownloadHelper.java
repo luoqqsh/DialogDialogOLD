@@ -28,7 +28,7 @@
 //import java.util.ArrayList;
 //
 //import x.com.hl_dialog.BuildConfig;
-//import x.com.hl_dialog.base.NDialog;
+//import x.com.hl_base.hl_dialog.NDialog;
 //
 ///**
 // * 下载简单封装

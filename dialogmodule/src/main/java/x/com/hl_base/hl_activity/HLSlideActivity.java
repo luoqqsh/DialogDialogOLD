@@ -1,4 +1,4 @@
-package x.com.hl_base;
+package x.com.hl_base.hl_activity;
 
 import android.app.Activity;
 import android.content.Intent;

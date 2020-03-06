@@ -13,7 +13,7 @@
         android:orientation="vertical">
 
         <x.com.hl_view.CircleProgressBar
-            android:id="@+id/dp_progress_round_bar"
+            android:id="@+id/cProgressBar"
             android:layout_width="@dimen/dp80"
             android:layout_height="@dimen/dp80"
             app:cpr_background_color="@color/trans"
@@ -26,7 +26,7 @@
             app:cpr_progress_text_size="@dimen/dp18" />
 
         <TextView
-            android:id="@+id/dp_progress_tips"
+            android:id="@+id/cProgressTip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import x.com.hl_dialog.base.BaseDialogFragment2;
+import x.com.hl_base.hl_dialog.BaseDialogFragment2;
 import x.com.hl_base.hl_interface.OnSimpleListener;
 import x.com.hl_view.CircleProgressBar;
 
@@ -74,8 +74,8 @@ public class DFProgressDialog extends BaseDialogFragment2 {
             tip = getArguments().getString("tip");
             totalProgress = getArguments().getInt("total", 0);
         }
-        roundProgressBar = layout.findViewById(R.id.dp_progress_round_bar);
-        progressTips = layout.findViewById(R.id.dp_progress_tips);
+        roundProgressBar = layout.findViewById(R.id.cProgressBar);
+        progressTips = layout.findViewById(R.id.cProgressTip);
         roundProgressBar.setMax(100);
         roundProgressBar.setProgress(0);
         progressTips.setText(tip);

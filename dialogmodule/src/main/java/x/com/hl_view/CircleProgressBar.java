@@ -142,9 +142,9 @@ public class CircleProgressBar extends ProgressBar {
         mCap = a.hasValue(R.styleable.CircleProgressBar_cpr_progress_stroke_cap) ?
                 Paint.Cap.values()[a.getInt(R.styleable.CircleProgressBar_cpr_progress_stroke_cap, 0)] : Paint.Cap.BUTT;
 
-        mLineWidth = a.getDimensionPixelSize(R.styleable.CircleProgressBar_cpr_line_width, (int) hl_screen.dp2Px(getContext(), DEFAULT_LINE_WIDTH));
-        mProgressTextSize = a.getDimensionPixelSize(R.styleable.CircleProgressBar_cpr_progress_text_size, (int) hl_screen.dp2Px(getContext(), DEFAULT_PROGRESS_TEXT_SIZE));
-        mProgressStrokeWidth = a.getDimensionPixelSize(R.styleable.CircleProgressBar_cpr_progress_stroke_width, (int) hl_screen.dp2Px(getContext(), DEFAULT_PROGRESS_STROKE_WIDTH));
+        mLineWidth = a.getDimensionPixelSize(R.styleable.CircleProgressBar_cpr_line_width, (int) hl_screen.dp2px(getContext(), DEFAULT_LINE_WIDTH));
+        mProgressTextSize = a.getDimensionPixelSize(R.styleable.CircleProgressBar_cpr_progress_text_size, (int) hl_screen.dp2px(getContext(), DEFAULT_PROGRESS_TEXT_SIZE));
+        mProgressStrokeWidth = a.getDimensionPixelSize(R.styleable.CircleProgressBar_cpr_progress_stroke_width, (int) hl_screen.dp2px(getContext(), DEFAULT_PROGRESS_STROKE_WIDTH));
 
         mProgressStartColor = a.getColor(R.styleable.CircleProgressBar_cpr_progress_start_color, Color.parseColor(COLOR_FFF2A670));
         mProgressEndColor = a.getColor(R.styleable.CircleProgressBar_cpr_progress_end_color, Color.parseColor(COLOR_FFF2A670));

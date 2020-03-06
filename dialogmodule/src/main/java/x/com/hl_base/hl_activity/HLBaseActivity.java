@@ -1,4 +1,4 @@
-package x.com.hl_base;
+package x.com.hl_base.hl_activity;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -14,6 +14,7 @@ import com.gyf.immersionbar.BarHide;
 import com.gyf.immersionbar.BarParams;
 import com.gyf.immersionbar.ImmersionBar;
 
+import x.com.hl_base.MyLifeObserver8;
 import x.com.hl_dialog.R;
 import x.com.hl_tools.hl_device;
 import x.com.hl_tools.hl_leak;

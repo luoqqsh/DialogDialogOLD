@@ -16,7 +16,7 @@ import com.xing.hhplayer.common.base.HHMediaPlayer;
 import java.util.ArrayList;
 import java.util.List;
 
-import x.com.hl_base.HLBaseActivity;
+import x.com.hl_base.hl_activity.HLBaseActivity;
 
 public class ListPlayerActivity extends HLBaseActivity {
     private RecyclerView lvVideo;

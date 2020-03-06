@@ -1,4 +1,4 @@
-package x.com.hl_dialog.base;
+package x.com.hl_base.hl_dialog;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -41,6 +41,7 @@ public abstract class BaseNDialog {
     protected OnSimpleListener onResumeListener;
     protected OnSimpleListener onShowListener;
     protected OnSimpleListener onCancelListener;
+    private Bundle bundle;
 
     protected void initWindow(Dialog dialog) {
         if (dialog != null) {
@@ -72,7 +73,7 @@ public abstract class BaseNDialog {
                 windowManager.getDefaultDisplay().getMetrics(metrics);
                 WindowManager.LayoutParams lp = window.getAttributes();
                 lp.width = (int) (metrics.widthPixels * getWidthScale());
-                lp.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                lp.height = getHeight();
 //                lp.windowAnimations = R.style.bottomMenuAnim;
                 window.setWindowAnimations(getDialogAnim());
                 window.setGravity(getGravity());
@@ -80,6 +81,8 @@ public abstract class BaseNDialog {
             }
         }
     }
+
+    protected abstract int getLayoutId();
 
     protected abstract void initUI(View mView, Bundle bundle);
 
@@ -91,10 +94,12 @@ public abstract class BaseNDialog {
         return true;
     }
 
-    protected abstract int getLayoutId();
-
     public float getWidthScale() {
         return 0.8f;
+    }
+
+    public int getHeight() {
+        return ViewGroup.LayoutParams.WRAP_CONTENT;
     }
 
     public int getGravity() {
@@ -110,39 +115,16 @@ public abstract class BaseNDialog {
     }
 
     private void initEvent() {
-        dismissEvent = new OnSimpleListener() {
-            @Override
-            public void onListen() {
-                dismissedFlag = true;
-                isShow = false;
-                dialogList.remove(BaseNDialog.this);
-                onDialogDismiss();
-            }
+        dismissEvent = () -> {
+            dismissedFlag = true;
+            isShow = false;
+            dialogList.remove(BaseNDialog.this);
+            onDialogDismiss();
         };
-        pauseEvent = new OnSimpleListener() {
-            @Override
-            public void onListen() {
-                onDialogPause();
-            }
-        };
-        resumeEvent = new OnSimpleListener() {
-            @Override
-            public void onListen() {
-                onDialogResume();
-            }
-        };
-        showEvent = new OnSimpleListener() {
-            @Override
-            public void onListen() {
-                onDialogShow();
-            }
-        };
-        cancelEvent = new OnSimpleListener() {
-            @Override
-            public void onListen() {
-                onDialogCancel();
-            }
-        };
+        pauseEvent = this::onDialogPause;
+        resumeEvent = this::onDialogResume;
+        showEvent = this::onDialogShow;
+        cancelEvent = this::onDialogCancel;
     }
 
     public void setOnDismissListener(OnSimpleListener onDismissListener) {
@@ -245,14 +227,22 @@ public abstract class BaseNDialog {
         }
         FragmentManager fragmentManager = mActivitys.get().getSupportFragmentManager();
         //创建dialogFragment开始
-        dialog = new WeakReference<>(new BaseNDialogFragment().setLayoutId(this, getLayoutId(), getDialogStyle()));
+        BaseNDialogFragment baseNDialogFragment = new BaseNDialogFragment().setLayoutId(this, getLayoutId(), getDialogStyle());
+        if (bundle != null) {
+            baseNDialogFragment.setArguments(bundle);
+        }
+        dialog = new WeakReference<>(baseNDialogFragment);
         dialog.get().show(fragmentManager, getClass().getSimpleName() + hashCode());
     }
 
-    public void doDismiss() {
+    public void dismiss() {
         dismissedFlag = true;
         if (dialog != null && dialog.get() != null) {
             dialog.get().dismiss();
         }
+    }
+
+    protected void setArguments(Bundle bundle) {
+        this.bundle = bundle;
     }
 }

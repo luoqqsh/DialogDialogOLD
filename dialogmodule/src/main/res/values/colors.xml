@@ -33,6 +33,9 @@
     <color name="font_color_3">#FF333333</color>
     <color name="font_color_1">#FF000000</color>
 
+    <color name="item_bg_n">@color/white</color>
+    <color name="item_bg_p">#c5c5c5</color>
+
     <color name="commonbuttoncolor">#FF2f80db</color>
     <color name="commonbuttoncolor_down">#cc2f80db</color>
     <color name="commontextcolor">#20aee5</color>

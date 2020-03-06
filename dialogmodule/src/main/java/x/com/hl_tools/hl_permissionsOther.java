@@ -28,7 +28,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
-import x.com.hl_dialog.base.NDialog;
+import x.com.hl_base.hl_dialog.NDialog;
 import x.com.hl_log.ViseLog;
 import x.com.hl_tools.permissions.DefaultPhoneUtils;
 import x.com.hl_tools.permissions.HuaweiUtils;

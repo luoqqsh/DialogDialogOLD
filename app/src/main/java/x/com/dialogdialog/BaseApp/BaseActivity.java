@@ -3,7 +3,7 @@ package x.com.dialogdialog.BaseApp;
 import android.os.Bundle;
 
 import x.com.dialogdialog.R;
-import x.com.hl_base.HLBaseActivity;
+import x.com.hl_base.hl_activity.HLBaseActivity;
 
 public abstract class BaseActivity extends HLBaseActivity {
 

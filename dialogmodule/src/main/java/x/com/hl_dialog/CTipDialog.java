@@ -1,6 +1,6 @@
 package x.com.hl_dialog;
 
-import android.content.Context;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MotionEvent;
@@ -8,12 +8,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.fragment.app.FragmentActivity;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import x.com.hl_dialog.base.BaseNDialog;
+import x.com.hl_base.hl_dialog.BaseNDialog;
+import x.com.hl_base.hl_interface.OnClickItemListener;
 import x.com.hl_log.ViseLog;
 
 public class CTipDialog extends BaseNDialog {
@@ -30,7 +29,6 @@ public class CTipDialog extends BaseNDialog {
     public static final int nDialog_Normal = R.layout.ndialog_layout;
     public static final int ndialog_Trans = R.layout.ndialog_trans;
 
-    private FragmentActivity mActivity;
     private int layoutId;
     private float clickAlpha = 0.8f;//点击透明度
     private boolean outside, cancelable;
@@ -40,14 +38,14 @@ public class CTipDialog extends BaseNDialog {
     private String title, message;
     private int titlePosition, messagePosition;
     private List<String> btnText = new ArrayList<>();
-    private onDialogbtnClickListener btnClickListener;
+    private OnClickItemListener btnClickListener;
     private TextView dialogMsg;
 
-    public CTipDialog(FragmentActivity mActivity, int layoutId) {
-        this.mActivity = mActivity;
+    public CTipDialog(int layoutId) {
         this.layoutId = layoutId;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void initUI(View mView, Bundle bundle) {
         if (isShowClose) {
@@ -56,7 +54,7 @@ public class CTipDialog extends BaseNDialog {
             nDialogClose.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    doDismiss();
+                    dismiss();
                 }
             });
         }
@@ -74,40 +72,37 @@ public class CTipDialog extends BaseNDialog {
         }
         // 设置确认按钮
         for (int i = 0; i < btnText.size(); i++) {
-            final TextView mBtn = mView.findViewWithTag("nDialogBtn" + (i + 1));
+            final TextView nDialogBtn = mView.findViewWithTag("nDialogBtn" + (i + 1));
 
-            if (mBtn == null) {
-                ViseLog.e("请检查id是否正确，将第" + i + "个按钮id设置为mbtn" + i);
+            if (nDialogBtn == null) {
+                ViseLog.e("请检查Tag是否正确，将第" + i + "个按钮Tag设置为nDialogBtn" + i);
             } else {
-                mBtn.setText(btnText.get(i));
-                mBtn.setVisibility(View.VISIBLE);
+                nDialogBtn.setText(btnText.get(i));
+                nDialogBtn.setVisibility(View.VISIBLE);
                 // 给按钮绑定监听器
                 int finalI = i;
-                mBtn.setOnClickListener(new View.OnClickListener() {
+                nDialogBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if (btnClickListener != null) {
-                            if (btnClickListener.onDialogBtnClick(mActivity, mBtn.getText().toString(), finalI + 1)) {
-                                doDismiss();
+                            if (btnClickListener.onItemClick(nDialogBtn.getText().toString(), finalI + 1)) {
+                                dismiss();
                             }
                         } else {
-                            doDismiss();
+                            dismiss();
                         }
                     }
                 });
-                mBtn.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View view, MotionEvent motionEvent) {
-                        switch (motionEvent.getAction()) {
-                            case MotionEvent.ACTION_DOWN:
-                                mBtn.setAlpha(clickAlpha);
-                                break;
-                            case MotionEvent.ACTION_UP:
-                                mBtn.setAlpha(1f);
-                                break;
-                        }
-                        return false;
+                nDialogBtn.setOnTouchListener((view, motionEvent) -> {
+                    switch (motionEvent.getAction()) {
+                        case MotionEvent.ACTION_DOWN:
+                            nDialogBtn.setAlpha(clickAlpha);
+                            break;
+                        case MotionEvent.ACTION_UP:
+                            nDialogBtn.setAlpha(1f);
+                            break;
                     }
+                    return false;
                 });
             }
         }
@@ -204,42 +199,33 @@ public class CTipDialog extends BaseNDialog {
         return location;
     }
 
-    /**
-     * 监听器监听对话框按钮点击
-     *
-     * @author zhl
-     */
-    public interface onDialogbtnClickListener {
-        boolean onDialogBtnClick(Context context, String text, int whichBtn);
-    }
-
     //一个按钮
     public CTipDialog setBtnClickListener(String btn1text,
-                                          final onDialogbtnClickListener btnClickListener) {
+                                          final OnClickItemListener btnClickListener) {
         return this.setClickListener(btn1text, null, null, null, null, btnClickListener);
     }
 
     //两个按钮
     public CTipDialog setBtnClickListener(String btn1text, String btn2text,
-                                          final onDialogbtnClickListener btnClickListener) {
+                                          final OnClickItemListener btnClickListener) {
         return this.setClickListener(btn1text, btn2text, null, null, null, btnClickListener);
     }
 
     //三个按钮
     public CTipDialog setBtnClickListener(String btn1text, String btn2text, String btn3text,
-                                          final onDialogbtnClickListener btnClickListener) {
+                                          final OnClickItemListener btnClickListener) {
         return this.setClickListener(btn1text, btn2text, btn3text, null, null, btnClickListener);
     }
 
     //四个按钮
     public CTipDialog setBtnClickListener(String btn1text, String btn2text, String
-            btn3text, String btn4text, final onDialogbtnClickListener btnClickListener) {
+            btn3text, String btn4text, final OnClickItemListener btnClickListener) {
         return this.setClickListener(btn1text, btn2text, btn3text, btn4text, null, btnClickListener);
     }
 
     //五个按钮
     public CTipDialog setBtnClickListener(String btn1text, String btn2text, String
-            btn3text, String btn4text, String btn5text, final onDialogbtnClickListener btnClickListener) {
+            btn3text, String btn4text, String btn5text, final OnClickItemListener btnClickListener) {
         return this.setClickListener(btn1text, btn2text, btn3text, btn4text, btn5text, btnClickListener);
     }
 
@@ -250,7 +236,7 @@ public class CTipDialog extends BaseNDialog {
      * @return
      */
     private CTipDialog setClickListener(String btn1text, String btn2text, String btn3text,
-                                        String btn4text, String btn5text, final onDialogbtnClickListener btnClickListener) {
+                                        String btn4text, String btn5text, final OnClickItemListener btnClickListener) {
         setBtnListener(btn1text);
         setBtnListener(btn2text);
         setBtnListener(btn3text);

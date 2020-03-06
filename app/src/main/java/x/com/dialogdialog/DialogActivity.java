@@ -6,10 +6,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import x.com.hl_base.HLBaseActivity;
+import x.com.hl_base.HLNotification;
+import x.com.hl_base.hl_activity.HLBaseActivity;
+import x.com.hl_base.hl_dialog.NDialog;
+import x.com.hl_base.hl_interface.OnClickItemListener;
+import x.com.hl_base.hl_interface.OnSimpleListener;
+import x.com.hl_dialog.CBottomListDialog;
 import x.com.hl_dialog.CWaitingDialog;
-import x.com.hl_dialog.DFLoadingDialog;
-import x.com.hl_dialog.base.NDialog;
+import x.com.hl_log.ViseLog;
 
 public class DialogActivity extends HLBaseActivity {
 
@@ -26,27 +30,17 @@ public class DialogActivity extends HLBaseActivity {
         mTitle.setRightButtonText("aaasss", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                CTipDialog c = new CTipDialog(mActivity, CTipDialog.nDialog_Iphone)
-//                        .setTouchOutSideCancelable(true, true)
-//                        .setMessage("我是鬼，我来抓你了！", Gravity.CENTER)
-//                        .setBtnClickListener("好", "不好", new CTipDialog.onDialogbtnClickListener() {
-//                            @Override
-//                            public boolean onDialogBtnClick(Context context, String dialog, int whichBtn) {
-//                                switch (whichBtn) {
-//                                    case 1:
-//                                        Toast.makeText(context, "点击了好", Toast.LENGTH_SHORT).show();
-//                                        c.refresh("lajigui", Gravity.LEFT);
-//                                        break;
-//                                    case 2:
-//                                        Toast.makeText(context, "点击了不好", Toast.LENGTH_SHORT).show();
-//                                        break;
-//                                }
-//                                return false;
-//                            }
-//                        });
-//                c.showDialog(mActivity);
-                CWaitingDialog cWaitingDialog = new CWaitingDialog();
-                cWaitingDialog.showDialog(mActivity);
+                HLNotification.show(mActivity, "提示", "提示信息", R.mipmap.ic_launcher).setOnNotificationClickListener(new OnSimpleListener() {
+                    @Override
+                    public void onListen() {
+                        ViseLog.showInfo("提示", "点击了消息");
+                    }
+                }).setOnDismissListener(new OnSimpleListener() {
+                    @Override
+                    public void onListen() {
+                        ViseLog.showInfo("消息溜走了");
+                    }
+                });
             }
         });
 
@@ -147,34 +141,43 @@ public class DialogActivity extends HLBaseActivity {
 
     private void dialogs() {
         //显示加载框
-        DFLoadingDialog a = new DFLoadingDialog();
-        a.show(getSupportFragmentManager(), "loadingDialog");
-        a.dismissAllowingStateLoss();
-        //隐藏加载框
-        a.dismiss();
+        CWaitingDialog cWaitingDialog = new CWaitingDialog();
+        cWaitingDialog.showDialog(mActivity);
 
         //透明弹窗
         new NDialog(mActivity, NDialog.ndialog_Trans, 0, false).createTrans(150);
 
         //显示iPhone样式弹窗
-        Dialog c = new NDialog(mActivity, NDialog.nDialog_Iphone, 0.8f)
-                .setTouchOutSideCancelable(false, false)
-                .setMessage("我是鬼，我来抓你了！", NDialog.MSG_LAYOUT_CENTER)
-                .setBtnClickListener(true, "好", "不好", new NDialog.onDialogbtnClickListener() {
-                    @Override
-                    public void onDialogbtnClick(Context context, Dialog dialog, int whichBtn) {
-                        switch (whichBtn) {
-                            case 1:
-                                Toast.makeText(context, "点击了好", Toast.LENGTH_SHORT).show();
-                                break;
-                            case 2:
-                                Toast.makeText(context, "点击了不好", Toast.LENGTH_SHORT).show();
-                                break;
-                        }
-                    }
-                }).create();
-        c.show();
-
+//        CTipDialog c = new CTipDialog(mActivity, CTipDialog.nDialog_Iphone)
+//                .setTouchOutSideCancelable(true, true)
+//                .setMessage("我是鬼，我来抓你了！", Gravity.CENTER)
+//                .setBtnClickListener("好", "不好", new OnClickItemListener() {
+//                    @Override
+//                    public boolean onItemClick(String dialog, int whichBtn) {
+//                        switch (whichBtn) {
+//                            case 1:
+//                                Toast.makeText(mActivity, "点击了好", Toast.LENGTH_SHORT).show();
+////                                c.refresh("lajigui", Gravity.LEFT);
+//                                break;
+//                            case 2:
+//                                Toast.makeText(mActivity, "点击了不好", Toast.LENGTH_SHORT).show();
+//                                break;
+//                        }
+//                        return false;
+//                    }
+//                });
+//        c.showDialog(mActivity);
+        //底部弹窗1
+        CBottomListDialog cBottomListDialog = new CBottomListDialog();
+        cBottomListDialog.create(new String[]{"选取照片", "选取视频"});
+        cBottomListDialog.setOnClickItemListener(new OnClickItemListener() {
+            @Override
+            public boolean onItemClick(String text, int position) {
+                ViseLog.d(text + " " + position);
+                return true;
+            }
+        });
+        cBottomListDialog.showDialog(mActivity);
         //sex性别选择样式
         Dialog d = new NDialog(mActivity, NDialog.nDialog_Sex, 1.0f)
                 .setDialoglocation(NDialog.DIALOG_LOCATION_BOTTOM)

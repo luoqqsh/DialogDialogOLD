@@ -9,9 +9,9 @@ import androidx.annotation.Nullable;
 
 import java.io.File;
 
-import x.com.hl_dialog.base.BaseDialogFragment;
+import x.com.hl_base.hl_dialog.BaseDialogFragment;
 import x.com.hl_base.hl_interface.HOnListener;
-import x.com.hl_dialog.base.NDialog;
+import x.com.hl_base.hl_dialog.NDialog;
 import x.com.hl_fileselect.FileSelectorView;
 import x.com.hl_log.ViseLog;
 import x.com.hl_tools.hl_file;

@@ -1,4 +1,4 @@
-package x.com.hl_dialog.base;
+package x.com.hl_base.hl_dialog;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -53,13 +53,11 @@ public class NDialog {
     /**
      * 动画
      */
-    public static final int DIALOG_ANIM_NORMAL = R.style.DialogAnimation;
+    public static final int DIALOG_ANIM_NORMAL = R.style.dialogNoAnim;
     //从下往上滑动动画
-    public static final int DIALOG_ANIM_SLID_BOTTOM = R.style.DialogAnimationSlidBottom;
+    public static final int DIALOG_ANIM_SLID_BOTTOM = R.style.bottomMenuAnim;
     //从上往下滑动动画
-    public static final int DIALOG_ANIM_SLID_TOP = R.style.DialogAnimationSlidTop;
-    //从右往左滑动动画
-    public static final int DIALOG_ANIM_SLID_RIGHT = R.style.DialogAnimationSlidRight;
+    public static final int DIALOG_ANIM_SLID_TOP = R.style.topMenuAnim;
 
     /**
      * Dialog对象

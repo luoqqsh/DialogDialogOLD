@@ -20,8 +20,8 @@ import androidx.core.content.ContextCompat;
 import java.io.File;
 import java.util.Map;
 
-import x.com.hl_dialog.base.BaseDialogFragment;
-import x.com.hl_dialog.base.NDialog;
+import x.com.hl_base.hl_dialog.BaseDialogFragment;
+import x.com.hl_base.hl_dialog.NDialog;
 import x.com.hl_tools.hl_app;
 import x.com.hl_tools.hl_file;
 import x.com.hl_tools.hl_interface.DownListener;
@@ -35,9 +35,9 @@ public class DFUpdateDialog extends BaseDialogFragment {
             Manifest.permission.READ_EXTERNAL_STORAGE,
     };
     private String url;
-    private TextView tv_status;
-    private ProgressBar pb_prog;
-    private LinearLayout dialog_btnlayout, ll_progress;
+    private TextView nDialogProgressText;
+    private ProgressBar nDialogProgress;
+    private LinearLayout nDialogBtnLayout, nDialogProgressLayout;
 
     @NonNull
     @Override
@@ -66,11 +66,11 @@ public class DFUpdateDialog extends BaseDialogFragment {
             }
         });
         Dialog xdialog = nDialog.create();
-        tv_status = xdialog.findViewById(R.id.nDialogProgressText);
+        nDialogProgressText = xdialog.findViewById(R.id.nDialogProgressText);
         View view = xdialog.findViewById(R.id.view);
-        pb_prog = xdialog.findViewById(R.id.nDialogProgress);
-        dialog_btnlayout = xdialog.findViewById(R.id.nDialogBtnLayout);
-        ll_progress = xdialog.findViewById(R.id.nDialogProgressLayout);
+        nDialogProgress = xdialog.findViewById(R.id.nDialogProgress);
+        nDialogBtnLayout = xdialog.findViewById(R.id.nDialogBtnLayout);
+        nDialogProgressLayout = xdialog.findViewById(R.id.nDialogProgressLayout);
 
         if (isforce == 1) {
             view.setVisibility(View.GONE);
@@ -129,28 +129,28 @@ public class DFUpdateDialog extends BaseDialogFragment {
             Toast.makeText(getActivity(), "下载地址错误！", Toast.LENGTH_SHORT).show();
             return;
         }
-        dialog_btnlayout.setVisibility(View.GONE);
-        ll_progress.setVisibility(View.VISIBLE);
+        nDialogBtnLayout.setVisibility(View.GONE);
+        nDialogProgressLayout.setVisibility(View.VISIBLE);
         final File parentFile = new File(hl_file.getAppCachePath(context));
         String downloadfile = parentFile.getPath() + "/" + 3500 + hl_app.getVersionName(context, context.getPackageName()) + ".apk";
         hl_net.downloadFile(url, downloadfile, new DownListener() {
             @Override
             public void onsuccess(File file) {
                 hl_app.installAPK(getActivity(), file);
-                dialog_btnlayout.setVisibility(View.VISIBLE);
-                ll_progress.setVisibility(View.GONE);
+                nDialogBtnLayout.setVisibility(View.VISIBLE);
+                nDialogProgressLayout.setVisibility(View.GONE);
             }
 
             @Override
             public void faild(String message) {
                 Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-                tv_status.setText(message);
+                nDialogProgressText.setText(message);
             }
 
             @Override
             public void downloading(int progress) {
-                tv_status.setText(progress + "%");
-                pb_prog.setProgress(progress);
+                nDialogProgressText.setText(progress + "%");
+                nDialogProgress.setProgress(progress);
             }
         });
     }

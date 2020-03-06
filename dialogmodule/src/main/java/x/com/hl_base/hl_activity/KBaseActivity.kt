@@ -1,6 +1,7 @@
-package x.com.hl_base
+package x.com.hl_base.hl_activity
 
 import kotlinx.coroutines.*
+import x.com.hl_base.hl_activity.HLSlideActivity
 import x.com.hl_base.hl_interface.OnSimpleListener
 import x.com.hl_base.hl_interface.OnTSimpleListener
 
@@ -35,9 +36,9 @@ abstract class KBaseActivity : HLSlideActivity(), CoroutineScope by MainScope() 
     fun cancelTask(){
         cancel()
     }
-    
+
     override fun onDestroy() {
         super.onDestroy()
         cancel()
     }
-} 
+}
