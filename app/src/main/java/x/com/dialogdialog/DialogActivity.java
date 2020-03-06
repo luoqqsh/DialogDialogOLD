@@ -11,6 +11,7 @@ import x.com.hl_base.hl_activity.HLBaseActivity;
 import x.com.hl_base.hl_dialog.NDialog;
 import x.com.hl_base.hl_interface.OnClickItemListener;
 import x.com.hl_dialog.CBottomListDialog;
+import x.com.hl_dialog.CTipDialog;
 import x.com.hl_dialog.CWaitingDialog;
 import x.com.hl_log.ViseLog;
 
@@ -40,18 +41,25 @@ public class DialogActivity extends HLBaseActivity {
 //                        ViseLog.showInfo("消息溜走了");
 //                    }
 //                });
-                CBottomListDialog cBottomListDialog = new CBottomListDialog();
-                cBottomListDialog.setDataList(new String[]{"选取照片", "选取视频"});
-                cBottomListDialog.setShowCancelBtn(false);
-                cBottomListDialog.addTitle("tete", Gravity.CENTER, 20,R.color.red);
-                cBottomListDialog.setOnClickItemListener(new OnClickItemListener() {
+                CTipDialog c = new CTipDialog(CTipDialog.ndialog_Input)
+                        .setTouchOutSideCancelable(true, true)
+                        .setMessage("我是鬼，我来抓你了！", Gravity.CENTER);
+                c.setBtnClickListener("好", "不好", new OnClickItemListener() {
                     @Override
-                    public boolean onItemClick(String text, int position) {
-                        ViseLog.d(text + " " + position);
-                        return true;
+                    public boolean onItemClick(String dialog, int whichBtn) {
+                        switch (whichBtn) {
+                            case 1:
+                                Toast.makeText(mActivity, "点击了好", Toast.LENGTH_SHORT).show();
+                                ViseLog.d(c.getInputText());
+                                break;
+                            case 2:
+                                Toast.makeText(mActivity, "点击了不好", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                        return false;
                     }
                 });
-                cBottomListDialog.showDialog(mActivity);
+                c.showDialog(mActivity);
             }
         });
 
@@ -181,6 +189,8 @@ public class DialogActivity extends HLBaseActivity {
         //底部弹窗1
         CBottomListDialog cBottomListDialog = new CBottomListDialog();
         cBottomListDialog.setDataList(new String[]{"选取照片", "选取视频"});
+        cBottomListDialog.setShowCancelBtn(false);
+        cBottomListDialog.addTitle("tete", Gravity.CENTER, 20, R.color.red);
         cBottomListDialog.setOnClickItemListener(new OnClickItemListener() {
             @Override
             public boolean onItemClick(String text, int position) {

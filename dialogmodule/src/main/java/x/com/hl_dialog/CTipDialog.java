@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,6 +29,7 @@ public class CTipDialog extends BaseNDialog {
     public static final int nDialog_ListFile = R.layout.ndialog_listfile;
     public static final int nDialog_Normal = R.layout.ndialog_layout;
     public static final int ndialog_Trans = R.layout.ndialog_trans;
+    public static final int ndialog_Input = R.layout.ndialog_input;
 
     private int layoutId;
     private float clickAlpha = 0.8f;//点击透明度
@@ -40,6 +42,7 @@ public class CTipDialog extends BaseNDialog {
     private List<String> btnText = new ArrayList<>();
     private OnClickItemListener btnClickListener;
     private TextView dialogMsg;
+    private EditText nDialogInput;
 
     public CTipDialog(int layoutId) {
         this.layoutId = layoutId;
@@ -70,6 +73,7 @@ public class CTipDialog extends BaseNDialog {
             dialogMsg.setVisibility(View.VISIBLE);
             dialogMsg.setGravity(messagePosition);
         }
+        nDialogInput = mView.findViewById(R.id.nDialogInput);
         // 设置确认按钮
         for (int i = 0; i < btnText.size(); i++) {
             final TextView nDialogBtn = mView.findViewWithTag("nDialogBtn" + (i + 1));
@@ -106,6 +110,7 @@ public class CTipDialog extends BaseNDialog {
                 });
             }
         }
+
     }
 
     @Override
@@ -176,7 +181,7 @@ public class CTipDialog extends BaseNDialog {
         return this;
     }
 
-    public void refresh(String text,int position) {
+    public void refresh(String text, int position) {
         if (dialogMsg != null) {
             dialogMsg.setText(text);
             dialogMsg.setGravity(position);
@@ -192,6 +197,15 @@ public class CTipDialog extends BaseNDialog {
     public CTipDialog setDialogLocation(int location) {
         this.location = location;
         return this;
+    }
+
+    public String getInputText() {
+        if (nDialogInput != null) {
+            return nDialogInput.getText().toString();
+        } else {
+            ViseLog.e("找不到输入框控件，检查控件id是否是nDialogInput");
+            return "";
+        }
     }
 
     @Override
