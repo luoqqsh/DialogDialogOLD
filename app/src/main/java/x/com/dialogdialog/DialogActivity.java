@@ -3,14 +3,13 @@ package x.com.dialogdialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Toast;
 
-import x.com.hl_base.HLNotification;
 import x.com.hl_base.hl_activity.HLBaseActivity;
 import x.com.hl_base.hl_dialog.NDialog;
 import x.com.hl_base.hl_interface.OnClickItemListener;
-import x.com.hl_base.hl_interface.OnSimpleListener;
 import x.com.hl_dialog.CBottomListDialog;
 import x.com.hl_dialog.CWaitingDialog;
 import x.com.hl_log.ViseLog;
@@ -30,17 +29,29 @@ public class DialogActivity extends HLBaseActivity {
         mTitle.setRightButtonText("aaasss", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HLNotification.show(mActivity, "提示", "提示信息", R.mipmap.ic_launcher).setOnNotificationClickListener(new OnSimpleListener() {
+//                HLNotification.show(mActivity, "提示", "提示信息", R.mipmap.ic_launcher).setOnNotificationClickListener(new OnSimpleListener() {
+//                    @Override
+//                    public void onListen() {
+//                        ViseLog.showInfo("提示", "点击了消息");
+//                    }
+//                }).setOnDismissListener(new OnSimpleListener() {
+//                    @Override
+//                    public void onListen() {
+//                        ViseLog.showInfo("消息溜走了");
+//                    }
+//                });
+                CBottomListDialog cBottomListDialog = new CBottomListDialog();
+                cBottomListDialog.setDataList(new String[]{"选取照片", "选取视频"});
+                cBottomListDialog.setShowCancelBtn(false);
+                cBottomListDialog.addTitle("tete", Gravity.CENTER, 20,R.color.red);
+                cBottomListDialog.setOnClickItemListener(new OnClickItemListener() {
                     @Override
-                    public void onListen() {
-                        ViseLog.showInfo("提示", "点击了消息");
-                    }
-                }).setOnDismissListener(new OnSimpleListener() {
-                    @Override
-                    public void onListen() {
-                        ViseLog.showInfo("消息溜走了");
+                    public boolean onItemClick(String text, int position) {
+                        ViseLog.d(text + " " + position);
+                        return true;
                     }
                 });
+                cBottomListDialog.showDialog(mActivity);
             }
         });
 
@@ -169,7 +180,7 @@ public class DialogActivity extends HLBaseActivity {
 //        c.showDialog(mActivity);
         //底部弹窗1
         CBottomListDialog cBottomListDialog = new CBottomListDialog();
-        cBottomListDialog.create(new String[]{"选取照片", "选取视频"});
+        cBottomListDialog.setDataList(new String[]{"选取照片", "选取视频"});
         cBottomListDialog.setOnClickItemListener(new OnClickItemListener() {
             @Override
             public boolean onItemClick(String text, int position) {

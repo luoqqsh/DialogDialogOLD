@@ -28,22 +28,22 @@ import static x.com.hl_tools.hl_context.getAppCompActivity;
 
 public class hl_screen {
 
-    public static float dp2px(Context context, float dp) {
+    public static int dp2px(Context context, float dp) {
         if (context == null) {
             return -1;
         }
-        return dp * context.getResources().getDisplayMetrics().density;
+        return (int) (dp * context.getResources().getDisplayMetrics().density);
     }
 
-    public static float px2dp(Context context, float px) {
+    public static int px2dp(Context context, float px) {
         if (context == null) {
             return -1;
         }
-        return px / context.getResources().getDisplayMetrics().density;
+        return (int) (px / context.getResources().getDisplayMetrics().density);
     }
 
-    public static float px2sp(Context context, float pxValue) {
-        return (pxValue / context.getResources().getDisplayMetrics().scaledDensity);
+    public static int px2sp(Context context, float pxValue) {
+        return (int) (pxValue / context.getResources().getDisplayMetrics().scaledDensity);
     }
 
     public static int sp2px(Context context, int spValue) {

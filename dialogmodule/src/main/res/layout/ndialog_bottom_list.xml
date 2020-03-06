@@ -8,8 +8,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginBottom="12dp">
+        android:orientation="vertical">
 
         <ScrollView
             android:id="@+id/nDialogBottomScroll"
@@ -28,7 +27,7 @@
         </ScrollView>
 
         <View
-            android:id="@+id/nDialogBottomLine"
+            android:id="@+id/nDialogBottomLine1"
             android:layout_width="match_parent"
             android:layout_height="12dp" />
 
@@ -36,11 +35,16 @@
             android:id="@+id/nDialogBottomCancel"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:gravity="center"
             android:background="@drawable/bg_cancel_dialog"
+            android:gravity="center"
             android:text="取消"
             android:textColor="#2b84fd"
             android:textSize="20sp" />
+
+        <View
+            android:id="@+id/nDialogBottomLine2"
+            android:layout_width="match_parent"
+            android:layout_height="12dp" />
     </LinearLayout>
 
 </LinearLayout>
