@@ -66,6 +66,10 @@ public class CBottomListDialog extends BaseNDialog {
         if (dataList.size() == 1) {
             View itemView = getListItemView(dataList.get(0), 0);
             nDialogBottomList.addView(itemView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            if (isFullWidth) {
+                nDialogBottomList.addView(getLine(), ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                nDialogBottomScroll.setBackground(mActivitys.get().getResources().getDrawable(R.drawable.bg_bottom_list_full_dialog));
+            }
             itemView.setOnClickListener(v -> {
                 if (onClickItemListener != null) {
                     if (onClickItemListener.onItemClick(dataList.get(0), 0)) {
@@ -138,6 +142,8 @@ public class CBottomListDialog extends BaseNDialog {
         textView.setText(title);
         textView.setPadding(hl_screen.dp2px(mActivitys.get(), 12), 0, hl_screen.dp2px(mActivitys.get(), 12), 0);
         textView.setGravity(titlePosition);
+        textView.setSingleLine();
+        textView.setMaxLines(1);
         textView.setTextColor(mActivitys.get().getResources().getColor(titleColor));
         textView.setTextSize(titleSize);
         textView.setHeight(hl_screen.dp2px(mActivitys.get(), 50));
