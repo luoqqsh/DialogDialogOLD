@@ -9,6 +9,7 @@ import android.os.Build;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Display;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
@@ -191,7 +192,7 @@ public class hl_screen {
 
     //屏幕旋转，保持比例不变
     public static int getWidthFromScreenW(Context context) {
-        return hl_screen.getScreenWidth(context);
+        return getScreenWidth(context);
     }
 
     //获取屏幕角度方向
@@ -199,13 +200,25 @@ public class hl_screen {
         return activity.getWindowManager().getDefaultDisplay().getRotation();
     }
 
-    public static int getHeightFromWidth(Context context) {
-        return (int) (hl_screen.getScreenWidth(context) * 0.5625);
+    public static int getHeightFromWidthAtPort(Context context) {
+        return (int) (getScreenWidth(context) * getScreenWHScale(context));
+    }
+
+    public static int getHeightFromWidthAtLand(Context context) {
+        return (int) (getScreenHeight(context) * getScreenHWScale(context));
+    }
+
+    public static float getScreenWHScale(Context context) {
+        return getScreenWidth(context) * 1.0f / getScreenHeight(context);
+    }
+
+    public static float getScreenHWScale(Context context) {
+        return getScreenHeight(context) * 1.0f / getScreenWidth(context);
     }
 
     //获取是否存在NavigationBar
     public static boolean checkDeviceHasNavigationBar2(Context context) {
-        return hl_screen.getDeviceHeight(context) - hl_screen.getScreenHeight(context) > 0;
+        return getDeviceHeight(context) - getScreenHeight(context) > 0;
     }
 
     /**
@@ -297,6 +310,7 @@ public class hl_screen {
 
     /**
      * 获取Cpu内核数
+     *
      * @return
      */
     public static int getNumCores() {
@@ -313,6 +327,22 @@ public class hl_screen {
         } catch (Exception e) {
             e.printStackTrace();
             return 1;
+        }
+    }
+
+    /**
+     * 设置容器大小
+     *
+     * @param view   容器
+     * @param width  宽
+     * @param height 高
+     */
+    public static void setViewSize(View view, int width, int height) {
+        ViewGroup.LayoutParams lp = view.getLayoutParams();
+        if (lp != null) {
+            lp.height = height;
+            lp.width = width;
+            view.setLayoutParams(lp);
         }
     }
 }

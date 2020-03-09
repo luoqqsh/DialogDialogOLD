@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.Observer;
 
 import com.example.hhplayer.R;
 import com.xing.hhplayer.common.HHPlayer3;
@@ -28,6 +29,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import x.com.hl_base.hl_interface.OnDoubleClickListener;
+import x.com.hl_livedatabus.LiveEventBus;
+import x.com.hl_log.ViseLog;
 import x.com.hl_tools.hl_time;
 import x.com.hl_view.RotateImageView;
 
@@ -70,18 +73,18 @@ public class HHControlView extends FrameLayout implements View.OnClickListener, 
     private void initView(Context context) {
         View.inflate(context, getLayoutId(), this);
         //top
-        mTopContainer = findViewById(R.id.layout_top);
+        mTopContainer = findViewById(R.id.liveTopLayout);
         mTitleTextView = findViewById(R.id.liveTitle);
-        ImageView mBackButton = findViewById(R.id.back);
+        ImageView mBackButton = findViewById(R.id.liveBack);
         mBackButton.setOnClickListener(this);
         //bottom
-        seekbarlayout = findViewById(R.id.seekBarLayout);
-        mBottomContainer = findViewById(R.id.layout_bottom);
-        mFullscreenButton = findViewById(R.id.fullscreen);
-        mCurrentTimeTextView = findViewById(R.id.current);
+        seekbarlayout = findViewById(R.id.liveSeekLayout);
+        mBottomContainer = findViewById(R.id.liveBottomLayout);
+        mFullscreenButton = findViewById(R.id.liveFullScreen);
+        mCurrentTimeTextView = findViewById(R.id.livePlayTime);
         contentPanel = findViewById(R.id.contentPanel);
-        mTotalTimeTextView = findViewById(R.id.total);
-        mProgressBar = findViewById(R.id.seek);
+        mTotalTimeTextView = findViewById(R.id.liveTotalTime);
+        mProgressBar = findViewById(R.id.liveSeek);
         mProgressBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -101,17 +104,17 @@ public class HHControlView extends FrameLayout implements View.OnClickListener, 
             }
         });
 
-        findViewById(R.id.play).setOnClickListener(this);
-        scaleView = findViewById(R.id.scaleView);
+        findViewById(R.id.livePlay).setOnClickListener(this);
+        scaleView = findViewById(R.id.liveScale);
         scaleView.setOnClickListener(this);
         //list
         layout_list = findViewById(R.id.layout_list);
         //mid
         loading_layout = findViewById(R.id.loadingLayout);
-        mLockScreen = findViewById(R.id.lock_screen);
+        mLockScreen = findViewById(R.id.liveLock);
         loading = findViewById(R.id.loadingView);
         mStartButton = findViewById(R.id.loadingMidPause);
-        playlist = findViewById(R.id.playlist);
+        playlist = findViewById(R.id.livePlayList);
         playlist.setOnClickListener(this);
         mStartButton.setOnClickListener(this);
         contentPanel.setOnClickListener(new OnDoubleClickListener(new OnDoubleClickListener.DoubleClickCallback() {
@@ -131,7 +134,12 @@ public class HHControlView extends FrameLayout implements View.OnClickListener, 
                 showPlayControl(isPanelShow);
             }
         }));
-
+        LiveEventBus.get("aaa", String.class).observeForever(new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                ViseLog.d(s);
+            }
+        });
     }
 
     private int getLayoutId() {
@@ -144,11 +152,11 @@ public class HHControlView extends FrameLayout implements View.OnClickListener, 
     public void onClick(View view) {
         int id = view.getId();
         //播放暂停
-        if (id == R.id.play || id == R.id.loadingMidPause) {
+        if (id == R.id.livePlay || id == R.id.loadingMidPause) {
             playControl();
         }
         //显示比例
-        if (id == R.id.scaleView) {
+        if (id == R.id.liveScale) {
             if (mType == 0) {
                 mType = 1;
                 scaleView.setText("16:9");
@@ -172,11 +180,11 @@ public class HHControlView extends FrameLayout implements View.OnClickListener, 
             }
         }
         //返回
-        if (id == R.id.back) {
+        if (id == R.id.liveBack) {
             mActivity.finish();
         }
         //播放列表
-        if (id == R.id.playlist) {
+        if (id == R.id.livePlayList) {
             isShowList = !isShowList;
             if (isShowList) {
                 cancelDismissTimer();

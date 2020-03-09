@@ -149,7 +149,7 @@ public class NDialog {
             ImageView imgv_close = dialog.findViewById(R.id.nDialogClose);
             if (imgv_close == null) {
                 ViseLog.e("请检查id是否正确，将关闭按钮id设置为nDialogClose");
-                return null;
+                return this;
             }
             imgv_close.setVisibility(View.VISIBLE);
             imgv_close.setOnClickListener(new View.OnClickListener() {

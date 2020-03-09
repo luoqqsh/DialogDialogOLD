@@ -73,6 +73,7 @@
         <activity
             android:name=".HHMedia3Activity"
             android:screenOrientation="nosensor"
+            android:configChanges="orientation|screenSize"
             android:theme="@style/Slide.trans" />
         <activity
             android:name=".MappingActivity"

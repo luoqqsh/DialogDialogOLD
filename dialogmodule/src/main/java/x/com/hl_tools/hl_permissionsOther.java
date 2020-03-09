@@ -86,9 +86,9 @@ public class hl_permissionsOther {
      * hl_permissionsOther p = hl_permissionsOther.getInstance(listener);
      *
      * @param context      上下文
-     * @param isneeddialog 是否需要显示申请对话框
+     * @param isNeedDialog 是否需要显示申请对话框
      */
-    public void gotoSetFloatWindow(Context context, boolean isneeddialog) {
+    public void gotoSetFloatWindow(Context context, boolean isNeedDialog) {
         if (RomUtils.checkIsVivoRom()) {
             //部分VIVO机型，悬浮窗设置无效，还是手动开吧----如VIVO X9--6.0--25--
             gotoAppSetPage(context);
@@ -96,18 +96,18 @@ public class hl_permissionsOther {
         }
         if (Build.VERSION.SDK_INT < 23) {
             if (RomUtils.checkIsMiuiRom()) {
-                miuiROMPermissionApply(context, isneeddialog);
+                miuiROMPermissionApply(context, isNeedDialog);
             } else if (RomUtils.checkIsMeizuRom()) {
-                meizuROMPermissionApply(context, isneeddialog);
+                meizuROMPermissionApply(context, isNeedDialog);
             } else if (RomUtils.checkIsHuaweiRom()) {
-                huaweiROMPermissionApply(context, isneeddialog);
+                huaweiROMPermissionApply(context, isNeedDialog);
             } else if (RomUtils.checkIs360Rom()) {
-                ROM360PermissionApply(context, isneeddialog);
+                ROM360PermissionApply(context, isNeedDialog);
             } else if (RomUtils.checkIsOppoRom()) {
-                oppoROMPermissionApply(context, isneeddialog);
+                oppoROMPermissionApply(context, isNeedDialog);
             }
         } else {
-            commonROMPermissionApply(context, isneeddialog);
+            commonROMPermissionApply(context, isNeedDialog);
         }
     }
 

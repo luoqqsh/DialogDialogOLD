@@ -44,7 +44,7 @@ public abstract class HLSlideActivity extends AppCompatActivity {
         return false;
     }
 
-    private boolean isTranslucentOrFloating() {
+    protected boolean isTranslucentOrFloating() {
         boolean isTranslucentOrFloating = false;
         try {
             int[] styleableRes = (int[]) Class.forName("com.android.internal.R$styleable").getField("Window").get(null);

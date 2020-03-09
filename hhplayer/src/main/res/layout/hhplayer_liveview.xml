@@ -13,7 +13,7 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:id="@+id/layout_top"
+        android:id="@+id/liveTopLayout"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_alignParentTop="true"
@@ -21,7 +21,7 @@
         android:gravity="center_vertical">
 
         <ImageView
-            android:id="@+id/back"
+            android:id="@+id/liveBack"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:padding="10dp"
@@ -46,7 +46,7 @@
         android:layout_marginBottom="40dp" />
 
     <LinearLayout
-        android:id="@+id/layout_bottom"
+        android:id="@+id/liveBottomLayout"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_alignParentBottom="true"
@@ -55,7 +55,7 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/play"
+            android:id="@+id/livePlay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
@@ -63,7 +63,7 @@
             android:textColor="#ffffff" />
 
         <TextView
-            android:id="@+id/current"
+            android:id="@+id/livePlayTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -72,7 +72,7 @@
             android:textColor="#ffffff" />
 
         <LinearLayout
-            android:id="@+id/seekBarLayout"
+            android:id="@+id/liveSeekLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="16dp"
@@ -81,7 +81,7 @@
             android:orientation="horizontal">
 
             <SeekBar
-                android:id="@+id/seek"
+                android:id="@+id/liveSeek"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -96,7 +96,7 @@
                 android:thumb="@drawable/video_seek_thumb" />
 
             <TextView
-                android:id="@+id/total"
+                android:id="@+id/liveTotalTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="00:00"
@@ -104,7 +104,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/scaleView"
+            android:id="@+id/liveScale"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="16dp"
@@ -112,7 +112,7 @@
             android:textColor="#ffffff" />
 
         <TextView
-            android:id="@+id/playlist"
+            android:id="@+id/livePlayList"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="16dp"
@@ -121,7 +121,7 @@
             android:visibility="gone" />
 
         <ImageView
-            android:id="@+id/fullscreen"
+            android:id="@+id/liveFullScreen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingRight="16dp"
@@ -130,7 +130,7 @@
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/lock_screen"
+        android:id="@+id/liveLock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"

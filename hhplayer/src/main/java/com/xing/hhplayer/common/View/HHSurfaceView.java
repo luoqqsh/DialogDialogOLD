@@ -7,6 +7,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.hhplayer.R;
 import com.xing.hhplayer.common.tools.MeasureHelper;
 
 public class HHSurfaceView extends SurfaceView implements SurfaceHolder.Callback2, HHRenderView {
@@ -15,6 +16,7 @@ public class HHSurfaceView extends SurfaceView implements SurfaceHolder.Callback
 
     public HHSurfaceView(Context context) {
         super(context);
+        setId(R.id.video_normal_id);
     }
 
     public HHSurfaceView(Context context, AttributeSet attrs) {

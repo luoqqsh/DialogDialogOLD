@@ -1,6 +1,5 @@
 package com.xing.hhplayer.common;
 
-import android.app.Activity;
 import android.graphics.SurfaceTexture;
 import android.provider.Settings;
 import android.text.TextUtils;
@@ -13,10 +12,10 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import androidx.fragment.app.FragmentActivity;
 
+import com.example.hhplayer.R;
 import com.xing.hhplayer.common.TvListBean.TvDataList;
 import com.xing.hhplayer.common.TvListBean.TvView;
 import com.xing.hhplayer.common.TypeBean.PlayerPrePareStateType;
@@ -35,13 +34,12 @@ import java.util.List;
 import java.util.Map;
 
 import x.com.hl_log.ViseLog;
-import x.com.hl_tools.hl_screen;
 
 /**
  * 播放器控制类，也就是我们的使用类
  */
 public class HHPlayer3 {
-    private HHPlayerCore hhPlayerCore;//播放器内
+    private HHPlayerCore hhPlayerCore;//播放器内核
     private HHPlayerView hhPlayerView;
     private FragmentActivity mActivity;
     private ViewGroup viewGroup;//视频容器
@@ -87,7 +85,6 @@ public class HHPlayer3 {
         @Override
         public void onListen(Object o) {
             hhPlayerCore.setScalingMode(0);
-            setVideoSize((int) getMediaWidth(), (int) getMediaHeight());
             hhPlayerCore.isLive = hhPlayerCore.getMediaDurationMS() == 0;
             if (cvInterface != null) {
                 cvInterface.getPrePareState(PlayerPrePareStateType.PREPARED);
@@ -95,6 +92,19 @@ public class HHPlayer3 {
             if (isPlayWhenPrepared || isReStart) {
                 isReStart = false;
                 start();
+            }
+            if (viewGroup != null) {
+                ViseLog.showInfo(hhPlayerCore.TAG, "容器包含View个数：" + viewGroup.getChildCount());
+                ViseLog.showInfo(hhPlayerCore.TAG, "容器大小：" + viewGroup.getWidth() + "," + viewGroup.getHeight());
+                View view = viewGroup.findViewById(R.id.video_normal_id);
+                if (view != null) {
+                    ViseLog.showInfo(hhPlayerCore.TAG, "视频View大小：" + view.getWidth() + "," + view.getHeight());
+                } else {
+                    ViseLog.showInfo(hhPlayerCore.TAG, "视频View大小：0,0");
+                }
+            } else {
+                ViseLog.showInfo(hhPlayerCore.TAG, "容器大小：0,0");
+                ViseLog.showInfo(hhPlayerCore.TAG, "视频View大小：0,0");
             }
             if (preparedListener != null) {
                 preparedListener.onListen(o);
@@ -125,7 +135,7 @@ public class HHPlayer3 {
     private OnPlayerListener<Object> coreErrorListener = new OnPlayerListener<Object>() {
         @Override
         public void onListen(Object o) {
-            ViseLog.e(o);
+            ViseLog.e(hhPlayerCore.ETAG, o);
             if (cvInterface != null) {
                 cvInterface.getPrePareState(PlayerPrePareStateType.ERROR);
             }
@@ -152,18 +162,12 @@ public class HHPlayer3 {
     }
 
     //使用NEWSURFACE、NEWTEXTURE必须传viewGroup
-    public HHPlayer3(FragmentActivity mActivity, final HHPlayerCore hhPlayerCore, TvView playerView, final ViewGroup viewGroup, Surface surface) {
+    public HHPlayer3(FragmentActivity mActivity, HHPlayerCore hhPlayerCore, TvView playerView, ViewGroup viewGroup, Surface surface) {
         hhPlayerCore.setContext(mActivity);
         hhPlayerCore.setContext(this.mActivity);
         this.hhPlayerCore = hhPlayerCore;
         this.mActivity = mActivity;
         this.viewGroup = viewGroup;
-        if (viewGroup != null) {
-            //给viewGroup设置宽高
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            layoutParams.height = hl_screen.getHeightFromWidth(mActivity);
-            viewGroup.setLayoutParams(layoutParams);
-        }
         switch (playerView) {
             case NEWSURFACE:
                 initSurfaceView();
@@ -218,22 +222,28 @@ public class HHPlayer3 {
 
     public void addExtraView(View view, int index) {
         if (viewGroup == null) {
-            ViseLog.e(hhPlayerCore.TAG, "必须设置viewGroup");
+            ViseLog.e(hhPlayerCore.ETAG, "必须设置viewGroup");
         } else {
             ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             viewGroup.addView(view, index, params);
         }
     }
 
-    private void initSurface(Surface surface) {
+    public void initSurface(Surface surface) {
         hhPlayerCore.initView(surface);
     }
 
-    private void initSurfaceHolder(SurfaceHolder surfaceHolder) {
+    public void initSurfaceHolder(SurfaceHolder surfaceHolder) {
         hhPlayerCore.initView(surfaceHolder);
     }
 
     /***********************************设置部分**************************************************************/
+
+    public boolean checkVideoAdd() {
+        View view = viewGroup.findViewById(R.id.video_normal_id);
+        return view != null;
+    }
+
     public void setPlayWhenPrepared(boolean isPlayWhenPrepared) {
         this.isPlayWhenPrepared = isPlayWhenPrepared;
     }
@@ -285,7 +295,7 @@ public class HHPlayer3 {
         }
     }
 
-    //设置视频大小
+    //设置视频大小,hhsurfaceview设置显示比例时有用，待优化
     private void setVideoSize(int width, int height) {
         if (hhPlayerView != null) {
             hhPlayerView.setVideoSize(width, height);
@@ -328,7 +338,7 @@ public class HHPlayer3 {
             cvInterface.getPrePareState(PlayerPrePareStateType.PREPARING);
         }
         hhPlayerCore.prepare(path);
-        ViseLog.showInfo("开始加载:" + path);
+        ViseLog.showInfo(hhPlayerCore.TAG, "开始加载:" + path);
     }
 
     //刷新播放列表，刷新后自动播放当前列表第一个
@@ -369,6 +379,21 @@ public class HHPlayer3 {
         return -1;
     }
 
+    View old;
+
+    public void exitFullScreen() {
+//        addExtraView(old,0);
+        initSurfaceView();
+    }
+
+    public void fullScreen() {
+        old = viewGroup.findViewById(R.id.video_normal_id);
+        if (old != null) {
+            viewGroup.removeView(old);
+        }
+//        hl_screen.setViewSize(viewGroup.getChildAt(0), hl_screen.getScreenWidth(mActivity), hl_screen.getScreenHeight(mActivity));
+    }
+
     public void start() {
         if (hhPlayerCore.isPrepared() && hhPlayerCore.isPlayControl()) {
             hhPlayerCore.start();
@@ -386,10 +411,10 @@ public class HHPlayer3 {
     public void restart() {
         if (!TextUtils.isEmpty((CharSequence) hhPlayerCore.getMediaPath()) && hhPlayerCore.isPlayControl()) {
             hhPlayerCore.prepare(hhPlayerCore.getMediaPath().toString());
-            hhPlayerCore.getCurrentStart();
+            hhPlayerCore.getCurrentStop();
             hhPlayerCore.mPlayerState = PlayerStateType.IDLE;
             isReStart = true;
-        } 
+        }
     }
 
     public void pause() {
@@ -436,14 +461,6 @@ public class HHPlayer3 {
         hhPlayerCore.resetPlayer();
     }
 
-    //全屏
-    public void fullScreen() {
-        if (viewGroup == null) {
-            ViseLog.e(hhPlayerCore.ETAG, "必须要有viewGroup才能执行此操作");
-            return;
-        }
-    }
-
     public void release() {
         stop();
         hhPlayerCore.getCurrentStop();
@@ -466,10 +483,14 @@ public class HHPlayer3 {
         }
     }
 
+    public ViewGroup getPlayerView() {
+        return viewGroup;
+    }
+
     //获取屏幕亮度
     public int getScreenBrightness() {
-        if (this.mActivity instanceof Activity) {
-            Window localWindow = ((Activity) this.mActivity).getWindow();
+        if (mActivity != null) {
+            Window localWindow = mActivity.getWindow();
             WindowManager.LayoutParams localLayoutParams = localWindow.getAttributes();
             float screenBrightness = localLayoutParams.screenBrightness;
             if (screenBrightness > 1.0F || screenBrightness < 0.1) {
@@ -479,8 +500,8 @@ public class HHPlayer3 {
         }
         return getSystemScreenBrightness();
     }
-    //获取当前音量
 
+    //获取当前音量
     public float getVolume() {
         return hhPlayerCore.volume;
     }
@@ -546,7 +567,12 @@ public class HHPlayer3 {
 
     /***********************************初始化view部分**************************************************************/
     private void initSurfaceView() {
+        if (checkVideoAdd()) {
+            ViseLog.e(hhPlayerCore.ETAG, "视频View已存在");
+            return;
+        }
         SurfaceView mSurfaceView = new SurfaceView(mActivity.getApplicationContext());
+        mSurfaceView.setId(R.id.video_normal_id);
         mSurfaceView.setKeepScreenOn(true);
         mSurfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
@@ -567,7 +593,12 @@ public class HHPlayer3 {
     }
 
     private void initTextureView() {
+        if (checkVideoAdd()) {
+            ViseLog.e(hhPlayerCore.ETAG, "视频View已存在");
+            return;
+        }
         TextureView mTextureView = new TextureView(mActivity.getApplicationContext());
+        mTextureView.setId(R.id.video_normal_id);
         mTextureView.setSurfaceTextureListener(new TextureView.SurfaceTextureListener() {
             @Override
             public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int width, int height) {
@@ -595,6 +626,10 @@ public class HHPlayer3 {
     }
 
     private void initHHSurfaceView() {
+        if (checkVideoAdd()) {
+            ViseLog.e(hhPlayerCore.ETAG, "视频View已存在");
+            return;
+        }
         hhPlayerView = new HHPlayerView();
         hhPlayerView.addView(mActivity, viewGroup, 0, TvView.HHSURFACE, new HHSurfaceStateListener() {
             @Override
@@ -618,6 +653,10 @@ public class HHPlayer3 {
     }
 
     private void initHHTextureView() {
+        if (checkVideoAdd()) {
+            ViseLog.e(hhPlayerCore.ETAG, "视频View已存在");
+            return;
+        }
         hhPlayerView = new HHPlayerView();
         hhPlayerView.addView(mActivity, viewGroup, 0, TvView.HHTEXTURE, new HHSurfaceStateListener() {
             @Override
@@ -643,6 +682,10 @@ public class HHPlayer3 {
     }
 
     private void initHHGLSurfaceView() {
+        if (checkVideoAdd()) {
+            ViseLog.e(hhPlayerCore.ETAG, "视频View已存在");
+            return;
+        }
         hhPlayerView = new HHPlayerView();
         hhPlayerView.addView(mActivity, viewGroup, 0, TvView.HHGLSURFACE, new HHSurfaceStateListener() {
             @Override

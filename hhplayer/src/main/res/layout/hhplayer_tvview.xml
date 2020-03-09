@@ -13,7 +13,7 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:id="@+id/layout_top"
+        android:id="@+id/liveTopLayout"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_alignParentTop="true"
@@ -39,7 +39,7 @@
         android:layout_alignParentRight="true" />
 
     <LinearLayout
-        android:id="@+id/layout_bottom"
+        android:id="@+id/liveBottomLayout"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_alignParentBottom="true"
@@ -49,7 +49,7 @@
         android:visibility="gone">
 
         <TextView
-            android:id="@+id/current"
+            android:id="@+id/livePlayTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -58,7 +58,7 @@
             android:textColor="#ffffff" />
 
         <LinearLayout
-            android:id="@+id/seekBarLayout"
+            android:id="@+id/liveSeekLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="16dp"
@@ -67,7 +67,7 @@
             android:orientation="horizontal">
 
             <SeekBar
-                android:id="@+id/seek"
+                android:id="@+id/liveSeek"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -82,7 +82,7 @@
                 android:thumb="@drawable/video_seek_thumb" />
 
             <TextView
-                android:id="@+id/total"
+                android:id="@+id/liveTotalTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="00:00"
@@ -90,7 +90,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/scaleView"
+            android:id="@+id/liveScale"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="16dp"

@@ -1,8 +1,9 @@
 package x.com.dialogdialog;
 
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.KeyEvent;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.SeekBar;
@@ -17,13 +18,13 @@ import com.xing.hhplayer.common.TvListBean.TvView;
 import com.xing.hhplayer.common.TvListBean.TypeClarity;
 import com.xing.hhplayer.common.TvListBean.TypeClass;
 import com.xing.hhplayer.common.TvListBean.TypeState;
-import com.xing.hhplayer.common.base.HHMediaPlayer;
 import com.xing.hhplayer.common.base.OnPlayerListener;
+import com.xing.hhplayer.ijk.HHijkPlayer;
 
 import java.util.ArrayList;
 
 import x.com.dialogdialog.BaseApp.BaseActivity;
-import x.com.hl_log.ViseLog;
+import x.com.hl_tools.hl_screen;
 import x.com.hl_tools.hl_time;
 
 public class HHMedia3Activity extends BaseActivity {
@@ -52,7 +53,8 @@ public class HHMedia3Activity extends BaseActivity {
         initList();
         initUI();
         hhview = findViewById(R.id.hhPlayerView);
-        hhPlayer3 = new HHPlayer3(this, new HHMediaPlayer(), TvView.NEWTEXTURE, hhview);
+        hl_screen.setViewSize(hhview, ViewGroup.LayoutParams.MATCH_PARENT, hl_screen.getHeightFromWidthAtPort(mActivity));
+        hhPlayer3 = new HHPlayer3(this, new HHijkPlayer(), TvView.NEWTEXTURE, hhview);
         hhPlayer3.addControlView();
         hhPlayer3.setOnPreparedListener(new OnPlayerListener<Object>() {
             @Override
@@ -61,8 +63,6 @@ public class HHMedia3Activity extends BaseActivity {
                 seekbar_volume.setProgress((int) (hhPlayer3.getVolume() * 10));
                 totaltime.setText(" / " + hl_time.formatTime(hhPlayer3.getMediaDurationMS()));
                 seekBar.setMax((int) (hhPlayer3.getMediaDurationMS() / 1000));
-                setViewSize(hhview, 601, 500);
-                ViseLog.d(hhview.getWidth() + " " + hhview.getHeight());
             }
         });
         hhPlayer3.setOnProgressListener(new OnPlayerListener<Long>() {
@@ -85,15 +85,6 @@ public class HHMedia3Activity extends BaseActivity {
         });
     }
 
-    protected void setViewSize(View view, int width, int height) {
-        ViewGroup.LayoutParams lp = view.getLayoutParams();
-        if (lp != null) {
-            lp.height = height;
-            lp.width = width;
-            view.setLayoutParams(lp);
-        }
-    }
-
     private void initList() {
         TvDataList tvDataList = new TvDataList(TypeClass.厦门台, "厦门电视台1", "http://cstvpull.live.wscdns.com/live/xiamen1.flv", TypeClarity.H4k, TypeState.流畅);
         TvDataList tvDataList2 = new TvDataList(TypeClass.厦门台, "厦门电视台2", "http://cstvpull.live.wscdns.com/live/xiamen2.flv", TypeClarity.H4k, TypeState.流畅);
@@ -112,6 +103,8 @@ public class HHMedia3Activity extends BaseActivity {
     }
 
     private void initUI() {
+        fixRotateBug26();
+        startOriListener();
         currenttime = findViewById(R.id.testCurrentTime);
         totaltime = findViewById(R.id.testTotalTime);
         seekbar_volume = findViewById(R.id.testSeekVolume);
@@ -135,6 +128,7 @@ public class HHMedia3Activity extends BaseActivity {
             hhPlayer3.prepare("http://s.bizhijingling.com/uploadfile/coustom/2019//309/20190613170125729.mp4");
         });
         findViewById(R.id.testFull).setOnClickListener(v -> hhPlayer3.fullScreen());
+        findViewById(R.id.testExit).setOnClickListener(v -> hhPlayer3.exitFullScreen());
         findViewById(R.id.testMute).setOnClickListener(v -> hhPlayer3.setMute(!ismute));
         findViewById(R.id.testFast).setOnClickListener(v -> hhPlayer3.setSpeed(2));
         findViewById(R.id.testSlow).setOnClickListener(v -> hhPlayer3.setSpeed(0.5f));
@@ -151,6 +145,20 @@ public class HHMedia3Activity extends BaseActivity {
             }
         });
         findViewById(R.id.testGet).setOnClickListener(v -> {
+        });
+        findViewById(R.id.testRotate).setOnClickListener(v -> {
+            //判断当前是否为横屏,判断是否旋转
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                hl_screen.setViewSize(hhPlayer3.getPlayerView(), hl_screen.getDeviceWidth(mActivity), hl_screen.getDeviceHeight(mActivity));
+                hideBar();
+            } else {
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//竖屏
+                hl_screen.setViewSize(hhPlayer3.getPlayerView(), ViewGroup.LayoutParams.MATCH_PARENT, hl_screen.getHeightFromWidthAtLand(mActivity));
+                showBar();
+            }
+//            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);//横屏
+//            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//竖屏
         });
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -198,11 +206,32 @@ public class HHMedia3Activity extends BaseActivity {
         findViewById(R.id.testKeyEnter).setOnClickListener(v -> hhPlayer3.sendKeyDown(KeyEvent.KEYCODE_DPAD_CENTER));
     }
 
+    @Override
+    protected boolean isOpenSlideBack() {
+        return true;
+    }
+
+    //    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//        hhPlayer3.sendKeyDown(keyCode);
+//        return false;//return false 会调用系统的方法
+//    }
+
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        hhPlayer3.sendKeyDown(keyCode);
-        return true;//return false 会调用系统的方法
+    public void changeToLand() {
+        if (hhPlayer3.getPlayerView() != null) {
+            hl_screen.setViewSize(hhPlayer3.getPlayerView(), hl_screen.getDeviceWidth(mActivity), hl_screen.getDeviceHeight(mActivity));
+            hideBar();
+        }
+    }
+
+    @Override
+    public void changeToPort() {
+        if (hhPlayer3.getPlayerView() != null) {
+            hl_screen.setViewSize(hhPlayer3.getPlayerView(), ViewGroup.LayoutParams.MATCH_PARENT, hl_screen.getHeightFromWidthAtLand(mActivity));
+            showBar();
+        }
     }
 
     @Override

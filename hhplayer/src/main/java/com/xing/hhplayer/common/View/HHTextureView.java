@@ -8,6 +8,7 @@ import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.hhplayer.R;
 import com.xing.hhplayer.common.tools.MeasureHelper;
 
 public class HHTextureView extends TextureView implements TextureView.SurfaceTextureListener, HHRenderView {
@@ -18,6 +19,7 @@ public class HHTextureView extends TextureView implements TextureView.SurfaceTex
 
     public HHTextureView(Context context) {
         super(context);
+        setId(R.id.video_normal_id);
     }
 
     public HHTextureView(Context context, AttributeSet attrs) {

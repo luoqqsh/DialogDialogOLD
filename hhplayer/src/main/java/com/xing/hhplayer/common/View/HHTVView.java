@@ -68,17 +68,17 @@ public class HHTVView extends FrameLayout implements View.OnClickListener, Contr
     private void initView(Context context) {
         View.inflate(context, getLayoutId(), this);
         //top
-        mTopContainer = findViewById(R.id.layout_top);
+        mTopContainer = findViewById(R.id.liveTopLayout);
         mTvTitle = findViewById(R.id.tvTitle);
         //bottom
-        seekBarLayout = findViewById(R.id.seekBarLayout);
-        mBottomContainer = findViewById(R.id.layout_bottom);
-        mCurrentTimeTextView = findViewById(R.id.current);
+        seekBarLayout = findViewById(R.id.liveSeekLayout);
+        mBottomContainer = findViewById(R.id.liveBottomLayout);
+        mCurrentTimeTextView = findViewById(R.id.livePlayTime);
         contentPanel = findViewById(R.id.contentPanel);
-        mTotalTimeTextView = findViewById(R.id.total);
-        mProgressBar = findViewById(R.id.seek);
+        mTotalTimeTextView = findViewById(R.id.liveTotalTime);
+        mProgressBar = findViewById(R.id.liveSeek);
 
-        scaleView = findViewById(R.id.scaleView);
+        scaleView = findViewById(R.id.liveScale);
         scaleView.setOnClickListener(this);
         //list
         layout_list = findViewById(R.id.layout_list);
@@ -114,7 +114,7 @@ public class HHTVView extends FrameLayout implements View.OnClickListener, Contr
             playControl();
         }
         //显示比例
-        if (id == R.id.scaleView) {
+        if (id == R.id.liveScale) {
             if (mType == 0) {
                 mType = 1;
                 scaleView.setText("16:9");

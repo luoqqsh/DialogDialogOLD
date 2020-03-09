@@ -1,5 +1,7 @@
 package x.com.hl_base.hl_activity;
 
+import android.app.Activity;
+import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,10 +16,14 @@ import com.gyf.immersionbar.BarHide;
 import com.gyf.immersionbar.BarParams;
 import com.gyf.immersionbar.ImmersionBar;
 
+import java.lang.reflect.Method;
+
 import x.com.hl_base.MyLifeObserver8;
 import x.com.hl_dialog.R;
+import x.com.hl_livedatabus.LiveEventBus;
 import x.com.hl_tools.hl_device;
 import x.com.hl_tools.hl_leak;
+import x.com.hl_tools.hl_orientation2;
 import x.com.hl_tools.hl_screen;
 import x.com.hl_view.RotateImageView;
 
@@ -28,6 +34,8 @@ public abstract class HLBaseActivity extends KBaseActivity {
     private LinearLayout base_loading_no_data;
     private LinearLayout base_loading;
     private RotateImageView loading_view;
+    private hl_orientation2 ori;
+    private ViewGroup baseContentLayout;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -83,7 +91,7 @@ public abstract class HLBaseActivity extends KBaseActivity {
     }
 
     private void initContentView() {
-        ViewGroup baseContentLayout = findViewById(R.id.base_content_layout);
+        baseContentLayout = findViewById(R.id.base_content_layout);
         if (getLayoutId() != 0) {
             View contentView = LayoutInflater.from(this).inflate(getLayoutId(), null);
             LinearLayout.LayoutParams lpContent = new LinearLayout.LayoutParams(
@@ -113,10 +121,20 @@ public abstract class HLBaseActivity extends KBaseActivity {
 
     public void hideBar() {
         ImmersionBar.with(this).hideBar(BarHide.FLAG_HIDE_BAR).init();
+        if (!isShowTitle()) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                baseContentLayout.setPadding(0, 0, 0, 0);
+            }
+        }
     }
 
     public void showBar() {
         ImmersionBar.with(this).hideBar(BarHide.FLAG_SHOW_BAR).init();
+        if (!isShowTitle()) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                baseContentLayout.setPadding(0, hl_screen.getStatusBarHeight(mActivity), 0, 0);
+            }
+        }
     }
 
     public void hideNavigationBar() {
@@ -190,6 +208,9 @@ public abstract class HLBaseActivity extends KBaseActivity {
         if (hl_device.INSTANCE.isHuaWeiPhone()) {
             hl_leak.fixHuaWeiLeak(this);
         }
+        if (ori != null) {
+            ori.stopWatch();
+        }
     }
 
     public void setLoading() {
@@ -249,5 +270,53 @@ public abstract class HLBaseActivity extends KBaseActivity {
 
     public int getLoadingNoDataId() {
         return R.layout.base_loading_nodata;
+    }
+
+    //该方法是将activity设置为不透明，需求冲突的话，需另寻方案
+    public void fixRotateBug26() {
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.O && isTranslucentOrFloating()) {
+            try {
+                Method method = Activity.class.getDeclaredMethod("convertFromTranslucent");
+                method.setAccessible(true);
+                method.invoke(this);
+            } catch (Throwable t) {
+                t.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * 启动旋转监听
+     */
+    public void startOriListener() {
+        ori = new hl_orientation2(mActivity);
+        ori.setOnOrientationListener(new hl_orientation2.OnOrientationListener() {
+            @Override
+            public void changedToLandScape(boolean fromPort) {
+                if (fromPort) {
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
+                    changeToLand();
+                    LiveEventBus.get("aaa").post("SCREEN_ORIENTATION_SENSOR_LANDSCAPE");
+                }
+            }
+
+            @Override
+            public void changedToPortrait(boolean fromLand) {
+                if (fromLand) {
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
+                    changeToPort();
+                    LiveEventBus.get("aaa").post("SCREEN_ORIENTATION_SENSOR_PORTRAIT");
+                }
+            }
+        });
+        ori.startWatch();
+    }
+
+    public void changeToLand() {
+
+    }
+
+    public void changeToPort() {
+
     }
 }

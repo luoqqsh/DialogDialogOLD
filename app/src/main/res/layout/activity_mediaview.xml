@@ -135,6 +135,21 @@
             android:maxLines="1"
             android:text="release" />
 
+        <Button
+            android:id="@+id/testExit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:maxLines="1"
+            android:text="exit" />
+
+        <Button
+            android:id="@+id/testRotate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:maxLines="1"
+            android:text="rotate" />
 
     </LinearLayout>
 
