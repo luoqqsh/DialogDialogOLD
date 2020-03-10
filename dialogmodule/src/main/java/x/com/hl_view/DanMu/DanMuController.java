@@ -214,7 +214,6 @@ public class DanMuController {
                 if (onSimpleListener != null) {
                     onSimpleListener.onListen();
                 }
-
             }
         } else if (direction == 1) {
             //向右

@@ -33,6 +33,7 @@ import com.xing.hhplayer.common.base.OnPlayerListener;
 import java.util.List;
 import java.util.Map;
 
+import x.com.hl_livedatabus.LiveEventBus;
 import x.com.hl_log.ViseLog;
 
 /**
@@ -405,6 +406,7 @@ public class HHPlayer3 {
             if (cvInterface != null) {
                 cvInterface.getPlayState(hhPlayerCore.mPlayerState);
             }
+            LiveEventBus.get("HHPlayerPlayState").post(hhPlayerCore.mPlayerState);
         }
     }
 

@@ -10,6 +10,8 @@ import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.Observer;
 
 import com.example.hhplayer.R;
 import com.xing.hhplayer.common.HHPlayer3;
@@ -17,10 +19,13 @@ import com.xing.hhplayer.common.TvListBean.TvDataList;
 import com.xing.hhplayer.common.TypeBean.PlayerPrePareStateType;
 import com.xing.hhplayer.common.TypeBean.PlayerStateType;
 import com.xing.hhplayer.common.base.ControlViewInterface;
+import com.xing.hhplayer.common.base.HHPlayerCore;
 
 import java.util.List;
 
 import x.com.hl_base.hl_interface.OnDoubleClickListener;
+import x.com.hl_livedatabus.LiveEventBus;
+import x.com.hl_log.ViseLog;
 import x.com.hl_view.RotateImageView;
 
 public class HHLoadingView extends FrameLayout implements View.OnClickListener, ControlViewInterface {
@@ -37,7 +42,7 @@ public class HHLoadingView extends FrameLayout implements View.OnClickListener, 
     private RotateImageView loading;
     private ViewGroup loading_layout;
 
-    public HHLoadingView(@NonNull Context context, HHPlayer3 hhPlayer3) {
+    public HHLoadingView(@NonNull FragmentActivity context, HHPlayer3 hhPlayer3) {
         super(context);
         this.hhPlayer3 = hhPlayer3;
         hhPlayer3.setCvInterface(this);
@@ -52,8 +57,8 @@ public class HHLoadingView extends FrameLayout implements View.OnClickListener, 
         super(context, attrs, defStyleAttr);
     }
 
-    private void initView(Context context) {
-        View.inflate(context, getLayoutId() != 0 ? getLayoutId() : R.layout.hhplayer_loadview, this);
+    private void initView(FragmentActivity mActivity) {
+        View.inflate(mActivity, getLayoutId() != 0 ? getLayoutId() : R.layout.hhplayer_loadview, this);
 
         loading_layout = findViewById(R.id.loadingLayout);
         contentPanel = findViewById(R.id.contentPanel);
@@ -73,6 +78,12 @@ public class HHLoadingView extends FrameLayout implements View.OnClickListener, 
 
             }
         }));
+        LiveEventBus.get("HHPlayerPlayState", HHPlayerCore.class).observe(mActivity, new Observer<HHPlayerCore>() {
+            @Override
+            public void onChanged(HHPlayerCore hhPlayerCore) {
+                ViseLog.d(hhPlayerCore);
+            }
+        });
     }
 
     private int getLayoutId() {

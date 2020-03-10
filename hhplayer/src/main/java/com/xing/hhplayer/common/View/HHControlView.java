@@ -23,6 +23,7 @@ import com.xing.hhplayer.common.TypeBean.PlayerPrePareStateType;
 import com.xing.hhplayer.common.TypeBean.PlayerStateType;
 import com.xing.hhplayer.common.TypeBean.PlayerViewType;
 import com.xing.hhplayer.common.base.ControlViewInterface;
+import com.xing.hhplayer.common.base.HHPlayerCore;
 
 import java.util.List;
 import java.util.Timer;
@@ -134,7 +135,13 @@ public class HHControlView extends FrameLayout implements View.OnClickListener, 
                 showPlayControl(isPanelShow);
             }
         }));
-        LiveEventBus.get("aaa", String.class).observeForever(new Observer<String>() {
+        LiveEventBus.get("HHPlayerPlayState", HHPlayerCore.class).observe(mActivity, new Observer<HHPlayerCore>() {
+            @Override
+            public void onChanged(HHPlayerCore hhPlayerCore) {
+                ViseLog.d(hhPlayerCore);
+            }
+        });
+        LiveEventBus.get("aaa", String.class).observe(mActivity, new Observer<String>() {
             @Override
             public void onChanged(String s) {
                 ViseLog.d(s);

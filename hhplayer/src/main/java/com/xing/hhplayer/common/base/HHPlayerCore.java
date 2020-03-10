@@ -11,7 +11,6 @@ import com.xing.hhplayer.common.TypeBean.PlayerStateType;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
-
 /**
  * 播放器基础类
  */
@@ -169,6 +168,4 @@ public abstract class HHPlayerCore {
     public void setHeaders(Map<String, String> mHeaders) {
         this.mHeaders = mHeaders;
     }
-
-
 }
