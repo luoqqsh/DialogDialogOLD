@@ -162,8 +162,8 @@ public class HHLoadingView extends FrameLayout implements View.OnClickListener, 
     }
 
     @Override
-    public void receiveKeyDown(int keyCode) {
-
+    public boolean receiveKeyDown(int keyCode) {
+        return false;
     }
 
     @Override

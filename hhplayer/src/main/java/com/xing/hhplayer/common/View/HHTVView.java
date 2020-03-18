@@ -25,8 +25,6 @@ import com.xing.hhplayer.common.base.ControlViewInterface;
 import com.xing.hhplayer.common.base.PlayerDoubleClickListener;
 
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import x.com.hl_tools.hl_time;
 import x.com.hl_tools.hl_volume;
@@ -245,7 +243,7 @@ public class HHTVView extends FrameLayout implements View.OnClickListener, Contr
     }
 
     @Override
-    public void receiveKeyDown(int keyCode) {
+    public boolean receiveKeyDown(int keyCode) {
         switch (keyCode) {
             case KeyEvent.KEYCODE_DPAD_UP://导航上
                 if (!isShowList) {
@@ -253,24 +251,24 @@ public class HHTVView extends FrameLayout implements View.OnClickListener, Contr
                 } else {
                     downStep();
                 }
-                break;
+                return true;
             case KeyEvent.KEYCODE_DPAD_DOWN://导航下
                 if (!isShowList) {
                     downStep();
                 } else {
                     upStep();
                 }
-                break;
+                return true;
             case KeyEvent.KEYCODE_DPAD_LEFT://导航左
-                break;
+                return true;
             case KeyEvent.KEYCODE_DPAD_RIGHT://导航右
-                break;
+                return true;
             case KeyEvent.KEYCODE_VOLUME_UP://音量+
                 hl_volume.mediaVolumeUp(mActivity);
-                break;
+                return true;
             case KeyEvent.KEYCODE_VOLUME_DOWN://音量-
                 hl_volume.mediaVolumeDown(mActivity);
-                break;
+                return true;
             case KeyEvent.KEYCODE_DPAD_CENTER://导航-确定
                 //列表没显示则显示列表
                 if (!isShowList) {
@@ -280,12 +278,12 @@ public class HHTVView extends FrameLayout implements View.OnClickListener, Contr
                     //列表已显示播放选中频道
                     hhPlayer3.prepare(hhPlayer3.getUrlDataList(), hhListView.getCurrentSelect());
                 }
-                break;
+                return true;
             case KeyEvent.KEYCODE_BACK://返回键
                 if (isShowList) {
                     isShowList = false;
                     layout_list.setVisibility(GONE);
-                    return;
+                    return true;
                 }
 //                if (System.currentTimeMillis() - mExitTime > 2000) {
 //                    Toast.makeText(mActivity, "再按一次退出程序", Toast.LENGTH_SHORT).show();
@@ -294,9 +292,11 @@ public class HHTVView extends FrameLayout implements View.OnClickListener, Contr
 //                    mActivity.finish();
 //                }
                 mActivity.finish();
-                break;
+                return false;
             case KeyEvent.KEYCODE_MENU://菜单键
-                break;
+                return true;
+            default:
+                return false;
         }
     }
 

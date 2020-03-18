@@ -13,7 +13,7 @@ public interface ControlViewInterface {
 
     void changeProgress(long time);//进度改变
 
-    void receiveKeyDown(int keyCode);//按键触发，tv专用
+    boolean receiveKeyDown(int keyCode);//按键触发，tv专用
 
     void refreshPlayList(List<TvDataList> tvDataLists);//刷新播放列表
 

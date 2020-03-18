@@ -61,8 +61,8 @@ public class HHThumbView extends FrameLayout implements ControlViewInterface {
     }
 
     @Override
-    public void receiveKeyDown(int keyCode) {
-
+    public boolean receiveKeyDown(int keyCode) {
+        return false;
     }
 
     @Override

@@ -116,8 +116,8 @@ public class HHMedia3Activity extends BaseActivity {
 
         findViewById(R.id.testSelect).setOnClickListener(v -> {
 //            hhPlayer3.prepare(tvUrl.getLinks(), 0);
-//            hhPlayer3.prepare("http://cstvpull.live.wscdns.com/live/xiamen1.flv");
-            hhPlayer3.prepare("http://s.bizhijingling.com/uploadfile/coustom/2019/309/20190613170125729.mp4");
+            hhPlayer3.prepare("http://cstvpull.live.wscdns.com/live/xiamen1.flv");
+//            hhPlayer3.prepare("http://s.bizhijingling.com/uploadfile/coustom/2019/309/20190613170125729.mp4");
 //            List<MediaFileBean> imgList = hl_medialist.getVideoList(mContext);
 //            hhPlayer3.prepare("content://media/external/video/media/27", "");
         });
@@ -221,11 +221,11 @@ public class HHMedia3Activity extends BaseActivity {
         return true;
     }
 
-    //    @Override
-//    public boolean onKeyDown(int keyCode, KeyEvent event) {
-//        hhPlayer3.sendKeyDown(keyCode);
-//        return false;//return false 会调用系统的方法
-//    }
+        @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        hhPlayer3.sendKeyDown(keyCode);
+        return false;//return false 会调用系统的方法
+    }
 
 
     @Override

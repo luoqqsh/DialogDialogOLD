@@ -41,7 +41,6 @@ public class HHControlView extends FrameLayout implements View.OnClickListener, 
     private TextView mCurrentTimeTextView, mTotalTimeTextView;
     private TextView mTitleTextView;
     private SeekBar mProgressBar;
-    private TextView playlist;
     private TextView scaleView;
     private boolean isPanelShow = true;//是否显示面板
     private boolean isShowList = false;//是否显示列表
@@ -108,8 +107,6 @@ public class HHControlView extends FrameLayout implements View.OnClickListener, 
         mLockScreen = findViewById(R.id.liveLock);
         loading = findViewById(R.id.loadingView);
         mStartButton = findViewById(R.id.loadingMidPause);
-        playlist = findViewById(R.id.livePlayList);
-        playlist.setOnClickListener(this);
         mStartButton.setOnClickListener(this);
         mFullscreenButton.setOnClickListener(this);
         contentPanel.setOnClickListener(new PlayerDoubleClickListener(new PlayerDoubleClickListener.DoubleClickCallback() {
@@ -185,15 +182,6 @@ public class HHControlView extends FrameLayout implements View.OnClickListener, 
         if (id == R.id.liveBack) {
             mActivity.finish();
         }
-        //播放列表
-        if (id == R.id.livePlayList) {
-            isShowList = !isShowList;
-            if (isShowList) {
-                layout_list.setVisibility(VISIBLE);
-            } else {
-                layout_list.setVisibility(GONE);
-            }
-        }
     }
 
     private void showMidStart(boolean isShow) {
@@ -253,7 +241,6 @@ public class HHControlView extends FrameLayout implements View.OnClickListener, 
                     params.gravity = Gravity.RIGHT;
                     hhListView = new HHListView(mActivity, hhPlayer3.getUrlDataList(), hhPlayer3);
                     layout_list.addView(hhListView, params);
-                    playlist.setVisibility(VISIBLE);
                     layout_list.setVisibility(GONE);
                 }
                 break;
@@ -293,8 +280,8 @@ public class HHControlView extends FrameLayout implements View.OnClickListener, 
     }
 
     @Override
-    public void receiveKeyDown(int keyCode) {
-
+    public boolean receiveKeyDown(int keyCode) {
+        return false;
     }
 
     @Override

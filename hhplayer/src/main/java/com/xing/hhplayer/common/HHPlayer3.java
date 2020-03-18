@@ -5,6 +5,7 @@ import android.content.res.Configuration;
 import android.graphics.SurfaceTexture;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -97,6 +98,7 @@ public class HHPlayer3 {
         public void onListen(Object o) {
             hhPlayerCore.setScalingMode(0);
             hhPlayerCore.isLive = hhPlayerCore.getMediaDurationMS() == 0;
+            screenScale = PlayerViewType.SCREEN_SCALE_DEFAULT;
             if (cvInterface != null) {
                 cvInterface.getPrePareState(PlayerPrePareStateType.PREPARED);
             }
@@ -358,7 +360,7 @@ public class HHPlayer3 {
             public void run() {
                 changeScale(screenScale);
             }
-        }, 200);
+        }, 300);
     }
 
     /**
@@ -368,7 +370,6 @@ public class HHPlayer3 {
      */
     public void changeScale(int screenScaleType) {
         ViseLog.d(hhPlayerCore.TAG, PlayerViewType.getScaleStr(screenScaleType));
-        boolean isFull = screenType == PlayerViewType.SCREEN_FULL;
         switch (screenScaleType) {
             case PlayerViewType.SCREEN_SCALE_DEFAULT://0
                 setVideoSize(hl_screen.getWidthByScaleWH(getMediaWidth() * 1f / getMediaHeight(), viewGroup.getHeight()), viewGroup.getHeight());
@@ -756,9 +757,14 @@ public class HHPlayer3 {
         this.infoListener = infoListener;
     }
 
-    public void sendKeyDown(int keyCode) {
-        if (cvInterface != null) {
-            cvInterface.receiveKeyDown(keyCode);
+    public boolean sendKeyDown(int keyCode) {
+        if (screenType == PlayerViewType.SCREEN_FULL && keyCode == KeyEvent.KEYCODE_BACK) {
+            exitFullScreen();
+            return true;
         }
+        if (cvInterface != null) {
+            return cvInterface.receiveKeyDown(keyCode);
+        }
+        return false;
     }
 }

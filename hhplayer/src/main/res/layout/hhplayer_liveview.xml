@@ -111,15 +111,6 @@
             android:text="默认比例"
             android:textColor="#ffffff" />
 
-        <TextView
-            android:id="@+id/livePlayList"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="16dp"
-            android:text="列表"
-            android:textColor="#ffffff"
-            android:visibility="gone" />
-
         <ImageView
             android:id="@+id/liveFullScreen"
             android:layout_width="wrap_content"
