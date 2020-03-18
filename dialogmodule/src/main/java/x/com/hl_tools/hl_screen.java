@@ -345,4 +345,12 @@ public class hl_screen {
             view.setLayoutParams(lp);
         }
     }
+
+    public static int getWidthByScaleWH(float scale, int height) {
+        return (int) (height * scale);
+    }
+
+    public static int getHeightByScaleWH(float scale, int width) {
+        return (int) (width / scale);
+    }
 }

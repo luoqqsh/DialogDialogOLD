@@ -20,13 +20,12 @@ import com.xing.hhplayer.common.TypeBean.PlayerPrePareStateType;
 import com.xing.hhplayer.common.TypeBean.PlayerStateType;
 import com.xing.hhplayer.common.base.ControlViewInterface;
 import com.xing.hhplayer.common.base.HHPlayerCore;
+import com.xing.hhplayer.common.base.PlayerDoubleClickListener;
 
 import java.util.List;
 
-import x.com.hl_base.hl_interface.OnDoubleClickListener;
 import x.com.hl_livedatabus.LiveEventBus;
 import x.com.hl_log.ViseLog;
-import x.com.hl_view.RotateImageView;
 
 public class HHLoadingView extends FrameLayout implements View.OnClickListener, ControlViewInterface {
     private HHPlayer3 hhPlayer3;
@@ -39,7 +38,7 @@ public class HHLoadingView extends FrameLayout implements View.OnClickListener, 
 
     private RelativeLayout contentPanel;
     private boolean isPanelShow = false;
-    private RotateImageView loading;
+    private PlayerLoadingView loading;
     private ViewGroup loading_layout;
 
     public HHLoadingView(@NonNull FragmentActivity context, HHPlayer3 hhPlayer3) {
@@ -67,7 +66,7 @@ public class HHLoadingView extends FrameLayout implements View.OnClickListener, 
         mStartButton = findViewById(R.id.loadingMidPause);
         mStartButton.setOnClickListener(this);
         contentPanel.setOnClickListener(this);
-        contentPanel.setOnClickListener(new OnDoubleClickListener(new OnDoubleClickListener.DoubleClickCallback() {
+        contentPanel.setOnClickListener(new PlayerDoubleClickListener(new PlayerDoubleClickListener.DoubleClickCallback() {
             @Override
             public void onDoubleClick() {
                 playControl();

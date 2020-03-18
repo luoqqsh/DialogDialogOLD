@@ -108,7 +108,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="16dp"
-            android:text="比例"
+            android:text="默认比例"
             android:textColor="#ffffff" />
 
         <TextView

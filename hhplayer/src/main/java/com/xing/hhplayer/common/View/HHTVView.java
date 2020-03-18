@@ -22,15 +22,14 @@ import com.xing.hhplayer.common.TypeBean.PlayerPrePareStateType;
 import com.xing.hhplayer.common.TypeBean.PlayerStateType;
 import com.xing.hhplayer.common.TypeBean.PlayerViewType;
 import com.xing.hhplayer.common.base.ControlViewInterface;
+import com.xing.hhplayer.common.base.PlayerDoubleClickListener;
 
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import x.com.hl_base.hl_interface.OnDoubleClickListener;
 import x.com.hl_tools.hl_time;
 import x.com.hl_tools.hl_volume;
-import x.com.hl_view.RotateImageView;
 
 public class HHTVView extends FrameLayout implements View.OnClickListener, ControlViewInterface {
     private ViewGroup mTopContainer, mBottomContainer, loadingLayout, layout_list, seekBarLayout;
@@ -39,7 +38,7 @@ public class HHTVView extends FrameLayout implements View.OnClickListener, Contr
     private HHPlayer3 hhPlayer3;
     private HHListView hhListView;
     private View mStartButton;
-    private RotateImageView loading;
+    private PlayerLoadingView loading;
     private TextView mCurrentTimeTextView, mTotalTimeTextView;
     private TextView mTvTitle;
     private SeekBar mProgressBar;
@@ -47,7 +46,7 @@ public class HHTVView extends FrameLayout implements View.OnClickListener, Contr
     private boolean isPanelShow = true;//是否显示面板
     private boolean isShowList = false;//是否显示列表
     private boolean isShowSeekBar = false;//是否显示进度条
-    private Timer mDismissControlViewTimer;
+    private int showTime = 3;
 
     public HHTVView(@NonNull FragmentActivity context, HHPlayer3 hhPlayer3) {
         super(context);
@@ -87,7 +86,7 @@ public class HHTVView extends FrameLayout implements View.OnClickListener, Contr
         loading = findViewById(R.id.loadingView);
         mStartButton = findViewById(R.id.loadingMidPause);
         mStartButton.setOnClickListener(this);
-        contentPanel.setOnClickListener(new OnDoubleClickListener(new OnDoubleClickListener.DoubleClickCallback() {
+        contentPanel.setOnClickListener(new PlayerDoubleClickListener(new PlayerDoubleClickListener.DoubleClickCallback() {
             @Override
             public void onDoubleClick() {
                 playControl();
@@ -96,7 +95,7 @@ public class HHTVView extends FrameLayout implements View.OnClickListener, Contr
             @Override
             public void onOneClick() {
                 isPanelShow = !isPanelShow;
-                showPlayControl(isPanelShow);
+                showPlayControl();
             }
         }));
     }
@@ -118,23 +117,23 @@ public class HHTVView extends FrameLayout implements View.OnClickListener, Contr
             if (mType == 0) {
                 mType = 1;
                 scaleView.setText("16:9");
-                hhPlayer3.setVideoScaleType(PlayerViewType.SCREEN_TYPE_16_9);
+                hhPlayer3.changeScale(PlayerViewType.SCREEN_SCALE_16_9);
             } else if (mType == 1) {
                 mType = 2;
                 scaleView.setText("4:3");
-                hhPlayer3.setVideoScaleType(PlayerViewType.SCREEN_TYPE_4_3);
+                hhPlayer3.changeScale(PlayerViewType.SCREEN_SCALE_4_3);
             } else if (mType == 2) {
                 mType = 3;
-                scaleView.setText("全屏");
-                hhPlayer3.setVideoScaleType(PlayerViewType.SCREEN_TYPE_FULL);
+                scaleView.setText("1:1");
+                hhPlayer3.changeScale(PlayerViewType.SCREEN_SCALE_1_1);
             } else if (mType == 3) {
                 mType = 4;
                 scaleView.setText("拉伸全屏");
-                hhPlayer3.setVideoScaleType(PlayerViewType.SCREEN_MATCH_FULL);
+                hhPlayer3.changeScale(PlayerViewType.SCREEN_SCALE_FULL);
             } else if (mType == 4) {
                 mType = 0;
                 scaleView.setText("默认比例");
-                hhPlayer3.setVideoScaleType(PlayerViewType.SCREEN_TYPE_DEFAULT);
+                hhPlayer3.changeScale(PlayerViewType.SCREEN_SCALE_DEFAULT);
             }
         }
     }
@@ -147,7 +146,8 @@ public class HHTVView extends FrameLayout implements View.OnClickListener, Contr
         }
     }
 
-    private void showPlayControl(boolean isPanelShow) {
+    private void showPlayControl() {
+        showTime = isPanelShow ? 3 : 0;
         //下面先不显示
 //        mBottomContainer.setVisibility(isPanelShow ? VISIBLE : INVISIBLE);
         mTopContainer.setVisibility(isPanelShow ? VISIBLE : GONE);
@@ -207,12 +207,12 @@ public class HHTVView extends FrameLayout implements View.OnClickListener, Contr
                     layout_list.setVisibility(GONE);//默认隐藏
                 }
                 isPanelShow = true;
-                showPlayControl(true);
-                startDismissTimer();
+                showPlayControl();
                 break;
             case NONE:
             case ERROR:
-                cancelDismissTimer();
+                isPanelShow = true;
+                showPlayControl();
                 loadingLayout.setVisibility(GONE);
                 loading.stop();
                 break;
@@ -226,9 +226,16 @@ public class HHTVView extends FrameLayout implements View.OnClickListener, Contr
 
     @Override
     public void changeProgress(final long time) {
+        if (isPanelShow) {
+            showTime--;
+        }
         mCurrentTimeTextView.post(new Runnable() {
             @Override
             public void run() {
+                if (showTime == 0) {
+                    isPanelShow = false;
+                    showPlayControl();
+                }
                 mCurrentTimeTextView.setText(hl_time.formatTime(time));
                 if (isShowSeekBar) {
                     mProgressBar.setProgress((int) (time / 1000));
@@ -286,7 +293,6 @@ public class HHTVView extends FrameLayout implements View.OnClickListener, Contr
 //                } else {
 //                    mActivity.finish();
 //                }
-                cancelDismissTimer();
                 mActivity.finish();
                 break;
             case KeyEvent.KEYCODE_MENU://菜单键
@@ -318,31 +324,6 @@ public class HHTVView extends FrameLayout implements View.OnClickListener, Contr
         hhListView.setCurrentSelectPlay(currentSelectDown);
         if (!isShowList) {
             hhPlayer3.prepare(hhPlayer3.getUrlDataList(), currentSelectDown);
-        }
-    }
-
-    private void startDismissTimer() {
-        cancelDismissTimer();
-        mDismissControlViewTimer = new Timer();
-        mDismissControlViewTimer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                contentPanel.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        isPanelShow = false;
-                        showPlayControl(false);
-                        cancelDismissTimer();
-                    }
-                });
-            }
-        }, 3000);
-    }
-
-    private void cancelDismissTimer() {
-        if (mDismissControlViewTimer != null) {
-            mDismissControlViewTimer.cancel();
-            mDismissControlViewTimer = null;
         }
     }
 }

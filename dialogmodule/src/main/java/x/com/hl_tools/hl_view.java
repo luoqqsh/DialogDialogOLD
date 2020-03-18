@@ -2,6 +2,7 @@ package x.com.hl_tools;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -11,6 +12,7 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.ActionBar;
 
@@ -213,6 +215,24 @@ public class hl_view {
         if (lp != null) {
             lp.height = height;
             view.setLayoutParams(lp);
+        }
+    }
+
+    /**
+     * 添加到父类并居中
+     *
+     * @param viewGroup viewGroup
+     * @param view      view
+     */
+    public static void addToParentCenter(ViewGroup viewGroup, View view) {
+        if (viewGroup instanceof RelativeLayout) {
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+            viewGroup.addView(view, layoutParams);
+        } else if (viewGroup instanceof FrameLayout) {
+            FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            layoutParams.gravity = Gravity.CENTER;
+            viewGroup.addView(view, layoutParams);
         }
     }
 }

@@ -26,12 +26,12 @@ public class HHPlayerView implements MeasureHelper.MeasureFormVideoParamsListene
 //                        final GSYVideoGLViewBaseRender customRender, int mode
     ) {
         switch (tvView) {
-            case HHSURFACE:
-                hhRenderView = HHSurfaceView.addSurfaceView(context, textureViewContainer, rotate, surfaceStateListener, this);
-                break;
-            case HHTEXTURE:
-                hhRenderView = HHTextureView.addTextureView(context, textureViewContainer, rotate, surfaceStateListener, this);
-                break;
+//            case HHSURFACE:
+//                hhRenderView = HHSurfaceView.addSurfaceView(context, textureViewContainer, rotate, surfaceStateListener, this);
+//                break;
+//            case HHTEXTURE:
+//                hhRenderView = HHTextureView.addTextureView(context, textureViewContainer, rotate, surfaceStateListener, this);
+//                break;
             case HHGLSURFACE:
                 hhRenderView = HHGLSurfaceView.addGLSurfaceView(context, textureViewContainer, rotate, surfaceStateListener, this);
                 break;

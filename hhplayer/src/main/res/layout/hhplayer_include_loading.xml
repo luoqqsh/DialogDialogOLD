@@ -13,7 +13,7 @@
         android:background="#80000000"
         android:visibility="gone">
 
-        <x.com.hl_view.RotateImageView
+        <com.xing.hhplayer.common.View.PlayerLoadingView
             android:id="@+id/loadingView"
             android:layout_width="40dp"
             android:layout_height="40dp"

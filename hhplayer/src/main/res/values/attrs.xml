@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="PlayerLoadingView">
+        <attr name="r_singleTime" format="integer"/>
+        <attr name="r_num" format="integer"/>
+        <attr name="r_isShun" format="boolean"/>
+    </declare-styleable>
+</resources>

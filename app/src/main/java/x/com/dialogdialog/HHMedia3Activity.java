@@ -54,7 +54,7 @@ public class HHMedia3Activity extends BaseActivity {
         initUI();
         hhview = findViewById(R.id.hhPlayerView);
         hl_screen.setViewSize(hhview, ViewGroup.LayoutParams.MATCH_PARENT, hl_screen.getHeightFromWidthAtPort(mActivity));
-        hhPlayer3 = new HHPlayer3(this, new HHijkPlayer(), TvView.NEWTEXTURE, hhview);
+        hhPlayer3 = new HHPlayer3(this, new HHijkPlayer(), TvView.NEWSURFACE, hhview);
         hhPlayer3.addControlView();
         hhPlayer3.setOnPreparedListener(new OnPlayerListener<Object>() {
             @Override
@@ -102,6 +102,8 @@ public class HHMedia3Activity extends BaseActivity {
         tvUrl = new TvData(1, "20190719", "itv", tvDataLists);
     }
 
+    int i = 0;
+
     private void initUI() {
         fixRotateBug26();
         startOriListener();
@@ -127,7 +129,10 @@ public class HHMedia3Activity extends BaseActivity {
             hhPlayer3.resetPlayer();
             hhPlayer3.prepare("http://s.bizhijingling.com/uploadfile/coustom/2019//309/20190613170125729.mp4");
         });
-        findViewById(R.id.testFull).setOnClickListener(v -> hhPlayer3.fullScreen());
+        findViewById(R.id.testFull).setOnClickListener(v -> {
+            hhPlayer3.fullScreen();
+//            hideBar();
+        });
         findViewById(R.id.testExit).setOnClickListener(v -> hhPlayer3.exitFullScreen());
         findViewById(R.id.testMute).setOnClickListener(v -> hhPlayer3.setMute(!ismute));
         findViewById(R.id.testFast).setOnClickListener(v -> hhPlayer3.setSpeed(2));
@@ -145,6 +150,11 @@ public class HHMedia3Activity extends BaseActivity {
             }
         });
         findViewById(R.id.testGet).setOnClickListener(v -> {
+            hhPlayer3.changeScale(i);
+            i++;
+            if (i == 5) {
+                i = 0;
+            }
         });
         findViewById(R.id.testRotate).setOnClickListener(v -> {
             //判断当前是否为横屏,判断是否旋转

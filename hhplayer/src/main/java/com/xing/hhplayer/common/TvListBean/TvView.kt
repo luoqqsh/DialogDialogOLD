@@ -5,7 +5,5 @@ enum class TvView {
     NEWTEXTURE,//新建textureview
     SURFACE,//外部提供的surface
     MUSIC,//音乐
-    HHSURFACE,
-    HHTEXTURE,
     HHGLSURFACE
 }
