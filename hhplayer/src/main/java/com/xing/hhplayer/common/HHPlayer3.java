@@ -294,36 +294,14 @@ public class HHPlayer3 {
         }
     }
 
-    //设置视频缩放类型
-    public void setVideoScaleType(int scaleType) {
-        if (hhPlayerView != null) {
-            hhPlayerView.setVideoScaleType(scaleType);
-        }
-    }
-
     //设置视频大小,hhsurfaceview设置显示比例时有用，待优化
     public void setVideoSize(int width, int height) {
-//        if (hhPlayerView != null) {
-//            hhPlayerView.setVideoSize(width, height);
-//        }
-
         View old = viewGroup.findViewById(R.id.video_normal_id);
         if (old != null) {
             hl_screen.setViewSize(old, width, height);
         }
     }
-
-    public void setLayoutSize(int width, int height) {
-        if (viewGroup == null) {
-            ViseLog.e(hhPlayerCore.ETAG, "必须要有viewGroup才能执行此操作");
-            return;
-        }
-        ViewGroup.LayoutParams layoutParams = viewGroup.getLayoutParams();
-        layoutParams.width = width;
-        layoutParams.height = height;
-        viewGroup.setLayoutParams(layoutParams);
-    }
-
+    
     public void exitFullScreen() {
         screenType = PlayerViewType.SCREEN_DEFAULT;
         screenScale = PlayerViewType.SCREEN_SCALE_DEFAULT;
@@ -355,12 +333,13 @@ public class HHPlayer3 {
         screenScale = PlayerViewType.SCREEN_SCALE_DEFAULT;
         rotateScreen();
         ((HLBaseActivity) mActivity).hideBar();
+        //由于屏幕旋转，view的宽高更新需要点时间
         viewGroup.postDelayed(new Runnable() {
             @Override
             public void run() {
                 changeScale(screenScale);
             }
-        }, 300);
+        }, 200);
     }
 
     /**
