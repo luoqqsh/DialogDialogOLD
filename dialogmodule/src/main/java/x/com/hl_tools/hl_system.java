@@ -283,7 +283,7 @@ public class hl_system {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            Uri contentUri = FileProvider.getUriForFile(context.getApplicationContext(), context.getPackageName() + ".fileProvider", new File(path));
+            Uri contentUri = FileProvider.getUriForFile(context.getApplicationContext(), context.getPackageName() + ".dialog.fileProvider", new File(path));
             intent.putExtra(Intent.EXTRA_STREAM, contentUri);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         } else {

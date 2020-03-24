@@ -14,15 +14,14 @@
 
         <!--7.0以上 安装apk-->
         <provider
-            android:name="androidx.core.content.FileProvider"
-            android:authorities="${applicationId}.fileProvider"
+            android:name="x.com.hl_base.FileContext"
+            android:authorities="${applicationId}.dialog.fileProvider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
-
         <!-- 适配全面屏 Android O vivo&oppo-->
         <meta-data
             android:name="android.max_aspect"
@@ -50,6 +49,7 @@
             android:label="dexopt"
             android:process=":dexopt" />
     </application>
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 </manifest>

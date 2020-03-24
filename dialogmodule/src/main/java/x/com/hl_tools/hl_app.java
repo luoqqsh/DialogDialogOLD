@@ -1,6 +1,5 @@
 package x.com.hl_tools;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -22,11 +21,11 @@ import x.com.hl_log.ViseLog;
 
 public class hl_app {
     //安装
-    public static void installAPK(final Activity activity, final File apkFile) {
+    public static void installAPK(Context context, File apkFile) {
         Intent intent = new Intent();
         Uri uri;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {//7.0启动姿势<pre name="code" class="html">    //com.xxx.xxx.fileprovider为上述manifest中provider所配置相同；apkFile为问题1中的外部存储apk文件</pre>
-            uri = FileProvider.getUriForFile(activity, activity.getPackageName() + ".fileProvider", apkFile);
+            uri = FileProvider.getUriForFile(context, context.getPackageName() + ".dialog.fileProvider", apkFile);
             intent.setAction(Intent.ACTION_INSTALL_PACKAGE);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);//7.0以后，系统要求授予临时uri读取权限，安装完毕以后，系统会自动收回权限，次过程没有用户交互
         } else {//7.0以下启动姿势
@@ -35,7 +34,7 @@ public class hl_app {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         }
         intent.setDataAndType(uri, "application/vnd.android.package-archive");
-        activity.startActivity(intent);
+        context.startActivity(intent);
     }
 
     /**
@@ -78,10 +77,10 @@ public class hl_app {
      * 启动应用
      *
      * @param context
-     * @param packagename
+     * @param packageName
      */
-    public static void runApp(Context context, String packagename) {
-        context.startActivity(new Intent(context.getPackageManager().getLaunchIntentForPackage(packagename)));
+    public static void runApp(Context context, String packageName) {
+        context.startActivity(new Intent(context.getPackageManager().getLaunchIntentForPackage(packageName)));
     }
 
     /**
@@ -104,9 +103,9 @@ public class hl_app {
     /**
      * 是否是系统应用
      *
-     * @param context
-     * @param packageName
-     * @return
+     * @param context     context
+     * @param packageName 包名
+     * @return 结果
      */
     public static boolean isSystemApp(Context context, String packageName) {
         boolean isSys = false;

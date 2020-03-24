@@ -1,5 +1,6 @@
 package x.com.hl_base;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 
@@ -8,24 +9,19 @@ import x.com.hl_log.inner.LogcatTree;
 import x.com.hl_tools.hl_device;
 import x.com.hl_tools.hl_screen;
 
-public class HlApp {
-    private static HlApp hlApp;
-    public static Context mContext;
+public class AppInit {
+    @SuppressLint("StaticFieldLeak")
+    private static Context mContext;
 
-    /**
-     * 初始化
-     *
-     * @param context 上下文
-     */
-    private HlApp(Context context) {
-        mContext = context.getApplicationContext();
+    public static void setContext(Context mContext) {
+        AppInit.mContext = mContext.getApplicationContext();
     }
 
-    public static HlApp init(Context context) {
-        if (hlApp == null) {
-            hlApp = new HlApp(context);
+    public static Context getAppContext() {
+        if (mContext == null) {
+            ViseLog.e("Context初始化异常");
         }
-        return hlApp;
+        return mContext.getApplicationContext();
     }
 
     /**

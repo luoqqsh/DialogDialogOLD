@@ -50,7 +50,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.ref.WeakReference;
 
-import x.com.hl_base.HlApp;
+import x.com.hl_base.AppInit;
 
 public class hl_spannableString {
     private hl_spannableString() {
@@ -707,7 +707,7 @@ public class hl_spannableString {
             }
             if (imageIsBitmap || imageIsDrawable || imageIsUri || imageIsResourceId) {
                 if (imageIsBitmap) {
-                    mBuilder.setSpan(new CustomImageSpan(HlApp.mContext, bitmap, align), start, end, flag);
+                    mBuilder.setSpan(new CustomImageSpan(AppInit.getAppContext(), bitmap, align), start, end, flag);
                     bitmap = null;
                     imageIsBitmap = false;
                 } else if (imageIsDrawable) {
@@ -715,11 +715,11 @@ public class hl_spannableString {
                     drawable = null;
                     imageIsDrawable = false;
                 } else if (imageIsUri) {
-                    mBuilder.setSpan(new CustomImageSpan(HlApp.mContext, uri, align), start, end, flag);
+                    mBuilder.setSpan(new CustomImageSpan(AppInit.getAppContext(), uri, align), start, end, flag);
                     uri = null;
                     imageIsUri = false;
                 } else {
-                    mBuilder.setSpan(new CustomImageSpan(HlApp.mContext, resourceId, align), start, end, flag);
+                    mBuilder.setSpan(new CustomImageSpan(AppInit.getAppContext(), resourceId, align), start, end, flag);
                     resourceId = 0;
                     imageIsResourceId = false;
                 }

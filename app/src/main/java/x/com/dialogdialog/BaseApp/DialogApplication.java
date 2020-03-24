@@ -10,7 +10,7 @@ import androidx.multidex.MultiDexApplication;
 
 import com.liulishuo.filedownloader.FileDownloader;
 
-import x.com.hl_base.HlApp;
+import x.com.hl_base.AppInit;
 import x.com.hl_base.NeverCrashHelper;
 import x.com.hl_log.ViseLog;
 
@@ -23,9 +23,8 @@ public class DialogApplication extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        HlApp.init(this);
-        HlApp.setShowLog(true);
-        HlApp.printInformation();
+        AppInit.setShowLog(true);
+        AppInit.printInformation();
 
         FileDownloader.setup(getApplicationContext());
 
