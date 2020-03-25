@@ -130,7 +130,7 @@ public class HHTVView extends FrameLayout implements View.OnClickListener, Contr
                 hhPlayer3.changeScale(PlayerViewType.SCREEN_SCALE_FULL);
             } else if (mType == 4) {
                 mType = 0;
-                scaleView.setText("默认比例");
+                scaleView.setText("推荐比例");
                 hhPlayer3.changeScale(PlayerViewType.SCREEN_SCALE_DEFAULT);
             }
         }

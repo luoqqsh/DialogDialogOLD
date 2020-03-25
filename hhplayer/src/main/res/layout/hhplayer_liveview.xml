@@ -108,14 +108,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="16dp"
-            android:text="默认比例"
+            android:text="推荐比例"
             android:textColor="#ffffff" />
 
         <ImageView
             android:id="@+id/liveFullScreen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingRight="16dp"
+            android:padding="12dp"
             android:scaleType="center"
             android:src="@mipmap/video_enlarge" />
     </LinearLayout>

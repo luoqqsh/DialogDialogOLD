@@ -152,7 +152,7 @@ public class HHControlView extends FrameLayout implements View.OnClickListener, 
             } else {
                 hhPlayer3.fullScreen();
             }
-            scaleView.setText("默认比例");
+            scaleView.setText("推荐比例");
         }
         //显示比例
         if (id == R.id.liveScale) {
@@ -174,7 +174,7 @@ public class HHControlView extends FrameLayout implements View.OnClickListener, 
                 hhPlayer3.changeScale(PlayerViewType.SCREEN_SCALE_FULL);
             } else if (mType == 4) {
                 mType = 0;
-                scaleView.setText("默认比例");
+                scaleView.setText("推荐比例");
                 hhPlayer3.changeScale(PlayerViewType.SCREEN_SCALE_DEFAULT);
             }
         }

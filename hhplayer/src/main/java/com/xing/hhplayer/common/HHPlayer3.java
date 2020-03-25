@@ -65,6 +65,8 @@ public class HHPlayer3 {
     private int screenScale = PlayerViewType.SCREEN_SCALE_DEFAULT;//默认显示比例
     private int screenType = PlayerViewType.SCREEN_DEFAULT;//默认显示比例
     private ControlViewInterface cvInterface;
+    private int defaultWidth = 0;
+    private int defaultHeight = 0;
     //播放列表相关
     private String title;
     private List<TvDataList> tvLists;//播放列表
@@ -99,15 +101,17 @@ public class HHPlayer3 {
             hhPlayerCore.setScalingMode(0);
             hhPlayerCore.isLive = hhPlayerCore.getMediaDurationMS() == 0;
             screenScale = PlayerViewType.SCREEN_SCALE_DEFAULT;
+            changeScale(screenScale);
             if (cvInterface != null) {
                 cvInterface.getPrePareState(PlayerPrePareStateType.PREPARED);
             }
-            changeScale(PlayerViewType.SCREEN_SCALE_DEFAULT);
             if (isPlayWhenPrepared || isReStart) {
                 isReStart = false;
                 start();
             }
             if (viewGroup != null) {
+                defaultWidth = viewGroup.getWidth();
+                defaultHeight = viewGroup.getHeight();
                 ViseLog.showInfo(hhPlayerCore.TAG, "容器包含View个数：" + viewGroup.getChildCount());
                 ViseLog.showInfo(hhPlayerCore.TAG, "容器大小：" + viewGroup.getWidth() + "," + viewGroup.getHeight());
                 View view = viewGroup.findViewById(R.id.video_normal_id);
@@ -301,19 +305,6 @@ public class HHPlayer3 {
             hl_screen.setViewSize(old, width, height);
         }
     }
-    
-    public void exitFullScreen() {
-        screenType = PlayerViewType.SCREEN_DEFAULT;
-        screenScale = PlayerViewType.SCREEN_SCALE_DEFAULT;
-        rotateScreen();
-        ((HLBaseActivity) mActivity).showBar();
-        viewGroup.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                changeScale(screenScale);
-            }
-        }, 200);
-    }
 
     private void rotateScreen() {
         //判断当前是否为横屏,判断是否旋转
@@ -322,18 +313,31 @@ public class HHPlayer3 {
             hl_screen.setViewSize(viewGroup, hl_screen.getDeviceWidth(mActivity), hl_screen.getDeviceHeight(mActivity));
         } else {
             mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//竖屏
-            hl_screen.setViewSize(viewGroup, ViewGroup.LayoutParams.MATCH_PARENT, hl_screen.getHeightFromWidthAtLand(mActivity));
-        }
+            hl_screen.setViewSize(viewGroup, ViewGroup.LayoutParams.MATCH_PARENT, defaultHeight);
 //        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);//横屏
 //        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//竖屏
+        }
     }
 
     public void fullScreen() {
         screenType = PlayerViewType.SCREEN_FULL;
         screenScale = PlayerViewType.SCREEN_SCALE_DEFAULT;
-        rotateScreen();
         ((HLBaseActivity) mActivity).hideBar();
-        //由于屏幕旋转，view的宽高更新需要点时间
+        rotateScreen();
+//        //由于屏幕旋转，view的宽高更新需要点时间
+        viewGroup.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                changeScale(screenScale);
+            }
+        }, 200);
+    }
+
+    public void exitFullScreen() {
+        screenType = PlayerViewType.SCREEN_DEFAULT;
+        screenScale = PlayerViewType.SCREEN_SCALE_DEFAULT;
+        rotateScreen();
+        ((HLBaseActivity) mActivity).showBar();
         viewGroup.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -723,12 +727,14 @@ public class HHPlayer3 {
     }
 
     //播放器缓存进度监听
-    public void setOnBufferingUpdateListener(OnPlayerListener<Integer> bufferingUpdateListener) {
+    public void setOnBufferingUpdateListener
+    (OnPlayerListener<Integer> bufferingUpdateListener) {
         this.bufferingUpdateListener = bufferingUpdateListener;
     }
 
     //播放器状态改变监听
-    public void setOnStateChangeListener(OnPlayerListener<PlayerStateType> stateChangeListener) {
+    public void setOnStateChangeListener
+    (OnPlayerListener<PlayerStateType> stateChangeListener) {
         this.stateChangeListener = stateChangeListener;
     }
 
