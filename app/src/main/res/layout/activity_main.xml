@@ -127,6 +127,12 @@
             android:layout_height="wrap_content"
             android:text="本地" />
 
+        <Button
+            android:id="@+id/mainBBZ"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="bbz" />
+
     </LinearLayout>
 
     <ImageView

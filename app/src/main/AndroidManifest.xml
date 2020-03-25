@@ -100,6 +100,7 @@
             android:screenOrientation="nosensor"
             android:theme="@style/Slide.trans" />
         <activity android:name=".ListPlayerActivity" />
+        <activity android:name=".bbz.BBZActivity" />
 
     </application>
 
@@ -138,8 +139,6 @@
     <!--相机、麦克风、录音权限-->
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-
-
 
     <!--有权查看使用情况的应用-->
     <uses-permission

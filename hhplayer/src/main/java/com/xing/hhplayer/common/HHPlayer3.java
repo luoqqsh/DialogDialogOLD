@@ -750,6 +750,10 @@ public class HHPlayer3 {
         if (cvInterface != null) {
             return cvInterface.receiveKeyDown(keyCode);
         }
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            mActivity.onBackPressed();
+            return false;
+        }
         return false;
     }
 }

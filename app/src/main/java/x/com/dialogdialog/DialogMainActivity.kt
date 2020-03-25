@@ -8,11 +8,11 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.*
 import x.com.dialogdialog.BaseApp.BaseActivity
 import x.com.dialogdialog.Viewpager2.ViewActivity
+import x.com.dialogdialog.bbz.BBZActivity
 import x.com.hl_livedatabus.LiveEventBus
 import x.com.hl_log.ViseLog
 import x.com.hl_tools.DialogTest.myObjectPool
 import x.com.hl_tools.hl_permissions
-import java.util.*
 
 class DialogMainActivity : BaseActivity() {
     override fun initUI(savedInstanceState: Bundle?) {
@@ -86,9 +86,11 @@ class DialogMainActivity : BaseActivity() {
         mainMediaCodec.setOnClickListener { startActivity(Intent(mActivity, MediaCodecActivity::class.java)) }
         mainMap.setOnClickListener { startActivity(Intent(mActivity, HHMapActivity::class.java)) }
         close.setOnClickListener { startActivity(Intent(mActivity, ListPlayerActivity::class.java)) }
-
         mainLocal.setOnClickListener {
 
+        }
+        mainBBZ.setOnClickListener {
+            startActivity(Intent(mActivity, BBZActivity::class.java))
         }
         mainDialog.setOnClickListener {
             startActivity(Intent(mActivity, DialogActivity::class.java))

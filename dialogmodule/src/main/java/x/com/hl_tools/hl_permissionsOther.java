@@ -15,6 +15,8 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
@@ -475,6 +477,24 @@ public class hl_permissionsOther {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setData(Uri.parse("package:" + context.getPackageName()));
         context.startActivity(intent);
+    }
+
+    /**
+     * 是否支持计步器传感器
+     *
+     * @param context 上下文
+     * @return 结果
+     */
+    public static boolean isSupportStepCountSensor(Context context) {
+        // 获取传感器管理器的实例
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+            SensorManager sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
+            Sensor countSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+            Sensor detectorSensor = null;
+            detectorSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
+            return countSensor != null || detectorSensor != null;
+        }
+        return false;
     }
 
     public interface OnPermissionListener {

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -281,6 +282,10 @@ public class HHControlView extends FrameLayout implements View.OnClickListener, 
 
     @Override
     public boolean receiveKeyDown(int keyCode) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            mActivity.onBackPressed();
+            return false;
+        }
         return false;
     }
 
