@@ -9,14 +9,14 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/base_title_layout"
+            android:id="@+id/baseTitleLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="bottom"
             android:orientation="vertical" />
 
         <LinearLayout
-            android:id="@+id/base_content_layout"
+            android:id="@+id/baseContentLayout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -25,7 +25,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/base_loading_fail"
+        android:id="@+id/baseLoadingLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
@@ -35,7 +35,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/base_loading_no_data"
+        android:id="@+id/baseNoData"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
@@ -45,7 +45,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/base_loading"
+        android:id="@+id/baseLoading"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"

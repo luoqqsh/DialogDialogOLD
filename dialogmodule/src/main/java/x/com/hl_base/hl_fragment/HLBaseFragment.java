@@ -41,9 +41,9 @@ public abstract class HLBaseFragment extends KBaseFragment {
             } else {
                 mView = inflater.inflate(R.layout.activity_base_overlap, container, false);
             }
-            base_loading_fail = mView.findViewById(R.id.base_loading_fail);
-            base_loading_no_data = mView.findViewById(R.id.base_loading_no_data);
-            base_loading = mView.findViewById(R.id.base_loading);
+            base_loading_fail = mView.findViewById(R.id.baseLoadingLayout);
+            base_loading_no_data = mView.findViewById(R.id.baseNoData);
+            base_loading = mView.findViewById(R.id.baseLoading);
             mActivity = getActivity();
         }
         return mView;
@@ -58,7 +58,7 @@ public abstract class HLBaseFragment extends KBaseFragment {
     }
 
     private void initContentView() {
-        ViewGroup baseContentLayout = mView.findViewById(R.id.base_content_layout);
+        ViewGroup baseContentLayout = mView.findViewById(R.id.baseContentLayout);
         if (getLayoutId() != 0) {
             LinearLayout.LayoutParams lpContent = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,

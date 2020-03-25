@@ -2,41 +2,43 @@ package x.com.dialogdialog.bbz
 
 import android.os.Bundle
 import android.widget.RadioGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import x.com.dialogdialog.R
 import x.com.dialogdialog.databinding.ActivityBbzBinding
-import x.com.hl_base.hl_activity.HLBaseActivity
-import x.com.hl_log.ViseLog
 import java.util.*
 import kotlin.collections.set
 
-class BBZActivity : HLBaseActivity() {
+class BBZActivity : AppCompatActivity() {
     lateinit var binding: ActivityBbzBinding
     private val fragments = HashMap<String, Fragment>()
-    private val currentFragment: Fragment = SportFragment()
+    private var currentFragment: Fragment = SportFragment()
 
-    private val a = arrayOf("sport","fuli","renwu","mine")
-    override fun initUI(savedInstanceState: Bundle?) {
+    private val a = arrayOf("sport", "fuli", "renwu", "mine")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_bbz)
-        initTab()
+        initBottomTab()
     }
 
-    override fun getLayoutId(): Int {
-        return R.layout.activity_bbz
-    }
-
-    fun initTab() {
+    private fun initBottomTab() {
         val bottomNavigationBar: RadioGroup = binding.bottomNavigation
         fragments[a[0]] = SportFragment()
-        fragments[a[1]] = SportFragment()
-        fragments[a[2]] = SportFragment()
-        fragments[a[3]] = SportFragment()
+        fragments[a[1]] = SportFragment2()
+        fragments[a[2]] = SportFragment3()
+        fragments[a[3]] = SportFragment4()
         switchContent(currentFragment, SportFragment())
         bottomNavigationBar.setOnCheckedChangeListener { group, i ->
             run {
-                ViseLog.d(i)
-                switchContent(currentFragment, fragments[a[i]]!!)
+                var j = 0;
+                when (i) {
+                    R.id.sport -> j = 0
+                    R.id.fuli -> j = 1
+                    R.id.renwu -> j = 2
+                    R.id.mine -> j = 3
+                }
+                switchContent(currentFragment, fragments[a[j]]!!)
             }
         }
     }
@@ -48,6 +50,7 @@ class BBZActivity : HLBaseActivity() {
      */
     private fun switchContent(from: Fragment, to: Fragment) {
         if (from !== to) {
+            currentFragment = to;
             val transaction = supportFragmentManager.beginTransaction()
             // 先判断是否被add过
             if (!to.isAdded) {

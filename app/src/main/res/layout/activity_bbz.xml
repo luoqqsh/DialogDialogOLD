@@ -47,6 +47,7 @@
                 app:layout_constraintStart_toStartOf="parent">
 
                 <RadioButton
+                    android:id="@+id/sport"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -54,6 +55,7 @@
                     android:text="运动" />
 
                 <RadioButton
+                    android:id="@+id/fuli"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -61,6 +63,7 @@
                     android:text="福利" />
 
                 <RadioButton
+                    android:id="@+id/renwu"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -68,6 +71,7 @@
                     android:text="任务" />
 
                 <RadioButton
+                    android:id="@+id/mine"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

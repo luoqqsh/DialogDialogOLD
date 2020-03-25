@@ -30,10 +30,10 @@ import x.com.hl_view.RotateImageView;
 public abstract class HLBaseActivity extends KBaseActivity {
     public FragmentActivity mActivity;
     public HLTitleView mTitle;
-    private LinearLayout base_loading_fail;
-    private LinearLayout base_loading_no_data;
-    private LinearLayout base_loading;
-    private RotateImageView loading_view;
+    private LinearLayout baseLoadingLayout;
+    private LinearLayout baseNoData;
+    private LinearLayout baseLoading;
+    private RotateImageView loadingView;
     private hl_orientation2 ori;
     private ViewGroup baseContentLayout;
 
@@ -48,19 +48,19 @@ public abstract class HLBaseActivity extends KBaseActivity {
         } else {
             setContentView(R.layout.activity_base);
         }
-        ViewGroup base_layout = findViewById(R.id.base_content_layout);
+        baseContentLayout = findViewById(R.id.baseContentLayout);
         int backgroundColor = getBackgroundColor();
         if (backgroundColor != 0) {
-            base_layout.setBackgroundColor(backgroundColor);
+            baseContentLayout.setBackgroundColor(backgroundColor);
         } else if (getBackgroundColorResource() != 0) {
-            base_layout.setBackgroundResource(getBackgroundColorResource());
+            baseContentLayout.setBackgroundResource(getBackgroundColorResource());
         }
         initTitleView();//加载标题
         initContentView();//加载内容
         //加载状态
-        base_loading_fail = findViewById(R.id.base_loading_fail);
-        base_loading_no_data = findViewById(R.id.base_loading_no_data);
-        base_loading = findViewById(R.id.base_loading);
+        baseLoadingLayout = findViewById(R.id.baseLoadingLayout);
+        baseNoData = findViewById(R.id.baseNoData);
+        baseLoading = findViewById(R.id.baseLoading);
         //沉浸式
         ImmersionBar immersionBar = ImmersionBar.with(mActivity);
         immersionBar.fitsSystemWindows(false);
@@ -78,7 +78,7 @@ public abstract class HLBaseActivity extends KBaseActivity {
 
     private void initTitleView() {
         if (isShowTitle()) {
-            ViewGroup baseTitleLayout = findViewById(R.id.base_title_layout);
+            ViewGroup baseTitleLayout = findViewById(R.id.baseTitleLayout);
             if (getTitleLayoutId() == 0) {//没有加载默认的
                 View baseTitleLayoutInside = View.inflate(mActivity, R.layout.activity_view_title, null);
                 baseTitleLayout.addView(baseTitleLayoutInside, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -91,7 +91,7 @@ public abstract class HLBaseActivity extends KBaseActivity {
     }
 
     private void initContentView() {
-        baseContentLayout = findViewById(R.id.base_content_layout);
+        baseContentLayout = findViewById(R.id.baseContentLayout);
         if (getLayoutId() != 0) {
             View contentView = LayoutInflater.from(this).inflate(getLayoutId(), null);
             LinearLayout.LayoutParams lpContent = new LinearLayout.LayoutParams(
@@ -214,49 +214,49 @@ public abstract class HLBaseActivity extends KBaseActivity {
     }
 
     public void setLoading() {
-        if (base_loading.getChildCount() == 0) {
+        if (baseLoading.getChildCount() == 0) {
             View loadingFail = View.inflate(mActivity, getLoadingLayoutId(), null);
-            loading_view = loadingFail.findViewById(R.id.loadingView);
-            base_loading.addView(loadingFail, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            loadingView = loadingFail.findViewById(R.id.loadingView);
+            baseLoading.addView(loadingFail, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         }
-        base_loading_fail.setVisibility(View.GONE);
-        base_loading.setVisibility(View.VISIBLE);
-        base_loading_no_data.setVisibility(View.GONE);
-        loading_view.start();
+        baseLoadingLayout.setVisibility(View.GONE);
+        baseLoading.setVisibility(View.VISIBLE);
+        baseNoData.setVisibility(View.GONE);
+        loadingView.start();
     }
 
     public void setLoadingFail() {
-        if (base_loading_fail.getChildCount() == 0) {
+        if (baseLoadingLayout.getChildCount() == 0) {
             View loadingFail = View.inflate(mActivity, getLoadingFailLayoutId(), null);
-            base_loading_fail.addView(loadingFail, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            baseLoadingLayout.addView(loadingFail, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         }
-        base_loading_fail.setVisibility(View.VISIBLE);
-        base_loading.setVisibility(View.GONE);
-        base_loading_no_data.setVisibility(View.GONE);
-        if (loading_view != null) {
-            loading_view.stop();
+        baseLoadingLayout.setVisibility(View.VISIBLE);
+        baseLoading.setVisibility(View.GONE);
+        baseNoData.setVisibility(View.GONE);
+        if (loadingView != null) {
+            loadingView.stop();
         }
     }
 
     public void setLoadingEnd() {
-        base_loading_fail.setVisibility(View.GONE);
-        base_loading.setVisibility(View.GONE);
-        base_loading_no_data.setVisibility(View.GONE);
-        if (loading_view != null) {
-            loading_view.stop();
+        baseLoadingLayout.setVisibility(View.GONE);
+        baseLoading.setVisibility(View.GONE);
+        baseNoData.setVisibility(View.GONE);
+        if (loadingView != null) {
+            loadingView.stop();
         }
     }
 
     public void setLoadingNoData() {
-        if (base_loading_no_data.getChildCount() == 0) {
+        if (baseNoData.getChildCount() == 0) {
             View loadingFail = View.inflate(mActivity, getLoadingNoDataId(), null);
-            base_loading_no_data.addView(loadingFail, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            baseNoData.addView(loadingFail, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         }
-        base_loading_fail.setVisibility(View.GONE);
-        base_loading.setVisibility(View.GONE);
-        base_loading_no_data.setVisibility(View.VISIBLE);
-        if (loading_view != null) {
-            loading_view.stop();
+        baseLoadingLayout.setVisibility(View.GONE);
+        baseLoading.setVisibility(View.GONE);
+        baseNoData.setVisibility(View.VISIBLE);
+        if (loadingView != null) {
+            loadingView.stop();
         }
     }
 
