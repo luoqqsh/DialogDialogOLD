@@ -3,18 +3,22 @@ package x.com.hl_tools;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Point;
 import android.os.Build;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Display;
+import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
+import androidx.fragment.app.FragmentActivity;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -22,6 +26,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.regex.Pattern;
 
+import x.com.hl_base.AppInit;
 import x.com.hl_dialog.R;
 import x.com.hl_log.ViseLog;
 
@@ -352,5 +357,69 @@ public class hl_screen {
 
     public static int getHeightByScaleWH(float scale, int width) {
         return (int) (width / scale);
+    }
+
+    public static boolean isFullScreen(@NonNull FragmentActivity activity) {
+        int fullScreenFlag = WindowManager.LayoutParams.FLAG_FULLSCREEN;
+        return (activity.getWindow().getAttributes().flags & fullScreenFlag) == fullScreenFlag;
+    }
+
+    /**
+     * 设置横屏
+     *
+     * @param activity 上下文
+     */
+    public static void setLandscape(@NonNull FragmentActivity activity) {
+        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+    }
+
+    /**
+     * 设置竖屏
+     *
+     * @param activity 上下文
+     */
+    public static void setPortrait(@NonNull FragmentActivity activity) {
+        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    }
+
+    /**
+     * 是否横屏
+     *
+     * @return 结果
+     */
+    public static boolean isLandscape() {
+        return AppInit.getAppContext().getResources().getConfiguration().orientation
+                == Configuration.ORIENTATION_LANDSCAPE;
+    }
+
+    /**
+     * 是否竖屏
+     *
+     * @return 结果
+     */
+    public static boolean isPortrait() {
+        return AppInit.getAppContext().getResources().getConfiguration().orientation
+                == Configuration.ORIENTATION_PORTRAIT;
+    }
+
+    /**
+     * 获取屏幕旋转角度
+     *
+     * @param activity 上下文
+     * @return 角度
+     */
+    public static int getScreenRotation(@NonNull FragmentActivity activity) {
+        switch (activity.getWindowManager().getDefaultDisplay().getRotation()) {
+            case Surface.ROTATION_0:
+                return 0;
+            case Surface.ROTATION_90:
+                return 90;
+            case Surface.ROTATION_180:
+                return 180;
+            case Surface.ROTATION_270:
+                return 270;
+            default:
+                return 0;
+        }
     }
 }

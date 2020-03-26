@@ -12,17 +12,7 @@ import java.util.List;
 
 import x.com.hl_log.ViseLog;
 
-/**
- * <pre>
- *     author: Blankj
- *     blog  : http://blankj.com
- *     time  : 2019/05/20
- *     desc  : utils about app store
- * </pre>
- */
 public class hl_appstore {
-
-    private static final String TAG = "AppStoreUtils";
 
     private static final String GOOGLE_PLAY_APP_STORE_PACKAGE_NAME = "com.android.vending";
 
@@ -79,7 +69,7 @@ public class hl_appstore {
         List<ResolveInfo> resolveInfos = context.getPackageManager()
                 .queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
         if (resolveInfos.size() == 0) {
-            ViseLog.e(TAG, "No app store!");
+            ViseLog.e("No app store!");
             return null;
         }
         Intent googleIntent = null;

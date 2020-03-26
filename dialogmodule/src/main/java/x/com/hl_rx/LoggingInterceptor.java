@@ -2,6 +2,7 @@ package x.com.hl_rx;
 
 import android.text.TextUtils;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -9,29 +10,32 @@ import org.json.JSONObject;
 import java.io.EOFException;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import okhttp3.Connection;
 import okhttp3.Headers;
 import okhttp3.Interceptor;
+import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import okio.Buffer;
 import okio.BufferedSource;
+import okio.GzipSource;
 import x.com.hl_log.ViseLog;
-
 /**
  * 日志拦截器
  */
 public class LoggingInterceptor implements Interceptor {
     private volatile Level level = Level.HEADERS;
-    private final Charset UTF8 = Charset.forName("UTF-8");
+    private final Charset UTF8 = StandardCharsets.UTF_8;
 
     public enum Level {
         NONE, HEADERS, BODY
@@ -46,6 +50,7 @@ public class LoggingInterceptor implements Interceptor {
         return this;
     }
 
+    @NotNull
     @Override
     public Response intercept(Chain chain) throws IOException {
         Level level = this.level;
@@ -62,7 +67,7 @@ public class LoggingInterceptor implements Interceptor {
         StringBuilder responseLog = new StringBuilder("<=======================收到" + isHttps + " 请求结果=======================>\n");
         RequestBody requestBody = request.body();
         Connection connection = chain.connection();
-        requestlog.append(request.method()).append(' ').append(request.url()).append("\n")
+        requestlog.append(request.method()).append(' ').append(request.url())
                 .append(connection != null ? " " + connection.protocol() + "\n" : "");
         getUrlParams(request.url().toString(), requestlog);
         //
@@ -94,16 +99,16 @@ public class LoggingInterceptor implements Interceptor {
         ViseLog.e(requestlog);
         //--------------------response日志处理--------------------//
         ResponseBody responseBody = response.body();
-        BufferedSource source = responseBody.source();
-        Buffer responseBuffer = source.buffer();
+        BufferedSource source = Objects.requireNonNull(responseBody).source();
+        Buffer responseBuffer = source.getBuffer();
         source.request(Long.MAX_VALUE); // Buffer the entire body.
         long contentLength = responseBuffer.size();
         responseLog.append(response.code()).append(response.message().isEmpty() ? "" : ' ' + response.message()).append(' ')
                 .append(response.request().url()).append("\n")
                 .append("请求耗时 : ").append(tookMs).append(" ms\n")
                 .append("返回数据大小 : ").append(contentLength).append(" byte\n");
+        Headers headers = response.headers();
         if (level == Level.HEADERS) {
-            Headers headers = response.headers();
             responseLog.append("------Headers------\n");
             for (int i = 0, count = headers.size(); i < count; i++) {
                 responseLog.append(headers.name(i)).append(" : ").append(headers.value(i)).append("\n");
@@ -112,47 +117,23 @@ public class LoggingInterceptor implements Interceptor {
                 }
             }
         }
-        if (!isPlaintext(responseBuffer)) {
-            return response;
-        }
         responseLog.append("------Body------\n");
-        if (contentLength != 0 && contentLength < 20000) {
-            pringJson(responseBuffer.clone().readString(UTF8), responseLog);
+        String isZip = headers.get("Content-Encoding");
+        Buffer buffer = new Buffer();
+        if (isZip != null && "gzip".equals(isZip.toLowerCase())) {
+            new GzipSource(responseBuffer.clone()).read(buffer, responseBuffer.size());
         } else {
-            responseLog.append(responseBuffer.clone().readString(UTF8));
+            buffer = responseBuffer;
+        }
+        MediaType mediaType = responseBody.contentType();
+        String charset = mediaType == null ? "UTF-8" : String.valueOf(mediaType.charset());
+        if (contentLength != 0 && contentLength < 20000) {
+            pringJson(buffer.clone().readString(Charset.forName(charset)), responseLog);
+        } else {
+            responseLog.append(buffer.clone().readString(Charset.forName(charset)));
         }
         ViseLog.e(responseLog.toString());
         return response;
-    }
-
-
-    /**
-     * Returns true if the body in question probably contains human readable text. Uses a small sample
-     * of code points to detect unicode control characters commonly used in binary file signatures.
-     */
-    static boolean isPlaintext(Buffer buffer) {
-        try {
-            Buffer prefix = new Buffer();
-            long byteCount = buffer.size() < 64 ? buffer.size() : 64;
-            buffer.copyTo(prefix, 0, byteCount);
-            for (int i = 0; i < 16; i++) {
-                if (prefix.exhausted()) {
-                    break;
-                }
-                int codePoint = prefix.readUtf8CodePoint();
-                if (Character.isISOControl(codePoint) && !Character.isWhitespace(codePoint)) {
-                    return false;
-                }
-            }
-            return true;
-        } catch (EOFException e) {
-            return false; // Truncated UTF-8 sequence.
-        }
-    }
-
-    private boolean bodyEncoded(Headers headers) {
-        String contentEncoding = headers.get("Content-Encoding");
-        return contentEncoding != null && !contentEncoding.equalsIgnoreCase("identity");
     }
 
     private void pringJson(String json, StringBuilder log) {
@@ -221,4 +202,5 @@ public class LoggingInterceptor implements Interceptor {
         return true;
     }
 }
+
 

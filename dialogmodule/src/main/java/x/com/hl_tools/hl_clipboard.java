@@ -1,34 +1,22 @@
 package x.com.hl_tools;
 
-
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
-/**
- * <pre>
- *     author: Blankj
- *     blog  : http://blankj.com
- *     time  : 2016/09/25
- *     desc  : 剪贴板相关工具类
- * </pre>
- */
-public class hl_clipboard {
+import x.com.hl_base.AppInit;
 
-    private hl_clipboard() {
-        throw new UnsupportedOperationException("u can't instantiate me...");
-    }
+public class hl_clipboard {
 
     /**
      * 复制文本到剪贴板
      *
      * @param text 文本
      */
-    public static void copyText(Context context, CharSequence text) {
-        ClipboardManager cm = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-        //noinspection ConstantConditions
+    public static void copyText(CharSequence text) {
+        ClipboardManager cm = (ClipboardManager) AppInit.getAppContext().getSystemService(Context.CLIPBOARD_SERVICE);
         cm.setPrimaryClip(ClipData.newPlainText("text", text));
     }
 
@@ -37,12 +25,11 @@ public class hl_clipboard {
      *
      * @return 剪贴板的文本
      */
-    public static CharSequence getText(Context context) {
-        ClipboardManager cm = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-        //noinspection ConstantConditions
+    public static CharSequence getText() {
+        ClipboardManager cm = (ClipboardManager) AppInit.getAppContext().getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = cm.getPrimaryClip();
         if (clip != null && clip.getItemCount() > 0) {
-            return clip.getItemAt(0).coerceToText(context);
+            return clip.getItemAt(0).coerceToText(AppInit.getAppContext());
         }
         return null;
     }
@@ -52,10 +39,9 @@ public class hl_clipboard {
      *
      * @param uri uri
      */
-    public static void copyUri(Context context, Uri uri) {
-        ClipboardManager cm = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-        //noinspection ConstantConditions
-        cm.setPrimaryClip(ClipData.newUri(context.getContentResolver(), "uri", uri));
+    public static void copyUri(final Uri uri) {
+        ClipboardManager cm = (ClipboardManager) AppInit.getAppContext().getSystemService(Context.CLIPBOARD_SERVICE);
+        cm.setPrimaryClip(ClipData.newUri(AppInit.getAppContext().getContentResolver(), "uri", uri));
     }
 
     /**
@@ -63,9 +49,8 @@ public class hl_clipboard {
      *
      * @return 剪贴板的uri
      */
-    public static Uri getUri(Context context) {
-        ClipboardManager cm = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-        //noinspection ConstantConditions
+    public static Uri getUri() {
+        ClipboardManager cm = (ClipboardManager) AppInit.getAppContext().getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = cm.getPrimaryClip();
         if (clip != null && clip.getItemCount() > 0) {
             return clip.getItemAt(0).getUri();
@@ -78,9 +63,8 @@ public class hl_clipboard {
      *
      * @param intent 意图
      */
-    public static void copyIntent(Context context, Intent intent) {
-        ClipboardManager cm = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-        //noinspection ConstantConditions
+    public static void copyIntent(final Intent intent) {
+        ClipboardManager cm = (ClipboardManager) AppInit.getAppContext().getSystemService(Context.CLIPBOARD_SERVICE);
         cm.setPrimaryClip(ClipData.newIntent("intent", intent));
     }
 
@@ -89,9 +73,8 @@ public class hl_clipboard {
      *
      * @return 剪贴板的意图
      */
-    public static Intent getIntent(Context context) {
-        ClipboardManager cm = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-        //noinspection ConstantConditions
+    public static Intent getIntent() {
+        ClipboardManager cm = (ClipboardManager) AppInit.getAppContext().getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = cm.getPrimaryClip();
         if (clip != null && clip.getItemCount() > 0) {
             return clip.getItemAt(0).getIntent();
