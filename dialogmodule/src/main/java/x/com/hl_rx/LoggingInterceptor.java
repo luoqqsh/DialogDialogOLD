@@ -55,7 +55,6 @@ public class LoggingInterceptor implements Interceptor {
         if (level == LoggingInterceptor.Level.NONE) {
             return chain.proceed(request);
         }
-        ViseLog.d(request.tag());
         StringBuilder urlLog = new StringBuilder();
         List<String> url = request.url().pathSegments();
         for (String param : url) {
