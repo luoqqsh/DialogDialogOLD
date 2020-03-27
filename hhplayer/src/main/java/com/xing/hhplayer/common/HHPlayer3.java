@@ -37,7 +37,7 @@ import com.xing.hhplayer.common.base.OnPlayerListener;
 import java.util.List;
 import java.util.Map;
 
-import x.com.hl_base.hl_activity.HLBaseActivity;
+import x.com.hl_base.activity.HLBaseActivity;
 import x.com.hl_log.ViseLog;
 import x.com.hl_tools.hl_screen;
 import x.com.hl_tools.hl_view;

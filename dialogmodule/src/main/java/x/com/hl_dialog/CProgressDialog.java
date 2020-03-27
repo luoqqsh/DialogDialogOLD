@@ -7,7 +7,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 
-import x.com.hl_base.hl_dialog.BaseNDialog;
+import x.com.hl_base.dialog.BaseNDialog;
 import x.com.hl_view.CircleProgressBar;
 
 public class CProgressDialog extends BaseNDialog {

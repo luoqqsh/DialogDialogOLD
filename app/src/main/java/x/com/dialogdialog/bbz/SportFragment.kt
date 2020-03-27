@@ -3,10 +3,11 @@ package x.com.dialogdialog.bbz
 import android.os.Bundle
 import x.com.dialogdialog.R
 import x.com.dialogdialog.databinding.FragmentSportBinding
-import x.com.hl_base.hl_fragment.HLBaseMVVMFragment
+import x.com.hl_base.fragment.HLBaseVMFragment
+import x.com.hl_base.mvvm.NoViewModel
 import x.com.hl_log.ViseLog
 
-class SportFragment : HLBaseMVVMFragment<FragmentSportBinding>() {
+class SportFragment : HLBaseVMFragment<NoViewModel, FragmentSportBinding>() {
     override fun getLayoutId(): Int {
         return R.layout.fragment_sport
     }

@@ -25,7 +25,7 @@ import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-import x.com.hl_base.hl_interface.OnSimpleListener;
+import x.com.hl_base.interfaces.OnSimpleListener;
 import x.com.hl_dialog.R;
 import x.com.hl_log.ViseLog;
 

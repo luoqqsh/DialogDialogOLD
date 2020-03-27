@@ -9,7 +9,7 @@ import android.widget.RelativeLayout;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 
-import x.com.hl_base.hl_interface.OnSimpleListener;
+import x.com.hl_base.interfaces.OnSimpleListener;
 
 public class NotifyToastShadowView extends RelativeLayout {
 

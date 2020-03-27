@@ -7,8 +7,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import x.com.hl_base.hl_dialog.BaseDialogFragment;
-import x.com.hl_base.hl_dialog.NDialog;
+import x.com.hl_base.dialog.BaseDialogFragment;
+import x.com.hl_base.dialog.NDialog;
 
 public class DFUShareDialog extends BaseDialogFragment {
     @NonNull

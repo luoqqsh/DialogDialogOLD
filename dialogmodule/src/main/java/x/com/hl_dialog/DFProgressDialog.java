@@ -7,8 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import x.com.hl_base.hl_dialog.BaseDialogFragment2;
-import x.com.hl_base.hl_interface.OnSimpleListener;
+import x.com.hl_base.dialog.BaseDialogFragment2;
+import x.com.hl_base.interfaces.OnSimpleListener;
 import x.com.hl_view.CircleProgressBar;
 
 public class DFProgressDialog extends BaseDialogFragment2 {

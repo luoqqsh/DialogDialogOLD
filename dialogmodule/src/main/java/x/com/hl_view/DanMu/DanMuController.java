@@ -4,7 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-import x.com.hl_base.hl_interface.OnSimpleListener;
+import x.com.hl_base.interfaces.OnSimpleListener;
 import x.com.hl_rx.task.TaskDelayBManager;
 
 public class DanMuController {

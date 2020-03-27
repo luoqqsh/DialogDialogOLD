@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import x.com.hl_base.hl_interface.NoInterceptTouchView;
+import x.com.hl_base.interfaces.NoInterceptTouchView;
 import x.com.hl_dialog.R;
 
 /**

@@ -6,7 +6,7 @@ import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import x.com.hl_base.hl_interface.OnSimpleListener;
+import x.com.hl_base.interfaces.OnSimpleListener;
 
 public class DanMuView extends SurfaceView implements SurfaceHolder.Callback {
 

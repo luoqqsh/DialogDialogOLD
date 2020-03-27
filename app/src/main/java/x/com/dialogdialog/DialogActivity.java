@@ -7,9 +7,9 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Toast;
 
-import x.com.hl_base.hl_activity.HLBaseActivity;
-import x.com.hl_base.hl_dialog.NDialog;
-import x.com.hl_base.hl_interface.OnClickItemListener;
+import x.com.hl_base.activity.HLBaseActivity;
+import x.com.hl_base.dialog.NDialog;
+import x.com.hl_base.interfaces.OnClickItemListener;
 import x.com.hl_dialog.CBottomListDialog;
 import x.com.hl_dialog.CTipDialog;
 import x.com.hl_dialog.CWaitingDialog;

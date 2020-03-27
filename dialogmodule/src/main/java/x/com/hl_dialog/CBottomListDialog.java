@@ -14,8 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import x.com.hl_base.hl_dialog.BaseNDialog;
-import x.com.hl_base.hl_interface.OnClickItemListener;
+import x.com.hl_base.dialog.BaseNDialog;
+import x.com.hl_base.interfaces.OnClickItemListener;
 import x.com.hl_tools.hl_screen;
 
 public class CBottomListDialog extends BaseNDialog {

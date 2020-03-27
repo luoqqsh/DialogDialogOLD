@@ -3,7 +3,7 @@ package x.com.hl_dialog;
 import android.os.Bundle;
 import android.view.View;
 
-import x.com.hl_base.hl_dialog.BaseNDialog;
+import x.com.hl_base.dialog.BaseNDialog;
 import x.com.hl_view.LoadingBaseView;
 
 public class CWaitingDialog extends BaseNDialog {

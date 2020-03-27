@@ -1,7 +1,7 @@
 package x.com.hl_rx.task
 
 import kotlinx.coroutines.*
-import x.com.hl_base.hl_interface.HOnListener
+import x.com.hl_base.interfaces.HOnListener
 import x.com.hl_log.ViseLog
 
 class TaskCManager {

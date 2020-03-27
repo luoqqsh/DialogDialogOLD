@@ -12,8 +12,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import x.com.hl_base.hl_dialog.BaseNDialog;
-import x.com.hl_base.hl_interface.OnClickItemListener;
+import x.com.hl_base.dialog.BaseNDialog;
+import x.com.hl_base.interfaces.OnClickItemListener;
 import x.com.hl_log.ViseLog;
 
 public class CTipDialog extends BaseNDialog {

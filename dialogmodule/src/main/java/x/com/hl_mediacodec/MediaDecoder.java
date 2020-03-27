@@ -8,7 +8,7 @@ import android.view.Surface;
 import java.io.File;
 import java.io.IOException;
 
-import x.com.hl_base.hl_interface.HOnListener;
+import x.com.hl_base.interfaces.HOnListener;
 
 public class MediaDecoder extends Thread {
 

@@ -2,28 +2,30 @@ package x.com.dialogdialog.bbz
 
 import android.os.Bundle
 import android.widget.RadioGroup
-import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import x.com.dialogdialog.R
 import x.com.dialogdialog.databinding.ActivityBbzBinding
+import x.com.hl_base.activity.HLBaseVMActivity
+import x.com.hl_base.mvvm.NoViewModel
 import java.util.*
 import kotlin.collections.set
 
-class BBZActivity : AppCompatActivity() {
-    lateinit var binding: ActivityBbzBinding
+class BBZActivity : HLBaseVMActivity<NoViewModel, ActivityBbzBinding>() {
     private val fragments = HashMap<String, Fragment>()
     private var currentFragment: Fragment = SportFragment()
 
     private val a = arrayOf("sport", "fuli", "renwu", "mine")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_bbz)
+    override fun getLayoutId(): Int {
+        return R.layout.activity_bbz
+    }
+
+    override fun initView(savedInstanceState: Bundle?) {
         initBottomTab()
+
     }
 
     private fun initBottomTab() {
-        val bottomNavigationBar: RadioGroup = binding.bottomNavigation
+        val bottomNavigationBar: RadioGroup = dataBinding.bottomNavigation
         fragments[a[0]] = SportFragment()
         fragments[a[1]] = SportFragment2()
         fragments[a[2]] = SportFragment3()
@@ -64,4 +66,6 @@ class BBZActivity : AppCompatActivity() {
             }
         }
     }
+
+
 }
