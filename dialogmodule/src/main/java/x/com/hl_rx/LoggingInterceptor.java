@@ -7,10 +7,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.EOFException;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -34,18 +32,17 @@ import x.com.hl_log.ViseLog;
  * 日志拦截器
  */
 public class LoggingInterceptor implements Interceptor {
-    private volatile Level level = Level.HEADERS;
-    private final Charset UTF8 = StandardCharsets.UTF_8;
+    private volatile Level level = Level.ALL;
 
     public enum Level {
-        NONE, HEADERS, BODY
+        NONE, ALL, MAIN//无，所有，主要（不包含head部分）
     }
 
     /**
      * Change the level at which this interceptor logs.
      */
     public LoggingInterceptor setLevel(Level level) {
-        if (level == null) this.level = Level.HEADERS;
+        if (level == null) this.level = Level.ALL;
         this.level = level;
         return this;
     }
@@ -58,13 +55,14 @@ public class LoggingInterceptor implements Interceptor {
         if (level == LoggingInterceptor.Level.NONE) {
             return chain.proceed(request);
         }
-        StringBuilder isHttps = new StringBuilder(request.isHttps() ? "https: " : "http: ");
+        ViseLog.d(request.tag());
+        StringBuilder urlLog = new StringBuilder();
         List<String> url = request.url().pathSegments();
         for (String param : url) {
-            isHttps.append(param).append("/");
+            urlLog.append(param).append("/");
         }
-        StringBuilder requestlog = new StringBuilder("<=======================发起" + isHttps + " 请求=======================>\n");
-        StringBuilder responseLog = new StringBuilder("<=======================收到" + isHttps + " 请求结果=======================>\n");
+        StringBuilder requestlog = new StringBuilder("<=======================发起" + urlLog + " 请求=======================>\n");
+        StringBuilder responseLog = new StringBuilder("<=======================收到" + urlLog + " 请求结果=======================>\n");
         RequestBody requestBody = request.body();
         Connection connection = chain.connection();
         requestlog.append(request.method()).append(' ').append(request.url())
@@ -75,7 +73,10 @@ public class LoggingInterceptor implements Interceptor {
             Buffer buffer = new Buffer();
             requestlog.append("------Body参数------\n");
             requestBody.writeTo(buffer);
-            pringJson(buffer.readString(UTF8), requestlog);
+            MediaType mediaType = requestBody.contentType();
+            String charset = mediaType == null ? "UTF-8" : String.valueOf(mediaType.charset());
+            pringJson(buffer.readString(Charset.forName(charset)), requestlog);
+            requestlog.append("\n");
         }
         //--------------------开始请求--------------------//
         long startNs = System.currentTimeMillis();
@@ -84,19 +85,19 @@ public class LoggingInterceptor implements Interceptor {
             response = chain.proceed(request);
         } catch (Exception e) {
             responseLog.append("请求失败:").append(e.getMessage());
-            ViseLog.e(requestlog + responseLog.toString());
-            throw e;
+            ViseLog.d(requestlog + responseLog.toString());
+            throw new RuntimeException(e.getMessage());
         }
         long tookMs = System.currentTimeMillis() - startNs;
         //--------------------request中的header--------------------//
-        if (level == Level.HEADERS) {
+        if (level == Level.ALL) {
             Headers requestHeaders = response.request().headers();
             requestlog.append("------Headers参数------\n");
             for (int i = 0, count = requestHeaders.size(); i < count; i++) {
                 requestlog.append(requestHeaders.name(i)).append(": ").append(requestHeaders.value(i)).append("\n");
             }
         }
-        ViseLog.e(requestlog);
+        ViseLog.d(requestlog);
         //--------------------response日志处理--------------------//
         ResponseBody responseBody = response.body();
         BufferedSource source = Objects.requireNonNull(responseBody).source();
@@ -108,7 +109,7 @@ public class LoggingInterceptor implements Interceptor {
                 .append("请求耗时 : ").append(tookMs).append(" ms\n")
                 .append("返回数据大小 : ").append(contentLength).append(" byte\n");
         Headers headers = response.headers();
-        if (level == Level.HEADERS) {
+        if (level == Level.ALL) {
             responseLog.append("------Headers------\n");
             for (int i = 0, count = headers.size(); i < count; i++) {
                 responseLog.append(headers.name(i)).append(" : ").append(headers.value(i)).append("\n");
@@ -121,7 +122,7 @@ public class LoggingInterceptor implements Interceptor {
         String isZip = headers.get("Content-Encoding");
         Buffer buffer = new Buffer();
         if (isZip != null && "gzip".equals(isZip.toLowerCase())) {
-            new GzipSource(responseBuffer.clone()).read(buffer, responseBuffer.size());
+            new GzipSource(responseBuffer.clone()).read(buffer, responseBuffer.size() * 10);
         } else {
             buffer = responseBuffer;
         }
@@ -138,7 +139,7 @@ public class LoggingInterceptor implements Interceptor {
 
     private void pringJson(String json, StringBuilder log) {
         if (TextUtils.isEmpty(json)) {
-            log.append("没有请求参数\n");
+            log.append("没有body参数\n");
         }
         if (isJson(json)) {
             try {
@@ -194,13 +195,16 @@ public class LoggingInterceptor implements Interceptor {
      * 判断是否是json结构
      */
     private boolean isJson(String value) {
-        try {
-            new JSONObject(value);
-        } catch (JSONException e) {
+        if (value.startsWith("{") || value.endsWith("}")) {
+            try {
+                new JSONObject(value);
+            } catch (JSONException e) {
+                return false;
+            }
+            return true;
+        } else {
             return false;
         }
-        return true;
     }
 }
-
 
