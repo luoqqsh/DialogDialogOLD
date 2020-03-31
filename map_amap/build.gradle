@@ -23,5 +23,5 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation project(':dialogmodule')
-    implementation files('libs/AMap3DMap_7.1.0_AMapNavi_7.1.0_AMapSearch_7.1.0_AMapTrack_1.1.0_AMapLocation_4.8.0_20191210.jar')
+    implementation files('libs/AMap3DMap_7.2.1_AMapNavi_7.2.0_AMapSearch_7.1.0_AMapTrack_1.2.0_AMapLocation_4.9.0_20200302.jar')
 }
