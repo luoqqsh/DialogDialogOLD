@@ -1,5 +1,6 @@
 package x.com.hl_rx.test;
 
+import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -30,4 +31,12 @@ public interface ApiFace {
     */
     @GET("")
     Call<ResponseBody> getTvList();
+
+    //retrofit2请求方式
+    @GET("https://lenovodns.com/IPTV-List.json")
+    Call<String> getTvList2();
+
+//    retrofit2+rxjava请求方式
+    @GET("https://lenovodns.com/IPTV-List.json")
+    Observable<String> getTvList3();
 }

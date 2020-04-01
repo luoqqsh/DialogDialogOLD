@@ -28,6 +28,7 @@ import okio.Buffer;
 import okio.BufferedSource;
 import okio.GzipSource;
 import x.com.hl_log.ViseLog;
+
 /**
  * 日志拦截器
  */
@@ -65,7 +66,7 @@ public class LoggingInterceptor implements Interceptor {
         RequestBody requestBody = request.body();
         Connection connection = chain.connection();
         requestlog.append(request.method()).append(' ').append(request.url())
-                .append(connection != null ? " " + connection.protocol() + "\n" : "");
+                .append(connection != null ? " " + connection.protocol() + "\n" : "\n");
         getUrlParams(request.url().toString(), requestlog);
         //
         if (requestBody != null) {
@@ -73,8 +74,8 @@ public class LoggingInterceptor implements Interceptor {
             requestlog.append("------Body参数------\n");
             requestBody.writeTo(buffer);
             MediaType mediaType = requestBody.contentType();
-            String charset = mediaType == null ? "UTF-8" : String.valueOf(mediaType.charset());
-            pringJson(buffer.readString(Charset.forName(charset)), requestlog);
+            String charset = (mediaType == null || TextUtils.isEmpty((CharSequence) mediaType.charset())) ? "UTF-8" : String.valueOf(mediaType.charset());
+            printJson(buffer.readString(Charset.forName(charset)), requestlog);
             requestlog.append("\n");
         }
         //--------------------开始请求--------------------//
@@ -91,7 +92,7 @@ public class LoggingInterceptor implements Interceptor {
         //--------------------request中的header--------------------//
         if (level == Level.ALL) {
             Headers requestHeaders = response.request().headers();
-            requestlog.append("------Headers参数------\n");
+            requestlog.append(requestHeaders.size() == 0 ? "------没有Header参数------\n" : "------Header参数------\n");
             for (int i = 0, count = requestHeaders.size(); i < count; i++) {
                 requestlog.append(requestHeaders.name(i)).append(": ").append(requestHeaders.value(i)).append("\n");
             }
@@ -112,8 +113,11 @@ public class LoggingInterceptor implements Interceptor {
             responseLog.append("------Headers------\n");
             for (int i = 0, count = headers.size(); i < count; i++) {
                 responseLog.append(headers.name(i)).append(" : ").append(headers.value(i)).append("\n");
-                if (headers.name(i).toLowerCase().equals("date")) {
+                if ("date".equals(headers.name(i).toLowerCase())) {
                     responseLog.append("服务器时间").append(" : ").append(toGMT8(headers.value(i))).append("\n");
+                }
+                if ("last-modified".equals(headers.name(i).toLowerCase())) {
+                    responseLog.append("最后更新时间").append(" : ").append(toGMT8(headers.value(i))).append("\n");
                 }
             }
         }
@@ -126,9 +130,9 @@ public class LoggingInterceptor implements Interceptor {
             buffer = responseBuffer;
         }
         MediaType mediaType = responseBody.contentType();
-        String charset = mediaType == null ? "UTF-8" : String.valueOf(mediaType.charset());
+        String charset = (mediaType == null || TextUtils.isEmpty((CharSequence) mediaType.charset())) ? "UTF-8" : String.valueOf(mediaType.charset());
         if (contentLength != 0 && contentLength < 20000) {
-            pringJson(buffer.clone().readString(Charset.forName(charset)), responseLog);
+            printJson(buffer.clone().readString(Charset.forName(charset)), responseLog);
         } else {
             responseLog.append(buffer.clone().readString(Charset.forName(charset)));
         }
@@ -136,7 +140,7 @@ public class LoggingInterceptor implements Interceptor {
         return response;
     }
 
-    private void pringJson(String json, StringBuilder log) {
+    private void printJson(String json, StringBuilder log) {
         if (TextUtils.isEmpty(json)) {
             log.append("没有body参数\n");
         }

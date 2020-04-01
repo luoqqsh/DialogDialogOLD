@@ -17,10 +17,12 @@ import java.io.File;
 import java.util.Map;
 
 import x.com.dialogdialog.BaseApp.BaseActivity;
+import x.com.dialogdialog.bbz.HttpMethodConfig;
 import x.com.hl_base.interfaces.HOnListener;
 import x.com.hl_dialog.DFListFileDialog;
 import x.com.hl_livedatabus.LiveEventBus;
 import x.com.hl_log.ViseLog;
+import x.com.hl_rx.jiu.SimpleSubscriber;
 import x.com.hl_tools.hl_file;
 import x.com.hl_tools.hl_media;
 import x.com.hl_tools.hl_permissions;
@@ -51,6 +53,17 @@ public class DialogMainJavaActivity extends BaseActivity {
             }
         });
         liveEventBus();
+        HttpMethodConfig.instance().getTvList(new SimpleSubscriber<String>() {
+            @Override
+            public void onSucceed(String result) {
+                ViseLog.d(result);
+            }
+
+            @Override
+            public void onFail(String error) {
+
+            }
+        });
     }
 
     private void liveEventBus() {

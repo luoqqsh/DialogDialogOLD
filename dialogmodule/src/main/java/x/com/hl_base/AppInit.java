@@ -12,6 +12,7 @@ import x.com.hl_tools.hl_screen;
 public class AppInit {
     @SuppressLint("StaticFieldLeak")
     private static Context mContext;
+    public static boolean isDebug = false;
 
     public static void setContext(Context mContext) {
         AppInit.mContext = mContext.getApplicationContext();
@@ -46,9 +47,10 @@ public class AppInit {
         setShowLog(isDebug, 3);
     }
 
-    public static void setShowLog(boolean isDebug, int tagCount) {
+    public static void setShowLog(boolean debug, int tagCount) {
+        isDebug = debug;
         ViseLog.getLogConfig()
-                .configAllowLog(isDebug)//是否输出日志
+                .configAllowLog(debug)//是否输出日志
                 .configShowBorders(true)//是否排版显示
                 .configTagPrefix("ViseLog")//设置标签前缀
                 .configFormatTag("%d{HH:mm:ss:SSS} %t %c{-" + tagCount + "} ")//个性化设置标签，默认显示包名

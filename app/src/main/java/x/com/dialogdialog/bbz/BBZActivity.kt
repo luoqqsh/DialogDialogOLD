@@ -1,12 +1,18 @@
 package x.com.dialogdialog.bbz
 
 import android.os.Bundle
+import android.view.View
 import android.widget.RadioGroup
 import androidx.fragment.app.Fragment
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import x.com.dialogdialog.R
 import x.com.dialogdialog.databinding.ActivityBbzBinding
 import x.com.hl_base.activity.HLBaseVMActivity
 import x.com.hl_base.mvvm.NoViewModel
+import x.com.hl_rx.jiu.SimpleSubscriber
+import x.com.hl_rx.test.retrofitKt
 import java.util.*
 import kotlin.collections.set
 
@@ -22,6 +28,13 @@ class BBZActivity : HLBaseVMActivity<NoViewModel, ActivityBbzBinding>() {
     override fun initView(savedInstanceState: Bundle?) {
         initBottomTab()
 
+
+
+        CoroutineScope(Dispatchers.Main).launch {
+//            withContext(Dispatchers.Main) {
+            retrofitKt.testRetrofit()
+//            }
+        }
     }
 
     private fun initBottomTab() {
