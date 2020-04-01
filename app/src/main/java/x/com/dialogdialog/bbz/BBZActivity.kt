@@ -1,7 +1,6 @@
 package x.com.dialogdialog.bbz
 
 import android.os.Bundle
-import android.view.View
 import android.widget.RadioGroup
 import androidx.fragment.app.Fragment
 import kotlinx.coroutines.CoroutineScope
@@ -11,7 +10,11 @@ import x.com.dialogdialog.R
 import x.com.dialogdialog.databinding.ActivityBbzBinding
 import x.com.hl_base.activity.HLBaseVMActivity
 import x.com.hl_base.mvvm.NoViewModel
-import x.com.hl_rx.jiu.SimpleSubscriber
+import x.com.hl_log.ViseLog
+import x.com.hl_rx.jiu.OnHttpCallback
+import x.com.hl_rx.kotlin.BBZCommonService
+import x.com.hl_rx.kotlin.RDClient
+import x.com.hl_rx.kotlin.await
 import x.com.hl_rx.test.retrofitKt
 import java.util.*
 import kotlin.collections.set
@@ -27,12 +30,23 @@ class BBZActivity : HLBaseVMActivity<NoViewModel, ActivityBbzBinding>() {
 
     override fun initView(savedInstanceState: Bundle?) {
         initBottomTab()
+        var httpManager = RDClient.getInstance()
+        var service = RDClient.getService(BBZCommonService::class.java)
 
-
-
+//        httpManager.enqueue(service.getHomeData("bb1862708c28fe26", "42740", "0"), object : OnHttpCallback<String> {
+//            override fun onSuccess(o: String?) {
+//                ViseLog.d(o)
+//            }
+//
+//            override fun onFail(error: String?) {
+//                ViseLog.d(error)
+//            }
+//        })
         CoroutineScope(Dispatchers.Main).launch {
 //            withContext(Dispatchers.Main) {
-            retrofitKt.testRetrofit()
+//            retrofitKt.testRetrofit()
+            val data = RDClient.getService(BBZCommonService::class.java).getHomeData("bb1862708c28fe26", "42740", "0").await().data
+            ViseLog.d(data)
 //            }
         }
     }

@@ -136,7 +136,7 @@ public abstract class SimpleSubscriber<T> implements Observer<T>, OnHttpCallback
         if (t instanceof HttpResult) {
             HttpResult data = (HttpResult) t;
             if (data.getCode() == 200) {
-                onSucceed(t);
+                onSuccess(t);
                 reCallCount = 0;
             } else if (data.getCode() == 401) {
 
@@ -148,7 +148,7 @@ public abstract class SimpleSubscriber<T> implements Observer<T>, OnHttpCallback
             return;
         }
 //        onFail(HttpConfig.httpDefaultError);
-        onSucceed(t);
+        onSuccess(t);
         reCallCount = 0;
     }
 

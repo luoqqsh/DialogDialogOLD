@@ -55,7 +55,7 @@ public class DialogMainJavaActivity extends BaseActivity {
         liveEventBus();
         HttpMethodConfig.instance().getTvList(new SimpleSubscriber<String>() {
             @Override
-            public void onSucceed(String result) {
+            public void onSuccess(String result) {
                 ViseLog.d(result);
             }
 

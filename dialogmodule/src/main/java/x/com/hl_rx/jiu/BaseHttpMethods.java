@@ -30,7 +30,6 @@ import retrofit2.Converter;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.converter.scalars.ScalarsConverterFactory;
 import x.com.hl_rx.LoggingInterceptor;
 import x.com.hl_tools.hl_convert;
 
@@ -214,7 +213,7 @@ public abstract class BaseHttpMethods<T> {
                             activity.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    callback.onSucceed(decode);
+                                    callback.onSuccess(decode);
                                 }
                             });
                         } else {
@@ -270,7 +269,7 @@ public abstract class BaseHttpMethods<T> {
                             activity.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    callback.onSucceed(decode);
+                                    callback.onSuccess(decode);
                                 }
                             });
                         } else {
