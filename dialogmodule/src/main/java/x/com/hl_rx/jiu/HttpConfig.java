@@ -17,6 +17,7 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import x.com.hl_base.AppInit;
 import x.com.hl_log.ViseLog;
+import x.com.hl_tools.hl_gson;
 import x.com.hl_tools.hl_other;
 
 public abstract class HttpConfig extends BaseHttpMethods<HttpService> {
@@ -115,49 +116,6 @@ public abstract class HttpConfig extends BaseHttpMethods<HttpService> {
                 && (multipartBody == null || multipartBody.size() == 0)) {
             throw new NullPointerException("when do post multiple File,multipartBody should not be null or size == 0");
         }
-        if (AppInit.isDebug) {
-            if (httpMethodType == HttpMethodType.HttpGetUseUrl || httpMethodType == HttpMethodType.HttpPostUseUrl || httpMethodType == HttpMethodType.HttpPostFormUseUrl || httpMethodType == HttpMethodType.HttpPostMultipleFileUseUrl || httpMethodType == HttpMethodType.HttpPostSingleFileUseUrl) {
-                StringBuilder urlSb = new StringBuilder();
-                urlSb.append(path);
-                if (params != null && params.size() > 0) {
-                    for (String key : params.keySet()) {
-                        Object o = params.get(key);
-                        String str = o == null ? "null" : o.toString();
-                        if (!urlSb.toString().contains("?")) {
-                            urlSb.append("?").append(key).append("=").append(str);
-                        } else {
-                            urlSb.append("&").append(key).append("=").append(str);
-                        }
-                    }
-                    if (!urlSb.toString().contains("?")) {
-                        urlSb.append("?").append("mylifedebugs").append("=").append(1);
-                    } else {
-                        urlSb.append("&").append("mylifedebugs").append("=").append(1);
-                    }
-                }
-                ViseLog.showLog("doHttp url " + urlSb.toString());
-            } else {
-                StringBuilder urlSb = new StringBuilder();
-                urlSb.append(getBaseUrl()).append(path);
-                if (params != null && params.size() > 0) {
-                    for (String key : params.keySet()) {
-                        Object o = params.get(key);
-                        String str = o == null ? "null" : o.toString();
-                        if (!urlSb.toString().contains("?")) {
-                            urlSb.append("?").append(key).append("=").append(str);
-                        } else {
-                            urlSb.append("&").append(key).append("=").append(str);
-                        }
-                    }
-                    if (!urlSb.toString().contains("?")) {
-                        urlSb.append("?").append("mylifedebugs").append("=").append(1);
-                    } else {
-                        urlSb.append("&").append("mylifedebugs").append("=").append(1);
-                    }
-                }
-                ViseLog.showLog("doHttp url " + urlSb.toString());
-            }
-        }
         if (httpMethodType != HttpMethodType.HttpPostSingleFile
                 && httpMethodType != HttpMethodType.HttpPostSingleFileUseUrl
                 && httpMethodType != HttpMethodType.HttpPostMultipleFile
@@ -165,7 +123,7 @@ public abstract class HttpConfig extends BaseHttpMethods<HttpService> {
             //上传文件这种耗时长的，不做再次请求
             subscriber.setParamsMap(httpMethodType, path, params, type);
         }
-        Observer<String> observer = new Observer<String>() {
+        Observer observer = new Observer<String>() {
             @Override
             public void onSubscribe(Disposable disposable) {
 //                subscriber.onStart();
@@ -174,8 +132,13 @@ public abstract class HttpConfig extends BaseHttpMethods<HttpService> {
 
             @Override
             public void onNext(String dataStr) {
-                T data = (T) dataStr;
-                subscriber.onNext(data);
+                if (type == String.class) {
+                    T data = (T) dataStr;
+                    subscriber.onNext(data);
+                } else {
+                    T data = hl_gson.instance().fromJson(dataStr, type);
+                    subscriber.onNext(data);
+                }
 //                HttpCacheUtil.onSuccessString(dataStr, subscriber, type, false, true);
             }
 
@@ -185,7 +148,7 @@ public abstract class HttpConfig extends BaseHttpMethods<HttpService> {
 //                if (HttpCacheUtil.isDataEnable(cacheData, type)) {
 //                    HttpCacheUtil.onSuccessString(cacheData, subscriber, type, true, true);
 //                } else {
-                    subscriber.onError(e);
+                subscriber.onError(e);
 //                }
             }
 

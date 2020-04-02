@@ -1,5 +1,6 @@
 package x.com.dialogdialog;
 
+
 import android.Manifest;
 import android.content.Intent;
 import android.database.Cursor;
@@ -23,6 +24,7 @@ import x.com.hl_dialog.DFListFileDialog;
 import x.com.hl_livedatabus.LiveEventBus;
 import x.com.hl_log.ViseLog;
 import x.com.hl_rx.jiu.SimpleSubscriber;
+import x.com.hl_rx.test.TvListData;
 import x.com.hl_tools.hl_file;
 import x.com.hl_tools.hl_media;
 import x.com.hl_tools.hl_permissions;
@@ -53,9 +55,9 @@ public class DialogMainJavaActivity extends BaseActivity {
             }
         });
         liveEventBus();
-        HttpMethodConfig.instance().getTvList(new SimpleSubscriber<String>() {
+        HttpMethodConfig.instance().getTvList(new SimpleSubscriber<TvListData>() {
             @Override
-            public void onSuccess(String result) {
+            public void onSuccess(TvListData result) {
                 ViseLog.d(result);
             }
 

@@ -6,10 +6,12 @@ import android.content.Context;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import x.com.hl_base.AppInit;
 import x.com.hl_rx.jiu.HttpConfig;
 import x.com.hl_rx.jiu.HttpMethodType;
 import x.com.hl_rx.jiu.SimpleSubscriber;
+import x.com.hl_rx.test.TvListData;
 
 public class HttpMethodConfig extends HttpConfig {
 
@@ -45,9 +47,9 @@ public class HttpMethodConfig extends HttpConfig {
 //        return map;
 //    }
 
-    public void getTvList(SimpleSubscriber<String> subscriber) {
+    public void getTvList(SimpleSubscriber<TvListData> subscriber) {
         Map<String, Object> paramsMap = new HashMap<>();
 //        paramsMap = sortAndAddSign(paramsMap);
-        doHttp(HttpMethodType.HttpGetUseUrl, "https://lenovodns.com/IPTV-List.json", paramsMap, subscriber, String.class);
+        doHttp(HttpMethodType.HttpGetUseUrl, "https://lenovodns.com/IPTV-List.json", paramsMap, subscriber, TvListData.class);
     }
 }

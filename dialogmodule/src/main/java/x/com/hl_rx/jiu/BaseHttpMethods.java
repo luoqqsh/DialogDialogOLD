@@ -30,6 +30,7 @@ import retrofit2.Converter;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 import x.com.hl_rx.LoggingInterceptor;
 import x.com.hl_tools.hl_convert;
 
@@ -102,10 +103,8 @@ public abstract class BaseHttpMethods<T> {
         okHttpClient = builder.build();
         Retrofit retrofit = new Retrofit.Builder()
                 .client(okHttpClient)
-//                .addConverterFactory(ScalarsConverterFactory.create())//只能用于请求String等基本类型数据
+                .addConverterFactory(ScalarsConverterFactory.create())//只能用于请求String等基本类型数据
 //                .addConverterFactory(GsonConverterFactory.create())//只能请求json
-                .addConverterFactory(getConverterFactory())//交给外部决定
-//                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())//rxjava
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())//rxjava2
                 .baseUrl(getBaseUrl())
                 .build();
@@ -140,14 +139,6 @@ public abstract class BaseHttpMethods<T> {
     public File getHttpCacheFile() {
         return new File(getContext().getCacheDir(), "HttpCache");
     }
-
-    public Converter.Factory getConverterFactory() {
-//        return ResponseConverterFactory.create(buildGson());
-//        return ScalarsConverterFactory.create();//只能用于请求String等基本类型数据
-        return GsonConverterFactory.create();//只能请求json，而且，0.3类型写成int会报错等
-//        return GsonConverterFactory.create(buildGson());//只能请求json，而且，0.3类型写成int会报错等
-    }
-
 
     /**
      * 必须重写
@@ -193,8 +184,7 @@ public abstract class BaseHttpMethods<T> {
                 if (activity != null && !activity.isFinishing() && callback != null) {
                     activity.runOnUiThread(new Runnable() {
                         @Override
-                        public void run() {
-                            String message = e.getMessage();
+                        public void run() {String message = e.getMessage();
                             callback.onFail(TextUtils.isEmpty(message) ? "服务器异常，请稍后再试" : message);
                         }
                     });
