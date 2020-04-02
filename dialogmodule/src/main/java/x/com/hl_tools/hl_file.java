@@ -50,6 +50,7 @@ public class hl_file {
     public static final String CAMERA = DCIM + File.separator + "Camera";
     public static final String DIALOG = SDROOT + File.separator + "dialog";
     public static final String QQFILE = SDROOT + File.separator + "Tencent" + File.separator + "QQfile_recv";
+    public static final String QQFILE2 = SDROOT + File.separator + "Android/data/com.tencent.mobileqq/Tencent" + File.separator + "QQfile_recv";
 
     public static final int TYPE_DOC = 0;
     public static final int TYPE_APK = 1;
@@ -629,6 +630,20 @@ public class hl_file {
             return TYPE_ZIP;
         } else {
             return -1;
+        }
+    }
+
+    /**
+     * 获取文件名
+     *
+     * @param path 文件地址
+     * @return 文件名
+     */
+    public static String getFileName(String path) {
+        if (isFileExist(path)) {
+            return new File(path).getName();
+        } else {
+            return "";
         }
     }
 

@@ -87,7 +87,7 @@ public class DialogMainJavaActivity extends BaseActivity {
         findViewById(R.id.mainDialog).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DFListFileDialog df = DFListFileDialog.newInstance(hl_file.QQFILE);
+                DFListFileDialog df = DFListFileDialog.newInstance(hl_file.QQFILE2);
                 df.setOnSelectFileListener(new HOnListener<File>() {
                     @Override
                     public void onListen(File file) {

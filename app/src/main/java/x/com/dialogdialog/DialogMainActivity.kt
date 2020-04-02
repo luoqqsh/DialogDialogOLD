@@ -9,6 +9,7 @@ import kotlinx.coroutines.*
 import x.com.dialogdialog.BaseApp.BaseActivity
 import x.com.dialogdialog.Viewpager2.ViewActivity
 import x.com.dialogdialog.bbz.BBZActivity
+import x.com.hl_base.service.StepService
 import x.com.hl_livedatabus.LiveEventBus
 import x.com.hl_log.ViseLog
 import x.com.hl_tools.DialogTest.myObjectPool
@@ -30,6 +31,7 @@ class DialogMainActivity : BaseActivity() {
         })
 //        ViseLog.d(testUtil.stringFromJNI())
         liveEventBus()
+        StepService.startStepService(mActivity)
     }
 
     private fun xiecheng() {

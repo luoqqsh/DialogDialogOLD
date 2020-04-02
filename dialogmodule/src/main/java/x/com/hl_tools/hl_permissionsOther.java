@@ -490,8 +490,7 @@ public class hl_permissionsOther {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
             SensorManager sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
             Sensor countSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
-            Sensor detectorSensor = null;
-            detectorSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
+            Sensor detectorSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
             return countSensor != null || detectorSensor != null;
         }
         return false;

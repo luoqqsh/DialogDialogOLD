@@ -11,6 +11,8 @@ import java.io.File;
 import java.io.Serializable;
 import java.util.Objects;
 
+import x.com.hl_tools.hl_file;
+
 public class MediaFileBean implements Serializable, Comparable<MediaFileBean> {
     public MediaFileBean() {
     }
@@ -20,6 +22,11 @@ public class MediaFileBean implements Serializable, Comparable<MediaFileBean> {
         this.filePath = file.getAbsolutePath();
         this.fileName = file.getName();
         this.fileSize = file.length();
+    }
+
+    public MediaFileBean(String filePath, String fileName) {
+        this.filePath = filePath;
+        this.fileName = fileName;
     }
 
     //列表操作
@@ -37,7 +44,7 @@ public class MediaFileBean implements Serializable, Comparable<MediaFileBean> {
     private String fileName;//文件名
     private String fileMimeType;//文件类型
 
-    //通过文件类型得到相应文件的集合
+    //通过文件类型得到相应文件的集合，现在只用于文件选择列表
     public MediaFileBean(String filePath, int iconId) {
         this.filePath = filePath;
         this.iconId = iconId;
@@ -68,7 +75,7 @@ public class MediaFileBean implements Serializable, Comparable<MediaFileBean> {
         this.mediaDuration = mediaDuration;
     }
 
-    //获取系统视频库里的列表
+    //获取系统音乐库里的列表
     public MediaFileBean(int mediaId, String musicName, String musicAlbum, String artist, String fileMimeType, String filePath, long fileSize, long mediaDuration) {
         this.mediaId = mediaId;
         this.musicName = musicName;
@@ -95,7 +102,7 @@ public class MediaFileBean implements Serializable, Comparable<MediaFileBean> {
 
     public void setFilePath(String filePath) {
         this.filePath = filePath;
-        this.fileName = new File(filePath).getName();
+        this.fileName = hl_file.getFileName(filePath);
     }
 
     public String getFilePathUri() {
