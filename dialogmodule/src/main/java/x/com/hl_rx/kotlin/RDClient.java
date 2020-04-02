@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 
+import java.io.IOException;
 import java.net.Proxy;
 import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
@@ -18,7 +19,10 @@ import autodispose2.androidx.lifecycle.AndroidLifecycleScopeProvider;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -67,6 +71,22 @@ public class RDClient {
         LoggingInterceptor interceptor = new LoggingInterceptor();
         interceptor.setLevel(LoggingInterceptor.Level.ALL);
         builder.addNetworkInterceptor(interceptor);
+        builder.addInterceptor(new Interceptor() {
+            @Override
+            public Response intercept(Chain chain) throws IOException {
+                Request request = chain.request()
+                        .newBuilder()
+                        .addHeader("deviceId", "bb1862708c28fe26")
+                        .addHeader("isSensors", "true")
+                        .addHeader("packageName", "com.mg.bbz")
+                        .addHeader("appType", "bbz")
+                        .addHeader("appVersion", "1.9.0")
+                        .addHeader("isLogin", "false")
+                        .addHeader("userId", "42740")
+                        .build();
+                return chain.proceed(request);
+            }
+        }).build();
         // 添加签名参数
 //        builder.addInterceptor(new BasicParamsInject().getInterceptor());
 //        builder.addInterceptor(getInterceptor());
