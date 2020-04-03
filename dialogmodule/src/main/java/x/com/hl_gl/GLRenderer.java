@@ -1,15 +1,14 @@
 package x.com.hl_gl;
 
 import android.opengl.GLES20;
-import android.opengl.GLSurfaceView;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-import x.com.hl_gl.Shape.Triangle;
+import x.com.hl_gl.shape.Triangle;
 import x.com.hl_gl.util.OpenGLUtils;
 
-public class GLRenderer implements GLSurfaceView.Renderer {
+public class GLRenderer extends BaseGLRenderer {
     private Triangle mTriangle;
 
     @Override
@@ -27,4 +26,5 @@ public class GLRenderer implements GLSurfaceView.Renderer {
     public void onDrawFrame(GL10 gl) {
         mTriangle.draw();
     }
+
 }

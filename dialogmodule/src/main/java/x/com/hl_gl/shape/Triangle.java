@@ -1,4 +1,4 @@
-package x.com.hl_gl.Shape;
+package x.com.hl_gl.shape;
 
 import android.opengl.GLES20;
 

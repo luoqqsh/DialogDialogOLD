@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.hhplayer.R;
+import com.xing.hhplayer.common.base.VideoGLRenderer;
 import com.xing.hhplayer.common.tools.MeasureHelper;
 
 public class HHGLSurfaceView extends GLSurfaceView {
@@ -18,11 +19,17 @@ public class HHGLSurfaceView extends GLSurfaceView {
 
     public HHGLSurfaceView(Context context) {
         super(context);
+        init(context);
     }
 
 
     private void init(Context context) {
         setEGLContextClientVersion(2);
+        setRenderer(new VideoGLRenderer());
+        //自动调用，每秒60次
+        setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
+        //按需调用
+//        setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
     }
 
     @Override

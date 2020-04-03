@@ -93,7 +93,6 @@ public class ShaderUtil {
             GLES20.glDeleteProgram(programId);
             return 0;
         }
-
         //合并成功后删除着色器
         GLES20.glDeleteShader(vertexShaderId);
         GLES20.glDeleteShader(fragmentShaderId);
