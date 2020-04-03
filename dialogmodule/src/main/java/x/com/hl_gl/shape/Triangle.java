@@ -6,6 +6,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
+import x.com.hl_gl.util.OpenGLUtils;
 import x.com.hl_gl.util.ShaderUtil;
 
 /**
@@ -53,6 +54,7 @@ public class Triangle {
     }
 
     public void draw() {
+        OpenGLUtils.clearColor();
         // 将程序添加到OpenGL ES环境中
         GLES20.glUseProgram(mProgram);
         //获取顶点着色器的vPosition成员的句柄

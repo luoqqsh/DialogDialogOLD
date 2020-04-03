@@ -24,7 +24,6 @@ import com.xing.hhplayer.ijk.HHijkPlayer;
 import java.util.ArrayList;
 
 import x.com.dialogdialog.BaseApp.BaseActivity;
-import x.com.hl_log.ViseLog;
 import x.com.hl_tools.hl_screen;
 import x.com.hl_tools.hl_time;
 
@@ -55,7 +54,7 @@ public class HHMedia3Activity extends BaseActivity {
         initUI();
         hhview = findViewById(R.id.hhPlayerView);
         hl_screen.setViewSize(hhview, ViewGroup.LayoutParams.MATCH_PARENT, hl_screen.getHeightFromWidthAtPort(mActivity));
-        hhPlayer3 = new HHPlayer3(this, new HHijkPlayer(), TvView.NEWSURFACE, hhview);
+        hhPlayer3 = new HHPlayer3(this, new HHijkPlayer(), TvView.HHGLSURFACE, hhview);
         hhPlayer3.addControlView();
         hhPlayer3.setOnPreparedListener(new OnPlayerListener<Object>() {
             @Override

@@ -1,10 +1,8 @@
 package com.xing.hhplayer.common;
 
-import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.SurfaceTexture;
-import android.net.TrafficStats;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -30,7 +28,6 @@ import com.xing.hhplayer.common.View.HHControlView;
 import com.xing.hhplayer.common.View.HHGLSurfaceView;
 import com.xing.hhplayer.common.View.HHLoadingView;
 import com.xing.hhplayer.common.View.HHPlayerView;
-import com.xing.hhplayer.common.View.HHSurfaceStateListener;
 import com.xing.hhplayer.common.View.HHTVView;
 import com.xing.hhplayer.common.View.HHThumbView;
 import com.xing.hhplayer.common.base.ControlViewInterface;
@@ -41,6 +38,7 @@ import java.util.List;
 import java.util.Map;
 
 import x.com.hl_base.activity.HLBaseActivity;
+import x.com.hl_base.interfaces.HOnListener;
 import x.com.hl_log.ViseLog;
 import x.com.hl_tools.hl_screen;
 import x.com.hl_tools.hl_view;
@@ -696,42 +694,13 @@ public class HHPlayer3 {
         }
         HHGLSurfaceView mSurfaceView = new HHGLSurfaceView(mActivity.getApplicationContext());
         mSurfaceView.setId(R.id.video_normal_id);
-        mSurfaceView.setKeepScreenOn(true);
-        mSurfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
+        mSurfaceView.setSurfaceCreateListener(new HOnListener<Surface>() {
             @Override
-            public void surfaceCreated(SurfaceHolder holder) {
-                hhPlayerCore.initView(holder.getSurface());
-            }
-
-            @Override
-            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-            }
-
-            @Override
-            public void surfaceDestroyed(SurfaceHolder holder) {
+            public void onListen(Surface surface) {
+                hhPlayerCore.initView(surface);
             }
         });
         hl_view.addToParentCenter(viewGroup, mSurfaceView);
-//        hhPlayerView = new HHPlayerView();
-//        hhPlayerView.addView(mActivity, viewGroup, 0, TvView.HHGLSURFACE, new HHSurfaceStateListener() {
-//            @Override
-//            public void onSurfaceAvailable(Surface surface) {
-//                hhPlayerCore.initView(surface);
-//            }
-//
-//            @Override
-//            public void onSurfaceSizeChanged(Surface surface, int width, int height) {
-//            }
-//
-//            @Override
-//            public boolean onSurfaceDestroyed(Surface surface) {
-//                return false;
-//            }
-//
-//            @Override
-//            public void onSurfaceUpdated(Surface surface) {
-//            }
-//        });
     }
 
     /***********************************设置监听部分**************************************************************/
