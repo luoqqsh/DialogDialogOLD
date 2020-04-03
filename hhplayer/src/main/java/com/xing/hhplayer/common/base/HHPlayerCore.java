@@ -11,6 +11,7 @@ import com.xing.hhplayer.common.TypeBean.PlayerStateType;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+
 /**
  * 播放器基础类
  */
@@ -26,6 +27,7 @@ public abstract class HHPlayerCore {
     public int videoHeight;
 
     public float volume = 1;
+    public boolean screenOnWhilePlaying = true;
     public Context context;//有的播放器需要context
     public boolean isLooping = false; //是否循环播放
     public OnPlayerListener<Object> onCorePreparedListener;
@@ -74,6 +76,10 @@ public abstract class HHPlayerCore {
 
     public abstract void resetPlayer();
 
+    public void setScreenOnWhilePlaying(boolean screenOnWhilePlaying) {
+        this.screenOnWhilePlaying = screenOnWhilePlaying;
+    }
+
     public void setLooping(boolean looping) {
         isLooping = looping;
     }
@@ -88,6 +94,10 @@ public abstract class HHPlayerCore {
 
     public Object getMediaPath() {
         return mediaPath;
+    }
+
+    public long getTcpSpeed() {
+        return 0;
     }
 
     public void setCorePreparedListener(OnPlayerListener<Object> preparedListener) {

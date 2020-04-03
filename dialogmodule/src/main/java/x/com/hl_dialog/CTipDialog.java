@@ -35,7 +35,7 @@ public class CTipDialog extends BaseNDialog {
     private float clickAlpha = 0.8f;//点击透明度
     private boolean outside, cancelable;
     private int location;//显示位置
-    private float widthScale = 1f;
+    private float widthScale = 0.8f;
     public boolean isShowClose;
     private String title, message;
     private int titlePosition, messagePosition;

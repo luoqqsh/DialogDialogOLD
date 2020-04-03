@@ -51,6 +51,7 @@ public class HHijkPlayer extends HHPlayerCore {
 
     private void initListener() {
         if (mediaPlayer != null) {
+            mediaPlayer.setScreenOnWhilePlaying(screenOnWhilePlaying);
             mediaPlayer.setOnPreparedListener(new IjkMediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(IMediaPlayer mp) {
@@ -115,6 +116,14 @@ public class HHijkPlayer extends HHPlayerCore {
     }
 
     @Override
+    public long getTcpSpeed() {
+        if (mediaPlayer != null) {
+            return mediaPlayer.getTcpSpeed();
+        }
+        return 0;
+    }
+
+    @Override
     public long getMediaDurationMS() {
         if (mediaPlayer != null) {
             return mediaPlayer.getDuration();
@@ -125,7 +134,7 @@ public class HHijkPlayer extends HHPlayerCore {
     @Override
     public void prepare(String path) {
         if (path == null) {
-            onCoreErrorListener.onListen("地址为空或不支持！");
+            onCoreErrorListener.onListen("地址为空！");
             return;
         }
         this.mediaPath = path;
@@ -156,7 +165,7 @@ public class HHijkPlayer extends HHPlayerCore {
     @Override
     public void prepare(Uri mediaUri) {
         if (mediaUri == null) {
-            onCoreErrorListener.onListen("地址为空或不支持！");
+            onCoreErrorListener.onListen("地址为空！");
             return;
         }
         this.mediaUri = mediaUri;
@@ -247,10 +256,8 @@ public class HHijkPlayer extends HHPlayerCore {
 
     @Override
     public void setSpeed(float speed) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//            if (mediaPlayer != null) {
-//                mediaPlayer.setPlaybackParams(mediaPlayer.getPlaybackParams().setSpeed(speed));
-//            }
+        if (mediaPlayer != null) {
+            mediaPlayer.setSpeed(speed);
         }
     }
 
@@ -259,6 +266,20 @@ public class HHijkPlayer extends HHPlayerCore {
         if (videoScalingMode != scalingMode) {
             videoScalingMode = scalingMode;
         }
+    }
+
+    public int getVideoSarNum() {
+        if (mediaPlayer != null) {
+            return mediaPlayer.getVideoSarNum();
+        }
+        return 1;
+    }
+
+    public int getVideoSarDen() {
+        if (mediaPlayer != null) {
+            return mediaPlayer.getVideoSarDen();
+        }
+        return 1;
     }
 
     @Override

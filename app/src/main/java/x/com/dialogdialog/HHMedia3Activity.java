@@ -24,6 +24,7 @@ import com.xing.hhplayer.ijk.HHijkPlayer;
 import java.util.ArrayList;
 
 import x.com.dialogdialog.BaseApp.BaseActivity;
+import x.com.hl_log.ViseLog;
 import x.com.hl_tools.hl_screen;
 import x.com.hl_tools.hl_time;
 

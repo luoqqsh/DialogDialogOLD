@@ -1,7 +1,10 @@
 package com.xing.hhplayer.common.base;
 
+import android.content.Context;
 import android.content.res.AssetFileDescriptor;
+import android.media.AudioDeviceInfo;
 import android.media.MediaPlayer;
+import android.net.TrafficStats;
 import android.net.Uri;
 import android.os.Build;
 import android.view.Surface;
@@ -56,6 +59,7 @@ public class HHMediaPlayer extends HHPlayerCore {
 
     private void initListener() {
         if (mediaPlayer != null) {
+            mediaPlayer.setScreenOnWhilePlaying(screenOnWhilePlaying);
             mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mp) {
@@ -149,9 +153,17 @@ public class HHMediaPlayer extends HHPlayerCore {
     }
 
     @Override
+    public long getTcpSpeed() {
+        if (mediaPlayer != null) {
+            return getNetSpeed(context);
+        }
+        return 0;
+    }
+
+    @Override
     public void prepare(Uri mediaUri) {
         if (mediaUri == null) {
-            onCoreErrorListener.onListen("地址为空或不支持！" + mediaUri);
+            onCoreErrorListener.onListen("地址为空！");
             return;
         }
         this.mediaUri = mediaUri;
@@ -166,13 +178,12 @@ public class HHMediaPlayer extends HHPlayerCore {
             playerPrePareState = PlayerPrePareStateType.ERROR;
             onCoreErrorListener.onListen("Prepare异常");
         }
-
     }
 
     @Override
     public void prepare(String path) {
         if (path == null) {
-            onCoreErrorListener.onListen("地址为空或不支持！" + path);
+            onCoreErrorListener.onListen("地址为空！");
             return;
         }
         this.mediaPath = path;
@@ -313,5 +324,33 @@ public class HHMediaPlayer extends HHPlayerCore {
         } else {
             return false;
         }
+    }
+
+    private long lastTotalRxBytes = 0;
+    private long lastTimeStamp = 0;
+
+    private long getNetSpeed(Context context) {
+        if (context == null) {
+            return 0;
+        }
+        long nowTotalRxBytes = TrafficStats.getUidRxBytes(context.getApplicationInfo().uid) == TrafficStats.UNSUPPORTED ? 0 : (TrafficStats.getTotalRxBytes() / 1024);//转为KB
+        long nowTimeStamp = System.currentTimeMillis();
+        long calculationTime = (nowTimeStamp - lastTimeStamp);
+        if (calculationTime == 0) {
+            return calculationTime;
+        }
+        //毫秒转换
+        long speed = ((nowTotalRxBytes - lastTotalRxBytes) * 1000 / calculationTime);
+        lastTimeStamp = nowTimeStamp;
+        lastTotalRxBytes = nowTotalRxBytes;
+        return speed;
+    }
+
+    public int getVideoSarNum() {
+        return 1;
+    }
+
+    public int getVideoSarDen() {
+        return 1;
     }
 }

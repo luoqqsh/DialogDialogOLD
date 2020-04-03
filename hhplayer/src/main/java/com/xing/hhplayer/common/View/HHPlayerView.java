@@ -33,7 +33,7 @@ public class HHPlayerView implements MeasureHelper.MeasureFormVideoParamsListene
 //                hhRenderView = HHTextureView.addTextureView(context, textureViewContainer, rotate, surfaceStateListener, this);
 //                break;
             case HHGLSURFACE:
-                hhRenderView = HHGLSurfaceView.addGLSurfaceView(context, textureViewContainer, rotate, surfaceStateListener, this);
+//                hhRenderView = HHGLSurfaceView.addGLSurfaceView(context, textureViewContainer, rotate, surfaceStateListener, this);
                 break;
         }
     }

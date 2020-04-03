@@ -1,8 +1,10 @@
 package com.xing.hhplayer.common;
 
+import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.SurfaceTexture;
+import android.net.TrafficStats;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -25,6 +27,7 @@ import com.xing.hhplayer.common.TypeBean.PlayerPrePareStateType;
 import com.xing.hhplayer.common.TypeBean.PlayerStateType;
 import com.xing.hhplayer.common.TypeBean.PlayerViewType;
 import com.xing.hhplayer.common.View.HHControlView;
+import com.xing.hhplayer.common.View.HHGLSurfaceView;
 import com.xing.hhplayer.common.View.HHLoadingView;
 import com.xing.hhplayer.common.View.HHPlayerView;
 import com.xing.hhplayer.common.View.HHSurfaceStateListener;
@@ -571,6 +574,13 @@ public class HHPlayer3 {
         return -1;
     }
 
+    public long getTcpSpeed() {
+        if (hhPlayerCore.isPlayControl()) {
+            return hhPlayerCore.getTcpSpeed();
+        }
+        return 0;
+    }
+
     //获取视频宽，需要在prepare完成之后执行
     public int getMediaWidth() {
         if (hhPlayerCore.isPlayControl()) {
@@ -684,26 +694,44 @@ public class HHPlayer3 {
             ViseLog.e(hhPlayerCore.ETAG, "视频View已存在");
             return;
         }
-        hhPlayerView = new HHPlayerView();
-        hhPlayerView.addView(mActivity, viewGroup, 0, TvView.HHGLSURFACE, new HHSurfaceStateListener() {
+        HHGLSurfaceView mSurfaceView = new HHGLSurfaceView(mActivity.getApplicationContext());
+        mSurfaceView.setId(R.id.video_normal_id);
+        mSurfaceView.setKeepScreenOn(true);
+        mSurfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
-            public void onSurfaceAvailable(Surface surface) {
-                hhPlayerCore.initView(surface);
+            public void surfaceCreated(SurfaceHolder holder) {
+                hhPlayerCore.initView(holder.getSurface());
             }
 
             @Override
-            public void onSurfaceSizeChanged(Surface surface, int width, int height) {
+            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
             }
 
             @Override
-            public boolean onSurfaceDestroyed(Surface surface) {
-                return false;
-            }
-
-            @Override
-            public void onSurfaceUpdated(Surface surface) {
+            public void surfaceDestroyed(SurfaceHolder holder) {
             }
         });
+        hl_view.addToParentCenter(viewGroup, mSurfaceView);
+//        hhPlayerView = new HHPlayerView();
+//        hhPlayerView.addView(mActivity, viewGroup, 0, TvView.HHGLSURFACE, new HHSurfaceStateListener() {
+//            @Override
+//            public void onSurfaceAvailable(Surface surface) {
+//                hhPlayerCore.initView(surface);
+//            }
+//
+//            @Override
+//            public void onSurfaceSizeChanged(Surface surface, int width, int height) {
+//            }
+//
+//            @Override
+//            public boolean onSurfaceDestroyed(Surface surface) {
+//                return false;
+//            }
+//
+//            @Override
+//            public void onSurfaceUpdated(Surface surface) {
+//            }
+//        });
     }
 
     /***********************************设置监听部分**************************************************************/

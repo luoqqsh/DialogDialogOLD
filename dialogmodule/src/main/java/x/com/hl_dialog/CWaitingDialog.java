@@ -45,4 +45,10 @@ public class CWaitingDialog extends BaseNDialog {
     public boolean isCancelable() {
         return false;
     }
+
+    @Override
+    protected void onDialogDismiss() {
+        super.onDialogDismiss();
+        loadingView = null;
+    }
 }
