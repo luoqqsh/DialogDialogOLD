@@ -2,10 +2,14 @@ package x.com.dialogdialog;
 
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -24,6 +28,34 @@ import com.xing.hhplayer.ijk.HHijkPlayer;
 import java.util.ArrayList;
 
 import x.com.dialogdialog.BaseApp.BaseActivity;
+import x.com.hl_base.interfaces.HOnListener;
+import x.com.hl_gl.shader.AutoFixEffect;
+import x.com.hl_gl.shader.BarrelBlurEffect;
+import x.com.hl_gl.shader.BlackAndWhiteEffect;
+import x.com.hl_gl.shader.BrightnessEffect;
+import x.com.hl_gl.shader.ContrastEffect;
+import x.com.hl_gl.shader.CrossProcessEffect;
+import x.com.hl_gl.shader.DocumentaryEffect;
+import x.com.hl_gl.shader.DuotoneEffect;
+import x.com.hl_gl.shader.FillLightEffect;
+import x.com.hl_gl.shader.GammaEffect;
+import x.com.hl_gl.shader.GaussianBlurEffect;
+import x.com.hl_gl.shader.GrainEffect;
+import x.com.hl_gl.shader.GreyScaleEffect;
+import x.com.hl_gl.shader.HueEffect;
+import x.com.hl_gl.shader.InvertColorsEffect;
+import x.com.hl_gl.shader.LamoishEffect;
+import x.com.hl_gl.shader.OverlayEffect;
+import x.com.hl_gl.shader.PosterizeEffect;
+import x.com.hl_gl.shader.SampleBlurEffect;
+import x.com.hl_gl.shader.SaturationEffect;
+import x.com.hl_gl.shader.SepiaEffect;
+import x.com.hl_gl.shader.SharpnessEffect;
+import x.com.hl_gl.shader.TemperatureEffect;
+import x.com.hl_gl.shader.TintEffect;
+import x.com.hl_gl.shader.VideoShader;
+import x.com.hl_gl.shader.VignetteEffect;
+import x.com.hl_log.ViseLog;
 import x.com.hl_tools.hl_screen;
 import x.com.hl_tools.hl_time;
 
@@ -42,6 +74,7 @@ public class HHMedia3Activity extends BaseActivity {
     private TextView currenttime, totaltime;
     private AppCompatSeekBar seekBar, seekbar_volume;
     private TvData tvUrl;
+    private ImageView imgvTest;
 
     @Override
     public int getLayoutId() {
@@ -102,7 +135,7 @@ public class HHMedia3Activity extends BaseActivity {
         tvUrl = new TvData(1, "20190719", "itv", tvDataLists);
     }
 
-    int i = 0;
+    float i = 0f;
 
     private void initUI() {
         fixRotateBug26();
@@ -149,12 +182,26 @@ public class HHMedia3Activity extends BaseActivity {
                 hhPlayer3.seekTo(hhPlayer3.getCurrentPositionMS() - 5000);
             }
         });
+        imgvTest = findViewById(R.id.imgvTest);
         findViewById(R.id.testGet).setOnClickListener(v -> {
-            hhPlayer3.changeScale(i);
-            i++;
-            if (i == 5) {
+//            hhPlayer3.changeScale(i);
+            i += 0.1;
+            if (i > 2) {
                 i = 0;
             }
+            ViseLog.d(i);
+//            hhPlayer3.takeBitmap(new HOnListener<Bitmap>() {
+//                @Override
+//                public void onListen(Bitmap bitmap) {
+//                    runOnUiThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            imgvTest.setImageBitmap(bitmap);
+//                        }
+//                    });
+//                }
+//            });
+            hhPlayer3.setEffect(new VignetteEffect(i));
         });
         findViewById(R.id.testRotate).setOnClickListener(v -> {
             //判断当前是否为横屏,判断是否旋转
@@ -221,7 +268,7 @@ public class HHMedia3Activity extends BaseActivity {
         return true;
     }
 
-        @Override
+    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         hhPlayer3.sendKeyDown(keyCode);
         return false;//return false 会调用系统的方法

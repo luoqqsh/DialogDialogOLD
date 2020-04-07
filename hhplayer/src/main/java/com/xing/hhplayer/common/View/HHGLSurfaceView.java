@@ -1,6 +1,7 @@
 package com.xing.hhplayer.common.View;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.opengl.GLSurfaceView;
 import android.view.Surface;
 
@@ -8,6 +9,8 @@ import com.xing.hhplayer.common.base.VideoGLRenderer;
 import com.xing.hhplayer.common.tools.MeasureHelper;
 
 import x.com.hl_base.interfaces.HOnListener;
+import x.com.hl_gl.shader.ShaderInterface;
+import x.com.hl_log.ViseLog;
 
 public class HHGLSurfaceView extends GLSurfaceView {
     private HHSurfaceStateListener surfaceListener;
@@ -45,9 +48,30 @@ public class HHGLSurfaceView extends GLSurfaceView {
         return null;
     }
 
+    public void takeBitmap(HOnListener<Bitmap> takeBitmapListener) {
+        if (videoGLRenderer != null && takeBitmapListener != null) {
+            videoGLRenderer.takeBitmap(takeBitmapListener);
+        }
+    }
+
+    public void setEffect(ShaderInterface shaderEffect) {
+        if (videoGLRenderer != null) {
+            videoGLRenderer.setEffect(shaderEffect);
+        }
+    }
+
     @Override
     public void onResume() {
         super.onResume();
-        
+        ViseLog.d("onresume");
+        requestLayout();
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        ViseLog.d("onPause");
+        requestLayout();
+    }
+
 }

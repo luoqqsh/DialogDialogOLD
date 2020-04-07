@@ -2,6 +2,7 @@ package com.xing.hhplayer.common;
 
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.graphics.SurfaceTexture;
 import android.provider.Settings;
 import android.text.TextUtils;
@@ -39,6 +40,7 @@ import java.util.Map;
 
 import x.com.hl_base.activity.HLBaseActivity;
 import x.com.hl_base.interfaces.HOnListener;
+import x.com.hl_gl.shader.ShaderInterface;
 import x.com.hl_log.ViseLog;
 import x.com.hl_tools.hl_screen;
 import x.com.hl_tools.hl_view;
@@ -68,6 +70,7 @@ public class HHPlayer3 {
     private ControlViewInterface cvInterface;
     private int defaultWidth = 0;
     private int defaultHeight = 0;
+    private HHGLSurfaceView mSurfaceView;
     //播放列表相关
     private String title;
     private List<TvDataList> tvLists;//播放列表
@@ -366,6 +369,22 @@ public class HHPlayer3 {
             case PlayerViewType.SCREEN_SCALE_FULL:
                 setVideoSize(viewGroup.getWidth(), viewGroup.getHeight());
                 break;
+        }
+    }
+
+    public void takeBitmap(HOnListener<Bitmap> takeBitmapListener) {
+        if (mSurfaceView != null) {
+            mSurfaceView.takeBitmap(takeBitmapListener);
+        } else {
+            ViseLog.e(hhPlayerCore.ETAG, "当前view不支持截图");
+        }
+    }
+
+    public void setEffect(ShaderInterface effect) {
+        if (mSurfaceView != null) {
+            mSurfaceView.setEffect(effect);
+        } else {
+            ViseLog.e(hhPlayerCore.ETAG, "当前view不支持滤镜");
         }
     }
 
@@ -692,7 +711,7 @@ public class HHPlayer3 {
             ViseLog.e(hhPlayerCore.ETAG, "视频View已存在");
             return;
         }
-        HHGLSurfaceView mSurfaceView = new HHGLSurfaceView(mActivity.getApplicationContext());
+        mSurfaceView = new HHGLSurfaceView(mActivity.getApplicationContext());
         mSurfaceView.setId(R.id.video_normal_id);
         mSurfaceView.setSurfaceCreateListener(new HOnListener<Surface>() {
             @Override

@@ -1,5 +1,6 @@
 package com.xing.hhplayer.common.base;
 
+import android.graphics.Bitmap;
 import android.graphics.SurfaceTexture;
 import android.opengl.GLES11Ext;
 import android.opengl.GLES20;
@@ -15,25 +16,31 @@ import javax.microedition.khronos.opengles.GL10;
 
 import x.com.hl_base.interfaces.HOnListener;
 import x.com.hl_gl.BaseGLRenderer;
+import x.com.hl_gl.shader.ShaderInterface;
 import x.com.hl_gl.shader.VideoShader;
 import x.com.hl_gl.util.OpenGLUtils;
 import x.com.hl_gl.util.ShaderUtil;
 
 public class VideoGLRenderer extends BaseGLRenderer {
+    private int width, height;
     private int mProgram;
     private int maPositionHandle;
     private int maTextureHandle;
     private int muMVPMatrixHandle;
     private int muSTMatrixHandle;
     private int mTextureID[] = new int[2];
+    private boolean isTakeBitmap = false;
     private FloatBuffer mTriangleVertices;
     protected float[] mMVPMatrix = new float[16];
     protected float[] mSTMatrix = new float[16];
 
     private HOnListener<Surface> surfaceCreateListener;
+    private HOnListener<Bitmap> takeBitmapListener;
     private Surface surface;
     private boolean mUpdateSurface;
     private SurfaceTexture mSurface;
+    private ShaderInterface shaderEffect;
+    private boolean isChangeEffect = false;
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
@@ -81,6 +88,7 @@ public class VideoGLRenderer extends BaseGLRenderer {
         GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_CLAMP_TO_EDGE);
         GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_CLAMP_TO_EDGE);
 
+        //通过纹理id创建surface对象给播放器
         mSurface = new SurfaceTexture(mTextureID[0]);
         mSurface.setOnFrameAvailableListener(new SurfaceTexture.OnFrameAvailableListener() {
             @Override
@@ -94,10 +102,12 @@ public class VideoGLRenderer extends BaseGLRenderer {
         }
     }
 
-    @Override
+    @Override// 当GLSurfaceView的大小改变时回调，如横屏竖屏切换
     public void onSurfaceChanged(GL10 gl, int width, int height) {
         //设置大小，左下角x,y,宽，高
         GLES20.glViewport(0, 0, width, height);
+        this.width = width;
+        this.height = height;
     }
 
     @Override
@@ -110,23 +120,25 @@ public class VideoGLRenderer extends BaseGLRenderer {
                 mUpdateSurface = false;
             }
         }
+        //通过纹理ID绘制画面
         OpenGLUtils.clearColor();
 
+        //切换滤镜
+        if (isChangeEffect) {
+            isChangeEffect = false;
+            mProgram = ShaderUtil.createGlProgramByString(VideoShader.mVideoVertexShader, shaderEffect.getShader(width, height));
+        }
         GLES20.glUseProgram(mProgram);
         OpenGLUtils.checkGlError("glUseProgram");
-        //bindDrawFrameTexture
+        //bindDrawFrameTexture创建纹理
         GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
-        GLES20.glBindTexture(GL_TEXTURE_EXTERNAL_OES, mTextureID[0]);
+        GLES20.glBindTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, mTextureID[0]);
         initPointerAndDraw();
+        if (isTakeBitmap && takeBitmapListener != null) {
+            isTakeBitmap = false;
+            takeBitmapListener.onListen(OpenGLUtils.createBitmapFromGLSurface(0, 0, width, height, gl));
+        }
         GLES20.glFinish();
-    }
-
-    public void setSurfaceCreateListener(HOnListener<Surface> surfaceCreateListener) {
-        this.surfaceCreateListener = surfaceCreateListener;
-    }
-
-    public Surface getSurface() {
-        return surface;
     }
 
     protected void initPointerAndDraw() {
@@ -147,5 +159,27 @@ public class VideoGLRenderer extends BaseGLRenderer {
 
         GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, 0, 4);
         OpenGLUtils.checkGlError("glDrawArrays");
+    }
+
+    public void takeBitmap(HOnListener<Bitmap> takeBitmapListener) {
+        this.takeBitmapListener = takeBitmapListener;
+        isTakeBitmap = true;
+    }
+
+    public void setSurfaceCreateListener(HOnListener<Surface> surfaceCreateListener) {
+        this.surfaceCreateListener = surfaceCreateListener;
+    }
+
+    public Surface getSurface() {
+        return surface;
+    }
+
+    public void setEffect(ShaderInterface shaderEffect) {
+        this.shaderEffect = shaderEffect;
+        isChangeEffect = true;
+    }
+
+    public void setMVPMatrix(float[] MVPMatrix) {
+        this.mMVPMatrix = MVPMatrix;
     }
 }

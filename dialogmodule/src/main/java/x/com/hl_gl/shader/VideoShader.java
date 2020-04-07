@@ -2,7 +2,7 @@ package x.com.hl_gl.shader;
 
 public class VideoShader {
     /**
-     * 定点着色器
+     * 视频播放定点着色器
      */
     public static final String mVideoVertexShader = "uniform mat4 uMVPMatrix;\n"
             + "uniform mat4 uSTMatrix;\n"
@@ -14,12 +14,13 @@ public class VideoShader {
             + "  vTextureCoord = (uSTMatrix * aTextureCoord).xy;\n"
             + "}\n";
     /**
-     * 片段着色器
+     * 视频播放片段着色器
      */
-    public static final String mVideoShader = "#extension GL_OES_EGL_image_external : require\n"
-            + "precision mediump float;\n"
-            + "varying vec2 vTextureCoord;\n"
-            + "uniform samplerExternalOES sTexture;\n" + "void main() {\n"
-            + "  gl_FragColor = texture2D(sTexture, vTextureCoord);\n"
-            + "}\n";
+    public static final String mVideoShader =
+            "#extension GL_OES_EGL_image_external : require\n"
+                    + "precision mediump float;\n"
+                    + "varying vec2 vTextureCoord;\n"
+                    + "uniform samplerExternalOES sTexture;\n" + "void main() {\n"
+                    + "  gl_FragColor = texture2D(sTexture, vTextureCoord);\n"
+                    + "}\n";
 }
