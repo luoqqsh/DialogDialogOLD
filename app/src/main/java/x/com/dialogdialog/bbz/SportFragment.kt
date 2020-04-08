@@ -14,9 +14,22 @@ class SportFragment : HLBaseVMFragment<NoViewModel, FragmentSportBinding>() {
 
     override fun initUI(savedInstanceState: Bundle?) {
         ViseLog.d("1111111")
-        dataBinding.aaaas.text = "111111131"
 
 //        val viewModelRxLife: HLBaseViewModel_RxLife = ViewModelProvider(this).get(HLBaseViewModel_RxLife::class.java)
 
+    }
+    override fun onPause() {
+        super.onPause()
+        ViseLog.d("1onPause")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        ViseLog.d("1onResume")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        ViseLog.d("1onDestroy")
     }
 }

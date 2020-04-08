@@ -30,9 +30,8 @@ class BBZActivity : HLBaseVMActivity<NoViewModel, ActivityBbzBinding>() {
 
     override fun initView(savedInstanceState: Bundle?) {
         initBottomTab()
-        var httpManager = RDClient.getInstance()
-        var service = RDClient.getService(BBZCommonService::class.java)
-
+//        var httpManager = RDClient.getInstance()
+//        var service = RDClient.getService(BBZCommonService::class.java)
 //        httpManager.enqueue(service.getHomeData("bb1862708c28fe26", "42740", "0"), object : OnHttpCallback<String> {
 //            override fun onSuccess(o: String?) {
 //                ViseLog.d(o)

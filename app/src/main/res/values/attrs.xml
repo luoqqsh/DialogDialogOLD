@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="SimpleCardView">
+        <attr name="cardBackgroundColor" format="color"/>
+        <attr name="cardCornerRadius" format="dimension"/>
+        <attr name="cardElevation" format="dimension"/>
+        <attr name="cardElevationStartColor" format="color"/>
+        <attr name="cardElevationEndColor" format="color"/>
+    </declare-styleable>
+</resources>

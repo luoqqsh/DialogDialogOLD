@@ -16,4 +16,18 @@ class SportFragment4 : HLBaseVMFragment<NoViewModel, FragmentFuliBinding>() {
         ViseLog.d("444444")
         dataBinding.aaaas.text = "44444444"
     }
+    override fun onPause() {
+        super.onPause()
+        ViseLog.d("4onPause")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        ViseLog.d("4onResume")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        ViseLog.d("4onDestroy")
+    }
 }

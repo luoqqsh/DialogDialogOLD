@@ -188,7 +188,7 @@ public class RDClient {
 
     String errMessage = "Can not perform this action after onSaveInstanceState";
 
-    public <T> void enqueue(Observable<HttpResult<T>> observable, LifecycleOwner lifecycleOwner, final OnHttpCallback listener) {
+    public <T> void enqueue(Observable<HttpResult<T>> observable, LifecycleOwner lifecycleOwner, OnHttpCallback listener) {
 
 //        if (lifecycleOwner == null) {
 //            ViseLog.e("msg======生命周期不存在");

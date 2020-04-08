@@ -264,4 +264,36 @@ public class hl_time {
         }
         return sb.toString();
     }
+
+    /**
+     * 按照分钟 格式化为 小时 ：分钟
+     */
+    public static String[] formatHomeTime(long walkTime) {
+        String hour = "00";
+        String min = "00";
+        if (walkTime > 60) {
+            long h = walkTime / 60;
+            if (h >= 10) {
+                hour = h + "";
+            } else {
+                hour = "0" + h;
+            }
+            //剩余分钟
+            long m = walkTime - 60 * h;
+
+            if (m >= 10) {
+                min = m + "";
+
+            } else {
+                min = "0" + m;
+            }
+        } else if (walkTime < 10) {
+            min = "0" + walkTime;
+        } else {
+            min = "" + walkTime;
+
+        }
+        String[] string = new String[]{hour, min};
+        return string;
+    }
 }

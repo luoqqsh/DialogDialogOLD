@@ -7,7 +7,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
-    
+
     <style name="Slide.trans" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
@@ -17,24 +17,77 @@
     </style>
     <!--dialogfragment风格调整-->
     <!--<style name="Base_AlertDialog" parent="Base.Theme.AppCompat.Light.Dialog">-->
-        <!--不设置在6.0以上会出现，宽度不充满屏幕的情况-->
-        <!--<item name="windowMinWidthMinor">90%</item>-->
-        <!-- 取消标题栏，如果在代码中settitle的话会无效 -->
-        <!--<item name="android:windowNoTitle">true</item>-->
-        <!-- 标题的和Message的文字颜色 -->
-        <!--<item name="android:textColorPrimary">@color/black</item>-->
-        <!-- 修改顶部标题背景颜色，具体颜色自己定，可以是图片 -->
-        <!--<item name="android:topDark">@color/app_main_color_deep</item>-->
-        <!--<item name="android:background">@color/white</item>-->
-        <!-- 在某些系统上面设置背景颜色之后出现奇怪的背景，处这里设置背景为透明，为了隐藏边框 -->
-        <!--<item name="android:windowBackground">@android:color/transparent</item>-->
-        <!--<item name="android:windowFrame">@null</item>-->
-        <!-- 进入和退出动画，左进右出（系统自带） -->
-        <!--<item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>-->
-        <!-- 按钮字体颜色,全部一起改，单个改需要在Java代码中修改 -->
-        <!--<item name="colorAccent">@color/app_main_color</item>-->
+    <!--不设置在6.0以上会出现，宽度不充满屏幕的情况-->
+    <!--<item name="windowMinWidthMinor">90%</item>-->
+    <!-- 取消标题栏，如果在代码中settitle的话会无效 -->
+    <!--<item name="android:windowNoTitle">true</item>-->
+    <!-- 标题的和Message的文字颜色 -->
+    <!--<item name="android:textColorPrimary">@color/black</item>-->
+    <!-- 修改顶部标题背景颜色，具体颜色自己定，可以是图片 -->
+    <!--<item name="android:topDark">@color/app_main_color_deep</item>-->
+    <!--<item name="android:background">@color/white</item>-->
+    <!-- 在某些系统上面设置背景颜色之后出现奇怪的背景，处这里设置背景为透明，为了隐藏边框 -->
+    <!--<item name="android:windowBackground">@android:color/transparent</item>-->
+    <!--<item name="android:windowFrame">@null</item>-->
+    <!-- 进入和退出动画，左进右出（系统自带） -->
+    <!--<item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>-->
+    <!-- 按钮字体颜色,全部一起改，单个改需要在Java代码中修改 -->
+    <!--<item name="colorAccent">@color/app_main_color</item>-->
     <!--</style>-->
 
-    
-    
+    <style name="tv_default">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <style name="tv_kedu" parent="tv_default">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">#FF178456</item>
+    </style>
+
+    <style name="tv_default_white" parent="tv_default">
+        <!--        <item name="android:textSize">12sp</item>-->
+        <item name="android:textColor">#ffffff</item>
+
+    </style>
+
+    <style name="tv_step_view">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:orientation">vertical</item>
+
+    </style>
+
+    <style name="iv_home">
+        <item name="android:layout_width">24dp</item>
+        <item name="android:layout_height">24dp</item>
+    </style>
+
+    <style name="tv_home_content" parent="tv_default">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">#FF959AA6</item>
+    </style>
+    <!--  首页标题-->
+    <style name="tv_home_title" parent="tv_default">
+        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">#ff333333</item>
+        <item name="android:layout_marginStart">4dp</item>
+        <item name="android:textStyle">bold</item>
+
+    </style>
+
+    <style name="tv_default_title" parent="tv_default_black">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+
+    </style>
+
+    <style name="tv_default_black" parent="tv_default">
+        <!--        <item name="android:textSize">12sp</item>-->
+        <item name="android:textColor">#333333</item>
+
+    </style>
 </resources>

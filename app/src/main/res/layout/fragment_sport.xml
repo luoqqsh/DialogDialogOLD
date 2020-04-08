@@ -1,17 +1,462 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.mg.bbz.module.home.HomeFrag">
 
     <data>
 
+        <variable
+            name="homeCLick"
+            type="x.com.dialogdialog.bbz.HomeViewClick" />
     </data>
 
-    <TextView
-        android:id="@+id/aaaas"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textSize="@dimen/dp26"
-        android:text="asdfsa" />
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_head"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/bg_home"
+                    android:layout_width="match_parent"
+                    android:layout_height="436dp"
+                    android:contentDescription="@null"
+                    android:scaleType="fitXY"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@mipmap/bg_home" />
+
+
+                <!--    只作为背景-->
+
+                <!--    动画背景  进度条动画-->
+                <ImageView
+                    android:id="@+id/dash_boards"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_marginTop="70dp"
+                    android:contentDescription="@null"
+                    android:scaleType="fitXY"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.497"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@mipmap/bg_kedu" />
+
+                <ImageView
+                    android:id="@+id/dynamic_ring"
+                    android:layout_width="166dp"
+                    android:layout_height="166dp"
+                    android:contentDescription="@null"
+                    android:scaleType="fitXY"
+                    app:layout_constraintBottom_toBottomOf="@id/dash_boards"
+                    app:layout_constraintEnd_toEndOf="@id/dash_boards"
+                    app:layout_constraintStart_toStartOf="@id/dash_boards"
+                    app:layout_constraintTop_toTopOf="@id/dash_boards"
+                    app:srcCompat="@mipmap/bg_dynamic_ring" />
+
+                <!--    进度条-->
+                <x.com.dialogdialog.bbz.view.StepProgressView
+                    android:id="@+id/step_progress"
+                    android:layout_width="166dp"
+                    android:layout_height="166dp"
+                    app:layout_constraintBottom_toBottomOf="@id/dash_boards"
+                    app:layout_constraintEnd_toEndOf="@id/dash_boards"
+                    app:layout_constraintStart_toStartOf="@id/dash_boards"
+                    app:layout_constraintTop_toTopOf="@id/dash_boards" />
+
+                <TextView
+                    android:id="@+id/tv_step_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="3dp"
+                    android:text="今日步数"
+                    android:textColor="#ff0b9d82"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toTopOf="@id/tv_step"
+                    app:layout_constraintEnd_toEndOf="@id/tv_step"
+                    app:layout_constraintStart_toStartOf="@id/tv_step"
+                    app:layout_constraintTop_toTopOf="@id/dash_boards"
+                    app:layout_constraintVertical_chainStyle="packed" />
+
+                <x.com.dialogdialog.bbz.view.StepNumView
+                    android:id="@+id/tv_step"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:includeFontPadding="false"
+                    android:text="0"
+                    android:textColor="#FF0B9D82"
+                    android:textSize="48sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@id/tv_next"
+                    app:layout_constraintEnd_toEndOf="@id/step_progress"
+                    app:layout_constraintStart_toStartOf="@id/step_progress"
+                    app:layout_constraintTop_toBottomOf="@id/tv_step_title" />
+
+                <TextView
+                    android:id="@+id/tv_next"
+                    android:layout_width="170dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:textColor="#ff0b9d82"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="@id/dash_boards"
+                    app:layout_constraintEnd_toEndOf="@id/step_progress"
+                    app:layout_constraintStart_toStartOf="@id/step_progress"
+                    app:layout_constraintTop_toBottomOf="@id/tv_step"
+                    tools:text="满3000步领100金币" />
+
+                <TextView
+                    android:id="@+id/tv_num5"
+                    style="@style/tv_kedu"
+                    android:layout_marginTop="23dp"
+                    android:layout_marginBottom="2dp"
+                    android:text="6000"
+                    app:layout_constraintBottom_toTopOf="@id/dash_boards"
+                    app:layout_constraintEnd_toEndOf="@id/dash_boards"
+                    app:layout_constraintStart_toStartOf="@id/dash_boards" />
+
+                <TextView
+                    android:id="@+id/tv_num4"
+                    style="@style/tv_kedu"
+                    android:layout_marginEnd="2dp"
+                    android:text="4500"
+                    app:layout_constraintBottom_toBottomOf="@id/dash_boards"
+                    app:layout_constraintEnd_toStartOf="@id/dash_boards"
+                    app:layout_constraintTop_toTopOf="@id/dash_boards" />
+
+                <TextView
+                    android:id="@+id/tv_num2"
+                    style="@style/tv_kedu"
+                    android:layout_marginStart="2dp"
+                    android:text="1500"
+                    app:layout_constraintBottom_toBottomOf="@id/dash_boards"
+                    app:layout_constraintStart_toEndOf="@id/dash_boards"
+                    app:layout_constraintTop_toTopOf="@id/dash_boards" />
+
+                <TextView
+                    android:id="@+id/tv_num3"
+                    style="@style/tv_kedu"
+                    android:text="3000"
+                    app:layout_constraintEnd_toEndOf="@id/dash_boards"
+                    app:layout_constraintStart_toStartOf="@id/dash_boards"
+                    app:layout_constraintTop_toBottomOf="@id/dash_boards" />
+
+                <x.com.dialogdialog.bbz.view.HomeGoldView
+                    android:id="@+id/step_1"
+                    style="@style/tv_step_view"
+                    android:layout_marginEnd="11dp"
+                    android:layout_marginBottom="8dp"
+                    app:layout_constraintBottom_toBottomOf="@id/dash_boards"
+                    app:layout_constraintEnd_toStartOf="@id/dash_boards" />
+
+                <x.com.dialogdialog.bbz.view.HomeGoldView
+                    android:id="@+id/step_2"
+                    style="@style/tv_step_view"
+                    android:layout_marginTop="20dp"
+                    app:layout_constraintStart_toStartOf="@id/step_1"
+                    app:layout_constraintTop_toTopOf="@id/dash_boards" />
+
+                <x.com.dialogdialog.bbz.view.HomeGoldView
+                    android:id="@+id/step_4"
+                    style="@style/tv_step_view"
+                    android:layout_marginStart="6dp"
+                    app:layout_constraintStart_toEndOf="@id/dash_boards"
+                    app:layout_constraintTop_toTopOf="@id/step_1" />
+
+                <x.com.dialogdialog.bbz.view.HomeGoldView
+                    android:id="@+id/step_3"
+                    style="@style/tv_step_view"
+                    app:layout_constraintBottom_toBottomOf="@id/step_2"
+                    app:layout_constraintEnd_toEndOf="@id/step_4" />
+
+                <x.com.dialogdialog.bbz.view.HomeBtnView
+                    android:id="@+id/btn_get"
+                    android:layout_width="272dp"
+                    android:layout_height="88dp"
+                    android:layout_marginTop="5dp"
+                    android:enabled="false"
+                    android:gravity="center"
+                    android:src="@mipmap/ic_home_big_btn_enable"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/dash_boards" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_net"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="44dp"
+                    android:background="#FEF6E9"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/tv_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="当前网络不可用，请检查你的网络设置"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_marginEnd="8dp"
+                        android:src="@mipmap/icon_net"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/tv_content"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:layout_width="6dp"
+                        android:layout_height="11dp"
+                        android:layout_marginEnd="15dp"
+                        android:background="@mipmap/icon_go_right"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <x.com.dialogdialog.bbz.view.SimpleCardView
+                android:id="@+id/task_card_view"
+                android:layout_width="match_parent"
+                android:layout_height="138dp"
+                android:layout_marginTop="-69dp"
+                android:background="@mipmap/bg_card_task_activity"
+                android:visibility="gone">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/task_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginRight="25dp" />
+
+            </x.com.dialogdialog.bbz.view.SimpleCardView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="-5dp"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    style="@style/iv_home"
+                    android:src="@mipmap/icon_current_data" />
+
+                <TextView
+                    style="@style/tv_home_title"
+                    android:text="今日数据"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="11dp"
+                android:layout_marginEnd="15dp"
+                android:minHeight="20dp">
+
+                <!--   这里需要后期改成自定义View,数字文字颜色不一样，或者 html格式-->
+                <TextView
+                    android:id="@+id/tv_kilometre"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="0.0公里"
+                    android:textColor="#ff333333"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tv_times"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="00 小时 00 分钟"
+                    android:textColor="#ff333333"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tv_calories"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="0.0 千卡"
+                    android:textColor="#ff333333"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="15dp">
+
+                <!--   这里需要后期改成自定义View,数字文字颜色不一样，或者 html格式-->
+                <TextView
+                    style="@style/tv_home_content"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="步行里程"
+                    android:textColor="#cccccc"
+                    android:textSize="12sp" />
+
+
+                <TextView
+                    style="@style/tv_home_content"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="步行时间"
+                    android:textColor="#cccccc"
+                    android:textSize="12sp" />
+
+
+                <TextView
+                    style="@style/tv_home_content"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="卡路里"
+                    android:textColor="#cccccc"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_hot"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="28dp"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    style="@style/iv_home"
+                    android:contentDescription="@null"
+                    android:src="@mipmap/icon_huodong" />
+
+                <TextView
+                    android:id="@+id/tv_act"
+                    style="@style/tv_home_title"
+                    android:text="热门活动"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <com.zhpan.bannerview.BannerViewPager
+                android:id="@+id/banner"
+                android:layout_width="match_parent"
+                android:layout_height="84dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="15dp"
+                android:visibility="gone" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="15dp" />
+
+        </LinearLayout>
+
+
+        <FrameLayout
+            android:id="@+id/float_activity"
+            android:layout_width="98dp"
+            android:layout_height="98dp"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="2dp"
+            android:layout_marginBottom="88dp"
+            android:visibility="gone">
+
+            <com.opensource.svgaplayer.SVGAImageView
+                android:id="@+id/svgImageView"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:layout_gravity="bottom|start"
+                app:autoPlay="true" />
+
+            <ImageView
+                android:id="@+id/ic_close"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_gravity="top|end"
+                android:background="@mipmap/ic_float_activity_close"
+                android:contentDescription="@null"
+                android:padding="10dp" />
+        </FrameLayout>
+
+        <!--后期用上懒加载-->
+        <LinearLayout
+            android:id="@+id/layout_bind"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#CC000000"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="320dp"
+                android:layout_height="160dp"
+                android:background="@drawable/bg_white_pop"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/tv_default_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="提示"
+                    android:textSize="20sp" />
+
+                <TextView
+                    style="@style/tv_default_black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="32dp"
+                    android:text="很抱歉，今日您已使用过其它设备参与活动，请明日再试或更换原来设备！"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
+
+
 </layout>
