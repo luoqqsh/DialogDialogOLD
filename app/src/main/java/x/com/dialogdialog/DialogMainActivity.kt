@@ -14,6 +14,7 @@ import x.com.hl_livedatabus.LiveEventBus
 import x.com.hl_log.ViseLog
 import x.com.hl_tools.DialogTest.myObjectPool
 import x.com.hl_tools.hl_permissions
+import x.com.hl_tools.hl_sharedP2
 
 class DialogMainActivity : BaseActivity() {
     override fun initUI(savedInstanceState: Bundle?) {
@@ -32,6 +33,12 @@ class DialogMainActivity : BaseActivity() {
 //        ViseLog.d(testUtil.stringFromJNI())
         liveEventBus()
         StepService.startStepService(mActivity)
+
+        hl_sharedP2.setParam(mActivity,"asd","dd是啥")
+        val param1 = hl_sharedP2.remove(mActivity, "asd")
+        ViseLog.d(param1)
+        val param = hl_sharedP2.getParam(mActivity, "asd", "42")
+        ViseLog.d(param)
     }
 
     private fun xiecheng() {

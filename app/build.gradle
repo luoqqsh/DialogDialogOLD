@@ -7,7 +7,7 @@ android {
     buildToolsVersion "29.0.3"
     defaultConfig {
         applicationId "x.com.dialogdialog"
-        minSdkVersion 21
+        minSdkVersion 23
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -64,6 +64,9 @@ android {
     }
     buildFeatures{
         dataBinding = true
+    }
+    packagingOptions {//加上这写代码
+        pickFirst 'build-data.properties'
     }
 }
 tasks.withType(JavaCompile) {
