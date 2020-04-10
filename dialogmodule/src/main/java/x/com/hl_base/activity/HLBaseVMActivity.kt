@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProvider
-import x.com.hl_base.BaseViewModel
+import x.com.hl_base.mvvm.BaseViewModel
 import x.com.hl_base.mvvm.ViewModelFactory
 import java.lang.reflect.ParameterizedType
 

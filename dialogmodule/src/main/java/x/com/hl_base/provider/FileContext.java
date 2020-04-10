@@ -1,6 +1,8 @@
-package x.com.hl_base;
+package x.com.hl_base.provider;
 
 import androidx.core.content.FileProvider;
+
+import x.com.hl_base.app.AppInit;
 
 public class FileContext extends FileProvider {
     @Override

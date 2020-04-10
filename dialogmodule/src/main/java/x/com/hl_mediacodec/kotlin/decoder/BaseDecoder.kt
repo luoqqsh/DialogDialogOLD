@@ -5,6 +5,7 @@ import android.media.MediaFormat
 import android.util.Log
 import x.com.hl_log.ViseLog
 import x.com.hl_mediacodec.kotlin.*
+import x.com.hl_tools.hl_file
 import java.io.File
 import java.nio.ByteBuffer
 
@@ -59,6 +60,9 @@ abstract class BaseDecoder(private val mFilePath: String) : IDecoder {
 
     private var mState = DecodeState.STOP
 
+    /**
+     * 状态信息监听
+     */
     protected var mStateListener: IDecoderStateListener? = null
 
     /**
@@ -175,23 +179,22 @@ abstract class BaseDecoder(private val mFilePath: String) : IDecoder {
         }
     }
 
+
+
     /**
      * 解码步骤：1. 初始化，并启动解码器
      */
     private fun init(): Boolean {
-        if (mFilePath.isEmpty() || !File(mFilePath).exists()) {
-            Log.w(TAG, "文件路径为空")
-            mStateListener?.decoderError(this, "文件路径为空")
-            return false
-        }
-
-        //检查文件路径
-        if (!check()) return false
-
+        if (!checkSurface()) return false
+//        if (!hl_file.isFileExist(mFilePath)) {
+//            ViseLog.e(TAG, "文件路径为空")
+//            mStateListener?.decoderError(this, "文件路径为空")
+//            return false
+//        }
         //初始化数据提取器
         mExtractor = initExtractor(mFilePath)
         if (mExtractor == null || mExtractor!!.getFormat() == null) {
-            Log.w(TAG, "无法解析文件")
+            ViseLog.e(TAG, "无法解析文件")
             return false
         }
 
@@ -209,7 +212,6 @@ abstract class BaseDecoder(private val mFilePath: String) : IDecoder {
     private fun initParams(): Boolean {
         try {
             val format = mExtractor!!.getFormat()!!
-            ViseLog.d(mExtractor)
             ViseLog.d(format)
             mDuration = format.getLong(MediaFormat.KEY_DURATION) / 1000
             if (mEndPos == 0L) mEndPos = mDuration
@@ -418,7 +420,7 @@ abstract class BaseDecoder(private val mFilePath: String) : IDecoder {
     /**
      * 检查子类参数
      */
-    abstract fun check(): Boolean
+    abstract fun checkSurface(): Boolean
 
     /**
      * 初始化数据提取器

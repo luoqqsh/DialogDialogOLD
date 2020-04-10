@@ -1,8 +1,12 @@
-package x.com.hl_base;
+package x.com.hl_base.app;
 
 import android.annotation.SuppressLint;
+import android.app.Application;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
+import android.widget.Toast;
 
 import x.com.hl_log.ViseLog;
 import x.com.hl_log.inner.LogcatTree;
@@ -13,6 +17,7 @@ public class AppInit {
     @SuppressLint("StaticFieldLeak")
     private static Context mContext;
     public static boolean isDebug = false;
+    private static volatile Application sApplication;
 
     public static void setContext(Context mContext) {
         AppInit.mContext = mContext.getApplicationContext();
@@ -23,6 +28,23 @@ public class AppInit {
             ViseLog.e("Context初始化异常");
         }
         return mContext.getApplicationContext();
+    }
+
+    public static Application getApplicationByInvoke() {
+        if (sApplication == null) {
+            synchronized (AppInit.class) {
+                if (sApplication == null) {
+                    try {
+                        sApplication = (Application) Class.forName("android.app.ActivityThread")
+                                .getMethod("currentApplication")
+                                .invoke(null, (Object[]) null);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        return sApplication;
     }
 
     /**
@@ -56,5 +78,13 @@ public class AppInit {
                 .configFormatTag("%d{HH:mm:ss:SSS} %t %c{-" + tagCount + "} ")//个性化设置标签，默认显示包名
                 .configLevel(Log.VERBOSE);//设置日志最小输出级别，默认Log.VERBOSE
         ViseLog.plant(new LogcatTree());//添加打印日志信息到Logcat的树
+    }
+
+    public static void setNeverCrash() {
+        NeverCrashHelper.init((t, e) -> {
+//            e.printStackTrace();
+            ViseLog.d(Log.getStackTraceString(e));
+            new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show());
+        });
     }
 }

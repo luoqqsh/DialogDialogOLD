@@ -100,4 +100,5 @@ public class hl_thread {
     public static boolean isRunInUIThread() {
         return Looper.myLooper() == Looper.getMainLooper();
     }
+
 }

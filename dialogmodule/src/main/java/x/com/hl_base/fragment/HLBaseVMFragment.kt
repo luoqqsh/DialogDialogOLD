@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
-import x.com.hl_base.BaseViewModel
+import x.com.hl_base.mvvm.BaseViewModel
 import x.com.hl_base.mvvm.ViewModelFactory
 import java.lang.reflect.ParameterizedType
 

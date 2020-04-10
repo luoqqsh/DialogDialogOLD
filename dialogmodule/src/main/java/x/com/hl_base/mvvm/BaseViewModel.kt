@@ -1,4 +1,4 @@
-package x.com.hl_base
+package x.com.hl_base.mvvm
 
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.ViewModel

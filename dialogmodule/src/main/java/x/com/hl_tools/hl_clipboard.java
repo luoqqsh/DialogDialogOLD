@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
-import x.com.hl_base.AppInit;
+import x.com.hl_base.app.AppInit;
 
 public class hl_clipboard {
 

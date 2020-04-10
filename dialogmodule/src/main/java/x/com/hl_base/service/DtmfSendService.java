@@ -1,4 +1,4 @@
-package x.com.hl_base;
+package x.com.hl_base.service;
 
 import android.app.Service;
 import android.content.BroadcastReceiver;

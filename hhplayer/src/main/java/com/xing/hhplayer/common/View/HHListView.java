@@ -12,8 +12,8 @@ import androidx.annotation.Nullable;
 
 import com.example.hhplayer.R;
 import com.xing.hhplayer.common.HHPlayer3;
-import com.xing.hhplayer.common.TvListBean.TvDataList;
-import com.xing.hhplayer.common.TvListBean.TvListAdapter;
+import com.xing.hhplayer.common.tvbean.TvDataList;
+import com.xing.hhplayer.common.tvbean.TvListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

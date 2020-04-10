@@ -20,10 +20,10 @@ class VideoDecoder(path: String, sfv: SurfaceView?, surface: Surface?) : BaseDec
     private val mSurfaceView = sfv
     private var mSurface = surface
 
-    override fun check(): Boolean {
+    override fun checkSurface(): Boolean {
         if (mSurfaceView == null && mSurface == null) {
-            Log.w(TAG, "SurfaceView和Surface都为空，至少需要一个不为空")
-            mStateListener?.decoderError(this, "显示器为空")
+            Log.e(TAG, "SurfaceView和Surface都为空，至少需要一个不为空")
+            mStateListener?.decoderError(this, "Surface为空")
             return false
         }
         return true
@@ -43,7 +43,7 @@ class VideoDecoder(path: String, sfv: SurfaceView?, surface: Surface?) : BaseDec
             codec.configure(format, mSurface, null, 0)
             notifyDecode()
         } else if (mSurfaceView?.holder?.surface != null) {
-            mSurface = mSurfaceView?.holder?.surface
+            mSurface = mSurfaceView.holder?.surface
             configCodec(codec, format)
         } else {
             mSurfaceView?.holder?.addCallback(object : SurfaceHolder.Callback2 {

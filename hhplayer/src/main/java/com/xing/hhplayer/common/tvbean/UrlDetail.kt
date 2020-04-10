@@ -1,5 +1,4 @@
-package com.xing.hhplayer.common.TvListBean
-
+package com.xing.hhplayer.common.tvbean
 
 class UrlDetail {
     var vWidth: Int = 0//视频宽
@@ -14,5 +13,4 @@ class UrlDetail {
     var aChannels: Int = 0//音频通道数量
     var aDuration: Float = 0.toFloat()//音频总时长
     var aCodecName: String? = null//音频可以用的 解码器
-
 }

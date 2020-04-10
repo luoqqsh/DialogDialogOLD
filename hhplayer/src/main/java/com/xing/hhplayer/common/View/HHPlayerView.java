@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
-import com.xing.hhplayer.common.TvListBean.TvView;
+import com.xing.hhplayer.common.tvbean.TvView;
 import com.xing.hhplayer.common.TypeBean.PlayerViewType;
 import com.xing.hhplayer.common.tools.MeasureHelper;
 

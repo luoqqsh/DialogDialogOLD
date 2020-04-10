@@ -15,8 +15,6 @@ import okhttp3.Cookie;
 import okhttp3.HttpUrl;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import x.com.hl_base.AppInit;
-import x.com.hl_log.ViseLog;
 import x.com.hl_tools.hl_gson;
 import x.com.hl_tools.hl_other;
 

@@ -10,8 +10,8 @@ import androidx.multidex.MultiDexApplication;
 
 import com.liulishuo.filedownloader.FileDownloader;
 
-import x.com.hl_base.AppInit;
-import x.com.hl_base.NeverCrashHelper;
+import x.com.hl_base.app.AppInit;
+import x.com.hl_base.app.NeverCrashHelper;
 import x.com.hl_log.ViseLog;
 
 public class DialogApplication extends MultiDexApplication {
@@ -25,14 +25,9 @@ public class DialogApplication extends MultiDexApplication {
         super.onCreate();
         AppInit.setShowLog(true);
         AppInit.printInformation();
+        AppInit.setNeverCrash();
 
         FileDownloader.setup(getApplicationContext());
-
-        NeverCrashHelper.init((t, e) -> {
-//            e.printStackTrace();
-            ViseLog.d(Log.getStackTraceString(e));
-            showToast(e.getMessage());
-        });
 //        x5Manager.getInstance().init(this);
 
 //        LiveEventBus.config().supportBroadcast(this);//跨进程通过广播

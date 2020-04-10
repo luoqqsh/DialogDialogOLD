@@ -7,8 +7,6 @@ import x.com.hl_log.common.LogConvert;
 
 /**
  * @Description: Reference解析器
- * @author: <a href="http://www.xiaoyaoyou1212.com">DAWI</a>
- * @date: 16/12/11 11:04.
  */
 public class ReferenceParse implements Parser<Reference> {
     @Override

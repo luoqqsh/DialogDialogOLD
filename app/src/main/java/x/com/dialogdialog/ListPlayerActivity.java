@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.xing.hhplayer.common.HHPlayer3;
-import com.xing.hhplayer.common.TvListBean.TvView;
+import com.xing.hhplayer.common.tvbean.TvView;
 import com.xing.hhplayer.common.base.HHMediaPlayer;
 
 import java.util.ArrayList;

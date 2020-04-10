@@ -14,7 +14,7 @@
 
         <!--7.0以上 安装apk-->
         <provider
-            android:name="x.com.hl_base.FileContext"
+            android:name="x.com.hl_base.provider.FileContext"
             android:authorities="${applicationId}.dialog.fileProvider"
             android:exported="false"
             android:grantUriPermissions="true">

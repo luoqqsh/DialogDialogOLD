@@ -47,7 +47,7 @@ class MMExtractor(path: String) {
         for (i in 0 until mExtractor!!.trackCount) {
             val mediaFormat = mExtractor!!.getTrackFormat(i)
             val mime = mediaFormat.getString(MediaFormat.KEY_MIME)
-            if (mime.startsWith("video/")) {
+            if (mime!!.startsWith("video/")) {
                 mVideoTrack = i
                 break
             }
@@ -83,7 +83,7 @@ class MMExtractor(path: String) {
     fun readBuffer(byteBuffer: ByteBuffer): Int {
         byteBuffer.clear()
         selectSourceTrack()
-        var readSampleCount = mExtractor!!.readSampleData(byteBuffer, 0)
+        val readSampleCount = mExtractor!!.readSampleData(byteBuffer, 0)
         if (readSampleCount < 0) {//小于0表示数据已经读完
             return -1
         }

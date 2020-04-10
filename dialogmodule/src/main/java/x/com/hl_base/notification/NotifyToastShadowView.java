@@ -1,4 +1,4 @@
-package x.com.hl_base;
+package x.com.hl_base.notification;
 
 
 import android.content.Context;

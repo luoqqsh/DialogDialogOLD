@@ -1,4 +1,4 @@
-package com.xing.hhplayer.common.TvListBean
+package com.xing.hhplayer.common.tvbean
 
 import java.util.*
 

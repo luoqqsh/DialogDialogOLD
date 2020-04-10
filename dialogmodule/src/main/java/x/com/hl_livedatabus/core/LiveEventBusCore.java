@@ -24,8 +24,8 @@ import x.com.hl_livedatabus.ipc.encode.ValueEncoder;
 import x.com.hl_livedatabus.ipc.json.GsonConverter;
 import x.com.hl_livedatabus.ipc.json.JsonConverter;
 import x.com.hl_livedatabus.ipc.receiver.LebIpcReceiver;
-import x.com.hl_livedatabus.utils.ThreadUtils;
 import x.com.hl_log.ViseLog;
+import x.com.hl_tools.hl_thread;
 
 /**
  * LiveEventBusCore
@@ -131,7 +131,7 @@ public final class LiveEventBusCore {
 
         @Override
         public void post(T value) {
-            if (ThreadUtils.isMainThread()) {
+            if (hl_thread.isRunInUIThread()) {
                 postInternal(value);
             } else {
                 mainHandler.post(new PostValueTask(value));
@@ -161,7 +161,7 @@ public final class LiveEventBusCore {
         @Override
         public void broadcast(final T value, final boolean foreground) {
             if (appContext != null) {
-                if (ThreadUtils.isMainThread()) {
+                if (hl_thread.isRunInUIThread()) {
                     broadcastInternal(value, foreground);
                 } else {
                     mainHandler.post(new Runnable() {
@@ -178,7 +178,7 @@ public final class LiveEventBusCore {
 
         @Override
         public void observe(@NonNull final LifecycleOwner owner, @NonNull final Observer<T> observer) {
-            if (ThreadUtils.isMainThread()) {
+            if (hl_thread.isRunInUIThread()) {
                 observeInternal(owner, observer);
             } else {
                 mainHandler.post(new Runnable() {
@@ -192,7 +192,7 @@ public final class LiveEventBusCore {
 
         @Override
         public void observeSticky(@NonNull final LifecycleOwner owner, @NonNull final Observer<T> observer) {
-            if (ThreadUtils.isMainThread()) {
+            if (hl_thread.isRunInUIThread()) {
                 observeStickyInternal(owner, observer);
             } else {
                 mainHandler.post(new Runnable() {
@@ -206,7 +206,7 @@ public final class LiveEventBusCore {
 
         @Override
         public void observeForever(@NonNull final Observer<T> observer) {
-            if (ThreadUtils.isMainThread()) {
+            if (hl_thread.isRunInUIThread()) {
                 observeForeverInternal(observer);
             } else {
                 mainHandler.post(new Runnable() {
@@ -220,7 +220,7 @@ public final class LiveEventBusCore {
 
         @Override
         public void observeStickyForever(@NonNull final Observer<T> observer) {
-            if (ThreadUtils.isMainThread()) {
+            if (hl_thread.isRunInUIThread()) {
                 observeStickyForeverInternal(observer);
             } else {
                 mainHandler.post(new Runnable() {
@@ -234,7 +234,7 @@ public final class LiveEventBusCore {
 
         @Override
         public void removeObserver(@NonNull final Observer<T> observer) {
-            if (ThreadUtils.isMainThread()) {
+            if (hl_thread.isRunInUIThread()) {
                 removeObserverInternal(observer);
             } else {
                 mainHandler.post(new Runnable() {

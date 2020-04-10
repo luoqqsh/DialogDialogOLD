@@ -1,4 +1,4 @@
-package com.xing.hhplayer.common.TvListBean
+package com.xing.hhplayer.common.tvbean
 
 enum class TvView {
     NEWSURFACE,//新建surfaceview

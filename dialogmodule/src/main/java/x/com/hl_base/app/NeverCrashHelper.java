@@ -1,4 +1,4 @@
-package x.com.hl_base;
+package x.com.hl_base.app;
 
 import android.os.Handler;
 import android.os.Looper;

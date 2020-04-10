@@ -17,7 +17,7 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.example.hhplayer.R;
 import com.xing.hhplayer.common.HHPlayer3;
-import com.xing.hhplayer.common.TvListBean.TvDataList;
+import com.xing.hhplayer.common.tvbean.TvDataList;
 import com.xing.hhplayer.common.TypeBean.PlayerPrePareStateType;
 import com.xing.hhplayer.common.TypeBean.PlayerStateType;
 import com.xing.hhplayer.common.TypeBean.PlayerViewType;

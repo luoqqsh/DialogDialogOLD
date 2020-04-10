@@ -1,6 +1,6 @@
 package com.xing.hhplayer.common.base;
 
-import com.xing.hhplayer.common.TvListBean.TvDataList;
+import com.xing.hhplayer.common.tvbean.TvDataList;
 import com.xing.hhplayer.common.TypeBean.PlayerPrePareStateType;
 import com.xing.hhplayer.common.TypeBean.PlayerStateType;
 

@@ -1,4 +1,4 @@
-package com.xing.hhplayer.common.TvListBean
+package com.xing.hhplayer.common.tvbean
 
 enum class TypeClass(val value: Int) {
     测试频道(0), 中央台(1), 厦门台(2), 福建台(3), 省市频道(4), 地方台(5),

@@ -50,7 +50,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.ref.WeakReference;
 
-import x.com.hl_base.AppInit;
+import x.com.hl_base.app.AppInit;
 
 public class hl_spannableString {
     private hl_spannableString() {

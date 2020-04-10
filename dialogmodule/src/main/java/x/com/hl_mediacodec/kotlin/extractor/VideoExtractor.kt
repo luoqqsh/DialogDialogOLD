@@ -4,7 +4,6 @@ import android.media.MediaFormat
 import x.com.hl_mediacodec.kotlin.IExtractor
 import java.nio.ByteBuffer
 
-
 /**
  * 视频数据提取器
  */

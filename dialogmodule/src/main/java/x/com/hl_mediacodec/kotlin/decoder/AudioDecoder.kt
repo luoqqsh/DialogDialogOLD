@@ -5,7 +5,6 @@ import x.com.hl_mediacodec.kotlin.IExtractor
 import x.com.hl_mediacodec.kotlin.extractor.AudioExtractor
 import java.nio.ByteBuffer
 
-
 /**
  * 音频解码器
  *
@@ -26,7 +25,7 @@ class AudioDecoder(path: String): BaseDecoder(path) {
     /**音频数据缓存*/
     private var mAudioOutTempBuf: ShortArray? = null
     
-    override fun check(): Boolean {
+    override fun checkSurface(): Boolean {
         return true
     }
 

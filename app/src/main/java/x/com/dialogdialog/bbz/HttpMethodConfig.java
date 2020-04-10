@@ -7,7 +7,7 @@ import android.content.Context;
 import java.util.HashMap;
 import java.util.Map;
 
-import x.com.hl_base.AppInit;
+import x.com.hl_base.app.AppInit;
 import x.com.hl_rx.jiu.HttpConfig;
 import x.com.hl_rx.jiu.HttpMethodType;
 import x.com.hl_rx.jiu.SimpleSubscriber;

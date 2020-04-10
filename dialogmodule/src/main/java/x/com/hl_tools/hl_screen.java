@@ -26,7 +26,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.regex.Pattern;
 
-import x.com.hl_base.AppInit;
+import x.com.hl_base.app.AppInit;
 import x.com.hl_dialog.R;
 import x.com.hl_log.ViseLog;
 

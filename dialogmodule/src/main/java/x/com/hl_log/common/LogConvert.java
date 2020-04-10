@@ -247,7 +247,8 @@ public class LogConvert {
                         subObject = objectToString(subObject, childOffset + 1);
                     }
                 }
-                String formatString = breakLine + "%s = %s, ";
+                //修改model打印出来的值得显示方式为竖排显示
+                String formatString = breakLine + "%s = %s\n ";
                 builder.append(String.format(formatString, field.getName(), subObject == null ? "null" : subObject.toString()));
             }
         }
