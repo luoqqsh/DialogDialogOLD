@@ -10,7 +10,7 @@ import android.opengl.EGLContext;
 import android.opengl.EGLDisplay;
 import android.opengl.EGLExt;
 import android.opengl.EGLSurface;
-import android.opengl.GLES20;
+import android.opengl.GLES30;
 import android.os.Environment;
 import android.util.Log;
 import android.view.Surface;
@@ -282,14 +282,14 @@ public class EncodeAndMuxTest {
             startY = 0;
         }
 
-        GLES20.glClearColor(TEST_R0 / 255.0f, TEST_G0 / 255.0f, TEST_B0 / 255.0f, 1.0f);
-        GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
+        GLES30.glClearColor(TEST_R0 / 255.0f, TEST_G0 / 255.0f, TEST_B0 / 255.0f, 1.0f);
+        GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT);
 
-        GLES20.glEnable(GLES20.GL_SCISSOR_TEST);
-        GLES20.glScissor(startX, startY, mWidth / 4, mHeight / 2);
-        GLES20.glClearColor(TEST_R1 / 255.0f, TEST_G1 / 255.0f, TEST_B1 / 255.0f, 1.0f);
-        GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
-        GLES20.glDisable(GLES20.GL_SCISSOR_TEST);
+        GLES30.glEnable(GLES30.GL_SCISSOR_TEST);
+        GLES30.glScissor(startX, startY, mWidth / 4, mHeight / 2);
+        GLES30.glClearColor(TEST_R1 / 255.0f, TEST_G1 / 255.0f, TEST_B1 / 255.0f, 1.0f);
+        GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT);
+        GLES30.glDisable(GLES30.GL_SCISSOR_TEST);
     }
 
     /**

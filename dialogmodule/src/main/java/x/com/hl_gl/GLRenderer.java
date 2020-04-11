@@ -1,6 +1,6 @@
 package x.com.hl_gl;
 
-import android.opengl.GLES20;
+import android.opengl.GLES30;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -19,7 +19,7 @@ public class GLRenderer extends BaseGLRenderer {
 
     @Override
     public void onSurfaceChanged(GL10 gl, int width, int height) {
-        GLES20.glViewport(0, 0, width, height);
+        GLES30.glViewport(0, 0, width, height);
     }
 
     @Override

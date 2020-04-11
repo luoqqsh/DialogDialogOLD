@@ -1,6 +1,6 @@
 package x.com.hl_gl.shape;
 
-import android.opengl.GLES20;
+import android.opengl.GLES30;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -50,29 +50,29 @@ public class Triangle {
         vertexBuffer.position(0);//设置缓冲区以读取第一个坐标
         mProgram = ShaderUtil.createGlProgramByString(vertexShaderCode, fragmentShaderCode);
 
-        GLES20.glLinkProgram(mProgram);//创建可执行的OpenGL ES项目
+        GLES30.glLinkProgram(mProgram);//创建可执行的OpenGL ES项目
     }
 
     public void draw() {
         OpenGLUtils.clearColor();
         // 将程序添加到OpenGL ES环境中
-        GLES20.glUseProgram(mProgram);
+        GLES30.glUseProgram(mProgram);
         //获取顶点着色器的vPosition成员的句柄
-        mPositionHandle = GLES20.glGetAttribLocation(mProgram, "vPosition");
+        mPositionHandle = GLES30.glGetAttribLocation(mProgram, "vPosition");
         //启用三角形顶点的句柄
-        GLES20.glEnableVertexAttribArray(mPositionHandle);
+        GLES30.glEnableVertexAttribArray(mPositionHandle);
         //准备三角坐标数据
-        GLES20.glVertexAttribPointer(
+        GLES30.glVertexAttribPointer(
                 mPositionHandle, COORDS_PER_VERTEX,
-                GLES20.GL_FLOAT, false,
+                GLES30.GL_FLOAT, false,
                 vertexStride, vertexBuffer);
         // 获取片元着色器的vColor成员的句柄
-        mColorHandle = GLES20.glGetUniformLocation(mProgram, "vColor");
+        mColorHandle = GLES30.glGetUniformLocation(mProgram, "vColor");
         //为三角形设置颜色
-        GLES20.glUniform4fv(mColorHandle, 1, color, 0);
+        GLES30.glUniform4fv(mColorHandle, 1, color, 0);
         //绘制三角形
-        GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, vertexCount);
+        GLES30.glDrawArrays(GLES30.GL_TRIANGLES, 0, vertexCount);
         //禁用顶点数组
-        GLES20.glDisableVertexAttribArray(mPositionHandle);
+        GLES30.glDisableVertexAttribArray(mPositionHandle);
     }
 }

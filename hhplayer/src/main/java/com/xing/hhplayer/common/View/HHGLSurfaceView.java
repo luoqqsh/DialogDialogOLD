@@ -23,7 +23,7 @@ public class HHGLSurfaceView extends GLSurfaceView {
     }
 
     private void init(Context context) {
-        setEGLContextClientVersion(2);
+        setEGLContextClientVersion(3);
         videoGLRenderer = new VideoGLRenderer();
         setRenderer(videoGLRenderer);
         //自动调用，每秒60次

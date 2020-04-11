@@ -2,7 +2,7 @@ package x.com.hl_gl.util;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.opengl.GLES20;
+import android.opengl.GLES30;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,12 +11,12 @@ import java.io.InputStreamReader;
 
 import x.com.hl_log.ViseLog;
 
-import static android.opengl.GLES20.GL_FRAGMENT_SHADER;
-import static android.opengl.GLES20.GL_LINK_STATUS;
-import static android.opengl.GLES20.GL_VALIDATE_STATUS;
-import static android.opengl.GLES20.GL_VERTEX_SHADER;
-import static android.opengl.GLES20.glCreateProgram;
-import static android.opengl.GLES20.glGetProgramInfoLog;
+import static android.opengl.GLES30.GL_FRAGMENT_SHADER;
+import static android.opengl.GLES30.GL_LINK_STATUS;
+import static android.opengl.GLES30.GL_VALIDATE_STATUS;
+import static android.opengl.GLES30.GL_VERTEX_SHADER;
+import static android.opengl.GLES30.glCreateProgram;
+import static android.opengl.GLES30.glGetProgramInfoLog;
 
 public class ShaderUtil {
     public static final String ACOORD = "aCoord";//共有-采样点的坐标
@@ -76,47 +76,50 @@ public class ShaderUtil {
                     "fragmentShaderId：" + fragmentShaderId);
             return 0;
         }
-        GLES20.glAttachShader(programId, vertexShaderId);
-        GLES20.glAttachShader(programId, fragmentShaderId);
-        GLES20.glLinkProgram(programId);
+        //将着色器加入程序
+        GLES30.glAttachShader(programId, vertexShaderId);
+        GLES30.glAttachShader(programId, fragmentShaderId);
+        GLES30.glLinkProgram(programId);//到此可以反悔了，下面只要负责查错
+        //iv对应status，检查是否正确创建，没有其他作用
+        //offset内存地址偏移，防止被逆向，一般为0即可。
         int[] linkStatus = new int[1];
-        GLES20.glGetProgramiv(programId, GL_LINK_STATUS, linkStatus, 0);
-        if (linkStatus[0] != GLES20.GL_TRUE) {
+        GLES30.glGetProgramiv(programId, GL_LINK_STATUS, linkStatus, 0);
+        if (linkStatus[0] != GLES30.GL_TRUE) {
             ViseLog.e("programId", glGetProgramInfoLog(programId));
-            GLES20.glDeleteProgram(programId);
+            GLES30.glDeleteProgram(programId);
             return 0;
         }
         int[] linkVALIDATEStatus = new int[1];
-        GLES20.glGetProgramiv(programId, GL_VALIDATE_STATUS, linkVALIDATEStatus, 0);
-        if (linkStatus[0] != GLES20.GL_TRUE) {
+        GLES30.glGetProgramiv(programId, GL_VALIDATE_STATUS, linkVALIDATEStatus, 0);
+        if (linkStatus[0] != GLES30.GL_TRUE) {
             ViseLog.e("programId", glGetProgramInfoLog(programId));
-            GLES20.glDeleteProgram(programId);
+            GLES30.glDeleteProgram(programId);
             return 0;
         }
         //合并成功后删除着色器
-        GLES20.glDeleteShader(vertexShaderId);
-        GLES20.glDeleteShader(fragmentShaderId);
+        GLES30.glDeleteShader(vertexShaderId);
+        GLES30.glDeleteShader(fragmentShaderId);
         return programId;
     }
 
     /**
      * 加载着色器
      *
-     * @param shaderType 着色器类型：GLES20.GL_VERTEX_SHADER、GLES20.GL_FRAGMENT_SHADER
+     * @param shaderType 着色器类型：GLES30.GL_VERTEX_SHADER、GLES30.GL_FRAGMENT_SHADER
      * @param source     着色器string字符串
      * @return 着色器id
      */
     private static int loadShader(int shaderType, String source) {
-        int shader = GLES20.glCreateShader(shaderType);
+        int shader = GLES30.glCreateShader(shaderType);
         if (shader != 0) {
-            GLES20.glShaderSource(shader, source);
-            GLES20.glCompileShader(shader);
+            GLES30.glShaderSource(shader, source);
+            GLES30.glCompileShader(shader);
             //查看配置 主动获取是否成功，非必须
             int[] compiled = new int[1];
-            GLES20.glGetShaderiv(shader, GLES20.GL_COMPILE_STATUS, compiled, 0);
-            if (compiled[0] != GLES20.GL_TRUE) {
-                ViseLog.e(shaderType + "着色器读取创建失败。\n" + GLES20.glGetShaderInfoLog(shader));
-                GLES20.glDeleteShader(shader);
+            GLES30.glGetShaderiv(shader, GLES30.GL_COMPILE_STATUS, compiled, 0);
+            if (compiled[0] != GLES30.GL_TRUE) {
+                ViseLog.e(shaderType + "着色器读取创建失败。\n" + GLES30.glGetShaderInfoLog(shader));
+                GLES30.glDeleteShader(shader);
                 shader = 0;
             }
         }
