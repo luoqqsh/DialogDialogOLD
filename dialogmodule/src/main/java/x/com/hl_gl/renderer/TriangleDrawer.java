@@ -1,4 +1,4 @@
-package x.com.hl_gl.shape;
+package x.com.hl_gl.renderer;
 
 import android.opengl.GLES30;
 
@@ -12,7 +12,7 @@ import x.com.hl_gl.util.ShaderUtil;
 /**
  * 三角形
  */
-public class Triangle {
+public class TriangleDrawer {
     private FloatBuffer vertexBuffer;//顶点缓冲
     private final String vertexShaderCode =//顶点着色代码
             "attribute vec4 vPosition;" +
@@ -41,16 +41,15 @@ public class Triangle {
     // 颜色，rgba
     float color[] = {0.63671875f, 0.76953125f, 0.22265625f, 1.0f};
 
-    public Triangle() {
+    public TriangleDrawer() {
         //初始化顶点字节缓冲区
         ByteBuffer bb = ByteBuffer.allocateDirect(sCoo.length * 4);//每个浮点数:坐标个数* 4字节
         bb.order(ByteOrder.nativeOrder());//使用本机硬件设备的字节顺序
         vertexBuffer = bb.asFloatBuffer();// 从字节缓冲区创建浮点缓冲区
         vertexBuffer.put(sCoo);// 将坐标添加到FloatBuffer
         vertexBuffer.position(0);//设置缓冲区以读取第一个坐标
-        mProgram = ShaderUtil.createGlProgramByString(vertexShaderCode, fragmentShaderCode);
 
-        GLES30.glLinkProgram(mProgram);//创建可执行的OpenGL ES项目
+        mProgram = ShaderUtil.createGlProgramByString(vertexShaderCode, fragmentShaderCode);
     }
 
     public void draw() {
@@ -58,7 +57,7 @@ public class Triangle {
         // 将程序添加到OpenGL ES环境中
         GLES30.glUseProgram(mProgram);
         //获取顶点着色器的vPosition成员的句柄
-        mPositionHandle = GLES30.glGetAttribLocation(mProgram, "vPosition");
+        mPositionHandle = GLES30.glGetAttribLocation(mProgram, ShaderUtil.VPOSITION);
         //启用三角形顶点的句柄
         GLES30.glEnableVertexAttribArray(mPositionHandle);
         //准备三角坐标数据
@@ -67,10 +66,13 @@ public class Triangle {
                 GLES30.GL_FLOAT, false,
                 vertexStride, vertexBuffer);
         // 获取片元着色器的vColor成员的句柄
-        mColorHandle = GLES30.glGetUniformLocation(mProgram, "vColor");
+        mColorHandle = GLES30.glGetUniformLocation(mProgram, ShaderUtil.VCOLOR);
         //为三角形设置颜色
         GLES30.glUniform4fv(mColorHandle, 1, color, 0);
         //绘制三角形
+        //GL_TRIANGLES 独立三角形
+        //GL_TRIANGLE_STRIP：复用顶点构成三角形
+        //GL_TRIANGLE_FAN：复用第一个顶点构成三角形
         GLES30.glDrawArrays(GLES30.GL_TRIANGLES, 0, vertexCount);
         //禁用顶点数组
         GLES30.glDisableVertexAttribArray(mPositionHandle);

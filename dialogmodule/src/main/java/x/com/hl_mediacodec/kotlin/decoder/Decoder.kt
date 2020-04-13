@@ -4,17 +4,15 @@ import android.media.MediaCodec
 import android.media.MediaFormat
 import android.util.Log
 import x.com.hl_log.ViseLog
-import x.com.hl_mediacodec.kotlin.*
-import x.com.hl_tools.hl_file
-import java.io.File
+import x.com.hl_mediacodec.kotlin.extractor.IExtractor
 import java.nio.ByteBuffer
 
 /**
  * 解码器基类
  */
-abstract class BaseDecoder(private val mFilePath: String) : IDecoder {
+abstract class Decoder(private val mFilePath: String) : IDecoder {
 
-    private val TAG = "BaseDecoder"
+    private val TAG = "解码"
 
     //-------------线程相关------------------------
     /**
@@ -120,8 +118,7 @@ abstract class BaseDecoder(private val mFilePath: String) : IDecoder {
                     mStartTimeForSync = System.currentTimeMillis() - getCurTimeStamp()
                 }
 
-                if (!mIsRunning ||
-                        mState == DecodeState.STOP) {
+                if (!mIsRunning || mState == DecodeState.STOP) {
                     mIsRunning = false
                     break
                 }
@@ -157,7 +154,7 @@ abstract class BaseDecoder(private val mFilePath: String) : IDecoder {
                     frame.setBufferInfo(mBufferInfo)
                     mStateListener?.decodeOneFrame(this, frame)
 
-                    //【解码步骤：5. 释放输出缓冲】- 渲染
+                    //【解码步骤：5. 释放输出缓冲】- 渲染结束
                     mCodec!!.releaseOutputBuffer(index, true)
 
                     if (mState == DecodeState.START) {
@@ -180,12 +177,13 @@ abstract class BaseDecoder(private val mFilePath: String) : IDecoder {
     }
 
 
-
     /**
      * 解码步骤：1. 初始化，并启动解码器
      */
     private fun init(): Boolean {
+        //检查surface，音频直接返回true
         if (!checkSurface()) return false
+        //可以支持网络地址，但可能需要调整，待优化。
 //        if (!hl_file.isFileExist(mFilePath)) {
 //            ViseLog.e(TAG, "文件路径为空")
 //            mStateListener?.decoderError(this, "文件路径为空")
@@ -198,33 +196,16 @@ abstract class BaseDecoder(private val mFilePath: String) : IDecoder {
             return false
         }
 
-        //初始化参数
-        if (!initParams()) return false
-
-        //初始化渲染器
-        if (!initRender()) return false
-
-        //初始化解码器
-        if (!initCodec()) return false
-        return true
-    }
-
-    private fun initParams(): Boolean {
         try {
+            //1.初始化参数
             val format = mExtractor!!.getFormat()!!
-            ViseLog.d(format)
             mDuration = format.getLong(MediaFormat.KEY_DURATION) / 1000
             if (mEndPos == 0L) mEndPos = mDuration
-
+            //音频需要-获取采样率、声道等信息。视频不需要
             initSpecParams(mExtractor!!.getFormat()!!)
-        } catch (e: Exception) {
-            return false
-        }
-        return true
-    }
-
-    private fun initCodec(): Boolean {
-        try {
+            //2.初始化渲染器-音频需要
+            if (!initRender()) return false
+            //3.初始化解码器
             val type = mExtractor!!.getFormat()!!.getString(MediaFormat.KEY_MIME)
             mCodec = MediaCodec.createDecoderByType(type)
             if (!configCodec(mCodec!!, mExtractor!!.getFormat()!!)) {
@@ -234,10 +215,11 @@ abstract class BaseDecoder(private val mFilePath: String) : IDecoder {
 
             mInputBuffers = mCodec?.inputBuffers
             mOutputBuffers = mCodec?.outputBuffers
+            return true
         } catch (e: Exception) {
             return false
         }
-        return true
+
     }
 
     /**

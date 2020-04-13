@@ -12,6 +12,9 @@ import android.graphics.drawable.GradientDrawable;
 import android.view.View;
 
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+
+import x.com.hl_dialog.R;
 
 public class hl_bitmap {
     public static GradientDrawable getRoundRectDrawable(int radius, int color, boolean isFill, int strokeWidth) {
@@ -24,27 +27,6 @@ public class hl_bitmap {
         return drawable;
     }
 
-    /*
-     * Bitmap → byte[]
-     */
-    public static byte[] Bitmap2Bytes(Bitmap bm) {
-        if (bm == null) {
-            return null;
-        }
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        return baos.toByteArray();
-    }
-
-    /*
-     * byte[] → Bitmap
-     */
-    public static Bitmap Bytes2Bimap(byte[] b) {
-        if (b.length == 0) {
-            return null;
-        }
-        return BitmapFactory.decodeByteArray(b, 0, b.length);
-    }
     /**
      * Bitmap to bytes.
      *
@@ -151,5 +133,29 @@ public class hl_bitmap {
         }
         view.draw(canvas);
         return ret;
+    }
+
+    /**
+     * 通过文件路径来获取Bitmap
+     *
+     * @param pathName
+     * @return
+     */
+    public static Bitmap getBitmapFromFile(String pathName) {
+        return BitmapFactory.decodeFile(pathName);
+    }
+
+    /**
+     * 通过输入流InputStream来获取Bitmap
+     *
+     * @param inputStream
+     * @return
+     */
+    public static Bitmap getBitmapFromStream(InputStream inputStream) {
+        return BitmapFactory.decodeStream(inputStream);
+    }
+
+    public static Bitmap getBitmapFromDrawableId(Context context, int id) {
+        return BitmapFactory.decodeResource(context.getResources(), id);
     }
 }

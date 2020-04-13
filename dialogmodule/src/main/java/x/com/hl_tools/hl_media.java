@@ -12,8 +12,11 @@ import android.media.MediaPlayer;
 import android.media.MediaScannerConnection;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
+import android.os.Build;
+import android.os.CancellationSignal;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Size;
 
 import androidx.fragment.app.FragmentActivity;
 
@@ -53,6 +56,12 @@ public class hl_media {
         }
     }
 
+    /**
+     * 刷新媒体库
+     *
+     * @param context context
+     * @param path    文件夹路径
+     */
     public static void updateMedias(Context context, String path) {
         try {
             if (hl_file.isFolderExist(path)) {
@@ -85,7 +94,7 @@ public class hl_media {
      * @param context  context
      * @return 返回后用Glide加载
      */
-    public static String getAlbumArt(int album_id, Context context) {
+    public static String getAlbumArt(Context context, int album_id) {
         String mUriAlbums = "content://media/external/audio/albums";
         String[] projection = new String[]{"album_art"};
         Cursor cur = context.getContentResolver().query(Uri.parse(mUriAlbums + "/" + album_id), projection, null, null, null);
@@ -99,12 +108,20 @@ public class hl_media {
         return album_art;
     }
 
-    //安卓q方法
-    public static Bitmap getThumbnail(ContentResolver cr, long videoId) {
-        return MediaStore.Video.Thumbnails.getThumbnail(cr, videoId, MediaStore.Video.Thumbnails.MINI_KIND, null);
+    // 获取视频缩略图
+    public Bitmap getVideoThumbnail(Context context, Uri uri, int width, int height, CancellationSignal cancel) {
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                return context.getContentResolver().loadThumbnail(uri, new Size(width, height), cancel);
+            } else {
+                return null;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
-    // 获取视频缩略图
     public Bitmap getVideoThumbnail(int id, Context context) {
         Bitmap bitmap;
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -113,6 +130,45 @@ public class hl_media {
         bitmap = MediaStore.Video.Thumbnails.getThumbnail(context.getContentResolver(), id, MediaStore.Images.Thumbnails.MICRO_KIND, options);
         return bitmap;
     }
+
+    //获取到的图片很小
+    public static Bitmap getVideoThumb(String videoPath) {
+        return ThumbnailUtils.createVideoThumbnail(videoPath, MediaStore.Video.Thumbnails.MICRO_KIND);
+    }
+
+    /**
+     * 获取网络mp4视频第一帧，不支持本地视频
+     *
+     * @param videoUrl 视频地址
+     * @return bitmap
+     */
+    public static Bitmap getNetVideoBitmap(String videoUrl) {
+        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+        try {
+            //根据url获取缩略图
+            retriever.setDataSource(videoUrl, new HashMap());
+            //获得第一帧图片
+            return retriever.getFrameAtTime();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            retriever.release();
+        }
+    }
+
+    /**
+     * 获取本地mp4视频第一帧，不支持网络视频
+     *
+     * @param uri uri
+     * @return bitmap
+     */
+    public static Bitmap getVideoThumb(Context context, Uri uri) {
+        MediaMetadataRetriever media = new MediaMetadataRetriever();
+        media.setDataSource(context, uri);
+        return media.getFrameAtTime();
+    }
+
 
     /**
      * 是否视频文件
@@ -224,46 +280,6 @@ public class hl_media {
             return false;
         }
         return true;
-    }
-
-    /**
-     * 获取网络mp4视频第一帧，不支持本地视频
-     *
-     * @param videoUrl 视频地址
-     * @return bitmap
-     */
-    public static Bitmap getNetVideoBitmap(String videoUrl) {
-        Bitmap bitmap = null;
-        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
-        try {
-            //根据url获取缩略图
-            retriever.setDataSource(videoUrl, new HashMap());
-            //获得第一帧图片
-            bitmap = retriever.getFrameAtTime();
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-            return null;
-        } finally {
-            retriever.release();
-        }
-        return bitmap;
-    }
-
-    /**
-     * 获取本地mp4视频第一帧，不支持网络视频
-     *
-     * @param uri uri
-     * @return bitmap
-     */
-    public static Bitmap getVideoThumb(Context context, Uri uri) {
-        MediaMetadataRetriever media = new MediaMetadataRetriever();
-        media.setDataSource(context, uri);
-        return media.getFrameAtTime();
-    }
-
-    //获取到的图片很小
-    public static Bitmap getVideoThumb(String videoPath) {
-        return ThumbnailUtils.createVideoThumbnail(videoPath, MediaStore.Video.Thumbnails.MICRO_KIND);
     }
 
     /**

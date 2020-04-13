@@ -1,7 +1,7 @@
 package x.com.hl_mediacodec.kotlin.decoder
 
 import android.media.*
-import x.com.hl_mediacodec.kotlin.IExtractor
+import x.com.hl_mediacodec.kotlin.extractor.IExtractor
 import x.com.hl_mediacodec.kotlin.extractor.AudioExtractor
 import java.nio.ByteBuffer
 
@@ -9,7 +9,7 @@ import java.nio.ByteBuffer
  * 音频解码器
  *
  */
-class AudioDecoder(path: String): BaseDecoder(path) {
+class AudioDecoder(path: String): Decoder(path) {
     /**采样率*/
     private var mSampleRate = -1
 

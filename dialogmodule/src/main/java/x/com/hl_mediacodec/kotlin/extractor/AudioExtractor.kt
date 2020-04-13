@@ -1,7 +1,6 @@
 package x.com.hl_mediacodec.kotlin.extractor
 
 import android.media.MediaFormat
-import x.com.hl_mediacodec.kotlin.IExtractor
 import java.nio.ByteBuffer
 
 /**

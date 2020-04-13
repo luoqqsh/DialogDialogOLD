@@ -1,11 +1,13 @@
-package x.com.hl_gl.shader;
+package x.com.hl_gl.shader.base;
 
+
+import x.com.hl_gl.shader.ShaderInterface;
 
 /**
  * 无效果
  * Displays the normal video without any effect.
  */
-public class NoEffect implements ShaderInterface {
+public class VideoEffect implements ShaderInterface {
     @Override
     public String getShader(int width, int height) {
 

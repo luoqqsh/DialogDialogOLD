@@ -103,7 +103,7 @@ public class OpenGLUtils {
     }
 
     /**
-     * 创建纹理并配置:添加图片
+     * 创建FBO纹理并配置
      *
      * @param textures 纹理id数组(新建的)
      */

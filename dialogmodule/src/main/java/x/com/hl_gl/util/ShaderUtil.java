@@ -23,7 +23,9 @@ public class ShaderUtil {
     public static final String VMATRIX = "vMatrix";//顶点-矩阵变换
     public static final String VCOORD = "vCoord";//顶点-采样图片的坐标
     public static final String VPOSITION = "vPosition";//顶点-位置
+
     public static final String VTEXTURE = "vTexture";//片元-纹理采样器
+    public static final String VCOLOR = "vColor";//片元-纹理颜色
 
     /**
      * 从assets加载着色器资源
@@ -61,6 +63,7 @@ public class ShaderUtil {
     public static int createGlProgramByString(String vertexShader, String fragmentShader) {
         int vertexShaderId = loadShader(GL_VERTEX_SHADER, vertexShader);
         int fragmentShaderId = loadShader(GL_FRAGMENT_SHADER, fragmentShader);
+        //校验
         if (vertexShaderId == 0) {
             ViseLog.e("顶点着色器创建失败：\n" + vertexShader);
             return 0;
@@ -69,7 +72,9 @@ public class ShaderUtil {
             ViseLog.e("片元着色器创建失败：\n" + fragmentShader);
             return 0;
         }
+        //创建程序
         int programId = glCreateProgram();
+        //校验
         if (programId == 0) {
             ViseLog.e("programId = 0,创建失败：\n" +
                     "vertexShaderId：" + vertexShaderId + "  " +
@@ -79,7 +84,8 @@ public class ShaderUtil {
         //将着色器加入程序
         GLES30.glAttachShader(programId, vertexShaderId);
         GLES30.glAttachShader(programId, fragmentShaderId);
-        GLES30.glLinkProgram(programId);//到此可以反悔了，下面只要负责查错
+        GLES30.glLinkProgram(programId);
+        //到此可以返回了，下面只要负责查错
         //iv对应status，检查是否正确创建，没有其他作用
         //offset内存地址偏移，防止被逆向，一般为0即可。
         int[] linkStatus = new int[1];

@@ -17,9 +17,9 @@ class MediaCodecActivity : BaseActivity() {
     private lateinit var audioDecoder: AudioDecoder
     private lateinit var videoDecoder: VideoDecoder
     private val musicPath = "/storage/emulated/0/Music/不可说 - 霍建华、赵丽颖.mp3"
-//    private val videoPath = "/storage/emulated/0/mvtest.mp4"
+    private val videoPath = "/storage/emulated/0/mvtest.mp4"
 //    private val videoPath = "http://s.bizhijingling.com/uploadfile/coustom/2019//309/20190613170125729.mp4"
-    private val videoPath = "http://cstvpull.live.wscdns.com/live/xiamen1.flv"
+//    private val videoPath = "http://cstvpull.live.wscdns.com/live/xiamen1.flv"
     override fun getLayoutId(): Int {
         return R.layout.activity_mediacodec
     }

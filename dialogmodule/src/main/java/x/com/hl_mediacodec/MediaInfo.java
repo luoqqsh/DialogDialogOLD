@@ -475,7 +475,6 @@ public class MediaInfo {
                     ret = "文件存在, 但MediaInfo.prepare获取媒体信息失败,请查看下 文件是否是音频或视频, 或许演示工程APP名字不是我们demo中的名字:" + videoPath;
                 }
             }
-
         }
         return ret;
     }

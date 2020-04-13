@@ -1,4 +1,4 @@
-package x.com.hl_mediacodec.kotlin
+package x.com.hl_mediacodec.kotlin.decoder
 
 import android.media.MediaCodec
 import java.nio.ByteBuffer

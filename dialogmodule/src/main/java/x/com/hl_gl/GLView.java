@@ -22,7 +22,7 @@ public class GLView extends GLSurfaceView {
 
     private void init() {
         setEGLContextClientVersion(3);
-        mRenderer = new GLRenderer();
+        mRenderer = new GLRenderer(mContext);
         setRenderer(mRenderer);
         //自动调用，每秒60次
         setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
