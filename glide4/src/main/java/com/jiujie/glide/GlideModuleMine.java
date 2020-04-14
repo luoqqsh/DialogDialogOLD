@@ -10,8 +10,17 @@ import com.bumptech.glide.Registry;
 import com.bumptech.glide.annotation.GlideModule;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.cache.InternalCacheDiskCacheFactory;
+import com.bumptech.glide.load.model.FileLoader;
 import com.bumptech.glide.module.AppGlideModule;
 import com.bumptech.glide.request.RequestOptions;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+
+import x.com.hl_log.ViseLog;
 
 /**
  * 加这个标记，就表示配置了，不需要清单啥的另外配置了，@GlideModule
@@ -44,5 +53,17 @@ public class GlideModuleMine extends AppGlideModule {
     @Override
     public void registerComponents(@NonNull Context context, @NonNull Glide glide, @NonNull Registry registry) {
         super.registerComponents(context, glide, registry);
+    }
+
+    /**
+     * 清单解析的开启
+     * <p>
+     * 这里不开启，避免添加相同的modules两次
+     *
+     * @return
+     */
+    @Override
+    public boolean isManifestParsingEnabled() {
+        return false;
     }
 }

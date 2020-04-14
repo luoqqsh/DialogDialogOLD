@@ -1,7 +1,6 @@
 package x.com.hl_gl.renderer;
 
 import android.graphics.Bitmap;
-import android.opengl.GLES20;
 import android.opengl.GLES30;
 import android.opengl.GLUtils;
 

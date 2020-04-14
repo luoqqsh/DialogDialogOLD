@@ -1,9 +1,15 @@
 package x.com.dialogdialog
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.widget.Toast
 import androidx.lifecycle.Observer
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.transition.Transition
+import com.jiujie.glide.Picture
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.*
 import x.com.dialogdialog.BaseApp.BaseActivity
@@ -13,8 +19,14 @@ import x.com.hl_base.service.StepService
 import x.com.hl_livedatabus.LiveEventBus
 import x.com.hl_log.ViseLog
 import x.com.hl_tools.DialogTest.myObjectPool
+import x.com.hl_tools.hl_file
 import x.com.hl_tools.hl_permissions
 import x.com.hl_tools.hl_sharedP2
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.InputStream
+import java.net.HttpURLConnection
+import java.net.URL
 
 class DialogMainActivity : BaseActivity() {
     override fun initUI(savedInstanceState: Bundle?) {
@@ -34,7 +46,7 @@ class DialogMainActivity : BaseActivity() {
         liveEventBus()
         StepService.startStepService(mActivity)
 
-        hl_sharedP2.setParam(mActivity,"asd","dd是啥")
+        hl_sharedP2.setParam(mActivity, "asd", "dd是啥")
         val param1 = hl_sharedP2.remove(mActivity, "asd")
         ViseLog.d(param1)
         val param = hl_sharedP2.getParam(mActivity, "asd", "42")
@@ -96,6 +108,14 @@ class DialogMainActivity : BaseActivity() {
         mainMap.setOnClickListener { startActivity(Intent(mActivity, HHMapActivity::class.java)) }
         close.setOnClickListener { startActivity(Intent(mActivity, ListPlayerActivity::class.java)) }
         mainLocal.setOnClickListener {
+//            Glide.with(this).load(Picture(hl_file.SDROOT + File.separator + "jiamiimg.jpg")).into(mainImg)
+            Glide.with(this).load(Picture("https://ss.bscstorage.com/miguan/qutianqi/%E5%8A%A0%E5%AF%86%E6%96%87%E4%BB%B6.jpg")).into(mainImg)
+
+//            KTaskManagerB(OnSimpleListener {
+//                val imageBitmap = GlideUtil.instance().getImageBitmap(mActivity, R.mipmap.jiamiimg, 100, 100)
+//                ViseLog.d(imageBitmap)
+//            })
+
 
         }
         mainBBZ.setOnClickListener {
@@ -109,6 +129,33 @@ class DialogMainActivity : BaseActivity() {
 //            LiveEventBus.get("KEY_TEST_OBSERVE_FOREVER")
 //                    .post("Message To ForeverObserver: " + Random().nextInt(100))
         }
+    }
+
+    @Throws(Exception::class)
+    fun getFileStream(url: String?): ByteArray? {
+        try {
+            val httpUrl = URL(url)
+            val conn: HttpURLConnection = httpUrl.openConnection() as HttpURLConnection
+            conn.setRequestMethod("GET")
+            conn.setConnectTimeout(5 * 1000)
+            val inStream: InputStream = conn.getInputStream() //通过输入流获取图片数据
+            return readInputStream(inStream)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return null
+    }
+
+    @Throws(java.lang.Exception::class)
+    fun readInputStream(inStream: InputStream): ByteArray? {
+        val outStream = ByteArrayOutputStream()
+        val buffer = ByteArray(1024)
+        var len = 0
+        while (inStream.read(buffer).also { len = it } != -1) {
+            outStream.write(buffer, 0, len)
+        }
+        inStream.close()
+        return outStream.toByteArray()
     }
 
     private fun objectPool() {
