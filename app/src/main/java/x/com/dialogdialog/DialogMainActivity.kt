@@ -124,7 +124,7 @@ class DialogMainActivity : BaseActivity() {
                 }
 
                 override fun onDownLoadProgress(progress: Int) {
-//                    ViseLog.showInfo(progress)
+//                    ViseLog.showLog(progress)
                 }
 
                 override fun onDownLoadError(error: String) {

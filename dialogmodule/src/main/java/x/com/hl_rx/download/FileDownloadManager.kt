@@ -20,7 +20,7 @@ class FileDownloadManager(context: Context) {
     private var okHttpClient: OkHttpClient? = null
     private val context: Context = context.applicationContext
     private var call: Call? = null
-    private var loadedLength: Long = 0
+    private var loadedLength: Long = 0//已下载的文件大小
     private var isCancel = false
     fun setDownloadListener(downloadListener: DownloadListener?) {
         this.downloadListener = downloadListener
@@ -77,8 +77,8 @@ class FileDownloadManager(context: Context) {
                             body.close()
                             //如果大小一致，说明已经下载好了。可以直接返回结果
                             if (File(resultFilePath).length() == downloadFileLength) {
-                                if (downloadListener != null) {
-                                    downloadListener!!.onDownloadFinish(resultFilePath)
+                                withContext(Dispatchers.Main) {
+                                    if (downloadListener != null) downloadListener!!.onDownloadFinish(resultFilePath)
                                 }
                                 return@launch
                             }
@@ -124,7 +124,7 @@ class FileDownloadManager(context: Context) {
         }
     }
 
-    private fun saveFile(response: Response, resultFilePath: String) {
+    private suspend fun saveFile(response: Response, resultFilePath: String) {
         var `is`: InputStream? = null
         var fos: FileOutputStream? = null
         var body: ResponseBody? = null
@@ -143,16 +143,16 @@ class FileDownloadManager(context: Context) {
             if (loadedLength == total.toLong()) {
                 loadedLength = 0
             }
-            //            if (contentLength > total) {
-//                //断点续传的时候，body 的长度是剩余长度，不是总长度
-//                total = contentLength;
-//            }
-            if (downloadListener != null) downloadListener!!.onDownLoadStart(total)
+            withContext(Dispatchers.Main) {
+                if (downloadListener != null) downloadListener!!.onDownLoadStart(total.toInt())
+            }
             fos = FileOutputStream(file, true)
             var progress = 0
             //还在请求阶段触发的取消，网络卡的时候容易出现
             if (isCancel) {
-                if (downloadListener != null) downloadListener!!.onDownLoadCancel()
+                withContext(Dispatchers.Main) {
+                    if (downloadListener != null) downloadListener!!.onDownLoadCancel()
+                }
                 return
             }
             while (!isCancel && `is`.read(buf).also { len = it } != -1) {
@@ -164,24 +164,36 @@ class FileDownloadManager(context: Context) {
                 if (progressNew > progress) {
                     progress = progressNew
                     // 下载中更新进度条
-                    if (downloadListener != null) downloadListener!!.onDownLoadProgress(progress)
+                    withContext(Dispatchers.Main) {
+                        if (downloadListener != null) downloadListener!!.onDownLoadProgress(progress)
+                    }
                 }
             }
             fos.flush()
             //触发取消会停止掉while循环，而继续往下走
             if (isCancel) {
-                if (downloadListener != null) downloadListener!!.onDownLoadCancel()
+                withContext(Dispatchers.Main) {
+                    if (downloadListener != null) downloadListener!!.onDownLoadCancel()
+                }
                 return
             }
             // 下载完成
-            if (downloadListener != null) downloadListener!!.onDownloadFinish(resultFilePath)
+            withContext(Dispatchers.Main) {
+                if (downloadListener != null) downloadListener!!.onDownloadFinish(resultFilePath)
+            }
+
         } catch (e: Exception) {
             if (isCancel) {
-                if (downloadListener != null) downloadListener!!.onDownLoadCancel()
+                withContext(Dispatchers.Main) {
+                    if (downloadListener != null) downloadListener!!.onDownLoadCancel()
+                }
                 return
             }
             e.printStackTrace()
-            if (downloadListener != null) downloadListener!!.onDownLoadError(e.message)
+            withContext(Dispatchers.Main) {
+                if (downloadListener != null) downloadListener!!.onDownLoadError(e.message)
+            }
+
         } finally {
             try {
                 body?.close()
