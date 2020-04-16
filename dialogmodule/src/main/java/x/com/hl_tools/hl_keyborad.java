@@ -23,6 +23,11 @@ public class hl_keyborad {
         }
     }
 
+    public static boolean isInputShow(View view) {
+        InputMethodManager imm = (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        return imm.isActive();
+    }
+
     /**
      * 显示输入框
      *

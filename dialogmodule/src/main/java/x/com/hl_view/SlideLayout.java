@@ -32,7 +32,6 @@ import x.com.hl_dialog.R;
 /**
  * 需求透明主题，只能在清单里设置，Activity里设置无效！
  *
- * @author ChenJiaLiang
  * 改自blog http://blog.csdn.net/xiaanming
  */
 public class SlideLayout extends FrameLayout {

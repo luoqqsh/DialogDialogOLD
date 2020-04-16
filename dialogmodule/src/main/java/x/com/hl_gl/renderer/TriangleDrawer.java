@@ -50,12 +50,13 @@ public class TriangleDrawer {
         vertexBuffer.position(0);//设置缓冲区以读取第一个坐标
 
         mProgram = ShaderUtil.createGlProgramByString(vertexShaderCode, fragmentShaderCode);
+        GLES30.glUseProgram(mProgram);
+
     }
 
     public void draw() {
         OpenGLUtils.clearColor();
         // 将程序添加到OpenGL ES环境中
-        GLES30.glUseProgram(mProgram);
         //获取顶点着色器的vPosition成员的句柄
         mPositionHandle = GLES30.glGetAttribLocation(mProgram, ShaderUtil.VPOSITION);
         //启用三角形顶点的句柄

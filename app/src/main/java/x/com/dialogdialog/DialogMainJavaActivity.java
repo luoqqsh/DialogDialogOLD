@@ -23,6 +23,8 @@ import x.com.hl_base.interfaces.HOnListener;
 import x.com.hl_dialog.DFListFileDialog;
 import x.com.hl_livedatabus.LiveEventBus;
 import x.com.hl_log.ViseLog;
+import x.com.hl_rx.download.DownloadListener;
+import x.com.hl_rx.download.FileDownloadManager;
 import x.com.hl_rx.jiu.SimpleSubscriber;
 import x.com.hl_rx.test.TvListData;
 import x.com.hl_tools.hl_file;

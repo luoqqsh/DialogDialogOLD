@@ -27,8 +27,8 @@ public class GLRenderer extends BaseGLRenderer {
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
         OpenGLUtils.clearColor();
-//        mTriangle = new TriangleDrawer();
-        mBitmapDrawer = new BitmapDrawer(hl_bitmap.getBitmapFromDrawableId(context, R.mipmap.img_dingbu));
+        mTriangle = new TriangleDrawer();
+//        mBitmapDrawer = new BitmapDrawer(hl_bitmap.getBitmapFromDrawableId(context, R.mipmap.img_dingbu));
     }
 
     @Override
@@ -39,8 +39,8 @@ public class GLRenderer extends BaseGLRenderer {
 
     @Override
     public void onDrawFrame(GL10 gl) {
-//        mTriangle.draw();
-        mBitmapDrawer.onDraw();
+        mTriangle.draw();
+//        mBitmapDrawer.onDraw();
     }
 
 }

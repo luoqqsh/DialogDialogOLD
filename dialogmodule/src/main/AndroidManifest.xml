@@ -64,6 +64,7 @@
                 <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
             </intent-filter>
         </service>
+        <service android:name="x.com.hl_rx.download.FileDownloadService" />
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

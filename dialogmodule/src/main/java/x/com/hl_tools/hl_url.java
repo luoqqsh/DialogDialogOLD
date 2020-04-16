@@ -54,7 +54,7 @@ public class hl_url {
      * @param params 参数
      * @return 连接结果
      */
-    private static StringBuffer joinParam(Map<String, String> params) {
+    public static StringBuffer joinParam(Map<String, String> params) {
         StringBuffer result = new StringBuffer();
         Iterator<Map.Entry<String, String>> iterator = params.entrySet().iterator();
         while (iterator.hasNext()) {
@@ -67,5 +67,10 @@ public class hl_url {
             }
         }
         return result;
+    }
+
+    public static String getFileNameFromUrl(String url) {
+        int index = url.lastIndexOf("/");
+        return url.substring(index + 1);
     }
 }

@@ -272,19 +272,6 @@ public abstract class HLBaseActivity extends KBaseActivity {
         return R.layout.base_loading_nodata;
     }
 
-    //该方法是将activity设置为不透明，需求冲突的话，需另寻方案
-    public void fixRotateBug26() {
-        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.O && isTranslucentOrFloating()) {
-            try {
-                Method method = Activity.class.getDeclaredMethod("convertFromTranslucent");
-                method.setAccessible(true);
-                method.invoke(this);
-            } catch (Throwable t) {
-                t.printStackTrace();
-            }
-        }
-    }
-
     /**
      * 启动旋转监听
      */

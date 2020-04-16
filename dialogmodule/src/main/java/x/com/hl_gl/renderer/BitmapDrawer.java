@@ -28,7 +28,7 @@ public class BitmapDrawer {
     };
     private FloatBuffer vertexBuffer;
     private FloatBuffer mTextureBuffer;
-    private int mTextureId;
+    private int[] mTextureId = new int[1];
 
     public BitmapDrawer(Bitmap bitmap) {
         this.bitmap = bitmap;
@@ -63,7 +63,7 @@ public class BitmapDrawer {
         //着色器
         programId = ShaderUtil.createGlProgramByString(BitmapEffect.getVertexShader(), BitmapEffect.getFragmentShader());
 
-        mTextureId = OpenGLUtils.createTextureObject(mTextureId);
+        mTextureId[0] = OpenGLUtils.createTextureObject(mTextureId[0]);
     }
 
     public void onDraw() {
@@ -74,7 +74,8 @@ public class BitmapDrawer {
         activateTexture();
         if (!bitmap.isRecycled()) {
             //绑定图片到被激活的纹理单元
-            GLUtils.texImage2D(GLES30.GL_TEXTURE_2D, 0, bitmap, 0);
+            OpenGLUtils.glGenTextures(mTextureId, bitmap);
+//            GLUtils.texImage2D(GLES30.GL_TEXTURE_2D, 0, bitmap, 0);
         }
         //启用顶点的句柄
         GLES30.glEnableVertexAttribArray(mVertexPosHandler);
@@ -93,7 +94,7 @@ public class BitmapDrawer {
         //激活指定纹理单元
         GLES30.glActiveTexture(GLES30.GL_TEXTURE0);
         //绑定纹理ID到纹理单元
-        GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, mTextureId);
+        GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, mTextureId[0]);
         //将激活的纹理单元传递到着色器里面
         GLES30.glUniform1i(mTextureHandler, 0);
         //配置边缘过渡参数

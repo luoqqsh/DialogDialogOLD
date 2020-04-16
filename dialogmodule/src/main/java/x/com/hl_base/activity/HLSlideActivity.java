@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.TypedArray;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,6 +31,10 @@ public abstract class HLSlideActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * 安卓8.0的系统在targetSdkVersion不是26的情况下，可以使用这个
+     * @return
+     */
     private boolean fixOrientation() {
         try {
             Field field = Activity.class.getDeclaredField("mActivityInfo");
@@ -76,5 +81,17 @@ public abstract class HLSlideActivity extends AppCompatActivity {
         super.finish();
         if (swipeBackLayout != null)
             overridePendingTransition(0, R.anim.slide_right_out);
+    }
+    //该方法是将activity设置为不透明，需求冲突的话，需另寻方案
+    public void fixRotateBug26() {
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.O && isTranslucentOrFloating()) {
+            try {
+                Method method = Activity.class.getDeclaredMethod("convertFromTranslucent");
+                method.setAccessible(true);
+                method.invoke(this);
+            } catch (Throwable t) {
+                t.printStackTrace();
+            }
+        }
     }
 }

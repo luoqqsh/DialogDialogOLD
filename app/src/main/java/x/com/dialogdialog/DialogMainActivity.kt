@@ -1,15 +1,9 @@
 package x.com.dialogdialog
 
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.widget.Toast
 import androidx.lifecycle.Observer
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.SimpleTarget
-import com.bumptech.glide.request.transition.Transition
-import com.jiujie.glide.Picture
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.*
 import x.com.dialogdialog.BaseApp.BaseActivity
@@ -18,10 +12,13 @@ import x.com.dialogdialog.bbz.BBZActivity
 import x.com.hl_base.service.StepService
 import x.com.hl_livedatabus.LiveEventBus
 import x.com.hl_log.ViseLog
+import x.com.hl_rx.download.DownloadListener
+import x.com.hl_rx.download.FileDownloadManager
 import x.com.hl_tools.DialogTest.myObjectPool
 import x.com.hl_tools.hl_file
 import x.com.hl_tools.hl_permissions
 import x.com.hl_tools.hl_sharedP2
+import x.com.hl_tools.hl_url
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.InputStream
@@ -29,6 +26,8 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 class DialogMainActivity : BaseActivity() {
+    private var instance: FileDownloadManager? = null
+
     override fun initUI(savedInstanceState: Bundle?) {
         init()
         hl_permissions.applyWriteStoragePermission(mActivity, null)
@@ -109,7 +108,7 @@ class DialogMainActivity : BaseActivity() {
         close.setOnClickListener { startActivity(Intent(mActivity, ListPlayerActivity::class.java)) }
         mainLocal.setOnClickListener {
 //            Glide.with(this).load(Picture(hl_file.SDROOT + File.separator + "jiamiimg.jpg")).into(mainImg)
-            Glide.with(this).load(Picture("https://ss.bscstorage.com/miguan/qutianqi/%E5%8A%A0%E5%AF%86%E6%96%87%E4%BB%B6.jpg")).into(mainImg)
+//            Glide.with(this).load(Picture("https://ss.bscstorage.com/miguan/qutianqi/%E5%8A%A0%E5%AF%86%E6%96%87%E4%BB%B6.jpg")).into(mainImg)
 
 //            KTaskManagerB(OnSimpleListener {
 //                val imageBitmap = GlideUtil.instance().getImageBitmap(mActivity, R.mipmap.jiamiimg, 100, 100)
@@ -117,9 +116,31 @@ class DialogMainActivity : BaseActivity() {
 //            })
 
 
+            instance = FileDownloadManager.getInstance(mActivity)
+            instance!!.setDownloadListener(object : DownloadListener {
+                override fun onDownLoadStart(progress: Int) {}
+                override fun onDownLoadCancel() {
+                    ViseLog.d("cancel")
+                }
+
+                override fun onDownLoadProgress(progress: Int) {
+//                    ViseLog.showInfo(progress)
+                }
+
+                override fun onDownLoadError(error: String) {
+                    ViseLog.e(error)
+                }
+
+                override fun onDownloadFinish(filePath: String) {
+                    ViseLog.d(filePath)
+                }
+            })
+            val downloadUrl = "http://192.168.102.77/APK/%E8%A5%BF%E6%9F%9A%E8%A7%86%E9%A2%91/2.4.0/xysp_yingyongbao(10).apk"
+            instance!!.startDownload(downloadUrl, hl_file.DOWNLOADS + File.separator + hl_url.getFileNameFromUrl(downloadUrl))
         }
         mainBBZ.setOnClickListener {
-            startActivity(Intent(mActivity, BBZActivity::class.java))
+//            startActivity(Intent(mActivity, BBZActivity::class.java))
+            instance!!.cancelDownload()
         }
         mainDialog.setOnClickListener {
             startActivity(Intent(mActivity, DialogActivity::class.java))
