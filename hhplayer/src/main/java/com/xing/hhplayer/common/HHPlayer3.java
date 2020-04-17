@@ -4,6 +4,7 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.SurfaceTexture;
+import android.net.Uri;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -20,8 +21,6 @@ import android.widget.ImageView;
 import androidx.fragment.app.FragmentActivity;
 
 import com.example.hhplayer.R;
-import com.xing.hhplayer.common.tvbean.TvDataList;
-import com.xing.hhplayer.common.tvbean.TvView;
 import com.xing.hhplayer.common.TypeBean.PlayerPrePareStateType;
 import com.xing.hhplayer.common.TypeBean.PlayerStateType;
 import com.xing.hhplayer.common.TypeBean.PlayerViewType;
@@ -34,6 +33,8 @@ import com.xing.hhplayer.common.View.HHThumbView;
 import com.xing.hhplayer.common.base.ControlViewInterface;
 import com.xing.hhplayer.common.base.HHPlayerCore;
 import com.xing.hhplayer.common.base.OnPlayerListener;
+import com.xing.hhplayer.common.tvbean.TvDataList;
+import com.xing.hhplayer.common.tvbean.TvView;
 
 import java.util.List;
 import java.util.Map;
@@ -102,6 +103,8 @@ public class HHPlayer3 {
     private OnPlayerListener<Object> corePreparedListener = new OnPlayerListener<Object>() {
         @Override
         public void onListen(Object o) {
+            hhPlayerCore.playerPrePareState = PlayerPrePareStateType.PREPARED;
+            hhPlayerCore.mPlayerState = PlayerStateType.PREPARED;
             hhPlayerCore.setScalingMode(0);
             hhPlayerCore.isLive = hhPlayerCore.getMediaDurationMS() == 0;
             screenScale = PlayerViewType.SCREEN_SCALE_DEFAULT;
@@ -157,6 +160,8 @@ public class HHPlayer3 {
     private OnPlayerListener<Object> coreErrorListener = new OnPlayerListener<Object>() {
         @Override
         public void onListen(Object o) {
+            hhPlayerCore.mPlayerState = PlayerStateType.ERROR;
+            hhPlayerCore.playerPrePareState = PlayerPrePareStateType.ERROR;
             ViseLog.e(hhPlayerCore.ETAG, o);
             if (cvInterface != null) {
                 cvInterface.getPrePareState(PlayerPrePareStateType.ERROR);
@@ -405,14 +410,34 @@ public class HHPlayer3 {
         prepare(path, "");
     }
 
+    public void prepare(Uri path) {
+        currentPlayIndex = -1;
+        try {
+            hhPlayerCore.prepare(path);
+        } catch (Exception e) {
+            e.printStackTrace();
+            coreErrorListener.onListen("Prepare异常:" + e.getMessage());
+        }
+    }
+
     //准备-地址，标题
     public void prepare(String path, String title) {
+        if (TextUtils.isEmpty(path)) {
+            coreErrorListener.onListen("地址为空:");
+            return;
+        }
         this.title = title;
         hhPlayerCore.mPlayerState = PlayerStateType.IDLE;
+        hhPlayerCore.playerPrePareState = PlayerPrePareStateType.PREPARING;
         if (cvInterface != null) {
-            cvInterface.getPrePareState(PlayerPrePareStateType.PREPARING);
+            cvInterface.getPrePareState(hhPlayerCore.playerPrePareState);
         }
-        hhPlayerCore.prepare(path);
+        try {
+            hhPlayerCore.prepare(path);
+        } catch (Exception e) {
+            e.printStackTrace();
+            coreErrorListener.onListen("Prepare异常:" + e.getMessage());
+        }
         ViseLog.showInfo(hhPlayerCore.TAG, "开始加载:" + path);
     }
 
@@ -433,17 +458,11 @@ public class HHPlayer3 {
             if (tvLists.get(position) != null && tvLists.get(position).getChannelURLs().size() != 0) {
                 prepare(tvLists.get(position).getChannelURLs().get(0).getChannelURL(), tvLists.get(position).getChannelName());
             } else {
-                ViseLog.e(hhPlayerCore.ETAG, "播放频道为空数据");
-                if (hhPlayerCore.onCoreErrorListener != null) {
-                    hhPlayerCore.onCoreErrorListener.onListen("播放频道为空数据");
-                }
+                coreErrorListener.onListen("播放频道为空数据");
             }
         } else {
-            ViseLog.e(hhPlayerCore.ETAG, "播放列表为空，或不存在");
-            if (hhPlayerCore.onCoreErrorListener != null) {
-                hhPlayerCore.onCoreErrorListener.onListen("播放列表为空，或不存在");
-            }
             currentPlayIndex = -1;
+            coreErrorListener.onListen("播放列表为空，或不存在");
         }
     }
 
@@ -471,10 +490,15 @@ public class HHPlayer3 {
 
     public void restart() {
         if (!TextUtils.isEmpty((CharSequence) hhPlayerCore.getMediaPath()) && hhPlayerCore.isPlayControl()) {
-            hhPlayerCore.prepare(hhPlayerCore.getMediaPath().toString());
-            hhPlayerCore.getCurrentStop();
-            hhPlayerCore.mPlayerState = PlayerStateType.IDLE;
-            isReStart = true;
+            try {
+                isReStart = true;
+                hhPlayerCore.getCurrentStop();
+                hhPlayerCore.mPlayerState = PlayerStateType.IDLE;
+                hhPlayerCore.prepare(hhPlayerCore.getMediaPath().toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+                coreErrorListener.onListen("Prepare异常:" + e.getMessage());
+            }
         }
     }
 
@@ -642,11 +666,19 @@ public class HHPlayer3 {
 
     /***********************************初始化view部分**************************************************************/
     public void initSurface(Surface surface) {
-        hhPlayerCore.initView(surface);
+        if (surface != null && surface.isValid()) {
+            hhPlayerCore.initView(surface);
+        } else {
+            ViseLog.e(hhPlayerCore.ETAG, "surface无效");
+        }
     }
 
     public void initSurfaceHolder(SurfaceHolder surfaceHolder) {
-        hhPlayerCore.initView(surfaceHolder);
+        if (surfaceHolder != null) {
+            hhPlayerCore.initView(surfaceHolder);
+        } else {
+            ViseLog.e(hhPlayerCore.ETAG, "surfaceHolder为空");
+        }
     }
 
     private void initSurfaceView() {

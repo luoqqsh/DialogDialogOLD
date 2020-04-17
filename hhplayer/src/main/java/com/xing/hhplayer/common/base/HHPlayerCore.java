@@ -42,9 +42,9 @@ public abstract class HHPlayerCore {
     private long timeMs = 0;//时间计数
     public int videoScalingMode;//缩放模式,0为默认大小，1为填充
 
-    public abstract void prepare(String mediaPath);
+    public abstract void prepare(String mediaPath) throws Exception;
 
-    public abstract void prepare(Uri mediaUri);
+    public abstract void prepare(Uri mediaUri) throws Exception;
 
     public abstract void start();
 

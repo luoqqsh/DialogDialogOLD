@@ -4,7 +4,6 @@ import android.content.ContentResolver;
 import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.Build;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 
@@ -33,19 +32,17 @@ public class HHijkPlayer extends HHPlayerCore {
 
     @Override
     public void initView(Surface surface) {
-        if (surface.isValid() && mediaPlayer != null) {
+        if (mediaPlayer != null) {
             this.surface = surface;
             mediaPlayer.setSurface(surface);
-            ViseLog.showInfo(TAG, "surface设置成功");
         }
     }
 
     @Override
     public void initView(SurfaceHolder surfaceHolder) {
         if (mediaPlayer != null) {
-            this.surface = surfaceHolder.getSurface();
-            mediaPlayer.setSurface(surface);
-            ViseLog.showInfo(TAG, "surfaceHolder设置成功");
+            this.surfaceHolder = surfaceHolder;
+            mediaPlayer.setDisplay(surfaceHolder);
         }
     }
 
@@ -55,8 +52,6 @@ public class HHijkPlayer extends HHPlayerCore {
             mediaPlayer.setOnPreparedListener(new IjkMediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(IMediaPlayer mp) {
-                    playerPrePareState = PlayerPrePareStateType.PREPARED;
-                    mPlayerState = PlayerStateType.PREPARED;
                     videoWidth = mediaPlayer.getVideoWidth();
                     videoHeight = mediaPlayer.getVideoHeight();
                     mediaPlayer.setVolume(volume, volume);
@@ -87,9 +82,7 @@ public class HHijkPlayer extends HHPlayerCore {
             mediaPlayer.setOnErrorListener(new IjkMediaPlayer.OnErrorListener() {
                 @Override
                 public boolean onError(IMediaPlayer mp, int what, int extra) {
-                    mPlayerState = PlayerStateType.ERROR;
-                    playerPrePareState = PlayerPrePareStateType.ERROR;
-                    String err = "ijk播放出错：" + what + " " + extra + " " + mPlayerState + "\n" + mediaPath;
+                    String err = "ijk播放出错：" + what + " " + extra + "\n" + mediaPath;
                     onCoreErrorListener.onListen(err);
                     return false;
                 }
@@ -132,55 +125,32 @@ public class HHijkPlayer extends HHPlayerCore {
     }
 
     @Override
-    public void prepare(String path) {
-        if (path == null) {
-            onCoreErrorListener.onListen("地址为空！");
-            return;
-        }
+    public void prepare(String path) throws Exception {
         this.mediaPath = path;
         stop();
         reset();//ijkplayer调用reset会连画布一起重置，画布不会销毁
-        try {
-            playerPrePareState = PlayerPrePareStateType.PREPARING;
-            Uri uri = Uri.parse((String) mediaPath);
-            if (uri.getScheme() != null && uri.getScheme().equals(ContentResolver.SCHEME_ANDROID_RESOURCE)) {
-                AssetFileDescriptor fileDescriptor = context.getApplicationContext().getContentResolver().openAssetFileDescriptor(hl_uri.str2Uri(String.valueOf(this.mediaPath)), "r");
-                mediaPlayer.setDataSource(new RawDataSourceProvider(fileDescriptor));
-            } else if (getHeaders() != null) {//url with headers
-                Class<MediaPlayer> clazz = MediaPlayer.class;
-                Method method = clazz.getDeclaredMethod("setDataSource", String.class, Map.class);
-                method.invoke(mediaPlayer, mediaPath, getHeaders());
-            } else {
-                mediaPlayer.setDataSource(String.valueOf(mediaPath));
-            }
-            mediaPlayer.prepareAsync();//异步
-        } catch (Exception e) {
-            e.printStackTrace();
-            mPlayerState = PlayerStateType.ERROR;
-            playerPrePareState = PlayerPrePareStateType.ERROR;
-            onCoreErrorListener.onListen("Prepare异常");
+        Uri uri = Uri.parse((String) mediaPath);
+        if (uri.getScheme() != null && uri.getScheme().equals(ContentResolver.SCHEME_ANDROID_RESOURCE)) {
+            AssetFileDescriptor fileDescriptor = context.getApplicationContext().getContentResolver().openAssetFileDescriptor(hl_uri.str2Uri(String.valueOf(this.mediaPath)), "r");
+            mediaPlayer.setDataSource(new RawDataSourceProvider(fileDescriptor));
+        } else if (getHeaders() != null) {//url with headers
+            Class<MediaPlayer> clazz = MediaPlayer.class;
+            Method method = clazz.getDeclaredMethod("setDataSource", String.class, Map.class);
+            method.invoke(mediaPlayer, mediaPath, getHeaders());
+        } else {
+            mediaPlayer.setDataSource(String.valueOf(mediaPath));
         }
+        mediaPlayer.prepareAsync();//异步
     }
 
     @Override
-    public void prepare(Uri mediaUri) {
-        if (mediaUri == null) {
-            onCoreErrorListener.onListen("地址为空！");
-            return;
-        }
+    public void prepare(Uri mediaUri) throws Exception {
         this.mediaUri = mediaUri;
         stop();
         reset();//ijkplayer调用reset会连画布一起重置，画布不会销毁
-        try {
-            playerPrePareState = PlayerPrePareStateType.PREPARING;
-            mediaPlayer.setDataSource(context, mediaUri);
-            mediaPlayer.prepareAsync();//异步
-        } catch (Exception e) {
-            e.printStackTrace();
-            mPlayerState = PlayerStateType.ERROR;
-            playerPrePareState = PlayerPrePareStateType.ERROR;
-            onCoreErrorListener.onListen("Prepare异常");
-        }
+        playerPrePareState = PlayerPrePareStateType.PREPARING;
+        mediaPlayer.setDataSource(context, mediaUri);
+        mediaPlayer.prepareAsync();//异步
     }
 
     @Override

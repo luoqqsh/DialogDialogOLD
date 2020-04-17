@@ -2,7 +2,6 @@ package com.xing.hhplayer.common.base;
 
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
-import android.media.AudioDeviceInfo;
 import android.media.MediaPlayer;
 import android.net.TrafficStats;
 import android.net.Uri;
@@ -33,27 +32,17 @@ public class HHMediaPlayer extends HHPlayerCore {
 
     @Override
     public void initView(SurfaceHolder surfaceHolder) {
-        if (surfaceHolder != null) {
-            this.surfaceHolder = surfaceHolder;
-            if (mediaPlayer != null) {
-                mediaPlayer.setDisplay(surfaceHolder);
-                ViseLog.showInfo(TAG, "surfaceHolder设置成功");
-            }
-        } else {
-            onCoreErrorListener.onListen("surfaceHolder为空！");
+        this.surfaceHolder = surfaceHolder;
+        if (mediaPlayer != null) {
+            mediaPlayer.setDisplay(surfaceHolder);
         }
     }
 
     @Override
     public void initView(Surface surface) {
-        if (surface != null) {
-            this.surface = surface;
-            if (mediaPlayer != null && surface.isValid()) {
-                mediaPlayer.setSurface(surface);
-                ViseLog.showInfo(TAG, "surface设置成功");
-            }
-        } else {
-            onCoreErrorListener.onListen("surface为空！");
+        this.surface = surface;
+        if (mediaPlayer != null) {
+            mediaPlayer.setSurface(surface);
         }
     }
 
@@ -63,8 +52,6 @@ public class HHMediaPlayer extends HHPlayerCore {
             mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mp) {
-                    playerPrePareState = PlayerPrePareStateType.PREPARED;
-                    mPlayerState = PlayerStateType.PREPARED;
                     videoWidth = mediaPlayer.getVideoWidth();
                     videoHeight = mediaPlayer.getVideoHeight();
                     setVolume(volume);
@@ -96,9 +83,7 @@ public class HHMediaPlayer extends HHPlayerCore {
             mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
                 @Override
                 public boolean onError(MediaPlayer mp, int what, int extra) {
-                    mPlayerState = PlayerStateType.ERROR;
-                    playerPrePareState = PlayerPrePareStateType.ERROR;
-                    String err = "player播放出错：" + what + " " + extra + " " + mPlayerState;
+                    String err = "player播放出错：" + what + " " + extra + "\n" + mediaPath;
                     onCoreErrorListener.onListen(err);
                     return false;
                 }
@@ -106,9 +91,7 @@ public class HHMediaPlayer extends HHPlayerCore {
             mediaPlayer.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
                 @Override
                 public void onBufferingUpdate(MediaPlayer mp, int percent) {
-                    if (onCoreBufferingUpdateListener != null) {
-                        onCoreBufferingUpdateListener.onListen(percent);
-                    }
+                    onCoreBufferingUpdateListener.onListen(percent);
                 }
             });
             mediaPlayer.setOnInfoListener(new MediaPlayer.OnInfoListener() {
@@ -161,7 +144,7 @@ public class HHMediaPlayer extends HHPlayerCore {
     }
 
     @Override
-    public void prepare(Uri mediaUri) {
+    public void prepare(Uri mediaUri) throws Exception {
         if (mediaUri == null) {
             onCoreErrorListener.onListen("地址为空！");
             return;
@@ -169,45 +152,26 @@ public class HHMediaPlayer extends HHPlayerCore {
         this.mediaUri = mediaUri;
         stop();
         reset();
-        try {
-            mediaPlayer.setDataSource(context, mediaUri);
-            mediaPlayer.prepareAsync();//异步
-        } catch (Exception e) {
-            e.printStackTrace();
-            mPlayerState = PlayerStateType.ERROR;
-            playerPrePareState = PlayerPrePareStateType.ERROR;
-            onCoreErrorListener.onListen("Prepare异常");
-        }
+        mediaPlayer.setDataSource(context, mediaUri);
+        mediaPlayer.prepareAsync();//异步
     }
 
     @Override
-    public void prepare(String path) {
-        if (path == null) {
-            onCoreErrorListener.onListen("地址为空！");
-            return;
-        }
+    public void prepare(String path) throws Exception {
         this.mediaPath = path;
         stop();
         reset();
-        try {
-            playerPrePareState = PlayerPrePareStateType.PREPARING;
-            if (mediaPath instanceof AssetFileDescriptor) {//Android assets file
-                AssetFileDescriptor fd = (AssetFileDescriptor) mediaPath;
-                mediaPlayer.setDataSource(fd.getFileDescriptor(), fd.getStartOffset(), fd.getLength());
-            } else if (getHeaders() != null) {//url with headers
-                Class<MediaPlayer> clazz = MediaPlayer.class;
-                Method method = clazz.getDeclaredMethod("setDataSource", String.class, Map.class);
-                method.invoke(mediaPlayer, mediaPath.toString(), getHeaders());
-            } else {//本地、网络地址
-                mediaPlayer.setDataSource(mediaPath.toString());
-            }
-            mediaPlayer.prepareAsync();//异步
-        } catch (Exception e) {
-            e.printStackTrace();
-            mPlayerState = PlayerStateType.ERROR;
-            playerPrePareState = PlayerPrePareStateType.ERROR;
-            onCoreErrorListener.onListen("Prepare异常");
+        if (mediaPath instanceof AssetFileDescriptor) {//Android assets file
+            AssetFileDescriptor fd = (AssetFileDescriptor) mediaPath;
+            mediaPlayer.setDataSource(fd.getFileDescriptor(), fd.getStartOffset(), fd.getLength());
+        } else if (getHeaders() != null) {//url with headers
+            Class<MediaPlayer> clazz = MediaPlayer.class;
+            Method method = clazz.getDeclaredMethod("setDataSource", String.class, Map.class);
+            method.invoke(mediaPlayer, mediaPath.toString(), getHeaders());
+        } else {//本地、网络地址
+            mediaPlayer.setDataSource(mediaPath.toString());
         }
+        mediaPlayer.prepareAsync();//异步
     }
 
     @Override
