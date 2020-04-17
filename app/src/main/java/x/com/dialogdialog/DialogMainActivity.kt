@@ -1,26 +1,27 @@
 package x.com.dialogdialog
 
+import android.content.ComponentName
 import android.content.Intent
+import android.content.ServiceConnection
 import android.os.Bundle
+import android.os.IBinder
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.*
 import x.com.dialogdialog.BaseApp.BaseActivity
 import x.com.dialogdialog.Viewpager2.ViewActivity
-import x.com.dialogdialog.bbz.BBZActivity
 import x.com.hl_base.service.StepService
 import x.com.hl_livedatabus.LiveEventBus
 import x.com.hl_log.ViseLog
 import x.com.hl_rx.download.DownloadListener
 import x.com.hl_rx.download.FileDownloadManager
+import x.com.hl_rx.download.FileDownloadService
 import x.com.hl_tools.DialogTest.myObjectPool
 import x.com.hl_tools.hl_file
 import x.com.hl_tools.hl_permissions
 import x.com.hl_tools.hl_sharedP2
-import x.com.hl_tools.hl_url
 import java.io.ByteArrayOutputStream
-import java.io.File
 import java.io.InputStream
 import java.net.HttpURLConnection
 import java.net.URL
@@ -115,28 +116,55 @@ class DialogMainActivity : BaseActivity() {
 //                ViseLog.d(imageBitmap)
 //            })
 
-
-            instance = FileDownloadManager.getInstance(mActivity)
-            instance!!.setDownloadListener(object : DownloadListener {
-                override fun onDownLoadStart(progress: Int) {}
-                override fun onDownLoadCancel() {
-                    ViseLog.d("cancel")
-                }
-
-                override fun onDownLoadProgress(progress: Int) {
-//                    ViseLog.showLog(progress)
-                }
-
-                override fun onDownLoadError(error: String) {
-                    ViseLog.e(error)
-                }
-
-                override fun onDownloadFinish(filePath: String) {
-                    ViseLog.d(filePath)
-                }
-            })
             val downloadUrl = "http://192.168.102.77/APK/%E8%A5%BF%E6%9F%9A%E8%A7%86%E9%A2%91/2.4.0/xysp_yingyongbao(10).apk"
-            instance!!.startDownload(downloadUrl, hl_file.DOWNLOADS + File.separator + hl_url.getFileNameFromUrl(downloadUrl))
+
+            FileDownloadService.bindService(mActivity.applicationContext, object : ServiceConnection {
+                override fun onServiceConnected(name: ComponentName, service: IBinder) {
+                    (service as FileDownloadService.DownloadBinder).start(downloadUrl, hl_file.DOWNLOADS, "xx.apk", object : DownloadListener {
+                        override fun onDownLoadError(error: String?) {
+                            ViseLog.d(error)
+                        }
+
+                        override fun onDownLoadStart(startProgress: Int) {
+                        }
+
+                        override fun onDownLoadCancel() {
+                        }
+
+                        override fun onDownloadFinish(filePath: String?) {
+                            ViseLog.d(filePath)
+                        }
+
+                        override fun onDownLoadProgress(progress: Int) {
+                            ViseLog.showInfo(progress)
+                        }
+
+                    })
+                }
+
+                override fun onServiceDisconnected(name: ComponentName) {}
+            })
+
+//            instance = FileDownloadManager.getInstance(mActivity)
+//            instance!!.setDownloadListener(object : DownloadListener {
+//                override fun onDownLoadStart(progress: Int) {}
+//                override fun onDownLoadCancel() {
+//                    ViseLog.d("cancel")
+//                }
+//
+//                override fun onDownLoadProgress(progress: Int) {
+////                    ViseLog.showLog(progress)
+//                }
+//
+//                override fun onDownLoadError(error: String) {
+//                    ViseLog.e(error)
+//                }
+//
+//                override fun onDownloadFinish(filePath: String) {
+//                    ViseLog.d(filePath)
+//                }
+//            })
+//            instance!!.startDownload(downloadUrl, hl_file.DOWNLOADS + File.separator + hl_url.getFileNameFromUrl(downloadUrl))
         }
         mainBBZ.setOnClickListener {
 //            startActivity(Intent(mActivity, BBZActivity::class.java))
@@ -157,9 +185,9 @@ class DialogMainActivity : BaseActivity() {
         try {
             val httpUrl = URL(url)
             val conn: HttpURLConnection = httpUrl.openConnection() as HttpURLConnection
-            conn.setRequestMethod("GET")
-            conn.setConnectTimeout(5 * 1000)
-            val inStream: InputStream = conn.getInputStream() //通过输入流获取图片数据
+            conn.requestMethod = "GET"
+            conn.connectTimeout = 5 * 1000
+            val inStream: InputStream = conn.inputStream //通过输入流获取图片数据
             return readInputStream(inStream)
         } catch (e: Exception) {
             e.printStackTrace()
@@ -200,4 +228,6 @@ class DialogMainActivity : BaseActivity() {
 //            LiveEventBus.get("KEY_TEST_OBSERVE").post(23423423)
         }
     }
+
+
 }

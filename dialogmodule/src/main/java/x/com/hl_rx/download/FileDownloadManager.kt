@@ -19,8 +19,9 @@ class FileDownloadManager(context: Context) {
     private val resultFilePaths: MutableList<String>
     private var okHttpClient: OkHttpClient? = null
     private val context: Context = context.applicationContext
-    private var call: Call? = null
-    private var loadedLength: Long = 0//已下载的文件大小
+    private var downloadCall: Call? = null
+    private var downloadedLength: Long = 0//已下载的文件大小
+    private var downloadFileLength: Long = 0//要下载文件的大小
     private var isCancel = false
     fun setDownloadListener(downloadListener: DownloadListener?) {
         this.downloadListener = downloadListener
@@ -45,7 +46,7 @@ class FileDownloadManager(context: Context) {
     @Synchronized
     fun cancelDownload() {
         isCancel = true
-        call!!.cancel()
+        downloadCall!!.cancel()
     }
 
     @Synchronized
@@ -59,16 +60,17 @@ class FileDownloadManager(context: Context) {
     }
 
     @Synchronized
-    fun download(url: String?, resultFilePath: String) {
+    fun download(url: String, resultFilePath: String) {
         CoroutineScope(Dispatchers.IO).launch {
             if (hl_permissions.checkPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                 if (okHttpClient == null) {
                     okHttpClient = OkHttpClient()
                 }
-                var downloadFileLength: Long = 0
+                //存在可能下载一半的文件
                 if (hl_file.isFileExist(resultFilePath)) {
                     //如果文件存在，需要先获取下载文件大小，已确定是否启用断点续传
-                    val getSizeRequest = Request.Builder().url(url!!).build()
+                    downloadedLength = File(resultFilePath).length()
+                    val getSizeRequest = Request.Builder().url(url).build()
                     try {
                         val execute = okHttpClient!!.newCall(getSizeRequest).execute()
                         val body = execute.body
@@ -76,7 +78,7 @@ class FileDownloadManager(context: Context) {
                             downloadFileLength = body.contentLength()
                             body.close()
                             //如果大小一致，说明已经下载好了。可以直接返回结果
-                            if (File(resultFilePath).length() == downloadFileLength) {
+                            if (downloadedLength == downloadFileLength) {
                                 withContext(Dispatchers.Main) {
                                     if (downloadListener != null) downloadListener!!.onDownloadFinish(resultFilePath)
                                 }
@@ -86,19 +88,17 @@ class FileDownloadManager(context: Context) {
                     } catch (e: IOException) {
                         e.printStackTrace()
                     }
-                    call = if (downloadFileLength == 0L) {
-                        val request = Request.Builder().url(url).build()
-                        okHttpClient!!.newCall(request)
+                    val request = if (downloadFileLength == 0L) {
+                        Request.Builder().url(url).build()
                     } else {
-                        val request = Request.Builder().addHeader("RANGE", "bytes=$loadedLength-$downloadFileLength").url(url).build()
-                        okHttpClient!!.newCall(request)
+                        Request.Builder().addHeader("RANGE", "bytes=$downloadedLength-$downloadFileLength").url(url).build()
                     }
+                    downloadCall = okHttpClient!!.newCall(request)
                 } else {
-                    val request = Request.Builder().url(url!!).build()
-                    call = okHttpClient!!.newCall(request)
+                    val request = Request.Builder().url(url).build()
+                    downloadCall = okHttpClient!!.newCall(request)
                 }
-
-                val response = call!!.execute()
+                val response = downloadCall!!.execute()
                 isCancel = false
                 saveFile(response, resultFilePath)
 
@@ -125,11 +125,9 @@ class FileDownloadManager(context: Context) {
     }
 
     private suspend fun saveFile(response: Response, resultFilePath: String) {
-        var `is`: InputStream? = null
+        var downloadStream: InputStream? = null
         var fos: FileOutputStream? = null
         var body: ResponseBody? = null
-        val file = File(resultFilePath)
-        loadedLength = file.length()
         try {
             val buf = ByteArray(2048)
             var len = 0
@@ -138,16 +136,15 @@ class FileDownloadManager(context: Context) {
                 if (downloadListener != null) downloadListener!!.onDownLoadError("没有找到文件数据")
                 return
             }
-            `is` = body.byteStream()
-            val total = body.contentLength().toInt()
-            if (loadedLength == total.toLong()) {
-                loadedLength = 0
+            if (downloadFileLength == 0L) {
+                downloadFileLength = body.contentLength();
             }
+            downloadStream = body.byteStream()
             withContext(Dispatchers.Main) {
-                if (downloadListener != null) downloadListener!!.onDownLoadStart(total.toInt())
+                if (downloadListener != null) downloadListener!!.onDownLoadStart(downloadedLength.toInt())
             }
-            fos = FileOutputStream(file, true)
-            var progress = 0
+            fos = FileOutputStream(File(resultFilePath), true)
+            var progressLast = 0
             //还在请求阶段触发的取消，网络卡的时候容易出现
             if (isCancel) {
                 withContext(Dispatchers.Main) {
@@ -155,14 +152,14 @@ class FileDownloadManager(context: Context) {
                 }
                 return
             }
-            while (!isCancel && `is`.read(buf).also { len = it } != -1) {
+            while (!isCancel && downloadStream.read(buf).also { len = it } != -1) {
                 fos.write(buf, 0, len)
-                loadedLength += len.toLong()
-                val progressNew = (loadedLength * 1.0f / total * 100).toInt()
-                ViseLog.showInfo("$loadedLength $total $progressNew")
+                downloadedLength += len.toLong()
+                val progress = (downloadedLength * 1.0f / downloadFileLength * 100).toInt()
+//                ViseLog.showInfo("$downloadedLength $downloadFileLength $progressNew")
                 //避免多次传值和出现回退情况
-                if (progressNew > progress) {
-                    progress = progressNew
+                if (progress > progressLast) {
+                    progressLast = progress
                     // 下载中更新进度条
                     withContext(Dispatchers.Main) {
                         if (downloadListener != null) downloadListener!!.onDownLoadProgress(progress)
@@ -181,7 +178,6 @@ class FileDownloadManager(context: Context) {
             withContext(Dispatchers.Main) {
                 if (downloadListener != null) downloadListener!!.onDownloadFinish(resultFilePath)
             }
-
         } catch (e: Exception) {
             if (isCancel) {
                 withContext(Dispatchers.Main) {
@@ -193,11 +189,10 @@ class FileDownloadManager(context: Context) {
             withContext(Dispatchers.Main) {
                 if (downloadListener != null) downloadListener!!.onDownLoadError(e.message)
             }
-
         } finally {
             try {
                 body?.close()
-                `is`?.close()
+                downloadStream?.close()
                 fos?.close()
             } catch (e: IOException) {
                 e.printStackTrace()
@@ -208,11 +203,13 @@ class FileDownloadManager(context: Context) {
 
     companion object {
         private var fileDownloadManager: FileDownloadManager? = null
-        fun getInstance(context: Context): FileDownloadManager? {
+
+        @JvmStatic
+        fun getInstance(context: Context): FileDownloadManager {
             if (fileDownloadManager == null) {
                 fileDownloadManager = FileDownloadManager(context)
             }
-            return fileDownloadManager
+            return fileDownloadManager!!
         }
     }
 

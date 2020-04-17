@@ -1,7 +1,7 @@
 package x.com.hl_rx.download;
 
 public interface DownloadListener {
-    void onDownLoadStart(int progress);
+    void onDownLoadStart(int startProgress);
 
     void onDownLoadCancel();
 

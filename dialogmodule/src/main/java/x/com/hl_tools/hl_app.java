@@ -1,10 +1,13 @@
 package x.com.hl_tools;
 
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,19 +25,18 @@ import x.com.hl_log.ViseLog;
 public class hl_app {
     //安装
     public static void installAPK(Context context, File apkFile) {
-        Intent intent = new Intent();
-        Uri uri;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {//7.0启动姿势<pre name="code" class="html">    //com.xxx.xxx.fileprovider为上述manifest中provider所配置相同；apkFile为问题1中的外部存储apk文件</pre>
-            uri = FileProvider.getUriForFile(context, context.getPackageName() + ".dialog.fileProvider", apkFile);
-            intent.setAction(Intent.ACTION_INSTALL_PACKAGE);
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);//7.0以后，系统要求授予临时uri读取权限，安装完毕以后，系统会自动收回权限，次过程没有用户交互
-        } else {//7.0以下启动姿势
-            uri = Uri.fromFile(apkFile);
-            intent.setAction(Intent.ACTION_VIEW);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        if (!apkFile.exists() || !apkFile.isFile() || apkFile.length() <= 0) {
+            ViseLog.e("安装包文件错误");
+            return;
         }
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        Uri uri = hl_uri.getUri(context, intent, apkFile);
         intent.setDataAndType(uri, "application/vnd.android.package-archive");
-        context.startActivity(intent);
+        if (isIntentExisting(context, intent)) {
+            context.startActivity(intent);
+        } else {
+            ViseLog.e("安装失败");
+        }
     }
 
     /**
@@ -44,16 +46,37 @@ public class hl_app {
      * @param filePath
      * @return
      */
-    public static boolean installApk(Context context, String filePath) {
-        File file = new File(filePath);
-        if (!file.exists() || !file.isFile() || file.length() <= 0) {
-            return false;
+    public static void installAPK(Context context, String filePath) {
+        installAPK(context, new File(filePath));
+    }
+
+    public static boolean isIntentExisting(Context context, Intent intent) {
+        final PackageManager packageManager = context.getPackageManager();
+        List<ResolveInfo> resolveInfo =
+                packageManager.queryIntentActivities(intent,
+                        PackageManager.MATCH_DEFAULT_ONLY);
+        return resolveInfo.size() > 0;
+    }
+
+    /**
+     * 获取安装的intent，通知栏点击调起安装需要
+     *
+     * @param context
+     * @param appFile
+     * @return
+     */
+    public static PendingIntent getInstallAppIntent(Context context, File appFile) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            //区别于 FLAG_GRANT_READ_URI_PERMISSION 跟 FLAG_GRANT_WRITE_URI_PERMISSION， URI权限会持久存在即使重启，直到明确的用 revokeUriPermission(Uri, int) 撤销。 这个flag只提供可能持久授权。但是接收的应用必须调用ContentResolver的takePersistableUriPermission(Uri, int)方法实现
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+            Uri fileUri = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".dialog.fileProvider", appFile);
+            intent.setDataAndType(fileUri, "application/vnd.android.package-archive");
+        } else {
+            intent.setDataAndType(Uri.fromFile(appFile), "application/vnd.android.package-archive");
         }
-        Intent i = new Intent(Intent.ACTION_VIEW);
-        i.setDataAndType(Uri.parse("file://" + filePath), "application/vnd.android.package-archive");
-        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(i);
-        return true;
+        return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     /**
@@ -129,9 +152,9 @@ public class hl_app {
         return getPackageName(context, context.getPackageName());
     }
 
-    public static String getPackageName(Context context, String FilePath) {
+    public static String getPackageName(Context context, String filePath) {
         PackageManager pm = context.getPackageManager();
-        PackageInfo info = pm.getPackageArchiveInfo(FilePath, PackageManager.GET_ACTIVITIES);
+        PackageInfo info = pm.getPackageArchiveInfo(filePath, PackageManager.GET_ACTIVITIES);
         if (info != null) {
             ApplicationInfo appInfo = info.applicationInfo;
 //            String appName = pm.getApplicationLabel(appInfo).toString();
@@ -262,6 +285,22 @@ public class hl_app {
             e.printStackTrace();
         }
         return appSize;
+    }
+
+    /**
+     * 获取应用图标
+     *
+     * @param context
+     * @param packageName
+     * @return
+     */
+    public static Drawable getAppIcon(Context context, String packageName) {
+        try {
+            return context.getPackageManager().getApplicationIcon(packageName);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**
