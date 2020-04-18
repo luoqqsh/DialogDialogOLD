@@ -11,6 +11,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStream
+import java.lang.NullPointerException
 import java.util.*
 
 class FileDownloadManager(context: Context) {
@@ -102,20 +103,6 @@ class FileDownloadManager(context: Context) {
                 val response = downloadCall!!.execute()
                 isCancel = false
                 saveFile(response, resultFilePath)
-
-//                call!!.enqueue(object : Callback {
-//                    override fun onFailure(call: Call, e: IOException) {
-//                        ViseLog.e(e.message)
-//                        if (downloadListener != null) {
-//                            downloadListener!!.onDownLoadError(e.message)
-//                        }
-//                    }
-//
-//                    override fun onResponse(call: Call, response: Response) {
-//                        isCancel = false
-//                        saveFile(response, resultFilePath)
-//                    }
-//                })
             } else {
                 ViseLog.e("没有文件读写权限")
                 if (downloadListener != null) {
@@ -138,7 +125,7 @@ class FileDownloadManager(context: Context) {
                 return
             }
             if (downloadFileLength == 0L) {
-                downloadFileLength = body.contentLength();
+                downloadFileLength = body.contentLength()
             }
             downloadStream = body.byteStream()
             withContext(Dispatchers.Main) {

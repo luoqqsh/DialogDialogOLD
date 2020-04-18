@@ -1,10 +1,6 @@
 package x.com.dialogdialog.BaseApp;
 
 import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
-import android.widget.Toast;
-
 import androidx.multidex.MultiDexApplication;
 import x.com.hl_base.app.AppInit;
 

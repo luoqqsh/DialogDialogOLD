@@ -132,7 +132,7 @@ public class DFUpdateDialog extends BaseDialogFragment {
         nDialogBtnLayout.setVisibility(View.GONE);
         nDialogProgressLayout.setVisibility(View.VISIBLE);
         final File parentFile = new File(hl_file.getAppCachePath(context));
-        String downloadFile = parentFile.getPath() + "/" + 3500 + hl_app.getVersionName(context, context.getPackageName()) + ".apk";
+        String downloadfile = parentFile.getPath() + "/" + 3500 + hl_app.getVersionName(context, context.getPackageName()) + ".apk";
         FileDownloadManager.getInstance(context).setDownloadListener(new DownloadListener() {
             @Override
             public void onDownLoadStart(int startProgress) {
@@ -163,6 +163,6 @@ public class DFUpdateDialog extends BaseDialogFragment {
                 nDialogBtnLayout.setVisibility(View.VISIBLE);
                 nDialogProgressLayout.setVisibility(View.GONE);
             }
-        }).startDownload(url, downloadFile);
+        }).startDownload(url, downloadfile);
     }
 }
