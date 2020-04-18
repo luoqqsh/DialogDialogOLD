@@ -27,7 +27,6 @@ import com.xing.hhplayer.common.TypeBean.PlayerViewType;
 import com.xing.hhplayer.common.View.HHControlView;
 import com.xing.hhplayer.common.View.HHGLSurfaceView;
 import com.xing.hhplayer.common.View.HHLoadingView;
-import com.xing.hhplayer.common.View.HHPlayerView;
 import com.xing.hhplayer.common.View.HHTVView;
 import com.xing.hhplayer.common.View.HHThumbView;
 import com.xing.hhplayer.common.base.ControlViewInterface;
@@ -63,7 +62,6 @@ public class HHPlayer3 {
     private OnPlayerListener<Integer> bufferingUpdateListener;
     private OnPlayerListener<Integer> infoListener;
     //视频显示相关
-    private HHPlayerView hhPlayerView;
     private boolean isChangeBrightness = false;//是否设置改变亮度
     private ViewGroup viewGroup;//视频容器
     private int screenScale = PlayerViewType.SCREEN_SCALE_DEFAULT;//默认显示比例

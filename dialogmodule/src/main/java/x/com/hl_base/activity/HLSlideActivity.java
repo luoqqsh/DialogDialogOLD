@@ -31,8 +31,31 @@ public abstract class HLSlideActivity extends AppCompatActivity {
         }
     }
 
+    public void setDrawerScrollEnable(boolean isEnable) {
+        if (swipeBackLayout != null) {
+            swipeBackLayout.setIsCanScroll(isEnable);
+        }
+    }
+
+    @Override
+    public void startActivity(Intent intent) {
+        super.startActivity(intent);
+        if (swipeBackLayout != null) {
+            overridePendingTransition(R.anim.slide_right_in, R.anim.no_anim);
+        }
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        if (swipeBackLayout != null) {
+            overridePendingTransition(0, R.anim.slide_right_out);
+        }
+    }
+
     /**
      * 安卓8.0的系统在targetSdkVersion不是26的情况下，可以使用这个
+     *
      * @return
      */
     private boolean fixOrientation() {
@@ -40,7 +63,9 @@ public abstract class HLSlideActivity extends AppCompatActivity {
             Field field = Activity.class.getDeclaredField("mActivityInfo");
             field.setAccessible(true);
             ActivityInfo o = (ActivityInfo) field.get(this);
-            o.screenOrientation = -1;
+            if (o != null) {
+                o.screenOrientation = -1;
+            }
             field.setAccessible(false);
             return true;
         } catch (Exception e) {
@@ -63,25 +88,7 @@ public abstract class HLSlideActivity extends AppCompatActivity {
         }
         return isTranslucentOrFloating;
     }
-
-    public void setDrawerScrollEnable(boolean isEnable) {
-        if (swipeBackLayout != null)
-            swipeBackLayout.setIsCanScroll(isEnable);
-    }
-
-    @Override
-    public void startActivity(Intent intent) {
-        super.startActivity(intent);
-        if (swipeBackLayout != null)
-            overridePendingTransition(R.anim.slide_right_in, R.anim.no_anim);
-    }
-
-    @Override
-    public void finish() {
-        super.finish();
-        if (swipeBackLayout != null)
-            overridePendingTransition(0, R.anim.slide_right_out);
-    }
+    
     //该方法是将activity设置为不透明，需求冲突的话，需另寻方案
     public void fixRotateBug26() {
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.O && isTranslucentOrFloating()) {

@@ -58,7 +58,6 @@ public class PlayerViewType {
     public final static int SCREEN_TYPE_FULL = 4;
     public final static int SCREEN_TYPE_FULL2 = 3;
 
-
     //默认显示比例
     public final static int SCREEN_TYPE_DEFAULT = 0;
 
@@ -133,6 +132,4 @@ public class PlayerViewType {
     public static void setShowType(int type) {
         TYPE = type;
     }
-
-
 }

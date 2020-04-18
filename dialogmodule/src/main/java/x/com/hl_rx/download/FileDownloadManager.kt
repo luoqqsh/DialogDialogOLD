@@ -23,8 +23,9 @@ class FileDownloadManager(context: Context) {
     private var downloadedLength: Long = 0//已下载的文件大小
     private var downloadFileLength: Long = 0//要下载文件的大小
     private var isCancel = false
-    fun setDownloadListener(downloadListener: DownloadListener?) {
+    fun setDownloadListener(downloadListener: DownloadListener?): FileDownloadManager {
         this.downloadListener = downloadListener
+        return this
     }
 
     @Synchronized
@@ -60,7 +61,7 @@ class FileDownloadManager(context: Context) {
     }
 
     @Synchronized
-    fun download(url: String, resultFilePath: String) {
+    private fun download(url: String, resultFilePath: String) {
         CoroutineScope(Dispatchers.IO).launch {
             if (hl_permissions.checkPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                 if (okHttpClient == null) {

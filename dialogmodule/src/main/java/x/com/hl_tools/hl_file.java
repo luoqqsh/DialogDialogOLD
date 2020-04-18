@@ -49,8 +49,8 @@ public class hl_file {
     public static final String DOWNLOADS = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
     public static final String CAMERA = DCIM + File.separator + "Camera";
     public static final String DIALOG = SDROOT + File.separator + "dialog";
-    public static final String QQFILE = SDROOT + File.separator + "Tencent" + File.separator + "QQfile_recv";
-    public static final String QQFILE2 = SDROOT + File.separator + "Android/data/com.tencent.mobileqq/Tencent" + File.separator + "QQfile_recv";
+    public static final String QQFILE1 = SDROOT + File.separator + "Tencent" + File.separator + "QQfile_recv";
+    public static final String QQFILE2 = SDROOT + File.separator + "Android/data/com.tencent.mobileqq/Tencent/QQfile_recv";
 
     public static final int TYPE_DOC = 0;
     public static final int TYPE_APK = 1;

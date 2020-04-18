@@ -8,6 +8,7 @@ import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
+import x.com.hl_base.interfaces.HOnListener;
 import x.com.hl_log.ViseLog;
 import x.com.hl_log.inner.LogcatTree;
 import x.com.hl_tools.hl_device;
@@ -25,7 +26,7 @@ public class AppInit {
 
     public static Context getAppContext() {
         if (mContext == null) {
-            ViseLog.e("Context初始化异常");
+            ViseLog.e("context初始化异常");
         }
         return mContext.getApplicationContext();
     }
@@ -80,11 +81,21 @@ public class AppInit {
         ViseLog.plant(new LogcatTree());//添加打印日志信息到Logcat的树
     }
 
-    public static void setNeverCrash() {
+    public static void setNeverCrash(HOnListener<Throwable> onListener) {
         NeverCrashHelper.init((t, e) -> {
 //            e.printStackTrace();
             ViseLog.d(Log.getStackTraceString(e));
-            new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show());
+            new Handler(Looper.getMainLooper()).post(() -> {
+                if (onListener != null) {
+                    onListener.onListen(e);
+                } else {
+                    Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
         });
+    }
+
+    public static void setNeverCrash() {
+        setNeverCrash(null);
     }
 }

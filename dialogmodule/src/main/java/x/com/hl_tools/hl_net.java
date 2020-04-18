@@ -1,20 +1,12 @@
 package x.com.hl_tools;
 
-import com.liulishuo.filedownloader.BaseDownloadTask;
-import com.liulishuo.filedownloader.FileDownloadLargeFileListener;
-import com.liulishuo.filedownloader.FileDownloader;
-
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
-import x.com.hl_log.ViseLog;
-import x.com.hl_tools.hl_interface.DownListener;
 
 
 public class hl_net {
@@ -53,41 +45,5 @@ public class hl_net {
             IP = "";
         }
         return IP;
-    }
-
-    public static void downloadFile(final String url, String downloadfile, final DownListener downListener) {
-        FileDownloader.getImpl().create(url)
-                .setPath(downloadfile)
-                .setListener(new FileDownloadLargeFileListener() {
-                    @Override
-                    protected void completed(BaseDownloadTask task) {
-                        downListener.onsuccess(new File(task.getPath()));
-                    }
-
-                    @Override
-                    protected void error(BaseDownloadTask task, Throwable e) {
-                        ViseLog.e(e);
-                        downListener.faild(e.getMessage());
-                    }
-
-                    @Override
-                    protected void warn(BaseDownloadTask task) {
-
-                    }
-
-                    @Override
-                    protected void pending(BaseDownloadTask task, long soFarBytes, long totalBytes) {
-                    }
-
-                    @Override
-                    protected void progress(BaseDownloadTask task, long soFarBytes, long totalBytes) {
-                        int a = (int) ((float) soFarBytes / totalBytes * 100);
-                        downListener.downloading(a);
-                    }
-
-                    @Override
-                    protected void paused(BaseDownloadTask task, long soFarBytes, long totalBytes) {
-                    }
-                }).start();
     }
 }

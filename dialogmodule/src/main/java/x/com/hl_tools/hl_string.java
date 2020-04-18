@@ -27,7 +27,7 @@ public class hl_string {
      */
     public static String getMobile(String str) {
         String top = str.substring(0, 3);
-        String bottom = str.substring(7, str.length());
+        String bottom = str.substring(7);
         return top + "****" + bottom;
     }
 
@@ -41,7 +41,7 @@ public class hl_string {
         boolean b = false;
         IP = trimSpaces(IP);
         if (IP.matches("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}")) {
-            String s[] = IP.split("\\.");
+            String[] s = IP.split("\\.");
             if (Integer.parseInt(s[0]) < 255)
                 if (Integer.parseInt(s[1]) < 255)
                     if (Integer.parseInt(s[2]) < 255)
@@ -53,7 +53,7 @@ public class hl_string {
 
     public static String trimSpaces(String IP) {// 去掉IP字符串前后所有的空格
         while (IP.startsWith(" ")) {
-            IP = IP.substring(1, IP.length()).trim();
+            IP = IP.substring(1).trim();
         }
         while (IP.endsWith(" ")) {
             IP = IP.substring(0, IP.length() - 1).trim();

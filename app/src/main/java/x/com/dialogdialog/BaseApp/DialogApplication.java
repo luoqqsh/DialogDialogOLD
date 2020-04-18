@@ -3,16 +3,10 @@ package x.com.dialogdialog.BaseApp;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.multidex.MultiDexApplication;
-
-import com.liulishuo.filedownloader.FileDownloader;
-
 import x.com.hl_base.app.AppInit;
-import x.com.hl_base.app.NeverCrashHelper;
-import x.com.hl_log.ViseLog;
 
 public class DialogApplication extends MultiDexApplication {
     @Override
@@ -27,13 +21,7 @@ public class DialogApplication extends MultiDexApplication {
         AppInit.printInformation();
         AppInit.setNeverCrash();
 
-        FileDownloader.setup(getApplicationContext());
 //        x5Manager.getInstance().init(this);
-
 //        LiveEventBus.config().supportBroadcast(this);//跨进程通过广播
-    }
-
-    private void showToast(final String text) {
-        new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show());
     }
 }

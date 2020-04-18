@@ -12,7 +12,6 @@ import java.util.List;
 import x.com.hl_tools.model.TPhoneContact;
 import x.com.hl_tools.model.TPhoneRecord;
 
-
 public class hl_contacts {
     public static final Uri CONTENT_URI_HISTORY = Uri.parse("content://com.njty.phoneContacts/history");
     public static final Uri CONTENT_URI_CONTACTS = Uri.parse("content://com.njty.phoneContacts/contacts");

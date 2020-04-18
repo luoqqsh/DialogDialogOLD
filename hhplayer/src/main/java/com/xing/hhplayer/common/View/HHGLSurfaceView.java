@@ -6,23 +6,20 @@ import android.opengl.GLSurfaceView;
 import android.view.Surface;
 
 import com.xing.hhplayer.common.base.VideoGLRenderer;
-import com.xing.hhplayer.common.tools.MeasureHelper;
 
 import x.com.hl_base.interfaces.HOnListener;
 import x.com.hl_gl.shader.ShaderInterface;
 import x.com.hl_log.ViseLog;
 
 public class HHGLSurfaceView extends GLSurfaceView {
-    private HHSurfaceStateListener surfaceListener;
-    private MeasureHelper measureHelper;
     private VideoGLRenderer videoGLRenderer;
 
     public HHGLSurfaceView(Context context) {
         super(context);
-        init(context);
+        init();
     }
 
-    private void init(Context context) {
+    private void init() {
         setEGLContextClientVersion(3);
         videoGLRenderer = new VideoGLRenderer();
         setRenderer(videoGLRenderer);
@@ -63,7 +60,7 @@ public class HHGLSurfaceView extends GLSurfaceView {
     @Override
     public void onResume() {
         super.onResume();
-        ViseLog.d("onresume");
+        ViseLog.d("onResume");
         requestLayout();
     }
 
@@ -73,5 +70,4 @@ public class HHGLSurfaceView extends GLSurfaceView {
         ViseLog.d("onPause");
         requestLayout();
     }
-
 }

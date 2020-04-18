@@ -54,10 +54,7 @@ public class hl_vm {
      * @return 结果
      */
     public static boolean isART64(Context context) {
-
-        final String tag = "is64ART";
         final String fileName = "art";
-
         try {
             ClassLoader classLoader = context.getClassLoader();
             Class<?> cls = ClassLoader.class;

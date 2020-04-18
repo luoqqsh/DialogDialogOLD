@@ -31,7 +31,7 @@ import x.com.hl_dialog.R;
 
 /**
  * 需求透明主题，只能在清单里设置，Activity里设置无效！
- *
+ * <p>
  * 改自blog http://blog.csdn.net/xiaanming
  */
 public class SlideLayout extends FrameLayout {
@@ -42,7 +42,7 @@ public class SlideLayout extends FrameLayout {
     private int tempX;
     private Scroller mScroller;
     private int viewWidth;
-    private boolean isSilding;//是否滑动
+    private boolean isSliding;//是否滑动
     private boolean isFinish;
     private Drawable mShadowDrawable;
     private Activity mActivity;
@@ -171,15 +171,15 @@ public class SlideLayout extends FrameLayout {
                 tempX = moveX;
                 if (moveX - downX > mTouchSlop
                         && Math.abs((int) event.getRawY() - downY) < mTouchSlop) {
-                    isSilding = true;
+                    isSliding = true;
                 }
 
-                if (moveX - downX >= 0 && isSilding) {
+                if (moveX - downX >= 0 && isSliding) {
                     mContentView.scrollBy(deltaX, 0);
                 }
                 break;
             case MotionEvent.ACTION_UP:
-                isSilding = false;
+                isSliding = false;
                 if (mContentView.getScrollX() <= -viewWidth / 3) {
                     isFinish = true;
                     scrollRight();

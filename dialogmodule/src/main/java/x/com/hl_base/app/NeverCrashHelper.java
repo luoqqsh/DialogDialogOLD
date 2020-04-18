@@ -20,7 +20,6 @@ public class NeverCrashHelper {
                 }
             }
         }
-
         return mInstance;
     }
 
@@ -29,7 +28,6 @@ public class NeverCrashHelper {
     }
 
     private void setCrashHandler(CrashHandler crashHandler){
-
         mCrashHandler = crashHandler;
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
@@ -54,7 +52,6 @@ public class NeverCrashHelper {
                 }
             }
         });
-
     }
 
     public interface CrashHandler{

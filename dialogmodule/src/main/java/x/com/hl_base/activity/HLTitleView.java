@@ -126,9 +126,9 @@ public class HLTitleView {
     }
 
     public int getTitleHeight(Context context) {
-//                getDimension 获取绝对尺寸（"像素"单位，只是float）,
-//                getDimensionPixelSize是将getDimension获取的小数部分四舍五入，
-//                getDimensionPixelOffset是强制转换成int，即舍去小数部分
+        //getDimension 获取绝对尺寸（"像素"单位，只是float）,
+        //getDimensionPixelSize是将getDimension获取的小数部分四舍五入，
+        //getDimensionPixelOffset是强制转换成int，即舍去小数部分
         if (titleHeight != 0) {
             return titleHeight;
         }

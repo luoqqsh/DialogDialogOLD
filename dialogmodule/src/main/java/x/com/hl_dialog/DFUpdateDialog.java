@@ -22,10 +22,10 @@ import java.util.Map;
 
 import x.com.hl_base.dialog.BaseDialogFragment;
 import x.com.hl_base.dialog.NDialog;
+import x.com.hl_rx.download.DownloadListener;
+import x.com.hl_rx.download.FileDownloadManager;
 import x.com.hl_tools.hl_app;
 import x.com.hl_tools.hl_file;
-import x.com.hl_tools.hl_interface.DownListener;
-import x.com.hl_tools.hl_net;
 import x.com.hl_tools.hl_permissions;
 import x.com.hl_tools.hl_permissionsOther;
 
@@ -44,7 +44,7 @@ public class DFUpdateDialog extends BaseDialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         final String content = getArguments() != null ? getArguments().getString("content") : "";
         url = getArguments() != null ? getArguments().getString("url") : null;
-        int isforce = getArguments() != null ? getArguments().getInt("isforce") : 0;
+        int isforce = getArguments() != null ? getArguments().getInt("isForce") : 0;
         NDialog nDialog = new NDialog(getActivity(), NDialog.nDialog_Update, 1.0f)
                 .setTouchOutSideCancelable(false, false)
                 .setMessage(content, NDialog.MSG_LAYOUT_CENTER);
@@ -56,10 +56,10 @@ public class DFUpdateDialog extends BaseDialogFragment {
                         dismiss();
                         break;
                     case 2:
-                        if (havepermission(getActivity()) == PackageManager.PERMISSION_GRANTED) {
-                            startdownload(getActivity());
+                        if (hasPermission(getActivity()) == PackageManager.PERMISSION_GRANTED) {
+                            startDownload(getActivity());
                         } else {
-                            applypression();
+                            applyPermission();
                         }
                         break;
                 }
@@ -89,25 +89,25 @@ public class DFUpdateDialog extends BaseDialogFragment {
         return xdialog;
     }
 
-    public static DFUpdateDialog newInstance(String content, int isforce, String url) {
+    public static DFUpdateDialog newInstance(String content, int isForce, String url) {
         DFUpdateDialog fragment = new DFUpdateDialog();
         Bundle bundle = new Bundle();
         bundle.putString("content", content);
         bundle.putString("url", url);
-        bundle.putInt("isforce", isforce);
+        bundle.putInt("isForce", isForce);
         fragment.setArguments(bundle);
         return fragment;
     }
 
-    private int havepermission(Context context) {
+    private int hasPermission(Context context) {
         return ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE);
     }
 
-    private void applypression() {
+    private void applyPermission() {
         hl_permissions.applyWriteStoragePermission(getContext(), new hl_permissions.RequestPermissionCallBack() {
             @Override
             public void requestPermissionSuccess() {
-                startdownload(getActivity());
+                startDownload(getActivity());
             }
 
             @Override
@@ -124,7 +124,7 @@ public class DFUpdateDialog extends BaseDialogFragment {
         });
     }
 
-    private void startdownload(Context context) {
+    private void startDownload(Context context) {
         if (url == null) {
             Toast.makeText(getActivity(), "下载地址错误！", Toast.LENGTH_SHORT).show();
             return;
@@ -132,27 +132,37 @@ public class DFUpdateDialog extends BaseDialogFragment {
         nDialogBtnLayout.setVisibility(View.GONE);
         nDialogProgressLayout.setVisibility(View.VISIBLE);
         final File parentFile = new File(hl_file.getAppCachePath(context));
-        String downloadfile = parentFile.getPath() + "/" + 3500 + hl_app.getVersionName(context, context.getPackageName()) + ".apk";
-        hl_net.downloadFile(url, downloadfile, new DownListener() {
+        String downloadFile = parentFile.getPath() + "/" + 3500 + hl_app.getVersionName(context, context.getPackageName()) + ".apk";
+        FileDownloadManager.getInstance(context).setDownloadListener(new DownloadListener() {
             @Override
-            public void onsuccess(File file) {
-                hl_app.installAPK(getActivity(), file);
-                nDialogBtnLayout.setVisibility(View.VISIBLE);
-                nDialogProgressLayout.setVisibility(View.GONE);
+            public void onDownLoadStart(int startProgress) {
+                nDialogProgress.setProgress(startProgress);
+                nDialogProgressText.setText(startProgress + "%");
             }
 
             @Override
-            public void faild(String message) {
-                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-                nDialogProgressText.setText(message);
+            public void onDownLoadCancel() {
+
             }
 
             @Override
-            public void downloading(int progress) {
+            public void onDownLoadProgress(int progress) {
                 nDialogProgressText.setText(progress + "%");
                 nDialogProgress.setProgress(progress);
             }
-        });
-    }
 
+            @Override
+            public void onDownLoadError(String error) {
+                Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
+                nDialogProgressText.setText(error);
+            }
+
+            @Override
+            public void onDownloadFinish(String filePath) {
+                hl_app.installAPK(getActivity(), filePath);
+                nDialogBtnLayout.setVisibility(View.VISIBLE);
+                nDialogProgressLayout.setVisibility(View.GONE);
+            }
+        }).startDownload(url, downloadFile);
+    }
 }
