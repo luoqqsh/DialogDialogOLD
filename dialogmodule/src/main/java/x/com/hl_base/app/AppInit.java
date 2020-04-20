@@ -84,7 +84,7 @@ public class AppInit {
     public static void setNeverCrash(HOnListener<Throwable> onListener) {
         NeverCrashHelper.init((t, e) -> {
 //            e.printStackTrace();
-            ViseLog.d(Log.getStackTraceString(e));
+            ViseLog.d(e.getMessage() + "\n" + Log.getStackTraceString(e));
             new Handler(Looper.getMainLooper()).post(() -> {
                 if (onListener != null) {
                     onListener.onListen(e);

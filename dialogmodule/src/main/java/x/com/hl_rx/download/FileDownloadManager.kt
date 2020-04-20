@@ -11,7 +11,6 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStream
-import java.lang.NullPointerException
 import java.util.*
 
 class FileDownloadManager(context: Context) {
@@ -135,9 +134,6 @@ class FileDownloadManager(context: Context) {
             var progressLast = 0
             //还在请求阶段触发的取消，网络卡的时候容易出现
             if (isCancel) {
-                withContext(Dispatchers.Main) {
-                    if (downloadListener != null) downloadListener!!.onDownLoadCancel()
-                }
                 return
             }
             while (!isCancel && downloadStream.read(buf).also { len = it } != -1) {
@@ -157,9 +153,6 @@ class FileDownloadManager(context: Context) {
             fos.flush()
             //触发取消会停止掉while循环，而继续往下走
             if (isCancel) {
-                withContext(Dispatchers.Main) {
-                    if (downloadListener != null) downloadListener!!.onDownLoadCancel()
-                }
                 return
             }
             // 下载完成
@@ -168,9 +161,6 @@ class FileDownloadManager(context: Context) {
             }
         } catch (e: Exception) {
             if (isCancel) {
-                withContext(Dispatchers.Main) {
-                    if (downloadListener != null) downloadListener!!.onDownLoadCancel()
-                }
                 return
             }
             e.printStackTrace()

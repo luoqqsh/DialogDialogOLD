@@ -141,11 +141,6 @@ public class DFUpdateDialog extends BaseDialogFragment {
             }
 
             @Override
-            public void onDownLoadCancel() {
-
-            }
-
-            @Override
             public void onDownLoadProgress(int progress) {
                 nDialogProgressText.setText(progress + "%");
                 nDialogProgress.setProgress(progress);

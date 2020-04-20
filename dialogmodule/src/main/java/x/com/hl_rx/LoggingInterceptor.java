@@ -77,7 +77,9 @@ public class LoggingInterceptor implements Interceptor {
             requestBody.writeTo(buffer);
             MediaType mediaType = requestBody.contentType();
             String charset = (mediaType == null || mediaType.charset() == null) ? "UTF-8" : String.valueOf(mediaType.charset());
-            printJson(buffer.readString(Charset.forName(charset)), requestlog);
+            String requestJson = buffer.readString(Charset.forName(charset));
+            requestlog.append("参数拼接：").append(request.url()).append("?").append(requestJson).append("\n").append("\n");
+            printJson(requestJson, requestlog);
             requestlog.append("\n");
         }
         //--------------------开始请求--------------------//
@@ -163,7 +165,8 @@ public class LoggingInterceptor implements Interceptor {
                 log.append(json);
             }
         } else {
-            log.append(json);
+            String replace = json.replace("&", "\n").replace("=", " = ");
+            log.append(replace);
         }
     }
 

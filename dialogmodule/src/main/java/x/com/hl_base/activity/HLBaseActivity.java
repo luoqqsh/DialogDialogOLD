@@ -1,6 +1,5 @@
 package x.com.hl_base.activity;
 
-import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,8 +14,6 @@ import androidx.fragment.app.FragmentActivity;
 import com.gyf.immersionbar.BarHide;
 import com.gyf.immersionbar.BarParams;
 import com.gyf.immersionbar.ImmersionBar;
-
-import java.lang.reflect.Method;
 
 import x.com.hl_base.life.MyLifeObserver8;
 import x.com.hl_dialog.R;

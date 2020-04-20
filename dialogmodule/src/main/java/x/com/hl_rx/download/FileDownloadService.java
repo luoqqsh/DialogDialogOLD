@@ -143,11 +143,6 @@ public class FileDownloadService extends Service {
                 }
 
                 @Override
-                public void onDownLoadCancel() {
-                    stopDownloadService("下载取消");
-                }
-
-                @Override
                 public void onDownLoadProgress(int progress) {
                     ViseLog.showInfo(progress);
                     int rate = Math.round(progress * 100);

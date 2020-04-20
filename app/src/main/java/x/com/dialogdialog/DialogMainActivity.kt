@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.*
 import x.com.dialogdialog.BaseApp.BaseActivity
 import x.com.dialogdialog.Viewpager2.ViewActivity
+import x.com.dialogdialog.bbz.BBZActivity
 import x.com.hl_base.service.StepService
 import x.com.hl_livedatabus.LiveEventBus
 import x.com.hl_log.ViseLog
@@ -128,9 +129,6 @@ class DialogMainActivity : BaseActivity() {
                         override fun onDownLoadStart(startProgress: Int) {
                         }
 
-                        override fun onDownLoadCancel() {
-                        }
-
                         override fun onDownloadFinish(filePath: String?) {
                             ViseLog.d(filePath)
                         }
@@ -167,7 +165,7 @@ class DialogMainActivity : BaseActivity() {
 //            instance!!.startDownload(downloadUrl, hl_file.DOWNLOADS + File.separator + hl_url.getFileNameFromUrl(downloadUrl))
         }
         mainBBZ.setOnClickListener {
-//            startActivity(Intent(mActivity, BBZActivity::class.java))
+            startActivity(Intent(mActivity, BBZActivity::class.java))
             instance!!.cancelDownload()
         }
         mainDialog.setOnClickListener {
