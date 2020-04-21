@@ -28,9 +28,6 @@ import okio.Buffer;
 import okio.BufferedSource;
 import okio.GzipSource;
 import x.com.hl_log.ViseLog;
-import x.com.hl_rx.test.TvListData;
-import x.com.hl_tools.hl_gson;
-
 /**
  * 日志拦截器
  */
@@ -63,6 +60,7 @@ public class LoggingInterceptor implements Interceptor {
         for (String param : url) {
             urlLog.append(param).append("/");
         }
+        String TAG = "HttpLog";
         StringBuilder requestlog = new StringBuilder("<=======================发起" + urlLog + " 请求=======================>\n");
         StringBuilder responseLog = new StringBuilder("<=======================收到" + urlLog + " 请求结果=======================>\n");
         RequestBody requestBody = request.body();
@@ -77,6 +75,7 @@ public class LoggingInterceptor implements Interceptor {
             requestBody.writeTo(buffer);
             MediaType mediaType = requestBody.contentType();
             String charset = (mediaType == null || mediaType.charset() == null) ? "UTF-8" : String.valueOf(mediaType.charset());
+
             String requestJson = buffer.readString(Charset.forName(charset));
             requestlog.append("参数拼接：").append(request.url()).append("?").append(requestJson).append("\n").append("\n");
             printJson(requestJson, requestlog);
@@ -89,8 +88,9 @@ public class LoggingInterceptor implements Interceptor {
             response = chain.proceed(request);
         } catch (Exception e) {
             responseLog.append("请求失败:").append(e.getMessage());
-            ViseLog.d(requestlog + responseLog.toString());
-            throw new RuntimeException(e.getMessage());
+            ViseLog.d(TAG, requestlog + responseLog.toString());
+//            throw new RuntimeException(e.getMessage());
+            return chain.proceed(request);
         }
         long tookMs = System.currentTimeMillis() - startNs;
         //--------------------request中的header--------------------//
@@ -101,7 +101,7 @@ public class LoggingInterceptor implements Interceptor {
                 requestlog.append(requestHeaders.name(i)).append(": ").append(requestHeaders.value(i)).append("\n");
             }
         }
-        ViseLog.d(requestlog);
+        ViseLog.d(TAG, requestlog);
         //--------------------response日志处理--------------------//
         ResponseBody responseBody = response.body();
         BufferedSource source = Objects.requireNonNull(responseBody).source();
@@ -140,7 +140,7 @@ public class LoggingInterceptor implements Interceptor {
         } else {
             responseLog.append(buffer.clone().readString(Charset.forName(charset)));
         }
-        ViseLog.e(responseLog.toString());
+        ViseLog.e(TAG, responseLog.toString());
         return response;
     }
 
@@ -215,4 +215,3 @@ public class LoggingInterceptor implements Interceptor {
         }
     }
 }
-

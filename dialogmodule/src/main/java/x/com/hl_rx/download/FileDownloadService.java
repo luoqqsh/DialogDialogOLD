@@ -43,10 +43,10 @@ public class FileDownloadService extends Service {
         if (isRunning) {
             return;
         }
+        isRunning = true;
         Intent intent = new Intent(context, FileDownloadService.class);
         context.startService(intent);
         context.bindService(intent, connection, Context.BIND_AUTO_CREATE);
-        isRunning = true;
     }
 
     @Override

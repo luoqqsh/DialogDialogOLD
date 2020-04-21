@@ -48,12 +48,19 @@ public class HHMedia3Activity extends BaseActivity {
     private ImageView imgvTest;
 
     @Override
+    public void doBeforeCreate() {
+        super.doBeforeCreate();
+        ViseLog.d("oncreate");
+    }
+
+    @Override
     public int getLayoutId() {
         return R.layout.activity_mediaview;
     }
 
     @Override
     public void initUI(Bundle savedInstanceState) {
+        ViseLog.d("initUI");
         initList();
         initUI();
         hhview = findViewById(R.id.hhPlayerView);
