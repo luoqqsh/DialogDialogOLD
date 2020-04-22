@@ -136,4 +136,24 @@
         <item name="android:windowExitAnimation">@anim/exit_ios_anim</item>
     </style>
 
+    <!--commonBottomDialog底部弹窗-->
+    <style name="dialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@color/trans</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.5</item>
+    </style>
+    <style name="dialog_bottom" parent="dialog">
+        <item name="android:windowAnimationStyle">@style/anim_bottom</item>
+    </style>
+
+    <style name="anim_bottom" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/bottom_menu_enter</item>
+        <item name="android:windowExitAnimation">@anim/bottom_menu_exit</item>
+    </style>
 </resources>

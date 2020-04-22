@@ -10,6 +10,8 @@ import x.com.dialogdialog.R
 import x.com.dialogdialog.databinding.ActivityBbzBinding
 import x.com.hl_base.activity.HLBaseVMActivity
 import x.com.hl_base.mvvm.NoViewModel
+import x.com.hl_dialog.CPermissionDialog
+import x.com.hl_dialog.CPermissionDialog2
 import x.com.hl_log.ViseLog
 import x.com.hl_rx.jiu.OnHttpCallback
 import x.com.hl_rx.kotlin.BBZCommonService
@@ -48,6 +50,9 @@ class BBZActivity : HLBaseVMActivity<NoViewModel, ActivityBbzBinding>() {
             ViseLog.d(data)
 //            }
         }
+
+//        CPermissionDialog().showDialog(mActivity)
+        CPermissionDialog2().show(supportFragmentManager,"cPermissionDialog")
     }
 
     private fun initBottomTab() {

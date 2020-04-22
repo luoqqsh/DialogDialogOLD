@@ -1,6 +1,5 @@
 package x.com.hl_base.dialog;
 
-
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;

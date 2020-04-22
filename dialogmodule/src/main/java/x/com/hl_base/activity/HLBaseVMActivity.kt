@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import x.com.hl_base.mvvm.BaseViewModel
 import x.com.hl_base.mvvm.ViewModelFactory
@@ -15,10 +16,12 @@ abstract class HLBaseVMActivity<VM : BaseViewModel, DB : ViewDataBinding> : AppC
 
     //不用DataBinding，传ViewDataBinding
     protected lateinit var dataBinding: DB
+    protected lateinit var mActivity: FragmentActivity
 
     @Suppress("UNCHECKED_CAST")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        mActivity = this
         val cls = (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[1] as Class<*>
         if (ViewDataBinding::class.java != cls && ViewDataBinding::class.java.isAssignableFrom(cls)) {
             dataBinding = DataBindingUtil.setContentView(this, getLayoutId())
