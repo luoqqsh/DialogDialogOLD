@@ -296,4 +296,8 @@ public class hl_time {
         String[] string = new String[]{hour, min};
         return string;
     }
+
+    public static long getBetweenDays(long date1, long date2) {
+        return (Math.abs(date2 - date1)) / (24 * 60 * 60 * 1000);
+    }
 }

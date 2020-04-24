@@ -58,7 +58,6 @@ public class HHLoadingView extends FrameLayout implements View.OnClickListener, 
 
     private void initView(FragmentActivity mActivity) {
         View.inflate(mActivity, getLayoutId() != 0 ? getLayoutId() : R.layout.hhplayer_loadview, this);
-
         loading_layout = findViewById(R.id.loadingLayout);
         contentPanel = findViewById(R.id.contentPanel);
         loading = findViewById(R.id.loadingView);

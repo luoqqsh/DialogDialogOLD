@@ -3,6 +3,7 @@ package x.com.dialogdialog;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import java.util.Map;
 import x.com.dialogdialog.BaseApp.BaseActivity;
 import x.com.dialogdialog.bbz.HttpMethodConfig;
 import x.com.hl_base.interfaces.HOnListener;
+import x.com.hl_battery.BatteryChangedReceiver;
 import x.com.hl_dialog.DFListFileDialog;
 import x.com.hl_livedatabus.LiveEventBus;
 import x.com.hl_log.ViseLog;
@@ -68,6 +70,13 @@ public class DialogMainJavaActivity extends BaseActivity {
 
             }
         });
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_BATTERY_CHANGED);
+        filter.addAction(Intent.ACTION_BATTERY_LOW);
+        filter.addAction(Intent.ACTION_BATTERY_OKAY);
+        registerReceiver(new BatteryChangedReceiver(), filter);
+//        unregisterReceiver(new BatteryChangedReceiver());
     }
 
     private void liveEventBus() {

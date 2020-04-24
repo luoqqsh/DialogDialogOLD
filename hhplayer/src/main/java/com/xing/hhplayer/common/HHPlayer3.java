@@ -221,37 +221,68 @@ public class HHPlayer3 {
         }
     }
 
+    /***********************************添加其他view**************************************************************/
     public void addControlView() {
-        addExtraView(new HHControlView(mActivity, HHPlayer3.this), -1);
+        addExtraView(new HHControlView(mActivity, HHPlayer3.this), "control");
     }
 
     public void addTVView() {
-        addExtraView(new HHTVView(mActivity, HHPlayer3.this), -1);
+        addExtraView(new HHTVView(mActivity, HHPlayer3.this), "tvView");
     }
 
     public void addLoadingView() {
-        addExtraView(new HHLoadingView(mActivity, this), -1);
+        addExtraView(new HHLoadingView(mActivity, this), "loading");
     }
 
     public ImageView addThumbView() {
         HHThumbView hhThumbView = new HHThumbView(mActivity, this);
-        addExtraView(hhThumbView, 0);
+        addExtraView(hhThumbView, "thumb", 0);
         return hhThumbView.getDefaultThumb();
     }
 
-    public void addExtraView(View view, int index) {
+    public void addExtraView(View view, String tag) {
+        addExtraView(view, tag, viewGroup.getChildCount());
+    }
+
+    public void addExtraView(View view, String tag, int index) {
         if (viewGroup == null) {
             ViseLog.e(hhPlayerCore.ETAG, "必须设置viewGroup");
         } else {
+            view.setTag(tag);
             ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             viewGroup.addView(view, index, params);
         }
     }
 
-    /***********************************设置部分**************************************************************/
+    public void removeExtraView(String tag) {
+        if (viewGroup == null) {
+            ViseLog.e(hhPlayerCore.ETAG, "必须设置viewGroup");
+        } else {
+            View view = viewGroup.findViewWithTag(tag);
+            if (view != null) {
+                removeExtraView(view);
+            }
+        }
+    }
+
+    public void removeExtraView(int index) {
+        if (viewGroup == null) {
+            ViseLog.e(hhPlayerCore.ETAG, "必须设置viewGroup");
+        } else {
+            viewGroup.removeViewAt(index);
+        }
+    }
+
+    public void removeExtraView(View view) {
+        if (viewGroup == null) {
+            ViseLog.e(hhPlayerCore.ETAG, "必须设置viewGroup");
+        } else {
+            viewGroup.removeView(view);
+        }
+    }
 
     /**
-     * 检查videoview是否已经添加
+     * 检查videoView是否已经添加
      *
      * @return 结果
      */
@@ -259,6 +290,8 @@ public class HHPlayer3 {
         View view = viewGroup.findViewById(R.id.video_normal_id);
         return view != null;
     }
+
+    /***********************************设置部分**************************************************************/
 
     //设置prepare后立即播放，默认否
     public void setPlayWhenPrepared(boolean isPlayWhenPrepared) {
@@ -379,7 +412,7 @@ public class HHPlayer3 {
         if (mSurfaceView != null) {
             mSurfaceView.takeBitmap(takeBitmapListener);
         } else {
-            ViseLog.e(hhPlayerCore.ETAG, "当前view不支持截图");
+            ViseLog.e(hhPlayerCore.ETAG, "仅支持GLSurfaceView");
         }
     }
 
@@ -387,7 +420,7 @@ public class HHPlayer3 {
         if (mSurfaceView != null) {
             mSurfaceView.setEffect(effect);
         } else {
-            ViseLog.e(hhPlayerCore.ETAG, "当前view不支持滤镜");
+            ViseLog.e(hhPlayerCore.ETAG, "仅支持GLSurfaceView");
         }
     }
 

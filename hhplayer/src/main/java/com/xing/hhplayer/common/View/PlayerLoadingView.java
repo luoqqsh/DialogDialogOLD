@@ -11,6 +11,9 @@ import com.example.hhplayer.R;
 
 import x.com.hl_log.ViseLog;
 
+/**
+ * 加载转圈view，不是播放view
+ */
 public class PlayerLoadingView extends AppCompatImageView implements LoadingBaseView {
 
     private int singleTime;
