@@ -13,6 +13,7 @@ import x.com.dialogdialog.BaseApp.BaseActivity
 import x.com.dialogdialog.Viewpager2.ViewActivity
 import x.com.dialogdialog.bbz.BBZActivity
 import x.com.hl_base.service.StepService
+import x.com.hl_battery.BatteryInfo
 import x.com.hl_livedatabus.LiveEventBus
 import x.com.hl_log.ViseLog
 import x.com.hl_rx.download.DownloadListener
@@ -51,8 +52,8 @@ class DialogMainActivity : BaseActivity() {
         val param = hl_sharedP2.getParam(mActivity, "asd", "42")
         ViseLog.d(param)
 
-        LiveEventBus.get("batteryInfo", String::class.java)
-                .observe(mActivity, Observer { info -> mainInfo.text = info })
+        LiveEventBus.get("batteryInfo", BatteryInfo::class.java)
+                .observe(mActivity, Observer { info -> mainInfo.text = info.toString() })
     }
 
     private fun xiecheng() {
