@@ -3,12 +3,15 @@ package x.com.hl_base.app;
 import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
 import x.com.hl_base.interfaces.HOnListener;
+import x.com.hl_battery.BatteryChangedReceiver;
 import x.com.hl_log.ViseLog;
 import x.com.hl_log.inner.LogcatTree;
 import x.com.hl_tools.hl_device;
@@ -19,6 +22,7 @@ public class AppInit {
     private static Context mContext;
     public static boolean isDebug = false;
     private static volatile Application sApplication;
+    private static BatteryChangedReceiver batteryChangedReceiver;
 
     public static void setContext(Context mContext) {
         AppInit.mContext = mContext.getApplicationContext();
@@ -59,6 +63,13 @@ public class AppInit {
         ViseLog.d(hl_screen.getScreenInfo(context));
         ViseLog.d(hl_device.INSTANCE.getDeviceInfo(context));
 //        ViseLog.d(hl_device.INSTANCE.getDeviceInfoDetail(context));
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_BATTERY_CHANGED);
+        filter.addAction(Intent.ACTION_BATTERY_LOW);
+        filter.addAction(Intent.ACTION_BATTERY_OKAY);
+        batteryChangedReceiver = new BatteryChangedReceiver();
+        context.registerReceiver(batteryChangedReceiver, filter);
+//        unregisterReceiver(new BatteryChangedReceiver());
     }
 
     /**

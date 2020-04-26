@@ -33,7 +33,6 @@ class DialogMainActivity : BaseActivity() {
     override fun initUI(savedInstanceState: Bundle?) {
         init()
         hl_permissions.applyWriteStoragePermission(mActivity, null)
-        hl_permissions.applyLocationPermission(mActivity, null)
         hl_permissions.applyCameraPermission(mActivity, null)
         hl_permissions.applyLocationPermission(this, object : hl_permissions.RequestPermissionCallBack {
             override fun requestPermissionSuccess() {
@@ -44,7 +43,6 @@ class DialogMainActivity : BaseActivity() {
             }
         })
 //        ViseLog.d(testUtil.stringFromJNI())
-        liveEventBus()
         StepService.startStepService(mActivity)
 
         hl_sharedP2.setParam(mActivity, "asd", "dd是啥")
@@ -52,6 +50,9 @@ class DialogMainActivity : BaseActivity() {
         ViseLog.d(param1)
         val param = hl_sharedP2.getParam(mActivity, "asd", "42")
         ViseLog.d(param)
+
+        LiveEventBus.get("batteryInfo", String::class.java)
+                .observe(mActivity, Observer { info -> mainInfo.text = info })
     }
 
     private fun xiecheng() {
