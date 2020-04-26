@@ -2,9 +2,7 @@ package com.xing.hhplayer.common.View;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.AttributeSet;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -12,31 +10,24 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentActivity;
-
 import com.example.hhplayer.R;
 import com.xing.hhplayer.common.HHPlayer3;
-import com.xing.hhplayer.common.tvbean.TvDataList;
 import com.xing.hhplayer.common.TypeBean.PlayerPrePareStateType;
-import com.xing.hhplayer.common.TypeBean.PlayerStateType;
 import com.xing.hhplayer.common.TypeBean.PlayerViewType;
-import com.xing.hhplayer.common.base.ControlViewInterface;
 import com.xing.hhplayer.common.base.PlayerDoubleClickListener;
+import com.xing.hhplayer.common.tvbean.TvDataList;
 
 import java.util.List;
 
 import x.com.hl_tools.hl_time;
 
-public class HHControlView extends FrameLayout implements View.OnClickListener, ControlViewInterface {
-    private ViewGroup mTopContainer, mBottomContainer, loading_layout, layout_list, seekbarlayout;
-    private FragmentActivity mActivity;
-    private View contentPanel;
+public class CTopBottomView extends FrameLayout implements View.OnClickListener {
     private HHPlayer3 hhPlayer3;
-    private HHListView hhListView;
+    private Context context;
+    private ViewGroup mTopContainer, mBottomContainer, layout_list, seekbarlayout;
+    private View contentPanel;
+    private CListView cListView;
     private View mStartButton;
-    private PlayerLoadingView loading;
     private ImageView mFullscreenButton;
     private ImageView mLockScreen;
     private TextView mCurrentTimeTextView, mTotalTimeTextView;
@@ -48,24 +39,14 @@ public class HHControlView extends FrameLayout implements View.OnClickListener, 
     private boolean isShowSeekBar = false;//是否显示进度条
     private int showTime = 3;
 
-    public HHControlView(@NonNull FragmentActivity context, HHPlayer3 hhPlayer3) {
+    public CTopBottomView(Context context) {
         super(context);
-        this.hhPlayer3 = hhPlayer3;
-        this.mActivity = context;
-        hhPlayer3.setCvInterface(this);
-        initView(context);
+        this.context = context;
+        initView();
     }
 
-    public HHControlView(@NonNull Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-    }
-
-    public HHControlView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-    }
-
-    private void initView(Context context) {
-        View.inflate(context, getLayoutId(), this);
+    private void initView() {
+        View.inflate(context, R.layout.player_ptb, this);
         //top
         mTopContainer = findViewById(R.id.liveTopLayout);
         mTitleTextView = findViewById(R.id.liveTitle);
@@ -104,9 +85,7 @@ public class HHControlView extends FrameLayout implements View.OnClickListener, 
         //list
         layout_list = findViewById(R.id.layout_list);
         //mid
-        loading_layout = findViewById(R.id.loadingLayout);
         mLockScreen = findViewById(R.id.liveLock);
-        loading = findViewById(R.id.loadingView);
         mStartButton = findViewById(R.id.loadingMidPause);
         mStartButton.setOnClickListener(this);
         mFullscreenButton.setOnClickListener(this);
@@ -127,10 +106,6 @@ public class HHControlView extends FrameLayout implements View.OnClickListener, 
                 showPlayControl();
             }
         }));
-    }
-
-    private int getLayoutId() {
-        return R.layout.hhplayer_liveview;
     }
 
     private int mType = 0;
@@ -181,7 +156,7 @@ public class HHControlView extends FrameLayout implements View.OnClickListener, 
         }
         //返回
         if (id == R.id.liveBack) {
-            mActivity.finish();
+            hhPlayer3.getActivity().finish();
         }
     }
 
@@ -210,12 +185,9 @@ public class HHControlView extends FrameLayout implements View.OnClickListener, 
         }
     }
 
-    @Override
-    public void getPrePareState(PlayerPrePareStateType playerPrePareStateType) {
+    public void changePrepareState(PlayerPrePareStateType playerPrePareStateType) {
         switch (playerPrePareStateType) {
             case PREPARING:
-                loading_layout.setVisibility(VISIBLE);
-                loading.start();
                 break;
             case PREPARED:
                 if (TextUtils.isEmpty(hhPlayer3.getTitle())) {
@@ -225,9 +197,6 @@ public class HHControlView extends FrameLayout implements View.OnClickListener, 
                 }
                 isPanelShow = true;
                 showPlayControl();
-                //隐藏加载转圈
-                loading_layout.setVisibility(GONE);
-                loading.stop();
                 if (hhPlayer3.getMediaDurationMS() != 0) {
                     isShowSeekBar = true;
                     seekbarlayout.setVisibility(VISIBLE);
@@ -237,11 +206,11 @@ public class HHControlView extends FrameLayout implements View.OnClickListener, 
                     isShowSeekBar = false;
                     seekbarlayout.setVisibility(INVISIBLE);
                 }
-                if (hhPlayer3.getUrlDataList() != null && hhListView == null) {
-                    FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                if (hhPlayer3.getUrlDataList() != null && cListView == null) {
+                    LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
                     params.gravity = Gravity.RIGHT;
-                    hhListView = new HHListView(mActivity, hhPlayer3.getUrlDataList(), hhPlayer3);
-                    layout_list.addView(hhListView, params);
+                    cListView = new CListView(context, hhPlayer3.getUrlDataList(), hhPlayer3);
+                    layout_list.addView(cListView, params);
                     layout_list.setVisibility(GONE);
                 }
                 break;
@@ -249,18 +218,11 @@ public class HHControlView extends FrameLayout implements View.OnClickListener, 
             case ERROR:
                 isPanelShow = true;
                 showPlayControl();
-                loading_layout.setVisibility(GONE);
-                loading.stop();
                 break;
         }
     }
 
-    @Override
-    public void getPlayState(PlayerStateType playerStateType) {
 
-    }
-
-    @Override
     public void changeProgress(final long time) {
         if (isPanelShow) {
             showTime--;
@@ -280,30 +242,11 @@ public class HHControlView extends FrameLayout implements View.OnClickListener, 
         });
     }
 
-    @Override
-    public boolean receiveKeyDown(int keyCode) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            mActivity.onBackPressed();
-            return false;
-        }
-        return false;
-    }
-
-    @Override
     public void refreshPlayList(List<TvDataList> tvDataLists) {
-        hhListView.refreshList(tvDataLists);
+        cListView.refreshList(tvDataLists);
     }
 
-    @Override
-    public void getPlayBuffer(int progress) {
-        if (progress > 0 && progress < 100) {
-            loading.setVisibility(VISIBLE);
-            loading_layout.setVisibility(VISIBLE);
-            loading.start();
-        } else {
-            loading.setVisibility(GONE);
-            loading_layout.setVisibility(GONE);
-            loading.stop();
-        }
+    public void setHhPlayer3(HHPlayer3 hhPlayer3) {
+        this.hhPlayer3 = hhPlayer3;
     }
 }

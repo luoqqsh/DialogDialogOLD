@@ -66,7 +66,7 @@ public class HHMedia3Activity extends BaseActivity {
         hhview = findViewById(R.id.hhPlayerView);
         hl_screen.setViewSize(hhview, ViewGroup.LayoutParams.MATCH_PARENT, hl_screen.getHeightFromWidthAtPort(mActivity));
         hhPlayer3 = new HHPlayer3(this, new HHijkPlayer(), TvView.HHGLSURFACE, hhview);
-        hhPlayer3.addControlView();
+        hhPlayer3.addLiveView();
         hhPlayer3.setOnPreparedListener(new OnPlayerListener<Object>() {
             @Override
             public void onListen(Object o) {

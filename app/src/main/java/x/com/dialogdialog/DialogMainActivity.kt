@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.os.IBinder
 import android.widget.Toast
 import androidx.lifecycle.Observer
+import com.bumptech.glide.Glide
+import com.jiujie.glide.GlideUtil
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.*
 import x.com.dialogdialog.BaseApp.BaseActivity
@@ -53,7 +55,10 @@ class DialogMainActivity : BaseActivity() {
         ViseLog.d(param)
 
         LiveEventBus.get("batteryInfo", BatteryInfo::class.java)
-                .observe(mActivity, Observer { info -> mainInfo.text = info.toString() })
+                .observe(mActivity, Observer { info ->
+                    mainInfo.text = info.toString()
+                    GlideUtil.instance().setDefaultImage(mActivity, info.batteryIcon, mainImg)
+                })
     }
 
     private fun xiecheng() {

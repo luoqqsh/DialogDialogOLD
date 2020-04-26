@@ -1,14 +1,12 @@
 package com.xing.hhplayer.common.View;
 
 import android.content.Context;
-import android.util.AttributeSet;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.example.hhplayer.R;
 import com.xing.hhplayer.common.HHPlayer3;
@@ -20,26 +18,18 @@ import java.util.List;
 
 import x.com.hl_tools.hl_clickChecker;
 
-public class HHListView extends FrameLayout {
+public class CListView extends FrameLayout {
     private HHPlayer3 hhPlayer3;
     private List<TvDataList> tvDataList;
     private TvListAdapter tvListAdapter;
     private int currentSelectPlay = 0;
     private ListView playlistView;
 
-    public HHListView(@NonNull Context context, List<TvDataList> tvDataList, HHPlayer3 hhPlayer3) {
+    public CListView(@NonNull Context context, List<TvDataList> tvDataList, HHPlayer3 hhPlayer3) {
         super(context);
         this.tvDataList = tvDataList;
         this.hhPlayer3 = hhPlayer3;
         init(context);
-    }
-
-    public HHListView(@NonNull Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-    }
-
-    public HHListView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
     }
 
     public void init(Context context) {

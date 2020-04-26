@@ -1,4 +1,4 @@
-package com.xing.hhplayer.common.View;
+package com.xing.hhplayer.common.View.loading;
 
 import android.content.Context;
 import android.content.res.TypedArray;

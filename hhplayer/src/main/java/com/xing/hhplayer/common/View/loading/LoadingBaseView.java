@@ -1,4 +1,4 @@
-package com.xing.hhplayer.common.View;
+package com.xing.hhplayer.common.View.loading;
 
 public interface LoadingBaseView {
     void setVisibility(int visibility);

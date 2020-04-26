@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:id="@+id/loadingLayout"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="#80000000"
+            android:visibility="gone">
+
+            <com.xing.hhplayer.common.View.loading.PlayerLoadingView
+                android:id="@+id/loadingView"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:scaleType="centerInside"
+                android:src="@mipmap/lock_icon_loading"
+                app:r_isShun="true"
+                app:r_num="180"
+                app:r_singleTime="20" />
+        </FrameLayout>
+
+    </FrameLayout>
+</RelativeLayout>

@@ -7,63 +7,57 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentActivity;
 
 import com.example.hhplayer.R;
-import com.xing.hhplayer.common.HHPlayer3;
-import com.xing.hhplayer.common.tvbean.TvDataList;
 import com.xing.hhplayer.common.TypeBean.PlayerPrePareStateType;
 import com.xing.hhplayer.common.TypeBean.PlayerStateType;
 import com.xing.hhplayer.common.TypeBean.PlayerViewType;
-import com.xing.hhplayer.common.base.ControlViewInterface;
 import com.xing.hhplayer.common.base.PlayerDoubleClickListener;
+import com.xing.hhplayer.common.tvbean.TvDataList;
 
 import java.util.List;
 
 import x.com.hl_tools.hl_time;
 import x.com.hl_tools.hl_volume;
 
-public class HHTVView extends FrameLayout implements View.OnClickListener, ControlViewInterface {
-    private ViewGroup mTopContainer, mBottomContainer, loadingLayout, layout_list, seekBarLayout;
-    private FragmentActivity mActivity;
+public class PTVView extends PBaseVideoView  {
+    private ViewGroup mTopContainer, mBottomContainer, layout_list, seekBarLayout;
+    private Context mActivity;
     private View contentPanel;
-    private HHPlayer3 hhPlayer3;
-    private HHListView hhListView;
+    private CListView cListView;
     private View mStartButton;
-    private PlayerLoadingView loading;
     private TextView mCurrentTimeTextView, mTotalTimeTextView;
     private TextView mTvTitle;
     private SeekBar mProgressBar;
-    private TextView scaleView;
     private boolean isPanelShow = true;//是否显示面板
     private boolean isShowList = false;//是否显示列表
     private boolean isShowSeekBar = false;//是否显示进度条
     private int showTime = 3;
+    private CLoadingView cLoadingView;
 
-    public HHTVView(@NonNull FragmentActivity context, HHPlayer3 hhPlayer3) {
+    public PTVView(@NonNull Context context) {
         super(context);
-        this.hhPlayer3 = hhPlayer3;
         this.mActivity = context;
-        hhPlayer3.setCvInterface(this);
-        initView(context);
     }
 
-    public HHTVView(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public PTVView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public HHTVView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public PTVView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
-    private void initView(Context context) {
-        View.inflate(context, getLayoutId(), this);
+    @Override
+    protected void initView() {
+        cLoadingView = new CLoadingView(mContext);
+//        addViewWithTag(cLoadingView, "LoadingView");
+        View.inflate(mActivity, getLayoutId(), this);
         //top
         mTopContainer = findViewById(R.id.liveTopLayout);
         mTvTitle = findViewById(R.id.tvTitle);
@@ -75,13 +69,9 @@ public class HHTVView extends FrameLayout implements View.OnClickListener, Contr
         mTotalTimeTextView = findViewById(R.id.liveTotalTime);
         mProgressBar = findViewById(R.id.liveSeek);
 
-        scaleView = findViewById(R.id.liveScale);
-        scaleView.setOnClickListener(this);
         //list
         layout_list = findViewById(R.id.layout_list);
         //mid
-        loadingLayout = findViewById(R.id.loadingLayout);
-        loading = findViewById(R.id.loadingView);
         mStartButton = findViewById(R.id.loadingMidPause);
         mStartButton.setOnClickListener(this);
         contentPanel.setOnClickListener(new PlayerDoubleClickListener(new PlayerDoubleClickListener.DoubleClickCallback() {
@@ -99,7 +89,7 @@ public class HHTVView extends FrameLayout implements View.OnClickListener, Contr
     }
 
     private int getLayoutId() {
-        return R.layout.hhplayer_tvview;
+        return R.layout.player_ptv;
     }
 
     private int mType = 0;
@@ -109,30 +99,6 @@ public class HHTVView extends FrameLayout implements View.OnClickListener, Contr
         int id = view.getId();
         if (id == R.id.loadingMidPause) {
             playControl();
-        }
-        //显示比例
-        if (id == R.id.liveScale) {
-            if (mType == 0) {
-                mType = 1;
-                scaleView.setText("16:9");
-                hhPlayer3.changeScale(PlayerViewType.SCREEN_SCALE_16_9);
-            } else if (mType == 1) {
-                mType = 2;
-                scaleView.setText("4:3");
-                hhPlayer3.changeScale(PlayerViewType.SCREEN_SCALE_4_3);
-            } else if (mType == 2) {
-                mType = 3;
-                scaleView.setText("1:1");
-                hhPlayer3.changeScale(PlayerViewType.SCREEN_SCALE_1_1);
-            } else if (mType == 3) {
-                mType = 4;
-                scaleView.setText("拉伸全屏");
-                hhPlayer3.changeScale(PlayerViewType.SCREEN_SCALE_FULL);
-            } else if (mType == 4) {
-                mType = 0;
-                scaleView.setText("推荐比例");
-                hhPlayer3.changeScale(PlayerViewType.SCREEN_SCALE_DEFAULT);
-            }
         }
     }
 
@@ -163,12 +129,10 @@ public class HHTVView extends FrameLayout implements View.OnClickListener, Contr
 
     @Override
     public void getPlayBuffer(int progress) {
-        if (progress > 0 && progress < 100) {
-            loading.setVisibility(VISIBLE);
-            loading.start();
+        if (progress >= 0 && progress < 100) {
+            cLoadingView.startLoading();
         } else {
-            loading.setVisibility(GONE);
-            loading.stop();
+            cLoadingView.stopLoading();
         }
     }
 
@@ -176,18 +140,17 @@ public class HHTVView extends FrameLayout implements View.OnClickListener, Contr
     public void getPrePareState(PlayerPrePareStateType playerPrePareStateType) {
         switch (playerPrePareStateType) {
             case PREPARING:
-                loadingLayout.setVisibility(VISIBLE);
-                loading.start();
+                cLoadingView.startLoading();
+//                addViewWithTag(cLoadingView, "LoadingView");
                 break;
             case PREPARED:
+                cLoadingView.stopLoading();
+//                removeViewByTag("LoadingView");
                 if (TextUtils.isEmpty(hhPlayer3.getTitle())) {
                     mTvTitle.setText(hhPlayer3.getMediaPath().toString());
                 } else {
                     mTvTitle.setText(hhPlayer3.getTitle());
                 }
-                //隐藏加载转圈
-                loadingLayout.setVisibility(GONE);
-                loading.stop();
                 if (hhPlayer3.getMediaDurationMS() != 0) {
                     isShowSeekBar = true;
                     seekBarLayout.setVisibility(VISIBLE);
@@ -197,11 +160,11 @@ public class HHTVView extends FrameLayout implements View.OnClickListener, Contr
                     isShowSeekBar = false;
                     seekBarLayout.setVisibility(INVISIBLE);
                 }
-                if (hhPlayer3.getUrlDataList() != null && hhListView == null) {
-                    hhListView = new HHListView(mActivity, hhPlayer3.getUrlDataList(), hhPlayer3);
+                if (hhPlayer3.getUrlDataList() != null && cListView == null) {
+                    cListView = new CListView(mActivity, hhPlayer3.getUrlDataList(), hhPlayer3);
                     LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
                     params.gravity = Gravity.RIGHT;
-                    layout_list.addView(hhListView, params);
+                    layout_list.addView(cListView, params);
                     layout_list.setVisibility(GONE);//默认隐藏
                 }
                 isPanelShow = true;
@@ -211,8 +174,6 @@ public class HHTVView extends FrameLayout implements View.OnClickListener, Contr
             case ERROR:
                 isPanelShow = true;
                 showPlayControl();
-                loadingLayout.setVisibility(GONE);
-                loading.stop();
                 break;
         }
     }
@@ -276,7 +237,7 @@ public class HHTVView extends FrameLayout implements View.OnClickListener, Contr
                     layout_list.setVisibility(VISIBLE);
                 } else {
                     //列表已显示播放选中频道
-                    hhPlayer3.prepare(hhPlayer3.getUrlDataList(), hhListView.getCurrentSelect());
+                    hhPlayer3.prepare(hhPlayer3.getUrlDataList(), cListView.getCurrentSelect());
                 }
                 return true;
             case KeyEvent.KEYCODE_BACK://返回键
@@ -291,7 +252,7 @@ public class HHTVView extends FrameLayout implements View.OnClickListener, Contr
 //                } else {
 //                    mActivity.finish();
 //                }
-                mActivity.finish();
+                hhPlayer3.getActivity().finish();
                 return false;
             case KeyEvent.KEYCODE_MENU://菜单键
                 return true;
@@ -302,26 +263,26 @@ public class HHTVView extends FrameLayout implements View.OnClickListener, Contr
 
     @Override
     public void refreshPlayList(List<TvDataList> tvDataLists) {
-        hhListView.refreshList(tvDataLists);
+        cListView.refreshList(tvDataLists);
     }
 
     private void upStep() {
-        int currentSelectUp = hhListView.getCurrentSelect() + 1;
-        if (currentSelectUp >= hhListView.getListSize()) {
+        int currentSelectUp = cListView.getCurrentSelect() + 1;
+        if (currentSelectUp >= cListView.getListSize()) {
             currentSelectUp = 0;
         }
-        hhListView.setCurrentSelectPlay(currentSelectUp);
+        cListView.setCurrentSelectPlay(currentSelectUp);
         if (!isShowList) {
             hhPlayer3.prepare(hhPlayer3.getUrlDataList(), currentSelectUp);
         }
     }
 
     private void downStep() {
-        int currentSelectDown = hhListView.getCurrentSelect() - 1;
+        int currentSelectDown = cListView.getCurrentSelect() - 1;
         if (currentSelectDown < 0) {
-            currentSelectDown = hhListView.getListSize() - 1;
+            currentSelectDown = cListView.getListSize() - 1;
         }
-        hhListView.setCurrentSelectPlay(currentSelectDown);
+        cListView.setCurrentSelectPlay(currentSelectDown);
         if (!isShowList) {
             hhPlayer3.prepare(hhPlayer3.getUrlDataList(), currentSelectDown);
         }

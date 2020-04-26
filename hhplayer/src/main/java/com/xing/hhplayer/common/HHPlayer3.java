@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageView;
 
 import androidx.fragment.app.FragmentActivity;
 
@@ -24,11 +23,9 @@ import com.example.hhplayer.R;
 import com.xing.hhplayer.common.TypeBean.PlayerPrePareStateType;
 import com.xing.hhplayer.common.TypeBean.PlayerStateType;
 import com.xing.hhplayer.common.TypeBean.PlayerViewType;
-import com.xing.hhplayer.common.View.HHControlView;
 import com.xing.hhplayer.common.View.HHGLSurfaceView;
-import com.xing.hhplayer.common.View.HHLoadingView;
-import com.xing.hhplayer.common.View.HHTVView;
-import com.xing.hhplayer.common.View.HHThumbView;
+import com.xing.hhplayer.common.View.PLiveView;
+import com.xing.hhplayer.common.View.PTVView;
 import com.xing.hhplayer.common.base.ControlViewInterface;
 import com.xing.hhplayer.common.base.HHPlayerCore;
 import com.xing.hhplayer.common.base.OnPlayerListener;
@@ -222,33 +219,18 @@ public class HHPlayer3 {
     }
 
     /***********************************添加其他view**************************************************************/
-    public void addControlView() {
-        addExtraView(new HHControlView(mActivity, HHPlayer3.this), "control");
+    public void addLiveView() {
+        addExtraView(new PTVView(mActivity).initPlayer(this));
     }
 
-    public void addTVView() {
-        addExtraView(new HHTVView(mActivity, HHPlayer3.this), "tvView");
+    public void addExtraView(View view) {
+        addExtraView(view, viewGroup.getChildCount());
     }
 
-    public void addLoadingView() {
-        addExtraView(new HHLoadingView(mActivity, this), "loading");
-    }
-
-    public ImageView addThumbView() {
-        HHThumbView hhThumbView = new HHThumbView(mActivity, this);
-        addExtraView(hhThumbView, "thumb", 0);
-        return hhThumbView.getDefaultThumb();
-    }
-
-    public void addExtraView(View view, String tag) {
-        addExtraView(view, tag, viewGroup.getChildCount());
-    }
-
-    public void addExtraView(View view, String tag, int index) {
+    public void addExtraView(View view, int index) {
         if (viewGroup == null) {
             ViseLog.e(hhPlayerCore.ETAG, "必须设置viewGroup");
         } else {
-            view.setTag(tag);
             ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             viewGroup.addView(view, index, params);
         }
@@ -504,7 +486,6 @@ public class HHPlayer3 {
         return -1;
     }
 
-
     public void start() {
         if (hhPlayerCore.isPrepared() && hhPlayerCore.isPlayControl()) {
             hhPlayerCore.start();
@@ -624,6 +605,10 @@ public class HHPlayer3 {
 
     public Object getMediaPath() {
         return hhPlayerCore.getMediaPath();
+    }
+
+    public FragmentActivity getActivity() {
+        return mActivity;
     }
 
     public boolean isPlaying() {

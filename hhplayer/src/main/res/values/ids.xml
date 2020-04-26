@@ -3,4 +3,5 @@
     <item name="video_fullscreen_id" type="id" />
     <item name="video_tiny_id" type="id" />
     <item name="video_normal_id" type="id" />
+    <item name="video_view_id" type="id" />
 </resources>
