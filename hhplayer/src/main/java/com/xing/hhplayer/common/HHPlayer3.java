@@ -100,13 +100,16 @@ public class HHPlayer3 {
         public void onListen(Object o) {
             hhPlayerCore.playerPrePareState = PlayerPrePareStateType.PREPARED;
             hhPlayerCore.mPlayerState = PlayerStateType.PREPARED;
-            hhPlayerCore.setScalingMode(0);
             hhPlayerCore.isLive = hhPlayerCore.getMediaDurationMS() == 0;
             screenScale = PlayerViewType.SCREEN_SCALE_DEFAULT;
-            changeScale(screenScale);
             if (cvInterface != null) {
                 cvInterface.getPrePareState(PlayerPrePareStateType.PREPARED);
             }
+            if (preparedListener != null) {
+                preparedListener.onListen(o);
+            }
+            hhPlayerCore.setScalingMode(0);
+            changeScale(screenScale);
             if (isPlayWhenPrepared || isReStart) {
                 isReStart = false;
                 start();
@@ -125,9 +128,6 @@ public class HHPlayer3 {
             } else {
                 ViseLog.showInfo(hhPlayerCore.TAG, "容器大小：0,0");
                 ViseLog.showInfo(hhPlayerCore.TAG, "视频View大小：0,0");
-            }
-            if (preparedListener != null) {
-                preparedListener.onListen(o);
             }
         }
     };
@@ -220,6 +220,10 @@ public class HHPlayer3 {
 
     /***********************************添加其他view**************************************************************/
     public void addLiveView() {
+        addExtraView(new PLiveView(mActivity).initPlayer(this));
+    }
+
+    public void addTvView() {
         addExtraView(new PTVView(mActivity).initPlayer(this));
     }
 

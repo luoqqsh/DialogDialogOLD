@@ -14,6 +14,7 @@ public class CLoadingView extends FrameLayout implements View.OnClickListener {
 
     private PlayerLoadingView loading;
     private ViewGroup loading_layout;
+    private boolean isLoading = false;
 
     public CLoadingView(@NonNull Context context) {
         super(context);
@@ -24,6 +25,7 @@ public class CLoadingView extends FrameLayout implements View.OnClickListener {
         View.inflate(context, R.layout.player_cloading, this);
         loading_layout = findViewById(R.id.loadingLayout);
         loading = findViewById(R.id.loadingView);
+        startLoading();
     }
 
     @Override
@@ -32,12 +34,16 @@ public class CLoadingView extends FrameLayout implements View.OnClickListener {
     }
 
     public void startLoading() {
-        loading_layout.setVisibility(VISIBLE);
-        loading.setVisibility(VISIBLE);
+        if (!isLoading) {
+            loading_layout.setVisibility(VISIBLE);
+            loading.setVisibility(VISIBLE);
+            isLoading = true;
+        }
     }
 
     public void stopLoading() {
         loading_layout.setVisibility(GONE);
         loading.setVisibility(GONE);
+        isLoading = false;
     }
 }

@@ -25,7 +25,7 @@ import java.util.List;
 import x.com.hl_tools.hl_time;
 import x.com.hl_tools.hl_volume;
 
-public class PTVView extends PBaseVideoView  {
+public class PTVView extends PBaseVideoView {
     private ViewGroup mTopContainer, mBottomContainer, layout_list, seekBarLayout;
     private Context mActivity;
     private View contentPanel;
@@ -130,9 +130,9 @@ public class PTVView extends PBaseVideoView  {
     @Override
     public void getPlayBuffer(int progress) {
         if (progress >= 0 && progress < 100) {
-            cLoadingView.startLoading();
+            addViewWithTag(cLoadingView, "LoadingView");
         } else {
-            cLoadingView.stopLoading();
+            removeViewByTag("LoadingView");
         }
     }
 
@@ -140,12 +140,10 @@ public class PTVView extends PBaseVideoView  {
     public void getPrePareState(PlayerPrePareStateType playerPrePareStateType) {
         switch (playerPrePareStateType) {
             case PREPARING:
-                cLoadingView.startLoading();
-//                addViewWithTag(cLoadingView, "LoadingView");
+                addViewWithTag(cLoadingView, "LoadingView");
                 break;
             case PREPARED:
-                cLoadingView.stopLoading();
-//                removeViewByTag("LoadingView");
+                removeViewByTag("LoadingView");
                 if (TextUtils.isEmpty(hhPlayer3.getTitle())) {
                     mTvTitle.setText(hhPlayer3.getMediaPath().toString());
                 } else {

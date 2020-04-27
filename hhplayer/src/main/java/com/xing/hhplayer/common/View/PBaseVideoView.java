@@ -17,6 +17,8 @@ import com.xing.hhplayer.common.tvbean.TvDataList;
 
 import java.util.List;
 
+import x.com.hl_log.ViseLog;
+
 public abstract class PBaseVideoView extends FrameLayout implements View.OnClickListener, ControlViewInterface {
     public Context mContext;
     public HHPlayer3 hhPlayer3;
@@ -83,16 +85,17 @@ public abstract class PBaseVideoView extends FrameLayout implements View.OnClick
 
     //有问题
     public void addViewWithTag(View view, String tag) {
-        view.setTag(tag);
-        addView(view);
+        View tempView = findViewWithTag(tag);
+        if (tempView == null) {
+            view.setTag(tag);
+            addView(view);
+        }
     }
 
     public void removeViewByTag(String tag) {
-        for (int i = 0; i < getChildCount(); i++) {
-            Object tagObj = getChildAt(i).getTag();
-            if (tagObj != null && tagObj.toString().equals(tag)) {
-                removeViewAt(i);
-            }
+        View tempView = findViewWithTag(tag);
+        if (tempView != null) {
+            removeView(tempView);
         }
     }
 }

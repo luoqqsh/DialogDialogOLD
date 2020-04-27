@@ -13,6 +13,8 @@ import com.xing.hhplayer.common.tvbean.TvDataList;
 
 import java.util.List;
 
+import x.com.hl_log.ViseLog;
+
 /**
  * 这是对应的场景view，不是用来添加的view
  */
@@ -39,18 +41,18 @@ public class PLiveView extends PBaseVideoView {
     @Override
     protected void initView() {
         cLoadingView = new CLoadingView(mContext);
-        addViewWithTag(cLoadingView, "LoadingView");
+//        addViewWithTag(cLoadingView, "LoadingView");
         cTopBottomView = new CTopBottomView(mContext);
         cTopBottomView.setHhPlayer3(hhPlayer3);
-        addViewWithTag(cTopBottomView, "TopBottomView");
+//        addViewWithTag(cTopBottomView, "TopBottomView");
     }
 
     @Override
     public void getPrePareState(PlayerPrePareStateType playerPrePareStateType) {
         if (playerPrePareStateType == PlayerPrePareStateType.PREPARING) {
-            cLoadingView.startLoading();
+            addViewWithTag(cLoadingView, "LoadingView");
         } else {
-            cLoadingView.stopLoading();
+            removeViewByTag("LoadingView");
         }
         cTopBottomView.changePrepareState(playerPrePareStateType);
     }
@@ -58,9 +60,9 @@ public class PLiveView extends PBaseVideoView {
     @Override
     public void getPlayBuffer(int progress) {
         if (progress >= 0 && progress < 100) {
-            cLoadingView.startLoading();
+            addViewWithTag(cLoadingView, "LoadingView");
         } else {
-            cLoadingView.stopLoading();
+            removeViewByTag("LoadingView");
         }
     }
 

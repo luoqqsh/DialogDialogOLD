@@ -50,7 +50,6 @@ public class HHMedia3Activity extends BaseActivity {
     @Override
     public void doBeforeCreate() {
         super.doBeforeCreate();
-        ViseLog.d("oncreate");
     }
 
     @Override
@@ -60,7 +59,6 @@ public class HHMedia3Activity extends BaseActivity {
 
     @Override
     public void initUI(Bundle savedInstanceState) {
-        ViseLog.d("initUI");
         initList();
         initUI();
         hhview = findViewById(R.id.hhPlayerView);
@@ -126,8 +124,8 @@ public class HHMedia3Activity extends BaseActivity {
         seekbar_volume.setMax(10);
 
         findViewById(R.id.testSelect).setOnClickListener(v -> {
-//            hhPlayer3.prepare(tvUrl.getLinks(), 0);
-            hhPlayer3.prepare("http://cstvpull.live.wscdns.com/live/xiamen1.flv");
+            hhPlayer3.prepare(tvUrl.getLinks(), 0);
+//            hhPlayer3.prepare("http://cstvpull.live.wscdns.com/live/xiamen1.flv");
 //            hhPlayer3.prepare("http://s.bizhijingling.com/uploadfile/coustom/2019/309/20190613170125729.mp4");
 //            List<MediaFileBean> imgList = hl_medialist.getVideoList(mContext);
 //            hhPlayer3.prepare("content://media/external/video/media/27", "");
