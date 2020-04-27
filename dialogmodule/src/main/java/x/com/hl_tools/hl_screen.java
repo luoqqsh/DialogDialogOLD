@@ -422,4 +422,43 @@ public class hl_screen {
                 return 0;
         }
     }
+
+    /**
+     * 获取屏幕尺寸
+     *
+     * @param context
+     * @return
+     */
+    public static double getScreenInch(Activity context) {
+        double inch = 0;
+
+        try {
+            int realWidth = 0, realHeight = 0;
+            Display display = context.getWindowManager().getDefaultDisplay();
+            DisplayMetrics metrics = new DisplayMetrics();
+            display.getMetrics(metrics);
+            if (android.os.Build.VERSION.SDK_INT >= 17) {
+                Point size = new Point();
+                display.getRealSize(size);
+                realWidth = size.x;
+                realHeight = size.y;
+            } else if (android.os.Build.VERSION.SDK_INT < 17
+                    && android.os.Build.VERSION.SDK_INT >= 14) {
+                Method mGetRawH = Display.class.getMethod("getRawHeight");
+                Method mGetRawW = Display.class.getMethod("getRawWidth");
+                realWidth = (Integer) mGetRawW.invoke(display);
+                realHeight = (Integer) mGetRawH.invoke(display);
+            } else {
+                realWidth = metrics.widthPixels;
+                realHeight = metrics.heightPixels;
+            }
+
+            inch = hl_math.formatDouble(Math.sqrt((realWidth / metrics.xdpi) * (realWidth / metrics.xdpi) + (realHeight / metrics.ydpi) * (realHeight / metrics.ydpi)), 1);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return inch;
+    }
 }

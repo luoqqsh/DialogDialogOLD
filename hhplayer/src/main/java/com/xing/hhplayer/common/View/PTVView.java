@@ -56,7 +56,6 @@ public class PTVView extends PBaseVideoView {
     @Override
     protected void initView() {
         cLoadingView = new CLoadingView(mContext);
-//        addViewWithTag(cLoadingView, "LoadingView");
         View.inflate(mActivity, getLayoutId(), this);
         //top
         mTopContainer = findViewById(R.id.liveTopLayout);

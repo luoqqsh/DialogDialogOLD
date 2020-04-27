@@ -4,6 +4,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.Random;
 import java.util.regex.Pattern;
@@ -13,6 +14,15 @@ public class hl_math {
     public static String RoundingDouble(String str, String doubleType) {
         DecimalFormat df = new DecimalFormat(doubleType);
         return df.format(Double.parseDouble(str));
+    }
+
+    /**
+     * Double类型保留指定位数的小数，返回double类型（四舍五入）
+     * newScale 为指定的位数
+     */
+    public static double formatDouble(double d, int newScale) {
+        BigDecimal bd = new BigDecimal(d);
+        return bd.setScale(newScale, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 
     //获取随机数

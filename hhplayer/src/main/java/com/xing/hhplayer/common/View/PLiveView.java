@@ -41,10 +41,9 @@ public class PLiveView extends PBaseVideoView {
     @Override
     protected void initView() {
         cLoadingView = new CLoadingView(mContext);
-//        addViewWithTag(cLoadingView, "LoadingView");
         cTopBottomView = new CTopBottomView(mContext);
         cTopBottomView.setHhPlayer3(hhPlayer3);
-//        addViewWithTag(cTopBottomView, "TopBottomView");
+        addViewWithTag(cTopBottomView, "TopBottomView");
     }
 
     @Override

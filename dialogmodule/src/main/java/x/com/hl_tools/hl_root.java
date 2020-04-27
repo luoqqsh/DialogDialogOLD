@@ -1,9 +1,15 @@
 package x.com.hl_tools;
 
 import android.content.Context;
+import android.os.Build;
+import android.provider.Settings;
+
+import androidx.annotation.RequiresApi;
 
 import java.io.DataOutputStream;
 import java.io.File;
+
+import x.com.hl_base.app.AppInit;
 
 public class hl_root {
     /**
@@ -12,11 +18,29 @@ public class hl_root {
      * @return true：已ROOT
      */
     public static boolean isRoot() {
-        try {
-            return new File("/system/bin/su").exists() || new File("/system/xbin/su").exists();
-        } catch (Exception e) {
-            return false;
+        String su = "su";
+        String[] locations = {"/system/bin/", "/system/xbin/", "/sbin/", "/system/sd/xbin/",
+                "/system/bin/failsafe/", "/data/local/xbin/", "/data/local/bin/", "/data/local/",
+                "/system/sbin/", "/usr/bin/", "/vendor/bin/"};
+        for (String location : locations) {
+            if (new File(location + su).exists()) {
+                return true;
+            }
         }
+        return false;
+    }
+
+    /**
+     * Return whether ADB is enabled.
+     *
+     * @return {@code true}: yes<br>{@code false}: no
+     */
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+    public static boolean isAdbEnabled() {
+        return Settings.Secure.getInt(
+                AppInit.getApplicationByInvoke().getContentResolver(),
+                Settings.Global.ADB_ENABLED, 0
+        ) > 0;
     }
 
     /**

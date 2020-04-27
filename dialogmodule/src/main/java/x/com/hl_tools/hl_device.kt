@@ -3,7 +3,10 @@ package x.com.hl_tools
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
+import android.os.Environment
+import android.os.StatFs
 import android.text.TextUtils
+import android.text.format.Formatter
 import java.io.File
 import java.util.*
 import java.util.regex.Pattern
@@ -195,6 +198,59 @@ object hl_device {
             1
         }
 
+    /**
+     * 获得SD卡总大小
+     *
+     * @return
+     */
+    private fun getSDTotalSize(context: Context): String? {
+        val path = Environment.getExternalStorageDirectory()
+        val stat = StatFs(path.path)
+        val blockSize = stat.blockSizeLong
+        val totalBlocks = stat.blockCountLong
+        return Formatter.formatFileSize(context, blockSize * totalBlocks)
+    }
+
+    /**
+     * 获得sd卡剩余容量，即可用大小
+     *
+     * @return
+     */
+    private fun getSDAvailableSize(context: Context): String? {
+        val path = Environment.getExternalStorageDirectory()
+        val stat = StatFs(path.path)
+        val blockSize = stat.blockSizeLong
+        val availableBlocks = stat.availableBlocksLong
+        return Formatter.formatFileSize(context, blockSize * availableBlocks)
+    }
+
+    /**
+     * 获得机身内存总大小
+     *
+     * @return
+     */
+    private fun getRomTotalSize(context: Context): String? {
+        val path = Environment.getDataDirectory()
+        val stat = StatFs(path.path)
+        val blockSize = stat.blockSizeLong
+        val totalBlocks = stat.blockCountLong
+        return Formatter.formatFileSize(context, blockSize * totalBlocks)
+    }
+
+    /**
+     * 获得机身可用内存
+     *
+     * @return
+     */
+    private fun getRomAvailableSize(context: Context): String? {
+        val path = Environment.getDataDirectory()
+        val stat = StatFs(path.path)
+        val blockSize = stat.blockSizeLong
+        val availableBlocks = stat.availableBlocksLong
+        return Formatter.formatFileSize(context, blockSize * availableBlocks)
+    }
+
+
     fun getDeviceInfo(context: Context): String {
         return "BRAND-品牌:" + Build.BRAND + "\n" +
                 "MANUFACTURER-制造商:" + Build.MANUFACTURER + "\n" +
@@ -209,7 +265,10 @@ object hl_device {
                 "SSAID:" + hl_id.getSSAID(context) + "\n" +
                 "IMEI:" + hl_id.getIMEI(context) + "\n" +
                 "DeviceId:" + hl_id.getDeviceId(context) + "\n" +
-                "Root权限:" + if (hl_root.isRoot()) "已获得Root权限" else "未获得Root权限" + "\n"
+                "SD卡空间:" + getSDAvailableSize(context) + " / " + getSDTotalSize(context) + "\n" +
+                "系统剩余空间:" + getRomAvailableSize(context) + " / " + getRomTotalSize(context) + "\n" +
+                "adb启用:" + (if (hl_root.isAdbEnabled()) "已启用adb" else "未启用adb") + "\n" +
+                "Root权限:" + (if (hl_root.isRoot()) "已获得Root权限" else "未获得Root权限")
     }
 
     fun getDeviceInfoDetail(context: Context): String {
