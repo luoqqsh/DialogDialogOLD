@@ -2,6 +2,7 @@ package x.com.hl_base.dialog;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
@@ -19,6 +21,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
+import x.com.hl_base.interfaces.HOnListener3;
 import x.com.hl_base.interfaces.OnSimpleListener;
 import x.com.hl_dialog.R;
 import x.com.hl_log.ViseLog;
@@ -31,11 +34,13 @@ public abstract class BaseNDialog {
     protected boolean dismissedFlag = false;
     private boolean isAlreadyShown;
     private boolean isShow;
+    protected HOnListener3<Integer, Integer, Intent> activityResultEvent;
     protected OnSimpleListener dismissEvent;
     protected OnSimpleListener pauseEvent;
     protected OnSimpleListener resumeEvent;
     protected OnSimpleListener showEvent;
     protected OnSimpleListener cancelEvent;
+
     protected OnSimpleListener onDismissListener;
     protected OnSimpleListener onPauseListener;
     protected OnSimpleListener onResumeListener;
@@ -121,6 +126,7 @@ public abstract class BaseNDialog {
             dialogList.remove(BaseNDialog.this);
             onDialogDismiss();
         };
+        activityResultEvent = this::onActivityResult;
         pauseEvent = this::onDialogPause;
         resumeEvent = this::onDialogResume;
         showEvent = this::onDialogShow;
@@ -177,6 +183,9 @@ public abstract class BaseNDialog {
         if (onShowListener != null) {
             onShowListener.onListen();
         }
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     }
 
     public void showDialog(FragmentActivity mActivity) {

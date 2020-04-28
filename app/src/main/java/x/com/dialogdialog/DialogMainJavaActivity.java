@@ -22,6 +22,7 @@ import x.com.dialogdialog.BaseApp.BaseActivity;
 import x.com.dialogdialog.bbz.HttpMethodConfig;
 import x.com.hl_base.interfaces.HOnListener;
 import x.com.hl_dialog.DFListFileDialog;
+import x.com.hl_fileselect.media.CMediaSelectDialog;
 import x.com.hl_livedatabus.LiveEventBus;
 import x.com.hl_log.ViseLog;
 import x.com.hl_rx.jiu.SimpleSubscriber;
@@ -67,6 +68,8 @@ public class DialogMainJavaActivity extends BaseActivity {
 
             }
         });
+
+        CMediaSelectDialog.builder().setTip("").startSelectImg(mActivity);
     }
 
     private void liveEventBus() {

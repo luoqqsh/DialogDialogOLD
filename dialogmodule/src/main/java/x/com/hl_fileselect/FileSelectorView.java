@@ -163,7 +163,7 @@ public class FileSelectorView extends ListView {
         public View getView(int position, View convertView, ViewGroup parent) {
             View view;
             if (convertView == null) {
-                view = View.inflate(getContext(), R.layout.item_selectfile, null);
+                view = View.inflate(getContext(), R.layout.item_select_file, null);
                 ViewHolder viewHolder = new ViewHolder();
                 viewHolder.fileIcon = view.findViewById(R.id.file_icon);
                 viewHolder.filePath = view.findViewById(R.id.file_path);

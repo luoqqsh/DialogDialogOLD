@@ -14,4 +14,5 @@ public @interface CSelectType {
     int images = 1;//图片
     int videos = 2;//视频
     int music = 3;//音乐
+    int photo = 4;//拍照
 }

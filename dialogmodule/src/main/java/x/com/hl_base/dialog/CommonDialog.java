@@ -88,5 +88,4 @@ public abstract class CommonDialog extends DialogFragment {
             return -1;
         }
     }
-
 }

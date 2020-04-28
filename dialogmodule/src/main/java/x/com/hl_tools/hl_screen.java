@@ -200,11 +200,6 @@ public class hl_screen {
         return getScreenWidth(context);
     }
 
-    //获取屏幕角度方向
-    public static int getRotation(Activity activity) {
-        return activity.getWindowManager().getDefaultDisplay().getRotation();
-    }
-
     public static int getHeightFromWidthAtPort(Context context) {
         return (int) (getScreenWidth(context) * getScreenWHScale(context));
     }

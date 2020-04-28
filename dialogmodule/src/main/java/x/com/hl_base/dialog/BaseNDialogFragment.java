@@ -1,6 +1,7 @@
 package x.com.hl_base.dialog;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BaseNDialogFragment extends DialogFragment {
-    private int layoutId,dialogStyle;
+    private int layoutId, dialogStyle;
     private String parentId;
     private WeakReference<BaseNDialog> parent;
 
@@ -47,7 +48,7 @@ public class BaseNDialogFragment extends DialogFragment {
         return dialogStyle;
     }
 
-    public BaseNDialogFragment setLayoutId(BaseNDialog baseDialog, int layoutId,int dialogStyle) {
+    public BaseNDialogFragment setLayoutId(BaseNDialog baseDialog, int layoutId, int dialogStyle) {
         this.layoutId = layoutId;
         this.dialogStyle = dialogStyle;
         this.parentId = baseDialog.toString();
@@ -186,6 +187,14 @@ public class BaseNDialogFragment extends DialogFragment {
         super.onPause();
         if (parent != null && parent.get().pauseEvent != null) {
             parent.get().pauseEvent.onListen();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (parent != null && parent.get().pauseEvent != null) {
+            parent.get().activityResultEvent.onListen(requestCode, resultCode, data);
         }
     }
 }
