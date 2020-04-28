@@ -28,6 +28,7 @@ import okio.Buffer;
 import okio.BufferedSource;
 import okio.GzipSource;
 import x.com.hl_log.ViseLog;
+
 /**
  * 日志拦截器
  */
@@ -89,8 +90,7 @@ public class LoggingInterceptor implements Interceptor {
         } catch (Exception e) {
             responseLog.append("请求失败:").append(e.getMessage());
             ViseLog.d(TAG, requestlog + responseLog.toString());
-//            throw new RuntimeException(e.getMessage());
-            return chain.proceed(request);
+            throw e;
         }
         long tookMs = System.currentTimeMillis() - startNs;
         //--------------------request中的header--------------------//
