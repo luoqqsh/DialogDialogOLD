@@ -35,9 +35,9 @@
         <attr name="indicator_color" format="color" />
     </declare-styleable>
     <declare-styleable name="RotateImageView">
-        <attr name="r_singleTime" format="integer"/>
-        <attr name="r_num" format="integer"/>
-        <attr name="r_isShun" format="boolean"/>
+        <attr name="r_singleTime" format="integer" />
+        <attr name="r_num" format="integer" />
+        <attr name="r_isShun" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="CircleProgressBar">
@@ -71,5 +71,11 @@
             <enum name="square" value="2" />
         </attr>
 
+    </declare-styleable>
+
+    <!--ScaleFrameLayout-->
+    <declare-styleable name="ScaleFrameLayout">
+        <attr name="scaleHeight" format="float" />
+        <attr name="scaleWidth" format="float" />
     </declare-styleable>
 </resources>

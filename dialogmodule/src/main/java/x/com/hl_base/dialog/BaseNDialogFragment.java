@@ -20,6 +20,8 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
+import x.com.hl_log.ViseLog;
+
 public class BaseNDialogFragment extends DialogFragment {
     private int layoutId, dialogStyle;
     private String parentId;

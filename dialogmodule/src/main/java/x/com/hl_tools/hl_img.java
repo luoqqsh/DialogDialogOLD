@@ -1,13 +1,19 @@
 package x.com.hl_tools;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
+import android.net.Uri;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Base64;
 import android.widget.ImageView;
+
+import androidx.core.os.EnvironmentCompat;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,6 +21,11 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+import x.com.hl_base.app.AppInit;
 
 public class hl_img {
     // 将图片文件转化为字节数组字符串，并对其进行Base64编码处理
@@ -216,5 +227,42 @@ public class hl_img {
             bm.recycle();
         }
         return returnBm;
+    }
+
+    /**
+     * 创建一条图片地址uri,用于保存拍照后的照片
+     *
+     * @return 图片的uri
+     */
+    public static Uri createImagePathUri() {
+        String status = Environment.getExternalStorageState();
+        SimpleDateFormat timeFormatter = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault());
+        long time = System.currentTimeMillis();
+        String imageName = timeFormatter.format(new Date(time));
+        // ContentValues是我们希望这条记录被创建时包含的数据信息
+        ContentValues values = new ContentValues(2);
+        values.put(MediaStore.Images.Media.DISPLAY_NAME, imageName);
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+        // 判断是否有SD卡,优先使用SD卡存储,当没有SD卡时使用手机存储
+        if (status.equals(Environment.MEDIA_MOUNTED)) {
+            return AppInit.getAppContext().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+        } else {
+            return AppInit.getAppContext().getContentResolver().insert(MediaStore.Images.Media.INTERNAL_CONTENT_URI, values);
+        }
+    }
+
+    public static File createImageFile() throws IOException {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        String imageFileName = String.format("JPEG_%s.jpg", timeStamp);
+        File storageDir = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES);
+        if (!storageDir.exists()) {
+            storageDir.mkdir();
+        }
+        File tempFile = new File(storageDir, imageFileName);
+        if (!Environment.MEDIA_MOUNTED.equals(EnvironmentCompat.getStorageState(tempFile))) {
+            return null;
+        }
+        return tempFile;
     }
 }

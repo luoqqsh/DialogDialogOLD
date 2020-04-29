@@ -1,27 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<x.com.hl_view.ScaleFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:layout_margin="1dp">
+    android:layout_margin="1dp"
+    app:scaleHeight="1.5">
 
     <ImageView
-        android:id="@+id/iv_image"
+        android:id="@+id/sFileThumb"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
         android:background="#010101"
         android:scaleType="centerCrop" />
 
     <ImageView
-        android:id="@+id/iv_masking"
+        android:id="@+id/sFileMasking"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
         android:background="#111212" />
 
     <ImageView
-        android:id="@+id/iv_select"
+        android:id="@+id/sFileState"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
@@ -31,4 +33,4 @@
         android:paddingBottom="10dp"
         android:src="@mipmap/icon_image_un_select" />
 
-</FrameLayout>
+</x.com.hl_view.ScaleFrameLayout>

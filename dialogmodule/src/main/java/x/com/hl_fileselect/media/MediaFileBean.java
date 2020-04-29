@@ -1,5 +1,6 @@
-package x.com.hl_model;
+package x.com.hl_fileselect.media;
 
+import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
 import android.text.TextUtils;
@@ -34,7 +35,7 @@ public class MediaFileBean implements Serializable, Comparable<MediaFileBean> {
     private int tag;//视频标记
     //文件
     private String filePath;//路径
-    private String filePathUri;//路径uri
+    private Uri filePathUri;//路径uri
     private String thumbPath;//封面
     private int mediaId;//文件资源id
     private long fileSize;//文件大小
@@ -105,11 +106,18 @@ public class MediaFileBean implements Serializable, Comparable<MediaFileBean> {
         this.fileName = hl_file.getFileName(filePath);
     }
 
-    public String getFilePathUri() {
-        return MediaStore.Video.Media.EXTERNAL_CONTENT_URI.buildUpon().appendPath(String.valueOf(mediaId)).build().toString();
+    public Uri getFilePathUri() {
+        if (filePathUri != null) {
+            return filePathUri;
+        }
+        if (mediaId != 0) {
+            Uri build = MediaStore.Video.Media.EXTERNAL_CONTENT_URI.buildUpon().appendPath(String.valueOf(mediaId)).build();
+            return build;
+        }
+        return null;
     }
 
-    public void setFilePathUri(String filePathUri) {
+    public void setFilePathUri(Uri filePathUri) {
         this.filePathUri = filePathUri;
     }
 

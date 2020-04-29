@@ -7,20 +7,32 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
 
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
+import x.com.hl_base.interfaces.HOnListener;
+import x.com.hl_fileselect.media.MediaFolderBean;
 import x.com.hl_model.ImgFolderBean;
-import x.com.hl_model.MediaFileBean;
+import x.com.hl_fileselect.media.MediaFileBean;
 import x.com.hl_tools.model.AppInfo;
 
 public class hl_medialist {
     /**
-     * 安卓Q获取图片列表
+     * 安卓Q获取图片列表,有点耗时
      */
     public static List<MediaFileBean> getImgList(Context context) {
         Uri mImageUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
@@ -47,12 +59,14 @@ public class hl_medialist {
                 int id = mCursor.getColumnIndex(MediaStore.Images.Media._ID);
 
                 long date = mCursor.getLong(timeIndex) * 1000;
-                String fileUri, thumbPath;
+                Uri fileUri;
+                String fileUrl;
+                String thumbPath;
                 //适配Android Q
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     fileUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI.buildUpon()
-                            .appendPath(String.valueOf(mCursor.getInt(id))).build().toString();
-                    if (hl_media.isContentUriExists(context, Uri.parse(fileUri))) {
+                            .appendPath(String.valueOf(mCursor.getInt(id))).build();
+                    if (hl_media.isContentUriExists(context, fileUri)) {
                         MediaFileBean mediaFileBean = new MediaFileBean();
                         mediaFileBean.setMediaId(id);
                         mediaFileBean.setFilePath(mCursor.getString(pathIndex));
@@ -62,15 +76,15 @@ public class hl_medialist {
                     }
                 } else {
                     thumbPath = mCursor.getString(thumbPathIndex);
-                    fileUri = mCursor.getString(pathIndex);
+                    fileUrl = mCursor.getString(pathIndex);
                     //判断文件是否存在，存在才去加入
-                    if (hl_file.isFileExist(fileUri)) {
+                    if (hl_file.isFileExist(fileUrl)) {
                         MediaFileBean mediaFileBean = new MediaFileBean();
                         mediaFileBean.setMediaId(id);
-                        mediaFileBean.setFilePath(fileUri);
+                        mediaFileBean.setFilePath(fileUrl);
                         mediaFileBean.setThumbPath(thumbPath);
                         mediaFileBean.setFileDate(date);
-                        mediaFileBean.setFilePathUri(hl_uri.getPhotoUri(mCursor).toString());
+                        mediaFileBean.setFilePathUri(hl_uri.getPhotoUri(mCursor));
                         list.add(mediaFileBean);
                     }
                 }
@@ -143,14 +157,14 @@ public class hl_medialist {
                         fileIsExists = hl_media.isContentUriExists(context, Uri.parse(path));
                         if (fileIsExists) {
                             MediaFileBean mediaFileBean = new MediaFileBean(videoId, path, resolution, size, date, duration);
-                            mediaFileBean.setFilePathUri(hl_uri.getVideoUri(mCursor).toString());
+                            mediaFileBean.setFilePathUri(hl_uri.getVideoUri(mCursor));
                             videoList.add(mediaFileBean);
                         }
                     } else {
                         fileIsExists = hl_file.isFileExist(path);
                         if (fileIsExists) {
                             MediaFileBean mediaFileBean = new MediaFileBean(videoId, path, resolution, size, date, duration);
-                            mediaFileBean.setFilePathUri(hl_uri.getVideoUri(mCursor).toString());
+                            mediaFileBean.setFilePathUri(hl_uri.getVideoUri(mCursor));
                             videoList.add(mediaFileBean);
                         }
                     }
@@ -380,5 +394,77 @@ public class hl_medialist {
             appInfos.add(appInfo);
         }
         return appInfos;
+    }
+
+    public static void getAllImageFromLocal(final FragmentActivity activity, @NonNull final HOnListener<Map<String, MediaFolderBean>> callback) {
+        final String[] IMAGE_PROJECTION = {
+                MediaStore.Images.Media.DATA,
+                MediaStore.Images.Media.DISPLAY_NAME,
+                MediaStore.Images.Media.DATE_ADDED,
+                MediaStore.Images.Media.MIME_TYPE,
+                MediaStore.Images.Media.SIZE,
+                MediaStore.Images.Media._ID};
+
+        LoaderManager.getInstance(activity).restartLoader(0, null, new LoaderManager.LoaderCallbacks<Cursor>() {
+            @NonNull
+            @Override
+            public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+                return new CursorLoader(activity,
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, IMAGE_PROJECTION,
+                        IMAGE_PROJECTION[4] + ">0 AND " + IMAGE_PROJECTION[3] + "=? OR " + IMAGE_PROJECTION[3] + "=? ",
+                        new String[]{"image/jpeg", "image/png"}, IMAGE_PROJECTION[2] + " DESC");
+            }
+
+            @Override
+            public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
+                Map<String, MediaFolderBean> imageMap = new LinkedHashMap<>();
+                if (data != null) {
+                    if (data.getCount() > 0) {
+                        data.moveToFirst();
+                        MediaFolderBean folderBean = new MediaFolderBean();
+                        String folderPath = Environment.getExternalStorageDirectory() + "";
+                        folderBean.setFolderPath(folderPath);
+                        folderBean.setFolderName("全部照片");
+                        List<MediaFileBean> allImageImageList = new ArrayList<>();
+                        folderBean.setMediaFileBeanList(allImageImageList);
+                        imageMap.put(folderPath, folderBean);
+                        do {
+                            if (activity.isFinishing()) return;//防止在加载的时候直接返回了。
+                            String path = data.getString(data.getColumnIndexOrThrow(IMAGE_PROJECTION[0]));
+                            String name = data.getString(data.getColumnIndexOrThrow(IMAGE_PROJECTION[1]));
+                            if (!hl_file.isFileExist(path)) {
+                                continue;
+                            }
+                            File dirFile = new File(path).getParentFile();
+                            if (dirFile == null || !dirFile.exists()) continue;
+                            String dirPath = dirFile.getAbsolutePath();
+                            if (!imageMap.containsKey(dirPath)) {
+                                MediaFolderBean image = new MediaFolderBean();
+                                image.setFolderPath(dirPath);
+                                image.setFolderName(dirFile.getName());
+                                imageMap.put(dirPath, image);
+                            }
+                            MediaFolderBean imageDir = imageMap.get(dirPath);
+                            if (imageDir == null) continue;
+                            List<MediaFileBean> imageList = imageDir.getMediaFileBeanList();
+                            if (imageList == null) {
+                                imageList = new ArrayList<>();
+                            }
+                            MediaFileBean image = new MediaFileBean();
+                            image.setFilePath(path);
+                            image.setFileName(name);
+                            imageList.add(image);
+                            allImageImageList.add(image);
+                            imageDir.setMediaFileBeanList(imageList);
+                        } while (data.moveToNext());
+                    }
+                }
+                callback.onListen(imageMap);
+            }
+
+            @Override
+            public void onLoaderReset(@NonNull Loader<Cursor> loader) {
+            }
+        });
     }
 }

@@ -68,7 +68,7 @@
         tools:visibility="visible" />
 
     <TextView
-        android:id="@+id/tv_time"
+        android:id="@+id/photoTimeText"
         style="@style/tv_default"
         android:layout_width="40dp"
         android:layout_height="14dp"

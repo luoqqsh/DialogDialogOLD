@@ -68,8 +68,6 @@ public class DialogMainJavaActivity extends BaseActivity {
 
             }
         });
-
-        CMediaSelectDialog.builder().setTip("").startSelectImg(mActivity);
     }
 
     private void liveEventBus() {

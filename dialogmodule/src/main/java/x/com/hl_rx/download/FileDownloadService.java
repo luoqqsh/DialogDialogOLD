@@ -59,16 +59,6 @@ public class FileDownloadService extends Service {
         if (mBuilder == null) {
             mBuilder = new NotificationCompat.Builder(this, CHANNEL_ID);
         }
-        mBuilder.setContentTitle("DialogDialog")
-                .setContentText(contentText)
-                .setSmallIcon(R.mipmap.ic_launcher)
-//                .setLargeIcon(AppUpdateUtils.drawableToBitmap(AppUpdateUtils.getAppIcon(FileDownloadService.this)))
-                .setLargeIcon(hl_bitmap.drawable2Bitmap(hl_app.getAppIcon(this, getPackageName())))
-                .setOngoing(true)
-                .setAutoCancel(true);
-        Notification notification = mBuilder.build();
-        notification.flags = Notification.FLAG_AUTO_CANCEL;
-        mNotificationManager.notify(NOTIFY_ID, notification);
         close();
     }
 
@@ -94,9 +84,11 @@ public class FileDownloadService extends Service {
 
             mNotificationManager.createNotificationChannel(channel);
         }
-
-
-        mBuilder = new NotificationCompat.Builder(this, CHANNEL_ID);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            mBuilder = new NotificationCompat.Builder(this, CHANNEL_ID);
+        } else {
+            mBuilder = new NotificationCompat.Builder(this);
+        }
         mBuilder.setContentTitle("开始下载")
                 .setContentText("正在连接服务器")
                 .setSmallIcon(R.mipmap.ic_launcher)
@@ -140,11 +132,16 @@ public class FileDownloadService extends Service {
                 @Override
                 public void onDownLoadStart(int progress) {
                     setUpNotification();
+                    if (callback != null) {
+                        callback.onDownLoadStart(progress);
+                    }
                 }
 
                 @Override
                 public void onDownLoadProgress(int progress) {
-                    ViseLog.showInfo(progress);
+                    if (callback != null) {
+                        callback.onDownLoadProgress(progress);
+                    }
                     int rate = Math.round(progress * 100);
                     if (mBuilder != null) {
                         mBuilder.setContentTitle("正在下载：" + fileName)
@@ -159,12 +156,20 @@ public class FileDownloadService extends Service {
 
                 @Override
                 public void onDownLoadError(String error) {
-
+                    if (mNotificationManager != null) {
+                        mNotificationManager.cancel(NOTIFY_ID);
+                    }
+                    if (callback != null) {
+                        callback.onDownLoadError(error);
+                    }
+                    close();
                 }
 
                 @Override
                 public void onDownloadFinish(String filePath) {
-                    callback.onDownloadFinish(filePath);
+                    if (callback != null) {
+                        callback.onDownloadFinish(filePath);
+                    }
                     hl_app.installAPK(FileDownloadService.this, filePath);
                     PendingIntent intent = hl_app.getInstallAppIntent(FileDownloadService.this, new File(filePath));
 //                    Intent installAppIntent = AppUpdateUtils.getInstallAppIntent(DownloadService.this, file);

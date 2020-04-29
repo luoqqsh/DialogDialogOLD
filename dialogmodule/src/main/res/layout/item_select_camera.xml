@@ -6,7 +6,7 @@
     android:layout_margin="1dp">
 
     <ImageView
-        android:id="@+id/iv_camera"
+        android:id="@+id/sFileCamera"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

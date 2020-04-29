@@ -175,7 +175,7 @@ public class HomeGoldView extends LinearLayout {
         tvGoldNum = findViewById(R.id.tv_num);
         tvGoldName = findViewById(R.id.tv_gold_name);
 //        tvTaskGoldNum = findViewById(R.id.tv_task_num);
-        tvTime = findViewById(R.id.tv_time);
+        tvTime = findViewById(R.id.photoTimeText);
         ivGold = findViewById(R.id.iv_gold);
 
     }

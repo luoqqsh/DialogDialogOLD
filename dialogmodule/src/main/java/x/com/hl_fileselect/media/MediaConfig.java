@@ -4,8 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import x.com.hl_base.app.AppInit;
 import x.com.hl_log.ViseLog;
-import x.com.hl_model.MediaFileBean;
+import x.com.hl_tools.hl_toast;
 
 public class MediaConfig implements Serializable {
     private static final long serialVersionUID = 6357206378404061331L;
@@ -78,19 +79,30 @@ public class MediaConfig implements Serializable {
             ViseLog.e("您没有选择");
             return false;
         }
+        if (getSelectList().size() < minSelectCount) {
+            hl_toast.show(AppInit.getAppContext(), "最少选择" + minSelectCount);
+            return false;
+        }
+        if (getSelectList().size() > maxSelectCount) {
+            hl_toast.show(AppInit.getAppContext(), "最多选择" + maxSelectCount);
+            return false;
+        }
         if (isSingleSelect()) {
             if (onSingleListener != null) {
                 onSingleListener.onListen(mSelectList.get(0));
             }
-        } else {
-            if (onMoreSelectListener != null) {
-                onMoreSelectListener.onListen(mSelectList);
-            }
+        }
+        if (onMoreSelectListener != null) {
+            onMoreSelectListener.onListen(mSelectList);
         }
         return true;
     }
 
     public boolean isShowCamera() {
         return isShowCamera;
+    }
+
+    public boolean isNeedPreview() {
+        return isNeedPreview;
     }
 }

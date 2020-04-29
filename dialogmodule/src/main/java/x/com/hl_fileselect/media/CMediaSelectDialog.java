@@ -1,31 +1,36 @@
 package x.com.hl_fileselect.media;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.jetbrains.annotations.Nullable;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import x.com.hl_base.interfaces.HOnListener;
+import x.com.hl_base.pop.OnPopItemClickListen;
 import x.com.hl_bean.CSelectType;
 import x.com.hl_dialog.R;
 import x.com.hl_log.ViseLog;
-import x.com.hl_model.MediaFileBean;
-import x.com.hl_rx.task.TaskManager;
 import x.com.hl_tools.hl_medialist;
+import x.com.hl_tools.hl_permissions;
 import x.com.hl_tools.hl_screen;
 
 public class CMediaSelectDialog extends BaseSelectDialog {
-
-    private RecyclerView nListView;
-    private ImageAdapter imageAdapter;
+    private RecyclerView nSelectItemList;
+    private FileItemAdapter fileItemAdapter;
+    private boolean isOpenFolder;
+    private View nSelectMasking;
+    private TextView nSelectFolderName;
+    private FolderPopWindow folderPopWindow;
 
     public static MediaSelectBuilder builder() {
         return new MediaSelectBuilder();
@@ -59,6 +64,26 @@ public class CMediaSelectDialog extends BaseSelectDialog {
             return this;
         }
 
+        public MediaSelectBuilder setOnSingleListener(MediaSelectListener<MediaFileBean> onSingleListener) {
+            mediaConfig.setOnSingleListener(onSingleListener);
+            return this;
+        }
+
+        public MediaSelectBuilder setShowCamera(boolean showCamera) {
+            mediaConfig.setShowCamera(showCamera);
+            return this;
+        }
+
+        public MediaSelectBuilder setNeedPreview(boolean needPreview) {
+            mediaConfig.setNeedPreview(needPreview);
+            return this;
+        }
+
+        public MediaSelectBuilder setOnMoreSelectListener(MediaSelectListener<List<MediaFileBean>> onMoreSelectListener) {
+            mediaConfig.setOnMoreSelectListener(onMoreSelectListener);
+            return this;
+        }
+
         public void startSelectImg(FragmentActivity mActivity) {
             CMediaSelectDialog cMediaSelectDialog = new CMediaSelectDialog();
             cMediaSelectDialog.setMediaConfig(mediaConfig);
@@ -87,43 +112,113 @@ public class CMediaSelectDialog extends BaseSelectDialog {
     @Override
     protected void initUI(View mView, Bundle bundle) {
         if (!TextUtils.isEmpty(mediaConfig.getTip())) {
-            TextView nDialogTip = mView.findViewById(R.id.nDialogTip);
-            nDialogTip.setText(mediaConfig.getTip());
+            TextView nSelectTip = mView.findViewById(R.id.nSelectTip);
+            nSelectTip.setText(mediaConfig.getTip());
+            nSelectTip.setVisibility(View.VISIBLE);
         }
-        mView.findViewById(R.id.btn_back).setOnClickListener(v -> dismiss());
-        mView.findViewById(R.id.tv_confirm).setOnClickListener(v -> {
+        mView.findViewById(R.id.nSelectBack).setOnClickListener(v -> dismiss());
+        nSelectMasking = mView.findViewById(R.id.nSelectMasking);
+        nSelectFolderName = mView.findViewById(R.id.nSelectFolderName);
+        nSelectFolderName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openFolder();
+            }
+        });
+        mView.findViewById(R.id.nSelectConfirm).setOnClickListener(v -> {
             if (mediaConfig.callback()) dismiss();
         });
-        nListView = mView.findViewById(R.id.nDialogList);
+        nSelectItemList = mView.findViewById(R.id.nSelectItemList);
+        fileItemAdapter = new FileItemAdapter(mActivitys.get(), mediaConfig, mFileList);
+        fileItemAdapter.setBaseFragment(baseNDialogFragment);
+        nSelectItemList.setAdapter(fileItemAdapter);
         if (hl_screen.isPortrait()) {
             GridLayoutManager mLayoutManager = new GridLayoutManager(mActivitys.get(), 3);
-            nListView.setLayoutManager(mLayoutManager);
+            nSelectItemList.setLayoutManager(mLayoutManager);
         } else {
             GridLayoutManager mLayoutManager = new GridLayoutManager(mActivitys.get(), 5);
-            nListView.setLayoutManager(mLayoutManager);
+            nSelectItemList.setLayoutManager(mLayoutManager);
         }
-        imageAdapter = new ImageAdapter(mActivitys.get(), mediaConfig, mDataList);
-        nListView.setAdapter(imageAdapter);
         initData();
     }
 
     private void initData() {
-        new TaskManager<List<MediaFileBean>>() {
+        hl_permissions.applyWriteStoragePermission(mActivitys.get(), new hl_permissions.RequestPermissionCallBack() {
             @Override
-            public List<MediaFileBean> runOnBackgroundThread() {
-                if (mDataList == null) {
-                    mDataList = new ArrayList<>();
-                } else {
-                    mDataList.clear();
-                }
-                mDataList = hl_medialist.getImgList(mActivitys.get());
-                return mDataList;
+            public void requestPermissionSuccess() {
+                hl_medialist.getAllImageFromLocal(mActivitys.get(), new HOnListener<Map<String, MediaFolderBean>>() {
+                    @Override
+                    public void onListen(Map<String, MediaFolderBean> mediaFolderMap) {
+                        List<MediaFolderBean> mediaFolderBeanList = new ArrayList<>();
+                        for (String key : mediaFolderMap.keySet()) {
+                            mediaFolderBeanList.add(mediaFolderMap.get(key));
+                        }
+                        initFolderList(mediaFolderBeanList);
+                        mFileList = mediaFolderBeanList.get(0).getMediaFileBeanList();
+                        fileItemAdapter.notifyDataSetChanged(mFileList);
+                    }
+                });
             }
 
             @Override
-            public void runOnUIThread(@Nullable List<MediaFileBean> mediaFileBeanList) {
-                imageAdapter.notifyDataSetChanged();
+            public void requestPermissionFail(Map<String, Boolean> failPermission) {
+                ViseLog.e("没有读写权限");
             }
-        }.start();
+        });
+    }
+
+    private void initFolderList(List<MediaFolderBean> mediaFolderBeanList) {
+        if (mediaFolderBeanList != null && !mediaFolderBeanList.isEmpty()) {
+            folderPopWindow = new FolderPopWindow(mActivitys.get(), mediaFolderBeanList, new HOnListener<MediaFolderBean>() {
+                @Override
+                public void onListen(MediaFolderBean mediaFolderBean) {
+                    setFolder(mediaFolderBean);
+                    closeFolder();
+                }
+            });
+            folderPopWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    closeFolder();
+                }
+            });
+        }
+    }
+
+    private void setFolder(MediaFolderBean folder) {
+        mFileList = folder.getMediaFileBeanList();
+        nSelectFolderName.setText(folder.getFolderName());
+        nSelectItemList.scrollToPosition(0);
+        fileItemAdapter.notifyDataSetChanged(folder.getMediaFileBeanList());
+    }
+
+    /**
+     * 弹出文件夹列表
+     */
+    private void openFolder() {
+        if (!isOpenFolder) {
+            nSelectMasking.setVisibility(View.VISIBLE);
+            isOpenFolder = true;
+            folderPopWindow.showAsDropDown(nSelectFolderName, 0, 20);
+        }
+    }
+
+    /**
+     * 收起文件夹列表
+     */
+    private void closeFolder() {
+        if (isOpenFolder) {
+            nSelectMasking.setVisibility(View.GONE);
+            isOpenFolder = false;
+            folderPopWindow.dismiss();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (fileItemAdapter != null) {
+            fileItemAdapter.getCallbackPhoto();
+        }
+        dismiss();
     }
 }
