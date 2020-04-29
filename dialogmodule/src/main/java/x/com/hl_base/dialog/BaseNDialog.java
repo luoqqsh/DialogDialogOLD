@@ -47,6 +47,7 @@ public abstract class BaseNDialog {
     protected OnSimpleListener onShowListener;
     protected OnSimpleListener onCancelListener;
     private Bundle bundle;
+    protected BaseNDialogFragment baseNDialogFragment;
 
     protected void initWindow(Dialog dialog) {
         if (dialog != null) {
@@ -236,7 +237,7 @@ public abstract class BaseNDialog {
         }
         FragmentManager fragmentManager = mActivitys.get().getSupportFragmentManager();
         //创建dialogFragment开始
-        BaseNDialogFragment baseNDialogFragment = new BaseNDialogFragment().setLayoutId(this, getLayoutId(), getDialogStyle());
+        baseNDialogFragment = new BaseNDialogFragment().setLayoutId(this, getLayoutId(), getDialogStyle());
         if (bundle != null) {
             baseNDialogFragment.setArguments(bundle);
         }
@@ -253,5 +254,9 @@ public abstract class BaseNDialog {
 
     protected void setArguments(Bundle bundle) {
         this.bundle = bundle;
+    }
+
+    public BaseNDialogFragment getBaseNDialogFragment() {
+        return baseNDialogFragment;
     }
 }

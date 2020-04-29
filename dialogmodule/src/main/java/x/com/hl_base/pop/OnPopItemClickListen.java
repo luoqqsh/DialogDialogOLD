@@ -1,0 +1,7 @@
+package x.com.hl_base.pop;
+
+import android.widget.PopupWindow;
+
+public interface OnPopItemClickListen {
+    void click(PopupWindow pop, int position);
+}
