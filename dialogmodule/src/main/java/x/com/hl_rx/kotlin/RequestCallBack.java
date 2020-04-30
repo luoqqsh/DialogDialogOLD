@@ -1,7 +1,6 @@
 package x.com.hl_rx.kotlin;
 
 
-import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -32,15 +31,15 @@ public abstract class RequestCallBack<T> implements Callback<T> {
 
     @Override
     public void onResponse(Call<T> call, Response<T> response) {
-        ViseLog.d(response.body());
+//        ViseLog.d(response.body());
     }
 
     public void onFailed(Call<T> call, Response<T> response) {
-        ViseLog.d(response.body());
+//        ViseLog.d(response.body());
     }
 
     @Override
     public void onFailure(Call<T> call, Throwable t) {
-        ViseLog.d(t);
+//        ViseLog.d(t);
     }
 }

@@ -14,22 +14,13 @@ import kotlin.coroutines.*
 suspend fun <T> Call<T>.await(): T {
     return suspendCoroutine { continuation ->
         enqueue(object : RequestCallBack<T>() {
-
             override fun onSuccess(call: Call<T>, response: Response<T>) {
                 val body = response.body()
                 if (body != null) continuation.resume(body)
                 else continuation.resumeWithException(RuntimeException("response body is null"))
             }
 
-            override fun onFailed(call: Call<T>?, response: Response<T>?) {
-                super.onFailed(call, response)
-                continuation.resumeWithException(RuntimeException("response body is null"))
-            }
 
-            override fun onFailure(call: Call<T>, t: Throwable) {
-                super.onFailure(call, t)
-                continuation.resumeWithException(t)
-            }
         })
     }
 }

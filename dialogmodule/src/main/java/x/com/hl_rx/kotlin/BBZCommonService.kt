@@ -8,6 +8,7 @@ import x.com.hl_rx.bean.HttpResult
 
 interface BBZCommonService {
     @POST("api/homePage/newHomePageResult")
-    fun getHomeData(@Query("device") device: String, @Query("userId") userId: String, @Query("steps") steps: String): Call<HttpResult<HomeDataBean>>
+    fun getHomeData(@Query("device") device: String, @Query("userId") userId: String, @Query("steps") steps: String)
+            : Call<HttpResult<HomeDataBean>>
 
 }
