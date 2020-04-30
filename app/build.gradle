@@ -99,7 +99,7 @@ dependencies {
     implementation project(':hhplayer')
     implementation project(':map_amap')
     implementation project(':map_bmap')
-    implementation project(':map_gmap')
+//    implementation project(':map_gmap')
     implementation project(':map_qmap')
     implementation project(':map_kmap')
 //    implementation project(':ffmpeg_opencv')
