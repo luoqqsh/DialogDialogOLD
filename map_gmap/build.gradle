@@ -14,7 +14,7 @@ android {
     }
     repositories {
         flatDir {
-            dirs 'libs', '../map_gmap/libs'
+            dirs '../map_gmap/libs'
         }
     }
     sourceSets {

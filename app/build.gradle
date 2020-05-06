@@ -91,8 +91,8 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'androidx.multidex:multidex:2.0.1'
 //    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.2'
-    debugImplementation 'com.didichuxing.doraemonkit:doraemonkit-leakcanary:3.1.4'
-    debugImplementation 'com.didichuxing.doraemonkit:doraemonkit:3.1.4'
+//    debugImplementation 'com.didichuxing.doraemonkit:doraemonkit-leakcanary:3.1.4'
+//    debugImplementation 'com.didichuxing.doraemonkit:doraemonkit:3.1.4'
     implementation project(':dialogmodule')
     implementation project(':glide4')
     implementation project(':hhplayer')
