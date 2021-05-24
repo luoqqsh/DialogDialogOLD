@@ -1,0 +1,10 @@
+<resources>
+
+    <!--<dimen name="height_of_title_status">@android:dimen/status_bar_height</dimen>-->
+    <!-- 状态栏透明 -->
+
+    <style name="ImmersionTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+    </style>
+</resources>
